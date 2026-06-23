@@ -54,11 +54,20 @@ public class CommandManagement {
     }
 
     public void register() {
-        for (Commands command : Commands.values()) {
-            try {
+        try {
+            java.lang.reflect.Field commandMapField = org.bukkit.Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            commandMapField.setAccessible(true);
+            org.bukkit.command.CommandMap commandMap = (org.bukkit.command.CommandMap) commandMapField.get(org.bukkit.Bukkit.getServer());
+
+            java.lang.reflect.Constructor<PluginCommand> pluginCommandConstructor = PluginCommand.class.getDeclaredConstructor(String.class, org.bukkit.plugin.Plugin.class);
+            pluginCommandConstructor.setAccessible(true);
+
+            for (Commands command : Commands.values()) {
                 PluginCommand pluginCommand = plugin.getCommand(command.name);
+                
                 if (pluginCommand == null) {
-                    throw new RuntimeException("Missing command '" + command.name + "'");
+                    pluginCommand = pluginCommandConstructor.newInstance(command.name, plugin);
+                    commandMap.register("pklogin", pluginCommand);
                 }
 
                 ALLOWED_COMMANDS.add("/" + command.name);
@@ -71,10 +80,9 @@ public class CommandManagement {
                 Constructor<?> constructor = command.clasz.getConstructor(PkLoginPaper.class);
                 BukkitAbstractCommand bukkitCommand = (BukkitAbstractCommand) constructor.newInstance(plugin);
                 pluginCommand.setExecutor(bukkitCommand);
-            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                     InvocationTargetException e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

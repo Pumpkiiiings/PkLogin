@@ -31,7 +31,7 @@ dependencies {
 }
 
 processResources {
-    filesMatching('plugin.yml') {
+    filesMatching('paper-plugin.yml') {
         expand 'pluginVersion': project.version
     }
     filesMatching('bungee.yml') {

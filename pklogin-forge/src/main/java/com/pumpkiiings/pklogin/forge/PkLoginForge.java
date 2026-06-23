@@ -59,7 +59,7 @@ public class PkLoginForge {
             dataFolder.mkdirs();
         }
 
-        File libsFolder = new File("mods/PkLogin-Libs");
+        File libsFolder = new File("mods");
         if (com.pumpkiiings.pklogin.common.util.LibraryDownloader.checkAndDownloadForge(libsFolder)) {
             LOGGER.fatal("=========================================================");
             LOGGER.fatal("[PkLogin] Librerías de Discord y Email descargadas exitosamente.");

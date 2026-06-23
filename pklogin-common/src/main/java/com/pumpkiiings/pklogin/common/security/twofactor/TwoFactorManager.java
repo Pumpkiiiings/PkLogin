@@ -14,19 +14,36 @@ public class TwoFactorManager {
     // Map<Username, Code>
     private final Map<String, String> pendingLogins = new ConcurrentHashMap<>();
 
-    private final com.pumpkiiings.pklogin.common.security.twofactor.impl.Discord2FA discordProvider = new com.pumpkiiings.pklogin.common.security.twofactor.impl.Discord2FA();
-    private final com.pumpkiiings.pklogin.common.security.twofactor.impl.Email2FA emailProvider = new com.pumpkiiings.pklogin.common.security.twofactor.impl.Email2FA();
+    private TwoFactorProvider discordProvider;
+    private TwoFactorProvider emailProvider;
 
     private TwoFactorManager() {}
 
     public void init() {
-        discordProvider.init();
-        emailProvider.init();
+        try {
+            Class.forName("net.dv8tion.jda.api.JDA");
+            if (discordProvider == null) {
+                discordProvider = new com.pumpkiiings.pklogin.common.security.twofactor.impl.Discord2FA();
+            }
+            discordProvider.init();
+        } catch (Throwable t) {
+            System.err.println("[PkLogin] JDA library not found. Discord 2FA will be disabled.");
+        }
+
+        try {
+            Class.forName("javax.mail.Authenticator");
+            if (emailProvider == null) {
+                emailProvider = new com.pumpkiiings.pklogin.common.security.twofactor.impl.Email2FA();
+            }
+            emailProvider.init();
+        } catch (Throwable t) {
+            System.err.println("[PkLogin] JavaMail library not found. Email 2FA will be disabled.");
+        }
     }
     
     public void shutdown() {
-        discordProvider.shutdown();
-        emailProvider.shutdown();
+        if (discordProvider != null) discordProvider.shutdown();
+        if (emailProvider != null) emailProvider.shutdown();
     }
     
     public TwoFactorProvider getDiscordProvider() {

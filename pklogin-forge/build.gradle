@@ -1,7 +1,7 @@
 plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '8.3.0'
     id 'org.spongepowered.mixin' version '0.7.38'
 }
 
@@ -64,7 +64,7 @@ dependencies {
 
     // Database & TOTP
     shade 'com.zaxxer:HikariCP:5.1.0'
-    shade 'org.mariadb.jdbc:mariadb-java-client:3.4.0'
+    shade 'org.mariadb.jdbc:mariadb-java-client:3.1.4'
     shade 'com.h2database:h2:2.2.224'
     shade 'dev.samstevens.totp:totp:1.7.1'
 }

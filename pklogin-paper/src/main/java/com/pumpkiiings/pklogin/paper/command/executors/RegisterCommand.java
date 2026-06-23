@@ -70,7 +70,7 @@ public class RegisterCommand extends BukkitAbstractCommand {
             int ipLimit = com.pumpkiiings.pklogin.common.settings.Settings.SECURITY_IP_LIMIT.asInt();
             String addressStr = sender.getAddress().getAddress().getHostAddress();
             if (plugin.getAccountManagement().countAccountsByIp(addressStr) >= ipLimit) {
-                sender.sendMessage("§cHas alcanzado el límite máximo de cuentas registradas en esta IP.");
+                sender.sendMessage(Messages.MAX_IPS_REACHED.asString());
                 return;
             }
         }

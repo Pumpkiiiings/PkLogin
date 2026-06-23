@@ -102,7 +102,7 @@ public class UnregisterCommand extends BukkitAbstractCommand {
             plugin.getFoliaLib().runAtEntity(playerIfOnline, task -> playerIfOnline.kickPlayer(Messages.UNREGISTER_KICK.asString()));
         }
 
-        sender.sendMessage("§aSuccess!");
+        sender.sendMessage(Messages.ADMIN_UNREGISTER_SUCCESS.asString());
     }
 }
 

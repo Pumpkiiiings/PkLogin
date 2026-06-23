@@ -58,6 +58,9 @@ public class PlayerJoinListeners implements Listener {
         if (session != null && session.isVerified() && session.getUsername().equalsIgnoreCase(name)) {
             plugin.getLoginManagement().setAuthenticated(name);
             player.sendMessage(Messages.PREMIUM_AUTO_LOGIN.asString());
+            if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
+                TitleAPI.getApi().send(player, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle());
+            }
             plugin.getFoliaLib().runAsync(task -> new com.pumpkiiings.pklogin.bukkit.api.events.AsyncAuthenticateEvent(player).callEvt());
             return;
         }
@@ -65,6 +68,9 @@ public class PlayerJoinListeners implements Listener {
         if (com.pumpkiiings.pklogin.common.hook.FloodgateHook.isBedrockPlayer(player.getUniqueId())) {
             plugin.getLoginManagement().setAuthenticated(name);
             player.sendMessage(Messages.PREMIUM_AUTO_LOGIN.asString().replace("Premium", "Bedrock"));
+            if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
+                TitleAPI.getApi().send(player, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle());
+            }
             plugin.getFoliaLib().runAsync(task -> new com.pumpkiiings.pklogin.bukkit.api.events.AsyncAuthenticateEvent(player).callEvt());
             return;
         }

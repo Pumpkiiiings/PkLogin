@@ -38,6 +38,8 @@ public enum Messages {
     TITLE_BEFORE_REGISTER("Title.before-register"),
     TITLE_AFTER_LOGIN("Title.after-login"),
     TITLE_AFTER_REGISTER("Title.after-register"),
+    TITLE_PREMIUM_AUTO_LOGIN("Title.premium-auto-login"),
+    TITLE_BEDROCK_AUTO_LOGIN("Title.bedrock-auto-login"),
 
     // delay kick
     DELAY_KICK_LOGIN("delay-kick.login-kick"),
@@ -161,6 +163,16 @@ public enum Messages {
     public String asString(@NonNull String def) {
         Object obj = Settings.SETTINGS.get(key);
         return (String) (!(obj instanceof String) ? def : obj);
+    }
+
+    public List<String> asList() {
+        Object obj = Settings.SETTINGS.get(key);
+        if (obj instanceof List) {
+            return (List<String>) obj;
+        } else if (obj instanceof String) {
+            return java.util.Collections.singletonList((String) obj);
+        }
+        return java.util.Collections.singletonList("§cMissing message: " + key);
     }
 
     public Title asTitle() {

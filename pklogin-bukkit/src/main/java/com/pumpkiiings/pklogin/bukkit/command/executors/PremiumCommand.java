@@ -58,12 +58,9 @@ public class PremiumCommand extends BukkitAbstractCommand {
             if (currentType.equals("REAL")) {
                 player.sendMessage(Messages.PREMIUM_ALREADY.asString());
             } else {
-                player.sendMessage(Messages.PREMIUM_WARNING.asString());
-                player.sendMessage("§c§l¡ADVERTENCIA CRÍTICA!");
-                player.sendMessage("§cAl activar el modo Premium, tu UUID cambiará a tu UUID oficial de Mojang.");
-                player.sendMessage("§cEsto significa que §lPERDERÁS§c todo tu inventario, progreso, dinero e islas en modalidades que usen UUID.");
-                player.sendMessage("§cSi estás seguro y deseas continuar asumiendo este riesgo:");
-                player.sendMessage("§eEscribe §a/premium confirm §epara confirmar.");
+                for (String msg : Messages.PREMIUM_WARNING.asList()) {
+                    player.sendMessage(msg);
+                }
             }
         }
     }

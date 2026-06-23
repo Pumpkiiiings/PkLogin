@@ -42,6 +42,22 @@ Messages:
         start: 0
         duration: 30
         end: 6
+    # Mensagem enviada tras iniciar sesión automáticamente con Bedrock
+    bedrock-auto-login:
+      title: "&a&l¡Bienvenido!"
+      subtitle: "&7Sesión iniciada como &eBedrock&7."
+      delays:
+        start: 0
+        duration: 30
+        end: 6
+    # Mensagem enviada tras iniciar sesión automáticamente con Premium
+    premium-auto-login:
+      title: "&a&l¡Bienvenido!"
+      subtitle: "&7Sesión iniciada como &6Premium&7."
+      delays:
+        start: 0
+        duration: 30
+        end: 6
 
   delay-kick:
     # Mensagem enviada quando um usuário demora muito para se registrar
@@ -109,6 +125,7 @@ Messages:
 
     # Mensaje enviado cuando una operación de base de datos no se ha realizado correctamente
     database-error: "&cLo sentimos, no pudimos completar esta operación. Inténtalo de nuevo. [SQL FAIL]"
+    max-ips-reached: "&cHas alcanzado el límite máximo de cuentas registradas en esta IP."
 
   other-messages:
     # Mensagem enviada para o uso do comando /logar
@@ -171,7 +188,12 @@ Messages:
     already-premium: "&cYa eres un usuario premium."
     success: "&a¡Tu cuenta ahora es Premium! Ya no necesitarás usar /login."
     current-mode: "&eTu cuenta está actualmente en modo {0}."
-    warning: "&c¡ATENCIÓN! &eSi activas el modo premium, entrarás sin /login. &4¡Si NO eres premium perderás tu cuenta para siempre!"
+    warning: 
+      - "&c&l¡ADVERTENCIA CRÍTICA!"
+      - "&cAl activar el modo Premium, tu UUID cambiará a tu UUID oficial de Mojang."
+      - "&cEsto significa que &lPERDERÁS&c todo tu inventario, progreso, dinero e islas en modalidades que usen UUID."
+      - "&cSi estás seguro y deseas continuar asumiendo este riesgo:"
+      - "&eEscribe &a/premium confirm &epara confirmar."
     auto-login: "&a¡Has iniciado sesión automáticamente vía Premium!"
 
   queue:

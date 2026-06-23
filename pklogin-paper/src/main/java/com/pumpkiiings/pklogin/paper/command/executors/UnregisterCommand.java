@@ -102,7 +102,7 @@ public class UnregisterCommand extends BukkitAbstractCommand {
             playerIfOnline.getScheduler().run(plugin, task -> playerIfOnline.kick(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(Messages.UNREGISTER_KICK.asString())), null);
         }
 
-        sender.sendMessage("§aSuccess!");
+        sender.sendMessage(Messages.ADMIN_UNREGISTER_SUCCESS.asString());
     }
 }
 

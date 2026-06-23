@@ -74,6 +74,59 @@ public enum Messages {
     MESSAGE_REGISTER("other-messages.message-register"),
     MESSAGE_CHANGEPASSWORD("other-messages.message-changepassword"),
     MESSAGE_UNREGISTER("other-messages.message-unregister"),
+
+    // admin commands
+    ADMIN_FORCELOGIN_SUCCESS("admin.forcelogin-success"),
+    ADMIN_UNREGISTER_SUCCESS("admin.unregister-success"),
+    ADMIN_CHANGEPASS_SUCCESS("admin.changepass-success"),
+    ADMIN_CHANGEPASS_KICK("admin.changepass-kick"),
+    ADMIN_DUPEIP_HEADER("admin.dupeip-header"),
+    ADMIN_DUPEIP_FORMAT("admin.dupeip-format"),
+    ADMIN_DUPEIP_NONE("admin.dupeip-none"),
+    ADMIN_AUTHME_IMPORT_START("admin.authme-import-start"),
+    ADMIN_AUTHME_IMPORT_NOT_FOUND("admin.authme-import-not-found"),
+    ADMIN_AUTHME_IMPORT_FOUND("admin.authme-import-found"),
+    ADMIN_AUTHME_IMPORT_PROGRESS("admin.authme-import-progress"),
+    ADMIN_AUTHME_IMPORT_DONE("admin.authme-import-done"),
+    ADMIN_AUTHME_IMPORT_FAIL("admin.authme-import-fail"),
+
+    // two factor
+    TWO_FACTOR_USAGE("two-factor.usage"),
+    TWO_FACTOR_NOT_REGISTERED("two-factor.not-registered"),
+    TWO_FACTOR_NOT_LOGGED_IN_SETUP("two-factor.not-logged-in-setup"),
+    TWO_FACTOR_ALREADY_SETUP("two-factor.already-setup"),
+    TWO_FACTOR_SETUP_HEADER("two-factor.setup-header"),
+    TWO_FACTOR_SETUP_SECRET("two-factor.setup-secret"),
+    TWO_FACTOR_SETUP_INSTRUCTION1("two-factor.setup-instruction1"),
+    TWO_FACTOR_SETUP_INSTRUCTION2("two-factor.setup-instruction2"),
+    TWO_FACTOR_SETUP_SUCCESS("two-factor.setup-success"),
+    TWO_FACTOR_INVALID_CODE("two-factor.invalid-code"),
+    TWO_FACTOR_NOT_AWAITING("two-factor.not-awaiting"),
+    TWO_FACTOR_NOT_LOGGED_IN_DISABLE("two-factor.not-logged-in-disable"),
+    TWO_FACTOR_NOT_SETUP("two-factor.not-setup"),
+    TWO_FACTOR_DISABLE_USAGE("two-factor.disable-usage"),
+    TWO_FACTOR_DISABLE_SUCCESS("two-factor.disable-success"),
+    TWO_FACTOR_DISCORD_NOT_LOGGED_IN("two-factor.discord-not-logged-in"),
+    TWO_FACTOR_DISCORD_ALREADY_LINKED("two-factor.discord-already-linked"),
+    TWO_FACTOR_DISCORD_LINK_HEADER("two-factor.discord-link-header"),
+    TWO_FACTOR_DISCORD_LINK_CODE("two-factor.discord-link-code"),
+    TWO_FACTOR_DISCORD_LINK_INSTRUCTION1("two-factor.discord-link-instruction1"),
+    TWO_FACTOR_DISCORD_LINK_INSTRUCTION2("two-factor.discord-link-instruction2"),
+    TWO_FACTOR_LOGIN_SUCCESS("two-factor.login-success"),
+    TWO_FACTOR_LOGIN_MESSAGE("two-factor.login-message"),
+
+    // premium / offline
+    OFFLINE_ALREADY("offline.already-offline"),
+    OFFLINE_SUCCESS("offline.success"),
+    PREMIUM_ALREADY("premium.already-premium"),
+    PREMIUM_SUCCESS("premium.success"),
+    PREMIUM_CURRENT_MODE("premium.current-mode"),
+    PREMIUM_WARNING("premium.warning"),
+    PREMIUM_AUTO_LOGIN("premium.auto-login"),
+
+    // queues and limits
+    QUEUE_MESSAGE("queue.message"),
+    MAX_IPS_REACHED("error-messages.max-ips-reached"),
     ;
 
     @Getter

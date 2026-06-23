@@ -326,5 +326,24 @@ public class AccountManagement {
         }
         return 0;
     }
+
+    /**
+     * Get all accounts associated with an IP address.
+     *
+     * @param ip the IP address
+     * @return a map of realname to lastlogin timestamp
+     */
+    public Map<String, Long> getAccountsByIp(@NonNull String ip) {
+        Map<String, Long> accounts = new HashMap<>();
+        try (Database.Query query = database.query("SELECT `realname`, `lastlogin` FROM `pklogin` WHERE `address` = ?", ip)) {
+            ResultSet resultSet = query.resultSet;
+            while (resultSet.next()) {
+                accounts.put(resultSet.getString("realname"), resultSet.getLong("lastlogin"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accounts;
+    }
 }
 

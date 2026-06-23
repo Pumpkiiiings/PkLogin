@@ -11,10 +11,10 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Optional;
 
-public class PremiumCommand extends ForgeAbstractCommand {
+public class OfflineCommand extends ForgeAbstractCommand {
 
-    public PremiumCommand() {
-        super("premium");
+    public OfflineCommand() {
+        super("offline");
     }
 
     @Override
@@ -24,7 +24,7 @@ public class PremiumCommand extends ForgeAbstractCommand {
         AccountManagement accountManagement = PkLoginForge.getInstance().getAccountManagement();
 
         if (!loginManagement.isAuthenticated(name)) {
-            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_NOT_LOGGED_IN_SETUP.asString())); // Reusing message for not logged in
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_NOT_LOGGED_IN_SETUP.asString()));
             return;
         }
 
@@ -37,21 +37,12 @@ public class PremiumCommand extends ForgeAbstractCommand {
         Account account = accountOpt.get();
         String currentType = account.getUuidType() != null ? account.getUuidType() : "REAL";
 
-        if (args.length == 1 && args[0].equalsIgnoreCase("confirm")) {
-            if (currentType.equals("REAL") || currentType.equals("PREMIUM")) {
-                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.PREMIUM_ALREADY.asString()));
-                return;
-            }
-            accountManagement.updateUuidType(name, "REAL");
-            accountManagement.invalidateCache(name);
-            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.PREMIUM_SUCCESS.asString()));
+        if (currentType.equals("OFFLINE")) {
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.OFFLINE_ALREADY.asString()));
         } else {
-            if (currentType.equals("REAL") || currentType.equals("PREMIUM")) {
-                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.PREMIUM_ALREADY.asString()));
-            } else {
-                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.PREMIUM_WARNING.asString()));
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§eType §a/premium confirm §eto confirm."));
-            }
+            accountManagement.updateUuidType(name, "OFFLINE");
+            accountManagement.invalidateCache(name);
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.OFFLINE_SUCCESS.asString()));
         }
     }
 }

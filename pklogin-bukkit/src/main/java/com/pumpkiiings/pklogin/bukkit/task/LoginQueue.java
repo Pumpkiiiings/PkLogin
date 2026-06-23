@@ -66,7 +66,9 @@ public class LoginQueue {
                 }
                 if (com.pumpkiiings.pklogin.common.settings.Settings.UI_ACTION_BAR.asBoolean()) {
                     int remaining = Settings.TIME_TO_LOGIN.asInt() - seconds;
-                    String actionbarMessage = "§eYou have " + remaining + " seconds to " + (playerLogin.registered ? "login" : "register") + "!";
+                    String actionbarMessage = Messages.QUEUE_MESSAGE.asString()
+                            .replace("{0}", String.valueOf(remaining))
+                            .replace("{1}", playerLogin.registered ? "login" : "register");
                     com.pumpkiiings.pklogin.bukkit.ui.chat.ActionbarAPIHolder.getApi().send(player, actionbarMessage);
                 }
                 playerLogin.addSecond();

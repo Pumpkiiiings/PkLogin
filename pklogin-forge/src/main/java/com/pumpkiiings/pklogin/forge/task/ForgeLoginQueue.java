@@ -60,7 +60,9 @@ public class ForgeLoginQueue {
 
             // Send actionbar message
             if (Settings.UI_ACTION_BAR.asBoolean()) {
-                String actionbarMessage = "§eYou have " + remaining + " seconds to " + (data.registered ? "login" : "register") + "!";
+                String actionbarMessage = Messages.QUEUE_MESSAGE.asString()
+                        .replace("{0}", String.valueOf(remaining))
+                        .replace("{1}", data.registered ? "login" : "register");
                 com.pumpkiiings.pklogin.forge.ui.chat.ActionbarAPI.getApi().send(player, actionbarMessage);
             }
 

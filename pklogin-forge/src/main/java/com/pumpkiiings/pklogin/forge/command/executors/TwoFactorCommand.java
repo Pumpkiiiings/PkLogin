@@ -3,6 +3,7 @@ package com.pumpkiiings.pklogin.forge.command.executors;
 import com.pumpkiiings.pklogin.common.manager.AccountManagement;
 import com.pumpkiiings.pklogin.common.manager.LoginManagement;
 import com.pumpkiiings.pklogin.common.model.Account;
+import com.pumpkiiings.pklogin.common.settings.Messages;
 import com.pumpkiiings.pklogin.forge.PkLoginForge;
 import com.pumpkiiings.pklogin.forge.command.ForgeAbstractCommand;
 import com.pumpkiiings.pklogin.forge.listener.ForgeAuthenticateListener;
@@ -38,7 +39,7 @@ public class TwoFactorCommand extends ForgeAbstractCommand {
         AccountManagement accountManagement = PkLoginForge.getInstance().getAccountManagement();
 
         if (args.length < 1) {
-            player.sendSystemMessage(ChatComponentSerializer.fromText("§eUsage: /2fa <setup|verify|disable>"));
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_USAGE.asString()));
             return;
         }
 
@@ -46,7 +47,7 @@ public class TwoFactorCommand extends ForgeAbstractCommand {
         Optional<Account> accountOpt = accountManagement.retrieveOrLoad(name);
         
         if (!accountOpt.isPresent()) {
-            player.sendSystemMessage(ChatComponentSerializer.fromText("§cYou must be registered to use 2FA."));
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_NOT_REGISTERED.asString()));
             return;
         }
         
@@ -54,19 +55,19 @@ public class TwoFactorCommand extends ForgeAbstractCommand {
 
         if (subCommand.equals("setup")) {
             if (!loginManagement.isAuthenticated(name)) {
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§cYou must be logged in to set up 2FA."));
+                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_NOT_LOGGED_IN_SETUP.asString()));
                 return;
             }
             if (account.getTotpSecret() != null) {
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§c2FA is already set up on your account."));
+                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_ALREADY_SETUP.asString()));
                 return;
             }
             
             String secret = pendingSecrets.computeIfAbsent(name.toLowerCase(), k -> secretGenerator.generate());
-            player.sendSystemMessage(ChatComponentSerializer.fromText("§e--- 2FA Setup ---"));
-            player.sendSystemMessage(ChatComponentSerializer.fromText("§eSecret Key: §a" + secret));
-            player.sendSystemMessage(ChatComponentSerializer.fromText("§ePlease enter this secret into your authenticator app."));
-            player.sendSystemMessage(ChatComponentSerializer.fromText("§eThen, verify it using: §a/2fa verify <code>"));
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_SETUP_HEADER.asString()));
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_SETUP_SECRET.asString().replace("{0}", secret)));
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_SETUP_INSTRUCTION1.asString()));
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_SETUP_INSTRUCTION2.asString()));
             
         } else if (subCommand.equals("verify")) {
             if (args.length < 2) {
@@ -82,7 +83,7 @@ public class TwoFactorCommand extends ForgeAbstractCommand {
                     loginManagement.setAuthenticated(name);
                     ForgeAuthenticateListener.onAuthenticate(player, false);
                 } else {
-                    player.sendSystemMessage(ChatComponentSerializer.fromText("§cInvalid 2FA code."));
+                    player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_INVALID_CODE.asString()));
                 }
             } else if (pendingSecrets.containsKey(name.toLowerCase())) {
                 // Verify to complete setup
@@ -91,21 +92,21 @@ public class TwoFactorCommand extends ForgeAbstractCommand {
                     accountManagement.updateTotpSecret(name, secret);
                     accountManagement.invalidateCache(name);
                     pendingSecrets.remove(name.toLowerCase());
-                    player.sendSystemMessage(ChatComponentSerializer.fromText("§a2FA has been successfully set up!"));
+                    player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_SETUP_SUCCESS.asString()));
                 } else {
-                    player.sendSystemMessage(ChatComponentSerializer.fromText("§cInvalid 2FA code. Please try again."));
+                    player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_INVALID_CODE.asString()));
                 }
             } else {
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§cYou are not awaiting 2FA verification."));
+                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_NOT_AWAITING.asString()));
             }
             
         } else if (subCommand.equals("disable")) {
             if (!loginManagement.isAuthenticated(name)) {
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§cYou must be logged in to disable 2FA."));
+                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_NOT_LOGGED_IN_SETUP.asString()));
                 return;
             }
             if (account.getTotpSecret() == null) {
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§cYou do not have 2FA set up."));
+                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_NOT_SETUP.asString()));
                 return;
             }
             
@@ -117,30 +118,30 @@ public class TwoFactorCommand extends ForgeAbstractCommand {
             if (verifier.isValidCode(account.getTotpSecret(), code)) {
                 accountManagement.updateTotpSecret(name, null);
                 accountManagement.invalidateCache(name);
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§a2FA has been successfully disabled!"));
+                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_DISABLE_SUCCESS.asString()));
             } else {
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§cInvalid 2FA code."));
+                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_INVALID_CODE.asString()));
             }
             
         } else if (subCommand.equals("discord")) {
             if (!loginManagement.isAuthenticated(name)) {
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§cDebes estar logeado para vincular Discord."));
+                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_DISCORD_NOT_LOGGED_IN.asString()));
                 return;
             }
             if (account.getDiscordId() != null) {
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§cYa tienes una cuenta de Discord vinculada."));
+                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_DISCORD_ALREADY_LINKED.asString()));
                 return;
             }
             
             String code = com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().generateLinkCode(name, "DISCORD");
-            player.sendSystemMessage(ChatComponentSerializer.fromText("§e--- Vinculación de Discord ---"));
-            player.sendSystemMessage(ChatComponentSerializer.fromText("§eCódigo: §a" + code));
-            player.sendSystemMessage(ChatComponentSerializer.fromText("§ePor favor, envía un Mensaje Privado (DM) a nuestro Bot de Discord con este código."));
-            player.sendSystemMessage(ChatComponentSerializer.fromText("§eEl código expirará en 10 minutos."));
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_DISCORD_LINK_HEADER.asString()));
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_DISCORD_LINK_CODE.asString().replace("{0}", code)));
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_DISCORD_LINK_INSTRUCTION1.asString()));
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_DISCORD_LINK_INSTRUCTION2.asString()));
             
         } else if (subCommand.equals("verify2fa")) {
             if (args.length < 2) {
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§eUsage: /2fa verify2fa <code>"));
+                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_USAGE.asString()));
                 return;
             }
             String code = args[1];
@@ -148,12 +149,12 @@ public class TwoFactorCommand extends ForgeAbstractCommand {
                 loginManagement.removeAwaiting2FA(name);
                 loginManagement.setAuthenticated(name);
                 ForgeAuthenticateListener.onAuthenticate(player, false);
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§aHas iniciado sesión correctamente."));
+                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_LOGIN_SUCCESS.asString()));
             } else {
-                player.sendSystemMessage(ChatComponentSerializer.fromText("§cCódigo 2FA incorrecto."));
+                player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_INVALID_CODE.asString()));
             }
         } else {
-            player.sendSystemMessage(ChatComponentSerializer.fromText("§eUsage: /2fa <setup|verify|disable|discord|verify2fa>"));
+            player.sendSystemMessage(ChatComponentSerializer.fromText(Messages.TWO_FACTOR_USAGE.asString()));
         }
     }
 }

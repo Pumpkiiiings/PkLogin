@@ -29,7 +29,7 @@ public class ForgeGeneralListeners {
             if (uuidType != null && (uuidType.equals("REAL") || uuidType.equals("PREMIUM"))) {
                 // Auto-login!
                 PkLoginForge.getInstance().getLoginManagement().setAuthenticated(name);
-                player.sendSystemMessage(com.pumpkiiings.pklogin.forge.serializer.chat.ChatComponentSerializer.fromText("§a¡Has iniciado sesión automáticamente vía Premium!"));
+                player.sendSystemMessage(com.pumpkiiings.pklogin.forge.serializer.chat.ChatComponentSerializer.fromText(com.pumpkiiings.pklogin.common.settings.Messages.PREMIUM_AUTO_LOGIN.asString()));
                 return;
             }
         }

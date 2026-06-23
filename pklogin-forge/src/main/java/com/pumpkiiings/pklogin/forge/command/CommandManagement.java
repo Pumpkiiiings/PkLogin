@@ -41,7 +41,8 @@ public class CommandManagement {
         OPENLOGIN("pklogin", PkLoginCommand.class),
         UNREGISTER("unregister", UnregisterCommand.class),
         TWO_FACTOR("2fa", TwoFactorCommand.class),
-        PREMIUM("premium", PremiumCommand.class);
+        PREMIUM("premium", PremiumCommand.class),
+        OFFLINE("offline", OfflineCommand.class);
 
         private final String name;
         private final Class<?> clasz;

@@ -5,6 +5,7 @@ import com.pumpkiiings.pklogin.bukkit.command.BukkitAbstractCommand;
 import com.pumpkiiings.pklogin.common.manager.AccountManagement;
 import com.pumpkiiings.pklogin.common.manager.LoginManagement;
 import com.pumpkiiings.pklogin.common.model.Account;
+import com.pumpkiiings.pklogin.common.settings.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -29,7 +30,7 @@ public class TwoFactorCommand extends BukkitAbstractCommand {
         AccountManagement accountManagement = plugin.getAccountManagement();
 
         if (args.length < 1) {
-            player.sendMessage("§eUso: /2fa <discord|verify2fa>");
+            player.sendMessage(Messages.TWO_FACTOR_USAGE.asString());
             return;
         }
 
@@ -37,7 +38,7 @@ public class TwoFactorCommand extends BukkitAbstractCommand {
         Optional<Account> accountOpt = accountManagement.retrieveOrLoad(name);
 
         if (!accountOpt.isPresent()) {
-            player.sendMessage("§cDebes estar registrado para usar 2FA.");
+            player.sendMessage(Messages.TWO_FACTOR_NOT_REGISTERED.asString());
             return;
         }
 
@@ -45,19 +46,19 @@ public class TwoFactorCommand extends BukkitAbstractCommand {
 
         if (subCommand.equals("discord")) {
             if (!loginManagement.isAuthenticated(name)) {
-                player.sendMessage("§cDebes estar logeado para vincular Discord.");
+                player.sendMessage(Messages.TWO_FACTOR_DISCORD_NOT_LOGGED_IN.asString());
                 return;
             }
             if (account.getDiscordId() != null) {
-                player.sendMessage("§cYa tienes una cuenta de Discord vinculada.");
+                player.sendMessage(Messages.TWO_FACTOR_DISCORD_ALREADY_LINKED.asString());
                 return;
             }
 
             String code = com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().generateLinkCode(name, "DISCORD");
-            player.sendMessage("§e--- Vinculación de Discord ---");
-            player.sendMessage("§eCódigo: §a" + code);
-            player.sendMessage("§ePor favor, envía un Mensaje Privado (DM) a nuestro Bot de Discord con este código.");
-            player.sendMessage("§eEl código expirará en 10 minutos.");
+            player.sendMessage(Messages.TWO_FACTOR_DISCORD_LINK_HEADER.asString());
+            player.sendMessage(Messages.TWO_FACTOR_DISCORD_LINK_CODE.asString().replace("{0}", code));
+            player.sendMessage(Messages.TWO_FACTOR_DISCORD_LINK_INSTRUCTION1.asString());
+            player.sendMessage(Messages.TWO_FACTOR_DISCORD_LINK_INSTRUCTION2.asString());
 
         } else if (subCommand.equals("verify2fa")) {
             if (args.length < 2) {
@@ -65,14 +66,14 @@ public class TwoFactorCommand extends BukkitAbstractCommand {
                 return;
             }
             if (!loginManagement.isAwaiting2FA(name)) {
-                player.sendMessage("§cNo estás esperando un código de 2FA.");
+                player.sendMessage(Messages.TWO_FACTOR_NOT_AWAITING.asString());
                 return;
             }
             String code = args[1];
             if (com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().verifyLoginCode(name, code)) {
                 loginManagement.removeAwaiting2FA(name);
                 loginManagement.setAuthenticated(name);
-                player.sendMessage("§aHas iniciado sesión correctamente con 2FA.");
+                player.sendMessage(Messages.TWO_FACTOR_LOGIN_SUCCESS.asString());
                 plugin.getFoliaLib().runAtEntity(player, task -> {
                     player.setWalkSpeed(0.2F);
                     player.setFlySpeed(0.1F);
@@ -81,11 +82,11 @@ public class TwoFactorCommand extends BukkitAbstractCommand {
                 });
                 new com.pumpkiiings.pklogin.bukkit.api.events.AsyncAuthenticateEvent(player).callEvt();
             } else {
-                player.sendMessage("§cCódigo 2FA incorrecto. Inténtalo de nuevo.");
+                player.sendMessage(Messages.TWO_FACTOR_INVALID_CODE.asString());
             }
 
         } else {
-            player.sendMessage("§eUso: /2fa <discord|verify2fa>");
+            player.sendMessage(Messages.TWO_FACTOR_USAGE.asString());
         }
     }
 }

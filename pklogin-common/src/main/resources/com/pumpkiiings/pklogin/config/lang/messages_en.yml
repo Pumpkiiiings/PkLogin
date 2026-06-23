@@ -126,3 +126,56 @@ Messages:
     # Message sent to use the /unregister command
     message-unregister: "&eUse the command /unregister <current password>"
 
+  admin:
+    forcelogin-success: "&aPlayer {0} has been forcefully authenticated."
+    unregister-success: "&aPlayer {0} has been unregistered."
+    changepass-success: "&aPassword for player {0} has been successfully changed."
+    changepass-kick: "&cYour password was changed by an administrator."
+    dupeip-header: "&eAccounts for IP/Player &a{0}&e:"
+    dupeip-format: "&7- &f{0} &8(&7{1}&8)"
+    dupeip-none: "&cNo accounts found for that IP/Player."
+    authme-import-start: "&7Starting AuthMe import..."
+    authme-import-not-found: "&cAuthMe SQLite database not found."
+    authme-import-found: "&7Found AuthMe database at &f{0} &7with &f{1} &7accounts."
+    authme-import-progress: "&7Progress: &f{0} &7/ &f{1}"
+    authme-import-done: "&aImport complete! &7Players will be re-hashed to &f{0} &7on next login."
+    authme-import-fail: "&cFailed to read AuthMe database: {0}"
+
+  two-factor:
+    usage: "&eUsage: /2fa <setup|verify|disable|discord|verify2fa>"
+    not-registered: "&cYou must be registered to use 2FA."
+    not-logged-in-setup: "&cYou must be logged in to set up 2FA."
+    already-setup: "&c2FA is already set up on your account."
+    setup-header: "&e--- 2FA Setup ---"
+    setup-secret: "&eSecret Key: &a{0}"
+    setup-instruction1: "&ePlease enter this secret into your authenticator app."
+    setup-instruction2: "&eThen, verify it using: &a/2fa verify <code>"
+    setup-success: "&a2FA has been successfully set up!"
+    invalid-code: "&cInvalid 2FA code. Please try again."
+    not-awaiting: "&cYou are not awaiting 2FA verification."
+    not-logged-in-disable: "&cYou must be logged in to disable 2FA."
+    not-setup: "&cYou do not have 2FA set up."
+    disable-usage: "&eUsage: /2fa disable <code>"
+    disable-success: "&a2FA has been successfully disabled!"
+    discord-not-logged-in: "&cYou must be logged in to link Discord."
+    discord-already-linked: "&cYou already have a Discord account linked."
+    discord-link-header: "&e--- Discord Linking ---"
+    discord-link-code: "&eCode: &a{0}"
+    discord-link-instruction1: "&ePlease send a Private Message (DM) to our Discord Bot with this code."
+    discord-link-instruction2: "&eThe code will expire in 10 minutes."
+    login-success: "&aYou have successfully logged in with 2FA."
+    login-message: "&eWe have sent a code to your Discord. Type /2fa verify2fa <code> to enter."
+
+  offline:
+    already-offline: "&cYour account is already offline (cracked)."
+    success: "&aYour account is now offline! You will need to use /login."
+
+  premium:
+    already-premium: "&cYour account is already premium."
+    success: "&aYour account is now Premium! You won't need to use /login."
+    current-mode: "&eYour account is currently in {0} mode."
+    warning: "&cWARNING! &eIf you enable premium mode, you will enter without /login. &4If you are NOT premium, you will lose your account forever!"
+    auto-login: "&aYou have been automatically logged in via Premium!"
+
+  queue:
+    message: "&eYou have {0} seconds to {1}!"

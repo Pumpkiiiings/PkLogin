@@ -30,10 +30,18 @@ import com.pumpkiiings.pklogin.bukkit.converter.AuthMeConverter;
 import com.pumpkiiings.pklogin.bukkit.ui.chat.ActionbarAPI;
 import com.pumpkiiings.pklogin.bukkit.ui.title.TitleAPI;
 import com.pumpkiiings.pklogin.common.http.HttpClient;
+import com.pumpkiiings.pklogin.common.model.Account;
+import com.pumpkiiings.pklogin.common.security.hashing.BCryptStrategy;
 import com.pumpkiiings.pklogin.common.settings.Messages;
 import com.pumpkiiings.pklogin.common.util.FileUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,13 +66,114 @@ public class PkLoginCommand extends BukkitAbstractCommand {
             switch (subcommand) {
                 case "authme-import": {
                     if (!sender.hasPermission("pklogin.admin")) {
-                        sender.sendMessage("§cYou don't have permission to use this command.");
+                        sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
                         return;
                     }
-                    sender.sendMessage("§7Starting AuthMe import...");
+                    sender.sendMessage(Messages.ADMIN_AUTHME_IMPORT_START.asString());
                     new AuthMeConverter(plugin).run(sender);
                     return;
                 }
+
+                case "forcelogin": {
+                    if (!sender.hasPermission("pklogin.admin")) {
+                        sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
+                        return;
+                    }
+                    if (args.length < 2) {
+                        sender.sendMessage("§eUsage: /pklogin forcelogin <player>");
+                        return;
+                    }
+                    String targetName = args[1];
+                    Player target = Bukkit.getPlayer(targetName);
+                    if (target != null && target.isOnline()) {
+                        plugin.getLoginManagement().setAuthenticated(target.getName());
+                        TitleAPI.getApi().reset(target);
+                        plugin.getFoliaLib().runAtEntity(target, task -> target.sendMessage(Messages.SUCCESSFUL_LOGIN.asString()));
+                        sender.sendMessage(Messages.ADMIN_FORCELOGIN_SUCCESS.asString().replace("{0}", target.getName()));
+                    } else {
+                        sender.sendMessage("§cPlayer not found or not online.");
+                    }
+                    return;
+                }
+
+                case "unregister": {
+                    if (!sender.hasPermission("pklogin.admin")) {
+                        sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
+                        return;
+                    }
+                    if (args.length < 2) {
+                        sender.sendMessage("§eUsage: /pklogin unregister <player>");
+                        return;
+                    }
+                    String targetName = args[1];
+                    if (plugin.getAccountManagement().delete(targetName)) {
+                        plugin.getLoginManagement().cleanup(targetName);
+                        sender.sendMessage(Messages.ADMIN_UNREGISTER_SUCCESS.asString().replace("{0}", targetName));
+                    } else {
+                        sender.sendMessage("§cAccount not found.");
+                    }
+                    return;
+                }
+
+                case "changepass": {
+                    if (!sender.hasPermission("pklogin.admin")) {
+                        sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
+                        return;
+                    }
+                    if (args.length < 3) {
+                        sender.sendMessage("§eUsage: /pklogin changepass <player> <newpass>");
+                        return;
+                    }
+                    String targetName = args[1];
+                    String newPass = args[2];
+                    Optional<Account> targetAccount = plugin.getAccountManagement().search(targetName);
+                    if (targetAccount.isPresent()) {
+                        String hash = new BCryptStrategy().hash(newPass);
+                        plugin.getAccountManagement().update(targetName, hash, targetAccount.get().getAddress());
+                        sender.sendMessage(Messages.ADMIN_CHANGEPASS_SUCCESS.asString().replace("{0}", targetName));
+                        Player target = Bukkit.getPlayer(targetName);
+                        if (target != null && target.isOnline()) {
+                            plugin.getFoliaLib().runAtEntity(target, task -> target.kickPlayer(Messages.ADMIN_CHANGEPASS_KICK.asString()));
+                        }
+                    } else {
+                        sender.sendMessage("§cAccount not found.");
+                    }
+                    return;
+                }
+
+                case "dupeip": {
+                    if (!sender.hasPermission("pklogin.admin")) {
+                        sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
+                        return;
+                    }
+                    if (args.length < 2) {
+                        sender.sendMessage("§eUsage: /pklogin dupeip <ip/player>");
+                        return;
+                    }
+                    String target = args[1];
+                    String ip = target;
+                    
+                    if (!target.contains(".")) {
+                        Optional<Account> acc = plugin.getAccountManagement().search(target);
+                        if (acc.isPresent()) {
+                            ip = acc.get().getAddress();
+                        }
+                    }
+                    
+                    Map<String, Long> accounts = plugin.getAccountManagement().getAccountsByIp(ip);
+                    if (accounts.isEmpty()) {
+                        sender.sendMessage(Messages.ADMIN_DUPEIP_NONE.asString());
+                    } else {
+                        sender.sendMessage(Messages.ADMIN_DUPEIP_HEADER.asString().replace("{0}", target));
+                        accounts.forEach((name, lastLogin) -> {
+                            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            String dateStr = sdf.format(new java.util.Date(lastLogin));
+                            sender.sendMessage(Messages.ADMIN_DUPEIP_FORMAT.asString().replace("{0}", name).replace("{1}", dateStr));
+                        });
+                    }
+                    return;
+                }
+
 
                 case "reload":
                 case "rl":

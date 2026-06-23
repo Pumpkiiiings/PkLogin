@@ -36,6 +36,8 @@ commands:
     description: 'Manage Two-Factor Authentication'
   premium:
     description: 'Toggle your premium status'
+  offline:
+    description: 'Toggle your offline status'
 
 permissions:
   pklogin.admin:

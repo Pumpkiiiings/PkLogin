@@ -26,6 +26,7 @@ package com.pumpkiiings.pklogin.bukkit.converter;
 
 import com.pumpkiiings.pklogin.bukkit.PkLoginBukkit;
 import com.pumpkiiings.pklogin.common.database.Database;
+import com.pumpkiiings.pklogin.common.settings.Messages;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
@@ -62,7 +63,7 @@ public class AuthMeConverter {
             try {
                 doImport(sender);
             } catch (Exception e) {
-                sender.sendMessage("§cConverter failed: " + e.getMessage());
+                sender.sendMessage(Messages.ADMIN_AUTHME_IMPORT_FAIL.asString().replace("{0}", e.getMessage()));
                 plugin.getLogger().severe("[AuthMeConverter] Import crashed: " + e.getMessage());
                 e.printStackTrace();
             }
@@ -74,18 +75,16 @@ public class AuthMeConverter {
     private void doImport(CommandSender sender) throws Exception {
         File authMeDb = locateAuthMeDb();
         if (authMeDb == null) {
-            sender.sendMessage("§cAuthMe SQLite database not found.");
-            sender.sendMessage("§7Expected location: §fplugins/AuthMe/authme.db");
-            sender.sendMessage("§7For MySQL AuthMe databases, export them to SQLite first.");
+            sender.sendMessage(Messages.ADMIN_AUTHME_IMPORT_NOT_FOUND.asString());
             return;
         }
 
-        sender.sendMessage("§7Found AuthMe database at §f" + authMeDb.getPath());
+        sender.sendMessage(Messages.ADMIN_AUTHME_IMPORT_FOUND.asString().replace("{0}", authMeDb.getPath()));
 
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
-            sender.sendMessage("§cSQLite JDBC driver not found — cannot read the AuthMe database.");
+            sender.sendMessage(Messages.ADMIN_AUTHME_IMPORT_FAIL.asString().replace("{0}", "SQLite JDBC driver not found"));
             return;
         }
 
@@ -96,7 +95,7 @@ public class AuthMeConverter {
 
         if (rows == null) return; // error already reported to sender
 
-        sender.sendMessage("§7Found §f" + rows.size() + " §7accounts. Starting import...");
+        sender.sendMessage(Messages.ADMIN_AUTHME_IMPORT_FOUND.asString().replace("{0}", authMeDb.getPath()).replace("{1}", String.valueOf(rows.size())));
 
         int imported = 0, skipped = 0, failed = 0;
         Database db = plugin.getDatabase();
@@ -112,7 +111,7 @@ public class AuthMeConverter {
 
             int processed = imported + skipped + failed;
             if (processed % 100 == 0) {
-                sender.sendMessage("§7Progress: §f" + processed + " §7/ §f" + rows.size());
+                sender.sendMessage(Messages.ADMIN_AUTHME_IMPORT_PROGRESS.asString().replace("{0}", String.valueOf(processed)).replace("{1}", String.valueOf(rows.size())));
             }
         }
 
@@ -121,9 +120,7 @@ public class AuthMeConverter {
                 + "  §fSkipped (already existed): §e" + skipped
                 + "  §fFailed: §c" + failed);
         if (imported > 0) {
-            sender.sendMessage("§7Players will be re-hashed to §f"
-                    + com.pumpkiiings.pklogin.common.settings.Settings.HASH_ALGORITHM.asString("BCRYPT")
-                    + " §7on their first successful login.");
+            sender.sendMessage(Messages.ADMIN_AUTHME_IMPORT_DONE.asString().replace("{0}", com.pumpkiiings.pklogin.common.settings.Settings.HASH_ALGORITHM.asString("BCRYPT")));
         }
     }
 
@@ -142,7 +139,7 @@ public class AuthMeConverter {
             }
             return rows;
         } catch (SQLException e) {
-            sender.sendMessage("§cFailed to read AuthMe database: " + e.getMessage());
+            sender.sendMessage(Messages.ADMIN_AUTHME_IMPORT_FAIL.asString().replace("{0}", e.getMessage()));
             return null;
         }
     }

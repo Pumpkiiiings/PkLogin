@@ -1,3 +1,5 @@
+archivesBaseName = 'PkLogin-Bukkit'
+
 dependencies {
     implementation project(':pklogin-common')
 
@@ -16,3 +18,5 @@ processResources {
         expand 'pluginVersion': project.version
     }
 }
+
+

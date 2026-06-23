@@ -71,7 +71,8 @@ dependencies {
 
 shadowJar {
     configurations = [project.configurations.shade]
-    archiveClassifier.set('all')
+    archiveClassifier.set('')
+    archiveBaseName.set('PkLogin-Forge')
     dependencies {
         exclude(dependency('org.slf4j:.*'))
         exclude(dependency('net.java.dev.jna:.*'))
@@ -87,11 +88,8 @@ jar.finalizedBy('reobfShadowJar')
 
 tasks.register('copyToServer', Copy) {
     dependsOn 'reobfShadowJar'
-    from file("build/libs/${archivesBaseName}-${version}-all.jar")
+    from file("build/libs/PkLogin-Forge-${version}.jar")
     into file("C:/Users/L900m/OneDrive/Desktop/SERVER EVENTO/mods")
-    rename { String fileName ->
-        fileName.replace("-all", "")
-    }
 }
 
 tasks.named('processResources', ProcessResources).configure {

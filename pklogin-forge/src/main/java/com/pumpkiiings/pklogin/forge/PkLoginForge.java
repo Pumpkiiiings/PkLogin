@@ -154,6 +154,17 @@ public class PkLoginForge {
     }
 
     @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event) {
+        if (event.getServer().usesAuthentication()) {
+            LOGGER.warn("=========================================================");
+            LOGGER.warn("[PkLogin] WARNING: online-mode is set to true in server.properties!");
+            LOGGER.warn("[PkLogin] If this server only allows premium players (no Proxy), you don't need a login mod!");
+            LOGGER.warn("[PkLogin] If you are using a proxy (like Velocity), please set online-mode to false.");
+            LOGGER.warn("=========================================================");
+        }
+    }
+
+    @SubscribeEvent
     public void onServerStopping(ServerStoppingEvent event) {
         LOGGER.info("[PkLogin] Stopping PkLogin Forge...");
         com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().shutdown();

@@ -156,6 +156,14 @@ public class PkLoginBukkit extends JavaPlugin {
         foliaLib.runAsync(task -> this.detectUpdates());
         
         com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().init();
+
+        if (getServer().getOnlineMode()) {
+            sendMessage("§c=========================================================");
+            sendMessage("§cWARNING: online-mode is set to true in server.properties!");
+            sendMessage("§cIf this server only allows premium players (no Proxy), you don't need a login plugin!");
+            sendMessage("§cIf you are using a proxy (like BungeeCord/Velocity), please set online-mode to false.");
+            sendMessage("§c=========================================================");
+        }
     }
     
     @Override

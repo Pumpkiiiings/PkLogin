@@ -27,6 +27,8 @@ shadowJar {
     }
 
     dependsOn project(':pklogin-bukkit').tasks.named('shadowJar')
+    dependsOn project(':pklogin-bukkit').tasks.named('jar')
     dependsOn project(':pklogin-paper').tasks.named('shadowJar')
+    dependsOn project(':pklogin-paper').tasks.named('jar')
     dependsOn project(':pklogin-forge').tasks.named('shadowJar')
 }

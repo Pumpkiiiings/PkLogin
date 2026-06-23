@@ -112,5 +112,12 @@ public interface PkLoginAPI {
         return update(player, password, true);
     }
 
+    /**
+     * Called when a player is successfully authenticated.
+     *
+     * @param player the name of the player
+     */
+    default void onPlayerAuthenticate(@NonNull String player) {}
+
 }
 

@@ -133,6 +133,9 @@ public class PkLoginBukkit extends JavaPlugin {
         // setup login management
         loginManagement = new LoginManagement(accountManagement);
 
+        // setup lunar manager
+        new com.pumpkiiings.pklogin.bukkit.lunar.BukkitLunarManager(this);
+
         // setup commands
         commandManagement = new CommandManagement(this);
         commandManagement.register();

@@ -44,6 +44,7 @@ public class PkLoginForge {
         MinecraftForge.EVENT_BUS.register(this);
         commandManagement = new com.pumpkiiings.pklogin.forge.command.CommandManagement();
         MinecraftForge.EVENT_BUS.register(commandManagement);
+        new com.pumpkiiings.pklogin.forge.lunar.ForgeLunarManager();
     }
 
     public static PkLoginForge getInstance() {

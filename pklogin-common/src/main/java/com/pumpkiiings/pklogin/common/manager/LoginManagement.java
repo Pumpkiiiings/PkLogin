@@ -70,7 +70,9 @@ public class LoginManagement {
      */
     public void setAuthenticated(@NonNull String name) {
         synchronized (logged) {
-            logged.add(name.toLowerCase());
+            if (logged.add(name.toLowerCase())) {
+                com.pumpkiiings.pklogin.common.PkLogin.getApi().onPlayerAuthenticate(name);
+            }
         }
     }
 

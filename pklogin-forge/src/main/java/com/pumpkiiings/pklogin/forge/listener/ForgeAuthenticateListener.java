@@ -26,5 +26,16 @@ public class ForgeAuthenticateListener {
         
         // Also teleport to spawn if a specific auth spawn is set
         com.pumpkiiings.pklogin.forge.manager.ForgeLimboManager.teleportToSpawn(player, isRegister ? "register" : "login");
+
+        // Native Skins for premium players
+        java.util.Optional<com.pumpkiiings.pklogin.common.model.Account> accountOpt = com.pumpkiiings.pklogin.forge.PkLoginForge.getInstance().getAccountManagement().retrieveOrLoad(player.getGameProfile().getName());
+        if (accountOpt.isPresent() && accountOpt.get().getUuidType() != null && accountOpt.get().getUuidType().equals("REAL")) {
+            new Thread(() -> {
+                com.pumpkiiings.pklogin.common.skin.SkinFetcher.SkinData data = com.pumpkiiings.pklogin.common.skin.SkinFetcher.fetchSkin(player.getUUID());
+                if (data != null) {
+                    com.pumpkiiings.pklogin.forge.skin.ForgeSkinApplier.applySkin(player, data, player.server);
+                }
+            }).start();
+        }
     }
 }

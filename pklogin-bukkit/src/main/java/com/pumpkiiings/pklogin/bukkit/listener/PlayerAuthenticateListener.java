@@ -42,6 +42,15 @@ public class PlayerAuthenticateListener implements Listener {
     @EventHandler
     public void onAsyncAuthenticate(AsyncAuthenticateEvent e) {
         Player player = e.getPlayer();
+        
+        java.util.Optional<com.pumpkiiings.pklogin.common.model.Account> accountOpt = plugin.getAccountManagement().retrieveOrLoad(player.getName());
+        if (accountOpt.isPresent() && accountOpt.get().getUuidType() != null && accountOpt.get().getUuidType().equals("REAL")) {
+            com.pumpkiiings.pklogin.common.skin.SkinFetcher.SkinData data = com.pumpkiiings.pklogin.common.skin.SkinFetcher.fetchSkin(player.getUniqueId());
+            if (data != null) {
+                com.pumpkiiings.pklogin.bukkit.skin.BukkitSkinApplier.applySkin(player, data, plugin);
+            }
+        }
+
         if (player.hasPermission("pklogin.admin")) {
             if (welcomeMessage) {
                 player.sendMessage("");

@@ -81,7 +81,8 @@ Configure per-account UUID generation:
 | `/register <pass> <confirm>` | Register a new account |
 | `/changepassword <old> <new>` | Change your password |
 | `/unregister <password>` | Delete your account |
-| `/premium` | Toggle premium auto-login |
+| `/premium confirm` | Change your account to REAL mode |
+| `/offline` | Change your account to OFFLINE mode |
 | `/2fa discord` | Generate a code to link your Discord |
 | `/2fa verify2fa <code>` | Enter the 2FA code sent to you |
 | `/2fa setup` | *(Forge)* Set up TOTP (Google Authenticator) |
@@ -93,9 +94,11 @@ Configure per-account UUID generation:
 |---------|------------|-------------|
 | `/pklogin reload` | `pklogin.admin` | Reload config and messages |
 | `/pklogin authme-import` | `pklogin.admin` | Import accounts from AuthMe (async) |
+| `/pklogin forcelogin <user>` | `pklogin.admin` | Force log in a player |
+| `/pklogin unregister <user>` | `pklogin.admin` | Permanently delete a player account |
+| `/pklogin changepass <user> <pass>` | `pklogin.admin` | Force-change a player's password |
+| `/pklogin dupeip <ip/user>` | `pklogin.admin` | List accounts sharing the same IP |
 | `/pklogin update` | `pklogin.admin` | Download latest PkLogin version |
-| `/register <player> <password>` | `pklogin.admin` | Register a player from console |
-| `/changepassword <player> <pass>` | `pklogin.admin` | Force-change a player's password |
 
 ---
 
@@ -203,7 +206,7 @@ Optional<Account> account = api.getAccountManagement().retrieveOrLoad("Steve");
 
 ## 🚀 Installation
 
-1. Download `PkLogin-X.X.jar` from [Releases](https://github.com/Pumpkiiiings/PkLogin/releases)
+1. Download `PkLogin-Bukkit-X.X.jar` or `PkLogin-Forge-X.X.jar` from [Releases](https://github.com/Pumpkiiiings/PkLogin/releases)
 2. Drop it into your `plugins/` (Spigot/Paper) or `mods/` (Forge) folder
 3. Start the server — config files are auto-generated
 4. Edit `plugins/PkLogin/config.yml` (or `config/pklogin/config.yml` on Forge)

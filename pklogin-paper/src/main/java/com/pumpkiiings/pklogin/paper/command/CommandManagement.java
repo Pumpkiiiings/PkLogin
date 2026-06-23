@@ -73,7 +73,10 @@ public class CommandManagement {
                     org.bukkit.Bukkit.getPluginManager().addPermission(cmdPerm);
                 } catch (Exception ignored) {}
 
-                PluginCommand pluginCommand = plugin.getCommand(command.name);
+                PluginCommand pluginCommand = null;
+                try {
+                    pluginCommand = plugin.getCommand(command.name);
+                } catch (UnsupportedOperationException ignored) {}
                 
                 if (pluginCommand == null) {
                     pluginCommand = pluginCommandConstructor.newInstance(command.name, plugin);

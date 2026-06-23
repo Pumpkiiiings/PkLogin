@@ -97,6 +97,7 @@ public class PkLoginVelocity {
         String c = "§b";
         String lg = "§7";
         String dg = "§8";
+        String aq = "§b";
         logger.info(c + "   ___                __  __             _ ");
         logger.info(c + "  /___\\_ __   ___  /\\ \\ \\/ /  ___   __ _(_)_ __");
         logger.info(c + " //  // '_ \\ / _ \\/  \\/ / /  / _ \\ / _` | | '_ \\");
@@ -104,12 +105,12 @@ public class PkLoginVelocity {
         logger.info(c + "\\___/ | .__/ \\___\\_\\ \\/\\____/\\___/ \\__, |_|_| |_|");
         logger.info(c + "      |_|                          |___/         ");
         logger.info(dg + "A fork of OpenLogin but better");
-        logger.info(lg + "Support: " + dg + "https://discord.gg/MVQ5r7X4Qd");
-        logger.info(lg + "Database Type: " + dg + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
-        logger.info(lg + "Version: " + dg + "2.0.0");
-        logger.info(lg + "Source: " + dg + "github.com/pumpkiiings/pklogin");
+        logger.info(lg + "Support: " + aq + "https://discord.gg/MVQ5r7X4Qd");
+        logger.info(lg + "Database Type: " + aq + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
+        logger.info(lg + "Version: " + aq + "2.0.0");
+        logger.info(lg + "Source: " + aq + "github.com/pumpkiiings/pklogin");
         logger.info("");
-        logger.info(dg + "Thanks for use my plugin!");
+        logger.info("§e" + "Thanks for use my plugin!");
         logger.info("");
 
         // Register channel

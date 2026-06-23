@@ -6,6 +6,7 @@ website: 'https://www.pumpkiiings.com'
 api-version: 1.13
 author: pumpkiiings
 folia-supported: true
+softdepend: [ProtocolLib, packetevents]
 libraries:
   - net.dv8tion:JDA:5.0.0-beta.24
   - com.sun.mail:javax.mail:1.6.2

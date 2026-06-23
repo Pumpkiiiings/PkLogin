@@ -1,0 +1,51 @@
+plugins {
+    id 'com.gradleup.shadow' version '8.3.0'
+}
+
+tasks.build.dependsOn('shadowJar')
+
+archivesBaseName = 'PkLogin-Paper'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    maven { url 'https://repo.codemc.io/repository/maven-releases/' }
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+}
+
+dependencies {
+    implementation project(':pklogin-common')
+
+    implementation 'de.mkammerer:argon2-jvm:2.11'
+
+    compileOnly 'io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT'
+    compileOnly 'com.comphenix.protocol:ProtocolLib:5.3.0'
+    compileOnly 'com.github.retrooper:packetevents-spigot:2.13.0'
+}
+
+processResources {
+    filesMatching('plugin.yml') {
+        expand 'pluginVersion': project.version
+    }
+    filesMatching('bungee.yml') {
+        expand 'pluginVersion': project.version
+    }
+}
+
+
+
+shadowJar {
+    archiveClassifier.set('')
+    
+    dependencies {
+        exclude(dependency('org.slf4j:.*'))
+        exclude(dependency('net.java.dev.jna:.*'))
+    }
+}

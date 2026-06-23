@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Mod("pklogin")
 @Getter
@@ -38,6 +39,8 @@ public class PkLoginForge {
     private com.pumpkiiings.pklogin.forge.manager.ForgeSpawnManager spawnManager;
     
     private int registeredUsers;
+
+    private final ConcurrentHashMap<String, Boolean> verifiedSessions = new ConcurrentHashMap<>();
 
     public PkLoginForge() {
         instance = this;

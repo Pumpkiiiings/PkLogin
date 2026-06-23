@@ -51,10 +51,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class PkLoginCommand extends BukkitAbstractCommand {
 
     private final AtomicBoolean
-            downloadLock = new AtomicBoolean(),
-            confirmNLogin = new AtomicBoolean(),
-            confirmPkLogin = new AtomicBoolean(),
-            confirmAd = new AtomicBoolean();
+            downloadLock = new AtomicBoolean();
 
     public PkLoginCommand(PkLoginBukkit plugin) {
         super(plugin, "pklogin");
@@ -213,116 +210,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                     return;
                 }
 
-                case "nlogin_ad": {
-                    if (!(sender instanceof Player)) {
-                        sender.sendMessage(Messages.PLAYER_COMMAND_USAGE.asString());
-                        return;
-                    }
 
-                    if (!confirmAd.getAndSet(true)) {
-                        sender.sendMessage("");
-                        sender.sendMessage(" Â§cnLogin is generally a better solution for most users.");
-                        sender.sendMessage(" Â§7If you want to keep Â§fPkLogin Â§7anyway,");
-                        sender.sendMessage(" Â§7please click on the message again.");
-                        sender.sendMessage("");
-                        return;
-                    }
-
-                    if (plugin.getPluginSettings().set("nlogin_ad", Long.toString(System.currentTimeMillis()))) {
-                        sender.sendMessage("Â§eYou will not be notified again of the migration for a long time.");
-                    } else {
-                        sender.sendMessage("Â§cDatabase error :C, please try again.");
-                    }
-                    return;
-                }
-
-                case "setup": {
-                    if (!(sender instanceof Player)) {
-                        sender.sendMessage(Messages.PLAYER_COMMAND_USAGE.asString());
-                        return;
-                    }
-
-                    if (!plugin.isNewUser()) {
-                        return;
-                    }
-
-                    if (!confirmPkLogin.getAndSet(true)) {
-                        sender.sendMessage("");
-                        sender.sendMessage(" Â§cnLogin is generally a better solution for most users.");
-                        sender.sendMessage(" Â§7If you want to install Â§fPkLogin Â§7anyway,");
-                        sender.sendMessage(" Â§7please click on the message again.");
-                        sender.sendMessage("");
-                        return;
-                    }
-
-                    for (Player on : plugin.getServer().getOnlinePlayers()) {
-                        plugin.getFoliaLib().runAtEntity(on, task -> on.kickPlayer("Â§aPlease rejoin to complete the plugin installation."));
-                    }
-
-                    plugin.setNewUser(false);
-                    plugin.getPluginSettings().set("setup_date", Long.toString(System.currentTimeMillis()));
-
-                    File newUserfile = new File(plugin.getDataFolder(), "new-user");
-                    if (newUserfile.exists() && !newUserfile.delete()) {
-                        newUserfile.deleteOnExit();
-                    }
-                    return;
-                }
-
-                case "nlogin": {
-                    if (!(sender instanceof Player)) {
-                        sender.sendMessage(Messages.PLAYER_COMMAND_USAGE.asString());
-                        return;
-                    }
-
-                    Player player = (Player) sender;
-                    String name = player.getName();
-                    if (!plugin.isNewUser() && !plugin.getLoginManagement().isAuthenticated(name)) {
-                        return;
-                    }
-
-                    if (downloadLock.get()) {
-                        sender.sendMessage("Â§cDownload in progress...");
-                        return;
-                    }
-
-                    boolean skip = args.length == 2 && args[1].equalsIgnoreCase("skip");
-                    if (!skip && !confirmNLogin.getAndSet(true)) {
-                        sender.sendMessage("");
-                        sender.sendMessage(" Â§6nLogin Â§7is a Â§6proprietary Â§7authentication plugin,");
-                        sender.sendMessage(" Â§7updated and maintained by Â§cpumpkiiings.comÂ§7. This means that you");
-                        sender.sendMessage(" Â§7cannot view and modify the source code of the plugin.");
-                        sender.sendMessage("");
-                        sender.sendMessage(" Â§eIf you still have questions, please contact us:");
-                        sender.sendMessage(" Â§bpumpkiiings.com/discord");
-                        sender.sendMessage("");
-                        sender.sendMessage(" Â§7To proceed with the download, type Â§b/pklogin nlogin Â§7again.");
-                        sender.sendMessage("");
-                    } else {
-                        if (downloadLock.getAndSet(true)) {
-                            sender.sendMessage("Â§cDownload already in progress!");
-                            return;
-                        }
-
-                        Runnable callback = null;
-                        if (skip && plugin.isNewUser()) {
-                            callback = () -> {
-                                for (Player on : plugin.getServer().getOnlinePlayers()) {
-                                    plugin.getFoliaLib().runAtEntity(on, task -> {
-                                        on.closeInventory();
-                                        on.kickPlayer("Â§anLogin was successfully installed. We are restarting the server to apply the changes.");
-                                    });
-                                }
-                                plugin.getServer().shutdown();
-                            };
-                            TitleAPI.getApi().reset(player);
-                        }
-                        if (!downloadNLogin(player, callback)) {
-                            downloadLock.set(false);
-                        }
-                    }
-                    return;
-                }
             }
         }
 
@@ -339,10 +227,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
         return downloadActionbar(player, "https://github.com/pumpkiiings/pklogin/releases/download/" + plugin.getLatestVersion() + "/PkLogin.jar", output, true, null);
     }
 
-    private boolean downloadNLogin(Player player, Runnable callback) {
-        File output = new File(plugin.getDataFolder().getParentFile(), "nLogin.jar");
-        return downloadActionbar(player, "https://repo.pumpkiiings.com/files/latest/nLogin.jar", output, false, callback);
-    }
+
 
     private boolean downloadActionbar(Player player, String url, File output, boolean update, Runnable callback) {
         player.sendMessage("Â§eDownloading...");

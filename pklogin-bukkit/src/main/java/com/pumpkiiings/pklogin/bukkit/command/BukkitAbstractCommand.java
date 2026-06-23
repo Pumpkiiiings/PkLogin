@@ -58,11 +58,7 @@ public abstract class BukkitAbstractCommand implements CommandExecutor {
             return true;
         }
 
-        if (plugin.isNewUser()) {
-            if (!(this instanceof PkLoginCommand)) {
-                return true;
-            }
-        } else if (!sender.hasPermission(permission)) {
+        if (!sender.hasPermission(permission)) {
             sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
             return true;
         }

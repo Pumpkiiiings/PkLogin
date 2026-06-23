@@ -48,38 +48,27 @@ public class PlayerJoinListeners implements Listener {
         Player player = e.getPlayer();
         String name = player.getName();
 
-        if (plugin.isNewUser()) {
-            plugin.getFoliaLib().runLater(() -> {
-                if (!player.isOnline()) {
-                    return;
-                }
 
-                player.sendMessage("");
-                player.sendMessage(" Â§eHello, " + player.getName() + "!");
-                player.sendMessage("");
-                player.sendMessage("  Â§7Before we start, please select");
-                player.sendMessage("  Â§7your favorite login plugin.");
-                player.sendMessage("");
-                if (ClassUtils.exists("net.md_5.bungee.api.chat.TextComponent")) {
-                    TextComponentMessage.sendPluginChoice(player);
-                } else {
-                    player.sendMessage("      Â§enLogin              Â§ePkLogin");
-                    player.sendMessage("  Â§6(proprietary)      Â§b(open source)");
-                    player.sendMessage("");
-                    player.sendMessage(" Â§7To use nLogin, type: Â§f'/pklogin nlogin'");
-                    player.sendMessage(" Â§7To use PkLogin, type: Â§f'/pklogin setup'");
-                }
-                player.sendMessage("");
 
-                TitleAPI.getApi().send(player,
-                        new Title("", "Â§ePlease answer the question sent in the chat.", 0, 9999, 10));
-            }, 30L);
+        boolean registered = plugin.getAccountManagement().retrieveOrLoad(name).isPresent();
 
-            e.setJoinMessage("");
+        String ip = player.getAddress().getAddress().getHostAddress();
+        com.pumpkiiings.pklogin.bukkit.protocollib.AutoLoginSession session = plugin.getVerifiedSessions().remove(ip);
+
+        if (session != null && session.isVerified() && session.getUsername().equalsIgnoreCase(name)) {
+            plugin.getLoginManagement().setAuthenticated(name);
+            player.sendMessage(Messages.PREMIUM_AUTO_LOGIN.asString());
+            plugin.getFoliaLib().runAsync(task -> new com.pumpkiiings.pklogin.bukkit.api.events.AsyncAuthenticateEvent(player).callEvt());
             return;
         }
 
-        boolean registered = plugin.getAccountManagement().retrieveOrLoad(name).isPresent();
+        if (com.pumpkiiings.pklogin.common.hook.FloodgateHook.isBedrockPlayer(player.getUniqueId())) {
+            plugin.getLoginManagement().setAuthenticated(name);
+            player.sendMessage(Messages.PREMIUM_AUTO_LOGIN.asString().replace("Premium", "Bedrock"));
+            plugin.getFoliaLib().runAsync(task -> new com.pumpkiiings.pklogin.bukkit.api.events.AsyncAuthenticateEvent(player).callEvt());
+            return;
+        }
+
         LoginQueue.addToQueue(name, registered);
 
         player.setWalkSpeed(0F);

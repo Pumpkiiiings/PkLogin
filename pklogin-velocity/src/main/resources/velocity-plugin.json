@@ -1,0 +1,10 @@
+{
+  "id": "pklogin",
+  "name": "PkLogin",
+  "version": "${version}",
+  "description": "Auth plugin for Velocity",
+  "authors": [
+    "Pumpkiiiings"
+  ],
+  "main": "com.pumpkiiings.pklogin.velocity.PkLoginVelocity"
+}

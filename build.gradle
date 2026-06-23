@@ -21,6 +21,8 @@ subprojects {
         annotationProcessor lombok
         testCompileOnly lombok
         testAnnotationProcessor lombok
+
+        compileOnly 'org.geysermc.floodgate:api:2.2.2-SNAPSHOT'
     }
 
     repositories {
@@ -29,6 +31,7 @@ subprojects {
         maven { url = uri('https://maven.parchmentmc.org') }
         maven { url = uri('https://hub.spigotmc.org/nexus/content/repositories/snapshots/') }
         maven { url = uri('https://repo.codemc.org/repository/maven-public') }
+        maven { url = uri('https://repo.dmulloy2.net/repository/public/') }
         maven { 
             url = uri("https://nexuslite.gcnt.net/repos/other/")
             content {
@@ -36,6 +39,7 @@ subprojects {
                 includeGroup "com.tcoded.folialib"
             }
         }
+        maven { url = uri('https://repo.opencollab.dev/main/') }
     }
 }
 

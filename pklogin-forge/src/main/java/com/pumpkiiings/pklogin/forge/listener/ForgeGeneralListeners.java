@@ -24,7 +24,14 @@ public class ForgeGeneralListeners {
         java.util.Optional<com.pumpkiiings.pklogin.common.model.Account> accountOpt = PkLoginForge.getInstance().getAccountManagement().retrieveOrLoad(name);
         boolean registered = accountOpt.isPresent();
 
+        boolean isPremium = com.pumpkiiings.pklogin.forge.PkLoginForge.getInstance().getVerifiedSessions().remove(name) != null;
 
+        if (isPremium) {
+            PkLoginForge.getInstance().getLoginManagement().setAuthenticated(name);
+            player.sendSystemMessage(com.pumpkiiings.pklogin.forge.serializer.chat.ChatComponentSerializer.fromText(
+                com.pumpkiiings.pklogin.common.settings.Messages.PREMIUM_AUTO_LOGIN.asString("§aAuto-Login Premium successful!")));
+            return;
+        }
 
         com.pumpkiiings.pklogin.forge.task.ForgeLoginQueue.addToQueue(name, registered);
 

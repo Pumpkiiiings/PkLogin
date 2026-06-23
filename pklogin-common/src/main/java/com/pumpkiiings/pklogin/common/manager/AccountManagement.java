@@ -96,7 +96,7 @@ public class AccountManagement {
      */
     public void invalidateCache(@NonNull String key) {
         synchronized (accountCache) {
-            accountCache.remove(key);
+            accountCache.remove(key.toLowerCase());
         }
     }
 

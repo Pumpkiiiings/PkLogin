@@ -48,9 +48,6 @@ import com.tcoded.folialib.FoliaLib;
 import com.tcoded.folialib.impl.ServerImplementation;
 import lombok.Getter;
 import lombok.Setter;
-import org.bstats.bukkit.Metrics;
-import org.bstats.charts.SimplePie;
-import org.bstats.charts.SingleLineChart;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -72,10 +69,10 @@ public class PkLoginBukkit extends JavaPlugin {
     private Database database;
     private PluginSettings pluginSettings;
 
+    private final java.util.concurrent.ConcurrentHashMap<String, com.pumpkiiings.pklogin.bukkit.protocollib.AutoLoginSession> verifiedSessions = new java.util.concurrent.ConcurrentHashMap<>();
+
     private String latestVersion;
     private boolean updateAvailable;
-    @Setter
-    private boolean newUser;
     private int registeredUsers;
 
     public void onEnable() {
@@ -101,15 +98,8 @@ public class PkLoginBukkit extends JavaPlugin {
         Server server = getServer();
 
         File newUserfile = new File(getDataFolder(), "new-user");
-        newUser = !new File(getDataFolder() + "/database", "accounts.db").exists() && !new File(getDataFolder(), "config.yml").exists() || newUserfile.exists();
-        if (newUser && !newUserfile.exists()) {
-            try {
-                if (newUserfile.getParentFile().mkdirs()) {
-                    newUserfile.createNewFile();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (newUserfile.exists()) {
+            newUserfile.delete();
         }
 
         // setup config
@@ -133,8 +123,7 @@ public class PkLoginBukkit extends JavaPlugin {
         // setup login management
         loginManagement = new LoginManagement(accountManagement);
 
-        // setup lunar manager
-        new com.pumpkiiings.pklogin.bukkit.lunar.BukkitLunarManager(this);
+
 
         // setup commands
         commandManagement = new CommandManagement(this);
@@ -144,7 +133,18 @@ public class PkLoginBukkit extends JavaPlugin {
         LoggerFilterManager.setup(getLogger());
 
         // setup listeners
-        setupListeners(newUser);
+        setupListeners();
+
+        // setup PacketEvents or ProtocolLib auto-login
+        if (getServer().getPluginManager().getPlugin("packetevents") != null) {
+            sendMessage("PacketEvents detected. Using PacketEvents for Premium Auto-Login.");
+            com.pumpkiiings.pklogin.bukkit.packetevents.PacketEventsHook.init(this);
+        } else if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
+            sendMessage("ProtocolLib detected. Using ProtocolLib for Premium Auto-Login.");
+            com.pumpkiiings.pklogin.bukkit.protocollib.ProtocolLibHook.init(this);
+        } else {
+            sendMessage("Neither PacketEvents nor ProtocolLib detected. Premium Auto-Login is disabled.");
+        }
 
         // start login queue task
         LoginQueue.startTask(this);
@@ -152,8 +152,8 @@ public class PkLoginBukkit extends JavaPlugin {
         // setup api
         PkLogin.setApi(new OLBukkitAPI(this));
 
-        // metrics
-        setupMetrics();
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "pklogin:main");
+        getServer().getMessenger().registerIncomingPluginChannel(this, "pklogin:main", new com.pumpkiiings.pklogin.bukkit.listener.ProxyMessageListener(this));
 
         // updates
         foliaLib.runAsync(task -> this.detectUpdates());
@@ -223,19 +223,15 @@ public class PkLoginBukkit extends JavaPlugin {
         }
     }
 
-    private void setupListeners(boolean newUser) {
+    private void setupListeners() {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new PlayerGeneralListeners(this), this);
         pm.registerEvents(new PlayerJoinListeners(this), this);
         pm.registerEvents(new PlayerKickListeners(this), this);
-        pm.registerEvents(new PlayerAuthenticateListener(this, newUser), this);
+        pm.registerEvents(new PlayerAuthenticateListener(this), this);
     }
 
-    private void setupMetrics() {
-        Metrics metrics = new Metrics(this, 8951);
-        metrics.addCustomChart(new SimplePie("language_file", Settings.LANGUAGE_FILE::asString));
-        metrics.addCustomChart(new SingleLineChart("registered_users", () -> registeredUsers));
-    }
+
 
     public void detectUpdates() {
         String tagName = null;

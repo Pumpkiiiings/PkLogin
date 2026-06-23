@@ -37,7 +37,6 @@ import org.bukkit.event.Listener;
 public class PlayerAuthenticateListener implements Listener {
 
     private final PkLoginBukkit plugin;
-    private boolean welcomeMessage;
 
     @EventHandler
     public void onAsyncAuthenticate(AsyncAuthenticateEvent e) {
@@ -51,35 +50,22 @@ public class PlayerAuthenticateListener implements Listener {
             }
         }
 
+        // Send PluginMessage to Bungee/Velocity to notify auth success
+        try {
+            java.io.ByteArrayOutputStream b = new java.io.ByteArrayOutputStream();
+            java.io.DataOutputStream out = new java.io.DataOutputStream(b);
+            out.writeUTF("Authenticated");
+            player.sendPluginMessage(plugin, "pklogin:main", b.toByteArray());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         if (player.hasPermission("pklogin.admin")) {
-            if (welcomeMessage) {
+            if (plugin.isUpdateAvailable()) {
                 player.sendMessage("");
-                player.sendMessage(" Â§eWelcome to PkLogin!");
+                player.sendMessage(" §7A new version of §aPkLogin §7is available §a(v" + plugin.getDescription().getVersion() + " -> " + plugin.getLatestVersion() + ")§7.");
+                player.sendMessage(" §7Use the command §f'/pklogin update' §7to download new version.");
                 player.sendMessage("");
-                player.sendMessage(" Â§7Documentation:");
-                player.sendMessage(" Â§bhttps://github.com/pumpkiiings/pklogin/tree/master/docs");
-                player.sendMessage("");
-                player.sendMessage(" Â§7If you need help, fell free to contact our support:");
-                player.sendMessage(" Â§bhttps://www.pumpkiiings.com/discord");
-                player.sendMessage("");
-                welcomeMessage = false;
-            } else if (plugin.isUpdateAvailable()) {
-                player.sendMessage("");
-                player.sendMessage(" Â§7A new version of Â§aPkLogin Â§7is available Â§a(v" + plugin.getDescription().getVersion() + " -> " + plugin.getLatestVersion() + ")Â§7.");
-                player.sendMessage(" Â§7Use the command Â§f'/pklogin update' Â§7to download new version.");
-                player.sendMessage("");
-            } else if (!plugin.isNewUser() &&
-                    ClassUtils.exists("net.md_5.bungee.api.chat.TextComponent") &&
-                    System.currentTimeMillis() - Long.parseLong(plugin.getPluginSettings().read("setup_date", "0")) > 7 * 86400 * 1000L) { // 7 days
-                String value = plugin.getPluginSettings().read("nlogin_ad");
-                if (value != null) {
-                    long timestamp = Long.parseLong(value);
-                    if (timestamp != -1 && System.currentTimeMillis() - timestamp > 30 * 86400 * 1000L) { // 30 days
-                        TextComponentMessage.sendPluginAd(player);
-                    }
-                } else {
-                    TextComponentMessage.sendPluginAd(player);
-                }
             }
         }
     }

@@ -1,13 +1,25 @@
+plugins {
+    id 'com.gradleup.shadow' version '8.3.0'
+}
+
+tasks.build.dependsOn('shadowJar')
+
 archivesBaseName = 'PkLogin-Bukkit'
+
+repositories {
+    maven { url 'https://repo.codemc.io/repository/maven-releases/' }
+}
 
 dependencies {
     implementation project(':pklogin-common')
 
-    implementation 'org.bstats:bstats-bukkit:3.0.0'
     implementation 'com.tcoded:FoliaLib:0.3.3'
     implementation 'de.mkammerer:argon2-jvm:2.11'
 
     compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
+    compileOnly 'com.comphenix.protocol:ProtocolLib:5.3.0'
+    compileOnly 'com.github.retrooper:packetevents-spigot:2.13.0'
+    compileOnly 'io.netty:netty-all:4.1.68.Final'
 }
 
 processResources {
@@ -20,3 +32,14 @@ processResources {
 }
 
 
+
+shadowJar {
+    archiveClassifier.set('')
+    def libPkg = project.group + '.lib.'
+    relocate 'com.tcoded.folialib', libPkg + 'folialib'
+    
+    dependencies {
+        exclude(dependency('org.slf4j:.*'))
+        exclude(dependency('net.java.dev.jna:.*'))
+    }
+}

@@ -16,37 +16,105 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import java.security.KeyPair;
+import java.security.SecureRandom;
+import com.pumpkiiings.pklogin.forge.util.EncryptionUtil;
+import net.minecraft.network.protocol.login.ClientboundHelloPacket;
+import net.minecraft.network.protocol.login.ServerboundKeyPacket;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import net.minecraft.util.Crypt;
 
 @Mixin(ServerLoginPacketListenerImpl.class)
-public class ServerLoginPacketListenerImplMixin {
+public abstract class ServerLoginPacketListenerImplMixin {
 
     @Shadow @Final public Connection connection;
     @Shadow private GameProfile gameProfile;
+    @Shadow public abstract void startClientVerification(GameProfile profile);
     
     private String currentHandlingName;
+    private final SecureRandom random = new SecureRandom();
+    private final KeyPair customKeyPair = EncryptionUtil.generateKeyPair();
+    private byte[] verifyToken;
 
-    @Inject(method = "handleHello", at = @At("HEAD"))
-    private void captureName(ServerboundHelloPacket packet, CallbackInfo ci) {
+    @Inject(method = "handleHello", at = @At("HEAD"), cancellable = true)
+    private void onHandleHello(ServerboundHelloPacket packet, CallbackInfo ci) {
         this.currentHandlingName = packet.name();
-    }
-
-    @Redirect(method = "handleHello", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;usesAuthentication()Z"))
-    private boolean redirectUsesAuthentication(net.minecraft.server.MinecraftServer server) {
-        String originalName = this.currentHandlingName;
+        String originalName = packet.name();
+        
         com.pumpkiiings.pklogin.common.manager.AccountManagement accountManagement = com.pumpkiiings.pklogin.forge.PkLoginForge.getInstance().getAccountManagement();
         java.util.Optional<com.pumpkiiings.pklogin.common.model.Account> accountOpt = accountManagement.search(originalName);
         
         if (accountOpt.isPresent()) {
             String uuidType = accountOpt.get().getUuidType();
             if (uuidType != null && (uuidType.equals("REAL") || uuidType.equals("PREMIUM"))) {
-                return true;
-            } else if (uuidType != null && (uuidType.equals("OFFLINE") || uuidType.equals("RANDOM"))) {
-                return false;
+                this.verifyToken = EncryptionUtil.generateVerifyToken(random);
+                this.connection.send(new ClientboundHelloPacket("", this.customKeyPair.getPublic().getEncoded(), this.verifyToken));
+                ci.cancel();
             }
         }
-        
-        // Default to server setting if no account found or REAL
-        return server.usesAuthentication();
+    }
+
+    @Inject(method = "handleKey", at = @At("HEAD"), cancellable = true)
+    private void onHandleKey(ServerboundKeyPacket packet, CallbackInfo ci) {
+        if (this.verifyToken != null && this.currentHandlingName != null) {
+            ci.cancel();
+            
+            Thread authThread = new Thread(() -> {
+                try {
+                    SecretKey sharedKey = packet.getSecretKey(this.customKeyPair.getPrivate());
+                    
+                    if (!packet.isChallengeValid(this.verifyToken, this.customKeyPair.getPrivate())) {
+                        this.connection.disconnect(net.minecraft.network.chat.Component.literal("Invalid verification token"));
+                        return;
+                    }
+                    
+                    String serverId = EncryptionUtil.getServerIdHashString("", sharedKey, this.customKeyPair.getPublic());
+                    UUID premiumUUID = fetchMojangProfile(this.currentHandlingName, serverId);
+                    
+                    if (premiumUUID != null) {
+                        Cipher decryptCipher = Crypt.getCipher(2, sharedKey);
+                        Cipher encryptCipher = Crypt.getCipher(1, sharedKey);
+                        
+                        this.connection.setEncryptionKey(decryptCipher, encryptCipher);
+                        
+                        GameProfile verifiedProfile = new GameProfile(premiumUUID, this.currentHandlingName);
+                        com.pumpkiiings.pklogin.forge.PkLoginForge.getInstance().getVerifiedSessions().put(this.currentHandlingName, true);
+                        this.startClientVerification(verifiedProfile);
+                    } else {
+                        this.connection.disconnect(net.minecraft.network.chat.Component.literal("Invalid session (Mojang rejected)."));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    this.connection.disconnect(net.minecraft.network.chat.Component.literal("Authentication error."));
+                }
+            }, "PkLogin-Authenticator");
+            authThread.setDaemon(true);
+            authThread.start();
+        }
+    }
+
+    private UUID fetchMojangProfile(String username, String serverId) {
+        try {
+            URL url = new URL("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=" + username + "&serverId=" + serverId);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
+
+            if (conn.getResponseCode() == 200) {
+                JsonObject json = new JsonParser().parse(new InputStreamReader(conn.getInputStream())).getAsJsonObject();
+                String idStr = json.get("id").getAsString();
+                return UUID.fromString(idStr.replaceFirst(
+                        "(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)", "$1-$2-$3-$4-$5"
+                ));
+            }
+        } catch (Exception ignored) { }
+        return null;
     }
 
     @Inject(method = "startClientVerification", at = @At("HEAD"))

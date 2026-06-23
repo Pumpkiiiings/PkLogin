@@ -107,7 +107,7 @@ public enum Settings {
     ),
     LEGACY_UNIQUE_ID_TYPE(
             "premium.legacy.unique-id-type",
-            "REAL"
+            "OFFLINE"
     ),
     UI_TITLE_BAR(
             "ui.use-title-bar",

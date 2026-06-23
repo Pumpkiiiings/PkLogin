@@ -1,0 +1,128 @@
+#    ___                __  __
+#   /___\_ __   ___  /\ \ \/ /  ___   __ _(_)_ __
+#  //  // '_ \ / _ \/  \/ / /  / _ \ / _` | | '_ \
+# / \_//| |_) |  __/ /\  / /__| (_) | (_| | | | | |
+# \___/ | .__/ \___\_\ \/\____/\___/ \__, |_|_| |_|
+#       |_|                          |___/
+
+# Official Website: https://www.pumpkiiings.com
+# Discord: https://www.pumpkiiings.com/discord
+
+# Chinese version (with some small detail change!) translated by SnowCutieOwO
+# Contact in SpigotMC: https://www.spigotmc.org/members/snowcutieowo.849243/
+
+Messages:
+  Title:
+    # Message sent before login
+    before-login:
+      title: "&a&læ¬¢è¿Ž!"
+      subtitle: "&7è¾“å…¥ &a/login <å¯†ç > &7æ¥ç™»å½•!"
+      delays:
+        start: 0
+        duration: 9999
+        end: 6
+    # Message sent before registration
+    before-register:
+      title: "&a&læ¬¢è¿Ž!"
+      subtitle: "&7è¾“å…¥ &a/register <å¯†ç > <é‡å¤å¯†ç > &7æ¥æ³¨å†Œ!"
+      delays:
+        start: 0
+        duration: 9999
+        end: 6
+    # Message sent after login
+    after-login:
+      title: ""
+      subtitle: "&aä½ å·²æˆåŠŸç™»å½•!"
+      delays:
+        start: 0
+        duration: 60
+        end: 6
+    # Message sent after register
+    after-register:
+      title: ""
+      subtitle: "&aä½ å·²æˆåŠŸæ³¨å†Œ!"
+      delays:
+        start: 0
+        duration: 60
+        end: 6
+
+  delay-kick:
+    # Message sent when a user takes a long time to register
+    register-kick: "&cè¶…å‡ºæ³¨å†Œç­‰å¾…æ—¶é—´."
+
+    # Message sent when a user takes a long time to log in
+    login-kick: "&cè¶…å‡ºç™»å½•ç­‰å¾…æ—¶é—´."
+
+  successful-operations:
+    # Message when a user exchanges their password
+    password-changed: "&aä½ çš„å¯†ç å·²æˆåŠŸæ›´æ¢."
+
+    # Message sent when a user successfully logs
+    successful-login: "&aä½ å·²æˆåŠŸç™»å½•."
+
+    # Message sent when a user successfully registers
+    successful-register: "&aä½ å·²æˆåŠŸæ³¨å†Œ."
+
+    # Message sent when a player successfully disregisters
+    unregister-kick: "&cä½ å·²æˆåŠŸç™»å‡º."
+
+  kick-messages:
+    # Message when a player tries to log on to the server with a small difference in the nickname
+    nick-already-registered: "&d[å¤§å°å†™éªŒè¯]&r\n&cä½ ä¸èƒ½ä½¿ç”¨åç§° &4{0} &cæ¥æ³¨å†Œ&r\n&r&cæ­¤ç”¨æˆ·åå·²è¢«åç§° &4{1} &cæ³¨å†Œ&r\n&r\n&r&cè¯·ä½¿ç”¨åŽè€…æåˆ°çš„ç”¨æˆ·åç™»å…¥æœåŠ¡å™¨&r\n&d[å¤§å°å†™éªŒè¯]"
+
+    # Message sent when a user misses many times
+    failed-many-times: "&cä½ è¾“å…¥äº†é”™è¯¯çš„å¯†ç ."
+
+    # Message sent when password entered is incorrect
+    incorrect-password: "&cé”™è¯¯çš„å¯†ç . &7è¯·è¾“å…¥æ­£ç¡®çš„å¯†ç ."
+
+  error-messages:
+    # Message sent when you are already logged in.
+    already-login: "&cä½ å·²ç»ç™»å½•è¿‡äº†."
+
+    # Message sent when a nickname has already been registered.
+    already-registered: "&cæ­¤åç§°å·²è¢«æ³¨å†Œ."
+
+    # Message sent when a nickname has not yet been registered.
+    not-registered: "&cæ­¤åç§°è¿˜æœªè¢«æ³¨å†Œ."
+
+    # Message sent when the entered password is not equal to the second
+    passwords-dont-match: "&cå‰åŽå¯†ç ä¸ä¸€è‡´."
+
+    # Message sent when a player tries to change password by entering the same password as the current
+    password-same-as-old: "&cæ­¤å¯†ç ä¸Žæ—§å¯†ç ç›¸åŒ."
+
+    # Message sent when the password entered is too large
+    password-too-large: "&cå¯†ç é•¿åº¦è¿‡å¤§."
+
+    # Message sent when the password entered is too small
+    password-too-small: "&cå¯†ç é•¿åº¦è¿‡å°."
+
+    # Message when a player does not possess the required permission
+    insufficient-permissions: "&cä½ æ²¡æœ‰ä½¿ç”¨æ­¤å‘½ä»¤çš„æƒé™."
+
+    # Message to kick a player now online
+    already-online: "&cæ­¤çŽ©å®¶å·²ç»åœ¨çº¿."
+
+    # Message to show that the command cannot be executed via console
+    player-command-usage: "&cæ­¤å‘½ä»¤åªèƒ½åœ¨æŽ§åˆ¶å°æ‰§è¡Œ."
+
+    # Message shown when the plugin is reloaded.
+    plugin-reload-message: "&7æ’ä»¶å·²è¢«&aæˆåŠŸé‡è½½!"
+
+    # Message sent when a database operation has not been successfully performed
+    database-error: "&cå‡ºé”™äº†! &7æ’ä»¶è¿è¡Œè¿‡ç¨‹ä¸­å‡ºçŽ°é—®é¢˜,è¯·æ›´æ”¹é…ç½®æ–‡ä»¶åŽé‡è¯•. &c(é”™è¯¯åŽŸå› : æ•°æ®åº“è¿žæŽ¥ä¸æˆåŠŸ)"
+
+  other-messages:
+    # Mensagem enviada para o uso do comando /logar
+    message-login: "&eè¯·ä½¿ç”¨æŒ‡ä»¤ /login <å¯†ç > æ¥ç™»å½•"
+
+    # Mensagem enviada para o uso do comando /register
+    message-register: "&eè¯·ä½¿ç”¨æŒ‡ä»¤ /register <å¯†ç > <é‡å¤å¯†ç > æ¥æ³¨å†Œ"
+
+    # Mensagem enviada para o uso do comando /mudarsenha
+    message-changepassword: "&eè¯·ä½¿ç”¨æŒ‡ä»¤ /changepassword <å½“å‰å¯†ç > <æ–°å¯†ç > æ¥æ›´æ¢å¯†ç "
+
+    # Message sent to use the /unregister command
+    message-unregister: "&eè¯·ä½¿ç”¨æŒ‡ä»¤ /unregister <å½“å‰å¯†ç > æ¥ç™»å‡º"
+

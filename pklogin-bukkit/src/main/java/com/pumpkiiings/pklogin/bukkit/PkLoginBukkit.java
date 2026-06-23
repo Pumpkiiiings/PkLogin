@@ -1,0 +1,319 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright Â© 2020 - 2026 - PkLogin Contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package com.pumpkiiings.pklogin.bukkit;
+
+import com.pumpkiiings.pklogin.bukkit.api.OLBukkitAPI;
+import com.pumpkiiings.pklogin.bukkit.command.CommandManagement;
+import com.pumpkiiings.pklogin.bukkit.listener.PlayerAuthenticateListener;
+import com.pumpkiiings.pklogin.bukkit.listener.PlayerGeneralListeners;
+import com.pumpkiiings.pklogin.bukkit.listener.PlayerJoinListeners;
+import com.pumpkiiings.pklogin.bukkit.listener.PlayerKickListeners;
+import com.pumpkiiings.pklogin.bukkit.task.LoginQueue;
+import com.pumpkiiings.pklogin.common.PkLogin;
+import com.pumpkiiings.pklogin.common.api.PkLoginAPI;
+import com.pumpkiiings.pklogin.common.database.Database;
+import com.pumpkiiings.pklogin.common.database.PluginSettings;
+import com.pumpkiiings.pklogin.common.database.SQLite;
+import com.pumpkiiings.pklogin.common.http.HttpClient;
+import com.pumpkiiings.pklogin.common.manager.AccountManagement;
+import com.pumpkiiings.pklogin.common.manager.LoginManagement;
+import com.pumpkiiings.pklogin.common.model.Title;
+import com.pumpkiiings.pklogin.common.security.filter.LoggerFilterManager;
+import com.pumpkiiings.pklogin.common.settings.Messages;
+import com.pumpkiiings.pklogin.common.settings.Settings;
+import com.pumpkiiings.pklogin.common.util.FileUtils;
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.ServerImplementation;
+import lombok.Getter;
+import lombok.Setter;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
+import org.bstats.charts.SingleLineChart;
+import org.bukkit.Server;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+@Getter
+public class PkLoginBukkit extends JavaPlugin {
+
+    private LoginManagement loginManagement;
+    private AccountManagement accountManagement;
+    private CommandManagement commandManagement;
+    private ServerImplementation foliaLib;
+
+    private Database database;
+    private PluginSettings pluginSettings;
+
+    private String latestVersion;
+    private boolean updateAvailable;
+    @Setter
+    private boolean newUser;
+    private int registeredUsers;
+
+    public void onEnable() {
+        PluginManager pm = getServer().getPluginManager();
+
+        // detect nLogin
+        if (pm.getPlugin("nLogin") != null) {
+            sendMessage("nLogin was detected, turning off plugin...");
+            pm.disablePlugin(this);
+            return;
+        }
+
+        String c = "Â§9";
+        sendMessage(c + "   ___                __  __             _ ");
+        sendMessage(c + "  /___\\_ __   ___  /\\ \\ \\/ /  ___   __ _(_)_ __");
+        sendMessage(c + " //  // '_ \\ / _ \\/  \\/ / /  / _ \\ / _` | | '_ \\");
+        sendMessage(c + "/ \\_//| |_) |  __/ /\\  / /__| (_) | (_| | | | | |");
+        sendMessage(c + "\\___/ | .__/ \\___\\_\\ \\/\\____/\\___/ \\__, |_|_| |_|");
+        sendMessage(c + "      |_|                          |___/         ");
+        sendMessage(c + "By: www.pumpkiiings.com / github.com/pumpkiiings/pklogin - V " + getDescription().getVersion());
+        sendMessage("");
+
+        Server server = getServer();
+
+        File newUserfile = new File(getDataFolder(), "new-user");
+        newUser = !new File(getDataFolder() + "/database", "accounts.db").exists() && !new File(getDataFolder(), "config.yml").exists() || newUserfile.exists();
+        if (newUser && !newUserfile.exists()) {
+            try {
+                if (newUserfile.getParentFile().mkdirs()) {
+                    newUserfile.createNewFile();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // setup config
+        if (!setupSettings()) {
+            server.shutdown();
+            return;
+        }
+
+        // setup database
+        if (!setupDatabase()) {
+            server.shutdown();
+            return;
+        }
+
+        // setup Folia lib
+        foliaLib = new FoliaLib(this).getImpl();
+
+        // setup account management
+        accountManagement = new AccountManagement(database);
+
+        // setup login management
+        loginManagement = new LoginManagement(accountManagement);
+
+        // setup commands
+        commandManagement = new CommandManagement(this);
+        commandManagement.register();
+
+        // setup logger filter
+        LoggerFilterManager.setup(getLogger());
+
+        // setup listeners
+        setupListeners(newUser);
+
+        // start login queue task
+        LoginQueue.startTask(this);
+
+        // setup api
+        PkLogin.setApi(new OLBukkitAPI(this));
+
+        // metrics
+        setupMetrics();
+
+        // updates
+        foliaLib.runAsync(task -> this.detectUpdates());
+        
+        com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().init();
+    }
+    
+    @Override
+    public void onDisable() {
+        com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().shutdown();
+    }
+
+    public void sendMessage(String message) {
+        getServer().getConsoleSender().sendMessage("[" + getName() + "] " + message);
+    }
+
+    public void sendMessage(String message, String color) {
+        getServer().getConsoleSender().sendMessage(color + "[" + getName() + "] " + message);
+    }
+
+    private boolean setupDatabase() {
+        File databaseFile = new File(getDataFolder(), "accounts.db");
+        database = new SQLite(databaseFile);
+        try {
+            database.openConnection();
+            database.update("CREATE TABLE IF NOT EXISTS `pklogin` (`name` TEXT, `realname` TEXT, `password` TEXT, `address` TEXT, `lastlogin` INTEGER, `regdate` INTEGER, `totp_secret` TEXT, `uuid_type` TEXT DEFAULT 'REAL', `random_uuid` TEXT, `discord_id` TEXT, `email_address` TEXT)");
+            database.update("CREATE TABLE IF NOT EXISTS `settings` (`key` TEXT, `value` TEXT)");
+
+            // Check if columns exist, if not, add them (for existing SQLite databases)
+            try {
+                database.update("ALTER TABLE `pklogin` ADD COLUMN `totp_secret` TEXT");
+            } catch (Exception ignored) { }
+            try {
+                database.update("ALTER TABLE `pklogin` ADD COLUMN `uuid_type` TEXT DEFAULT 'REAL'");
+            } catch (Exception ignored) { }
+            try {
+                database.update("ALTER TABLE `pklogin` ADD COLUMN `random_uuid` TEXT");
+            } catch (Exception ignored) { }
+            try {
+                database.update("ALTER TABLE `pklogin` ADD COLUMN `discord_id` TEXT");
+            } catch (Exception ignored) { }
+            try {
+                database.update("ALTER TABLE `pklogin` ADD COLUMN `email_address` TEXT");
+            } catch (Exception ignored) { }
+            try (Database.Query query = database.query("SELECT COUNT(*) FROM `pklogin`")) {
+                ResultSet rs = query.resultSet;
+                if (rs.next()) {
+                    registeredUsers = rs.getInt("COUNT(*)");
+                }
+            } catch (Exception e) {
+                sendMessage("Â§cFailed to update the register count.");
+            }
+            pluginSettings = new PluginSettings(database);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            sendMessage("Â§cFailed to start database. Shutting down server...");
+            return false;
+        }
+    }
+
+    private void setupListeners(boolean newUser) {
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(new PlayerGeneralListeners(this), this);
+        pm.registerEvents(new PlayerJoinListeners(this), this);
+        pm.registerEvents(new PlayerKickListeners(this), this);
+        pm.registerEvents(new PlayerAuthenticateListener(this, newUser), this);
+    }
+
+    private void setupMetrics() {
+        Metrics metrics = new Metrics(this, 8951);
+        metrics.addCustomChart(new SimplePie("language_file", Settings.LANGUAGE_FILE::asString));
+        metrics.addCustomChart(new SingleLineChart("registered_users", () -> registeredUsers));
+    }
+
+    public void detectUpdates() {
+        String tagName = null;
+        try {
+            String result = HttpClient.DEFAULT.get("https://api.github.com/repos/pumpkiiings/PkLogin/releases/latest");
+
+            // avoid use Google Gson to avoid problems with older versions.
+            if (result.contains("\"tag_name\":\"")) {
+                tagName = result.split("\"tag_name\":\"")[1];
+                if (tagName.contains("\",")) {
+                    tagName = latestVersion = tagName.split("\",")[0];
+                }
+            }
+        } catch (IOException e) {
+            sendMessage("Â§cFailed to find new updates.");
+            sendMessage("Â§cDownload the latest version at: https://github.com/pumpkiiings/pklogin/releases");
+        }
+        if (tagName == null) {
+            sendMessage("Â§cFailed to find new updates: invalid response.");
+            sendMessage("Â§cDownload the latest version at: https://github.com/pumpkiiings/pklogin/releases");
+        } else {
+            String currentVersion = "v" + getDescription().getVersion();
+            updateAvailable = !currentVersion.equals(tagName);
+            if (updateAvailable) {
+                sendMessage("A new version of PkLogin is available (" + currentVersion + " -> " + latestVersion + ").", "Â§e");
+            }
+        }
+    }
+
+    public boolean setupSettings() {
+        File configFile = new File(getDataFolder(), "config.yml");
+        if (!configFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/config.yml", configFile)) {
+            sendMessage("§cFailed to create 'config.yml' file.");
+            return false;
+        }
+
+        File twoFaFolder = new File(getDataFolder(), "2fa");
+        if (!twoFaFolder.exists()) {
+            twoFaFolder.mkdirs();
+        }
+
+        File discordFile = new File(twoFaFolder, "discord.yml");
+        if (!discordFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/2fa/discord.yml", discordFile)) {
+            sendMessage("§cFailed to create 'discord.yml' file.");
+        }
+
+        File emailFile = new File(twoFaFolder, "email.yml");
+        if (!emailFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/2fa/email.yml", emailFile)) {
+            sendMessage("§cFailed to create 'email.yml' file.");
+        }
+
+        Settings.clear();
+        for (Settings setting : Settings.values()) {
+            Settings.define(setting, getConfig().get(setting.getKey()));
+        }
+
+        String lang = Settings.LANGUAGE_FILE.asString();
+        File messagesFile = new File(getDataFolder() + "/lang", lang);
+        if (!messagesFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/lang/" + lang, messagesFile) && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/lang/messages_en.yml", messagesFile)) {
+            sendMessage("Â§cFailed to create '" + lang + "' language file.");
+            return false;
+        }
+
+        YamlConfiguration messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+        for (Messages message : Messages.values()) {
+            String path = message.getKey();
+            if (path.startsWith("Messages.Title")) {
+                String title = "", subtitle = "";
+                int start = 0, duration = 0, end = 0;
+
+                path = path + ".";
+                if (messagesConfig.isSet(path + "title") && messagesConfig.isSet(path + "subtitle")) {
+                    title = messagesConfig.getString(path + "title");
+                    subtitle = messagesConfig.getString(path + "subtitle");
+                    start = messagesConfig.getInt(path + "delays.start", 0);
+                    duration = messagesConfig.getInt(path + "delays.duration", 60);
+                    end = messagesConfig.getInt(path + "delays.end", 6);
+                    Messages.define(message, new Title(title, subtitle, start, duration, end));
+                }
+            } else if (messagesConfig.isSet(path)) {
+                Object obj = messagesConfig.get(path);
+                Messages.define(message, obj);
+            }
+        }
+        return true;
+    }
+
+    public static PkLoginAPI getApi() {
+        return PkLogin.getApi();
+    }
+}
+

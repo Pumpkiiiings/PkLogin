@@ -1,0 +1,124 @@
+#    ___                __  __
+#   /___\_ __   ___  /\ \ \/ /  ___   __ _(_)_ __
+#  //  // '_ \ / _ \/  \/ / /  / _ \ / _` | | '_ \
+# / \_//| |_) |  __/ /\  / /__| (_) | (_| | | | | |
+# \___/ | .__/ \___\_\ \/\____/\___/ \__, |_|_| |_|
+#       |_|                          |___/
+
+# Official Website: https://www.pumpkiiings.com
+# Discord: https://www.pumpkiiings.com/discord
+
+Messages:
+  Title:
+    # Message sent before login
+    before-login:
+      title: "&a&lVÃTEJ!"
+      subtitle: "&7PouÅ¾ij: /login <heslo>"
+      delays:
+        start: 0
+        duration: 9999
+        end: 6
+    # Message sent before registration
+    before-register:
+      title: "&a&lVÃTEJ!"
+      subtitle: "&7PouÅ¾ij: /register <heslo> <heslo znovu>"
+      delays:
+        start: 0
+        duration: 9999
+        end: 6
+    # Message sent after login
+    after-login:
+      title: ""
+      subtitle: "&aPÅ™ihlÃ¡Å¡enÃ­ bylo ÃºspÄ›Å¡nÃ©!"
+      delays:
+        start: 0
+        duration: 60
+        end: 6
+    # Message sent after register
+    after-register:
+      title: ""
+      subtitle: "&aRegistrace byla ÃºspÄ›Å¡nÃ¡!"
+      delays:
+        start: 0
+        duration: 60
+        end: 6
+
+  delay-kick:
+    # Message sent when a user takes a long time to register
+    register-kick: "&cÄŒas na registraci vyprÅ¡el."
+
+    # Message sent when a user takes a long time to log in
+    login-kick: "&cÄŒas na pÅ™ihlÃ¡Å¡enÃ­ vyprÅ¡el."
+
+  successful-operations:
+    # Message when a user exchanges their password
+    password-changed: "&aHeslo bylo ÃºspÄ›Å¡nÄ› zmÄ›nÄ›no."
+
+    # Message sent when a user successfully logs
+    successful-login: "&aPÅ™ihlÃ¡Å¡enÃ­ bylo ÃºspÄ›Å¡nÃ©."
+
+    # Message sent when a user successfully registers
+    successful-register: "&aRegistrace byla ÃºspÄ›Å¡nÃ¡."
+
+    # Message sent when a player successfully disregisters
+    unregister-kick: "&cZruÅ¡enÃ­ registrace bylo ÃºspÄ›Å¡nÃ©."
+
+  kick-messages:
+    # Message when a player tries to log on to the server with a small difference in the nickname
+    nick-already-registered: "&cNelze se pÅ™ihlÃ¡sit s pÅ™ezdÃ­vkou {0}&r\n&r&cToto jmÃ©no je jiÅ¾ zaregistrovÃ¡no jako {1}&r\n&r\n&r&cPro registraci zvol jmÃ©no bez velkÃ½ch/malÃ½ch pÃ­smen."
+
+    # Message sent when a user misses many times
+    failed-many-times: "&cZadÃ¡no Å¡patnÃ© heslo.."
+
+    # Message sent when password entered is incorrect
+    incorrect-password: "&cÅ patnÃ© heslo. Zkus to prosÃ­m znovu."
+
+  error-messages:
+    # Message sent when you are already logged in.
+    already-login: "&cJiÅ¾ jsi pÅ™ihlÃ¡Å¡en/a."
+
+    # Message sent when a nickname has already been registered.
+    already-registered: "&cHrÃ¡Ä s tÃ­mto jmÃ©nem je jiÅ¾ registrovÃ¡n."
+
+    # Message sent when a nickname has not yet been registered.
+    not-registered: "&cHrÃ¡Ä s tÃ­mto jmÃ©nem nebyl jeÅ¡tÄ› registrovÃ¡n."
+
+    # Message sent when the entered password is not equal to the second
+    passwords-dont-match: "&cHesla se neshodujÃ­."
+
+    # Message sent when a player tries to change password by entering the same password as the current
+    password-same-as-old: "&cNovÃ© heslo je shodnÃ© se starÃ½m heslem."
+
+    # Message sent when the password entered is too large
+    password-too-large: "&cZadanÃ© heslo je pÅ™Ã­liÅ¡ dlouhÃ©."
+
+    # Message sent when the password entered is too small
+    password-too-small: "&cZadanÃ© heslo je pÅ™Ã­liÅ¡ krÃ¡tkÃ©."
+
+    # Message when a player does not possess the required permission
+    insufficient-permissions: "&cNa tuto akci nemÃ¡Å¡ prÃ¡va."
+
+    # Message to kick a player now online
+    already-online: "&cTento hrÃ¡Ä je jiÅ¾ online."
+
+    # Message to show that the command cannot be executed via console
+    player-command-usage: "&cPÅ™Ã­kaz byl zablokovÃ¡n konzolÃ­."
+
+    # Message shown when the plugin is reloaded.
+    plugin-reload-message: "&ePlugin byl ÃºspÄ›Å¡nÄ› naÄten."
+
+    # Message sent when a database operation has not been successfully performed
+    database-error: "&cOmlouvÃ¡me se, nepodaÅ™ilo se vykonat operaci. Zkuste to znovu. [SQL FAIL]"
+
+  other-messages:
+    # Mensagem enviada para o uso do comando /logar
+    message-login: "&ePouÅ¾ij pÅ™Ã­kaz /login <heslo>"
+
+    # Mensagem enviada para o uso do comando /register
+    message-register: "&ePouÅ¾ij pÅ™Ã­kaz /register <heslo> <heslo znovu>"
+
+    # Mensagem enviada para o uso do comando /mudarsenha
+    message-changepassword: "&ePouÅ¾ij pÅ™Ã­kaz /changepassword <aktuÃ¡lnÃ­ heslo> <novÃ© heslo>"
+
+    # Message sent to use the /unregister command
+    message-unregister: "&ePouÅ¾ij pÅ™Ã­kaz /unregister <heslo>"

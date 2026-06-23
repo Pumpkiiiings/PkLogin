@@ -1,0 +1,59 @@
+# Set the version of the file.
+language-version: 2
+
+# Defines whether the email can be used as a second factor.
+enable: false
+
+authentication:
+  # Email
+  email: "yourserver@domain.com"
+  # User
+  user: ""
+  # Password
+  password: ""
+
+  # Charset
+  charset: "UTF-8"
+  # Mimetype
+  mimetype: "text/html"
+
+  # SMTP host
+  host: "smtp.gmail.com"
+  # SMTP port
+  port: 587
+
+  # Encryption
+  #
+  # - Options available:
+  #  |=> AUTO
+  #  |=> TLS
+  #  |=> SSL
+  encryption: auto
+
+  # Debug mode
+  debug: false
+
+options:
+  link-required:
+    # Sets whether linking an email will be required to authenticate.
+    enable: false
+
+    # Sets whether premium players will also need to link an email to authenticate themselves.
+    required-for-premium: true
+
+  # Sets the maximum number of accounts that can have the same email linked.
+  account-limit: 1
+
+  # Defines whether the link should be recommended to players.
+  recommend-linking: true
+
+  # Defines whether a new password should be created after the account recovery process.
+  # - If this option is disabled, a random password will be set.
+  force-password-update: false
+
+  # Defines the list of allowed domains.
+  # - If no domain is defined, all domains will be allowed.
+  allowed-domains: []
+
+  # Defines the list of denied domains.
+  denied-domains: []

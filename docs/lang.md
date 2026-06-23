@@ -1,0 +1,35 @@
+## Translations
+
+| Code | Language |
+| ---- | -------- |
+[ar](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_ar.yml) | Argentinian
+[br](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_br.yml) | Portuguese (Brazil)
+[cn](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_cn.yml) | Chinese (simplified)
+[cz](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_cz.yml) | Czech
+[de](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_de.yml) | German
+[en](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_en.yml) | English
+[es](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_es.yml) | Spanish
+[fr](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_fr.yml) | French
+[hr](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_hr.yml) | Croatian
+[hu](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_hu.yml) | Hungarian
+[it](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_it.yml) | Italian
+[lt](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_lt.yml) | Lithuanian
+[pl](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_pl.yml) | Polish
+[pt](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_pt.yml) | Portuguese
+[ru](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_ru.yml) | Russian
+[sr](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_sr.yml) | Serbian
+[tr](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_tr.yml) | Turkish
+[ua](https://github.com/pumpkiiings/pklogin/blob/master/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/messages_ua.yml) | Ukrainian
+
+### How to change the language file?
+
+1Â°- Install the plugin on plugins folder <br>
+2Â°- Change the setting 'languageFile' (config.yml) to the selected language file.<br>
+3Â°- Perform the command '/pklogin reload' and start edit with custom config.yml file.
+<br>
+
+```yml
+# Language of the plugin:
+languageFile: 'messages_en.yml'
+```
+

@@ -1,0 +1,58 @@
+name: PkLogin
+version: ${pluginVersion}
+main: com.pumpkiiings.pklogin.bukkit.PkLoginBukkit
+description: 'A practical, secure and friendly authentication plugin'
+website: 'https://www.pumpkiiings.com'
+api-version: 1.13
+author: pumpkiiings
+folia-supported: true
+libraries:
+  - net.dv8tion:JDA:5.0.0-beta.24
+  - com.sun.mail:javax.mail:1.6.2
+commands:
+  changepassword:
+    description: 'Changes your password'
+    aliases:
+      - 'changepass'
+  login:
+    description: 'Log in to your account'
+    aliases:
+      - 'log'
+      - 'l'
+  pklogin:
+    description: 'PkLogin management command'
+    aliases:
+      - 'ologin'
+      - 'nlogin'
+  register:
+    description: 'Register your account'
+    aliases:
+      - 'reg'
+  unregister:
+    description: 'Unregister your account'
+    aliases:
+      - 'unreg'
+  2fa:
+    description: 'Manage Two-Factor Authentication'
+  premium:
+    description: 'Toggle your premium status'
+
+permissions:
+  pklogin.admin:
+    description: 'Defines a player as admin'
+    default: op
+  pklogin.command.changepassword:
+    description: 'Allows use the command /changepassword'
+    default: true
+  pklogin.command.login:
+    description: 'Allows use the command /login'
+    default: true
+  pklogin.command.pklogin:
+    description: 'Allows use the command /pklogin'
+    default: true
+  pklogin.command.register:
+    description: 'Allows use the command /register'
+    default: true
+  pklogin.command.unregister:
+    description: 'Allows use the command /unregister'
+    default: true

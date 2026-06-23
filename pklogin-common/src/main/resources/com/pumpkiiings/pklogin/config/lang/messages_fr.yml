@@ -1,0 +1,127 @@
+#    ___                __  __
+#   /___\_ __   ___  /\ \ \/ /  ___   __ _(_)_ __
+#  //  // '_ \ / _ \/  \/ / /  / _ \ / _` | | '_ \
+# / \_//| |_) |  __/ /\  / /__| (_) | (_| | | | | |
+# \___/ | .__/ \___\_\ \/\____/\___/ \__, |_|_| |_|
+#       |_|                          |___/
+
+# Official Website: https://www.pumpkiiings.com
+# Discord: https://www.pumpkiiings.com/discord
+
+# French translation by shuxx (https://github.com/shuxx)
+
+Messages:
+  Title:
+    # Message sent before login
+    before-login:
+      title: "&a&lBIENVENUE!"
+      subtitle: "&7Utilise: /login <mot de passe>"
+      delays:
+        start: 0
+        duration: 9999
+        end: 6
+    # Message sent before registration
+    before-register:
+      title: "&a&lBIENVENUE!"
+      subtitle: "&7Utilise: /register <mot de passe> <mot de passe>"
+      delays:
+        start: 0
+        duration: 9999
+        end: 6
+    # Message sent after login
+    after-login:
+      title: ""
+      subtitle: "&aTu es bien connectÃ©!"
+      delays:
+        start: 0
+        duration: 60
+        end: 6
+    # Message sent after register
+    after-register:
+      title: ""
+      subtitle: "&aTu es bien enregistrÃ©!"
+      delays:
+        start: 0
+        duration: 60
+        end: 6
+
+  delay-kick:
+    # Message sent when a user takes a long time to register
+    register-kick: "&cTu as mis trop de temps Ã  t'enregistrer."
+
+    # Message sent when a user takes a long time to log in
+    login-kick: "&cTu as mis trop de temps Ã  te connecter"
+
+  successful-operations:
+    # Message when a user exchanges their password
+    password-changed: "&aTon mot de passe Ã  bien Ã©tÃ© mis Ã  jours."
+
+    # Message sent when a user successfully logs
+    successful-login: "&aTu es bien connectÃ©."
+
+    # Message sent when a user successfully registers
+    successful-register: "&aTu es bien enregistrÃ©."
+
+    # Message sent when a player successfully disregisters
+    unregister-kick: "&cTu est bien dÃ©inscrit."
+
+  kick-messages:
+    # Message when a player tries to log on to the server with a small difference in the nickname
+    nick-already-registered: "&c Tu ne peux pas te connecter avec ce pseudo {0}&r\n&r&cCe pseudo Ã  dÃ©jÃ  Ã©tÃ© enregistrÃ© en temps que {1}&r\n&r\n&r&c Pour venir ton pseudo doit etre valide."
+
+    # Message sent when a user misses many times
+    failed-many-times: "&cMot de passe incorrect"
+
+    # Message sent when password entered is incorrect
+    incorrect-password: "&cMot de passe incorrect, merci de rÃ©essayer."
+
+  error-messages:
+    # Message sent when you are already logged in.
+    already-login: "&c Tu es dÃ©jÃ  connectÃ©."
+
+    # Message sent when a nickname has already been registered.
+    already-registered: "&c Ce pseudo est dÃ©jÃ  enregistrÃ©."
+
+    # Message sent when a nickname has not yet been registered.
+    not-registered: "&cCe pseudo n'as pas encore Ã©tÃ© enregistrÃ©."
+
+    # Message sent when the entered password is not equal to the second
+    passwords-dont-match: "&cLes mots de passe ne correspondent pas."
+
+    # Message sent when a player tries to change password by entering the same password as the current
+    password-same-as-old: "&cLe mot de passe est identique Ã  l'ancien."
+
+    # Message sent when the password entered is too large
+    password-too-large: "&cLe mot de passe entrÃ© est trop long."
+
+    # Message sent when the password entered is too small
+    password-too-small: "&cLe mot de passe entrÃ© est trop court"
+
+    # Message when a player does not possess the required permission
+    insufficient-permissions: "&cTu n'as pas la permission d'utiliser cette commande."
+
+    # Message to kick a player now online
+    already-online: "&cCe joueur est dÃ©jÃ  en ligne."
+
+    # Message to show that the command cannot be executed via console
+    player-command-usage: "&cLa commande Ã  Ã©tÃ© dÃ©sactivÃ© via la console."
+
+    # Message shown when the plugin is reloaded.
+    plugin-reload-message: "&eLe plugin Ã  Ã©tÃ© rechargÃ©."
+
+    # Message sent when a database operation has not been successfully performed
+    database-error: "&cDÃ©solÃ© impossible d'effectuer l'action. Merci de rÃ©essayer."
+
+  other-messages:
+    # Mensagem enviada para o uso do comando /logar
+    message-login: "&eUtilise la commande /login <mot de passe>"
+
+    # Mensagem enviada para o uso do comando /register
+    message-register: "&eUtilise la commande /register <mot de passe> <mot de passe>"
+
+    # Mensagem enviada para o uso do comando /mudarsenha
+    message-changepassword: "&eUtilise la commande /changepassword <ancien mot de passe> <nouveau mot de passe>"
+
+    # Message sent to use the /unregister command
+    message-unregister: "&eUtilise la commande /unregister <mot de passe>"
+

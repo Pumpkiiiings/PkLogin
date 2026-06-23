@@ -1,0 +1,13 @@
+dependencies {
+    compileOnly 'com.google.guava:guava:33.1.0-jre'
+    compileOnly 'org.apache.logging.log4j:log4j-core:2.23.1'
+
+    implementation 'com.zaxxer:HikariCP:5.1.0'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.0'
+    implementation 'com.h2database:h2:2.2.224'
+    implementation 'dev.samstevens.totp:totp:1.7.1'
+    
+    compileOnly 'net.dv8tion:JDA:5.0.0-beta.24'
+    compileOnly 'com.sun.mail:javax.mail:1.6.2'
+    compileOnly 'de.mkammerer:argon2-jvm:2.11'
+}

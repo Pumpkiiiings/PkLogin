@@ -1,0 +1,125 @@
+#    ___                __  __
+#   /___\_ __   ___  /\ \ \/ /  ___   __ _(_)_ __
+#  //  // '_ \ / _ \/  \/ / /  / _ \ / _` | | '_ \
+# / \_//| |_) |  __/ /\  / /__| (_) | (_| | | | | |
+# \___/ | .__/ \___\_\ \/\____/\___/ \__, |_|_| |_|
+#       |_|                          |___/
+
+# Site oficial: https://www.pumpkiiings.com
+# Discord: https://www.pumpkiiings.com/discord
+
+Messages:
+  Title:
+    # Mensagem enviada antes de logar
+    before-login:
+      title: "&a&lÂ¡Bienvenido!"
+      subtitle: "&7Usa: /login <contraseÃ±a>."
+      delays:
+        start: 0
+        duration: 9999
+        end: 6
+    # Mensagem enviada antes de registrar
+    before-register:
+      title: "&a&lÂ¡Bienvenido!"
+      subtitle: "&7Usa: /register <contraseÃ±a> <contraseÃ±a>."
+      delays:
+        start: 0
+        duration: 9999
+        end: 6
+    # Mensagem enviada apÃ³s logar
+    after-login:
+      title: ""
+      subtitle: "&aÂ¡Has inicio sesiÃ³n con Ã©xito!"
+      delays:
+        start: 0
+        duration: 30
+        end: 6
+    # Mensagem enviada apÃ³s registrar
+    after-register:
+      title: ""
+      subtitle: "&aÂ¡Te has registrado con Ã©xito!"
+      delays:
+        start: 0
+        duration: 30
+        end: 6
+
+  delay-kick:
+    # Mensagem enviada quando um usuÃ¡rio demora muito para se registrar
+    register-kick: "&cHas tardado mucho en registrarte."
+
+    # Mensagem enviada quando um usuÃ¡rio demora muito para se logar
+    login-kick: "&cHas tardado mucho en iniciar sesiÃ³n."
+
+  successful-operations:
+    # Mensagem quando um usuÃ¡rio troca a sua senha
+    password-changed: "&aSu contraseÃ±a ha cambiado con Ã©xito."
+
+    # Mensagem enviada quando um usuÃ¡rio loga com sucesso
+    successful-login: "&aHas iniciado sesiÃ³n con Ã©xito."
+
+    # Mensagem enviada quando um usuÃ¡rio se registra com sucesso
+    successful-register: "&aTe has registrado con Ã©xito."
+
+    # Mensagem enviada quando um jogador se desregistra com sucesso
+    unregister-kick: "&cRegistro cancelado con Ã©xito."
+
+  kick-messages:
+    # Mensagem quando um jogador tenta se logar no servidor com uma pequena diferenÃ§a no nick
+    nick-already-registered: "&cNo podÃ©s entrar con el nick {0}&r\n&r&cEste nick ya ha sido registrado como {1}&r\n&r&r\n&r&cPara entrar, debes ingresar tu nick sin letras mayÃºsculas/minÃºsculas"
+
+    # Mensagem enviada quando um usuÃ¡rio erra muitas vezes
+    failed-many-times: "&cLa contraseÃ±a ingresada es incorrecta."
+
+    # Mensagem enviada quando a senha inserida Ã© incorreta
+    incorrect-password: "&cÂ¡ContraseÃ±a incorrecta! Vuelve a intentarlo."
+
+  error-messages:
+    # Mensaje enviado cuando ya estÃ¡ conectado.
+    already-login: "&cYa has iniciado sesiÃ³n."
+
+    # Mensaje enviado cuando ya se ha registrado un apodo.
+    already-registered: "&cEste usuario ya ha sido registrado."
+
+    # Mensaje enviado cuando aÃºn no se ha registrado un apodo.
+    not-registered: "&cEste usuario aÃºn no se ha registrado."
+
+    # Mensagem enviada quando a senha inserida nÃ£o Ã© igual a segunda
+    passwords-dont-match: "&cLas contraseÃ±as no coinciden."
+
+    # Mensagem enviada quando um jogador tenta mudar senha inserindo a mesma senha que a atual
+    password-same-as-old: "&cLa contraseÃ±a introducida es la misma que la actual."
+
+    # Mensagem enviada quando a senha inserida Ã© muito grande
+    password-too-large: "&cLa contraseÃ±a introducida es muy larga."
+
+    # Mensagem enviada quando a senha inserida Ã© muito pequena
+    password-too-small: "&cLa contraseÃ±a introducida es muy corta."
+
+    # Mensagem quando um jogador nÃ£o possuÃ­ a permissÃ£o necessÃ¡ria
+    insufficient-permissions: "&cNo tienes permiso para ejecutar este comando."
+
+    # Mensagem para kickar um jogador jÃ¡ online
+    already-online: "&cEste usuario ya estÃ¡ en lÃ­nea."
+
+    # Mensagem para mostrar que o comando nÃ£o pode ser executado via console
+    player-command-usage: "&cEste comando se ha inhabilitado a travÃ©s de la consola."
+
+    # Mensagem mostrada quando o plugin Ã© recarregado
+    plugin-reload-message: "&eEl plugin se ha recargado con Ã©xito."
+
+    # Mensaje enviado cuando una operaciÃ³n de base de datos no se ha realizado correctamente
+    database-error: "&cLo sentimos, no pudimos completar esta operaciÃ³n. IntÃ©ntalo de nuevo. [SQL FAIL]"
+
+  other-messages:
+    # Mensagem enviada para o uso do comando /logar
+    message-login: "&eUtilice el comando &7/login <contraseÃ±a>&e."
+
+    # Mensagem enviada para o uso do comando /register
+    message-register: "&eUtilice el comando &7/register <contraseÃ±a> <contraseÃ±a>&e."
+
+    # Mensagem enviada para o uso do comando /mudarsenha
+    message-changepassword: "&eUtilice el comando &7/changepassword <contraseÃ±a actual> <nueva contraseÃ±a>&e."
+
+    # Mensaje enviado para usar el comando /unregister
+    message-unregister: "&eUtilice el comando &7/unregister <contraseÃ±a actual>&e."
+

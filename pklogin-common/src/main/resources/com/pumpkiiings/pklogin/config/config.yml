@@ -1,0 +1,112 @@
+#    ___                __  __
+#   /___\_ __   ___  /\ \ \/ /  ___   __ _(_)_ __
+#  //  // '_ \ / _ \/  \/ / /  / _ \ / _` | | '_ \
+# / \_//| |_) |  __/ /\  / /__| (_) | (_| | | | | |
+# \___/ | .__/ \___\_\ \/\____/\___/ \__, |_|_| |_|
+#       |_|                          |___/
+
+# Official website: https://www.pumpkiiings.com
+# Discord: https://www.pumpkiiings.com/discord
+
+# Do not change this setting
+file-version: 1
+
+# Language of the plugin.
+# For more information: https://github.com/pumpkiiings/pklogin/blob/master/docs/lang.md
+languageFile: 'messages_en.yml'
+
+# The plugin will be able to send advertisements to the administrators.
+# For example: nLogin recommendation.
+allow-advertising: true
+
+# Security system related settings.
+Security:
+  # Amount of time for a player to log in/register (set in seconds).
+  time-to-login: 45
+
+  # Hashing algorithm for passwords.
+  # Available options: BCRYPT (default), SHA256, SHA512, PBKDF2, ARGON2
+  # - BCRYPT  : Strongest general choice. Adaptive cost factor.
+  # - PBKDF2  : Widely standardized. 600,000 iterations (OWASP recommended).
+  # - ARGON2  : Winner of the Password Hashing Competition. Highest security.
+  # - SHA256 / SHA512 : Salted. Not recommended for new servers; kept for compatibility.
+  # IMPORTANT: Changing this only affects NEW passwords. Existing hashes
+  # are auto-detected and silently re-hashed on the player's next login.
+  hash-algorithm: BCRYPT
+
+  password:
+    # Small password size.
+    small: 5
+
+    # Size for big passwords.
+    large: 15
+
+
+# Database settings
+Database:
+  # Available types: sqlite, mariadb, h2, mysql
+  type: sqlite
+  host: localhost
+  port: 3306
+  database: pklogin
+  username: root
+  password: ""
+
+# Paid features of the plugin (premium version).
+premium:
+  username-appender:
+    enabled: false
+    premium:
+      username-appendix: ""
+      position: "suffix"
+      domains:
+        - "premium.myserver.com"
+    offline:
+      username-appendix: "+"
+      position: "suffix"
+      domains:
+        - "myserver.com"
+
+  legacy:
+    # Defines the type of unique id for users.
+    #
+    # - Options available:
+    #  |=> REAL [recommended]
+    #  |=> RANDOM
+    #  |=> OFFLINE
+    unique-id-type: REAL
+
+# User Interface settings.
+ui:
+  # Sets whether on-screen messages will be sent.
+  use-title-bar: true
+
+  # Sets whether messages in actionbars will be sent.
+  use-action-bar: true
+
+# Teleport settings.
+teleport:
+  # Sets whether the player will be teleported to a safe position upon entering.
+  safe-location: true
+
+  # Defines if the player will be teleported to the last location upon exit.
+  last-location: true
+
+# Limbo settings.
+limbo:
+  # Defines whether the blinding effect will be added before logging in.
+  blindness-effect: false
+
+passwords:
+  bruteforce:
+    # Sets the maximum number of incorrect attempts a player can make.
+    max-login-tries: 3
+
+# General security settings.
+security:
+  ip-limit:
+    # Sets whether the per-IP account limiter should be used.
+    enable: true
+
+    # Sets the maximum number of records per IP address.
+    limit: 3

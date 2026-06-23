@@ -1,0 +1,28 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+tasks.build.dependsOn('shadowJar')
+
+sourceCompatibility = 17
+targetCompatibility = 17
+
+dependencies {
+    implementation project(':pklogin-common')
+    implementation project(':pklogin-bukkit')
+    implementation(project(':pklogin-forge')) {
+        transitive = false
+    }
+}
+
+shadowJar {
+    archiveFileName = 'PkLogin.jar'
+
+    def libPkg = project.group + '.lib.'
+    relocate 'org.bstats', libPkg + 'bstats'
+    relocate 'com.tcoded.folialib', libPkg + 'folialib'
+    
+    dependencies {
+        exclude(dependency('org.slf4j:.*'))
+        exclude(dependency('net.java.dev.jna:.*'))
+    }
+}

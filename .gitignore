@@ -1,0 +1,31 @@
+# Gradle
+.gradle/
+build/
+*/build/
+out/
+*/out/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.classpath
+*.project
+*.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Forge decompile cache
+run/
+fg_cache/
+
+# Logs
+*.log
+
+# Compiled artifacts - keep the source, not the builds
+*.jar
+!gradlew.bat

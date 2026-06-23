@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright Â© 2020 - 2026 - PkLogin Contributors
+ * Copyright © 2020 - 2026 - PkLogin Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -198,12 +198,12 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                     }
 
                     if (!plugin.isUpdateAvailable()) {
-                        sender.sendMessage("Â§cYou are already using the latest version.");
+                        sender.sendMessage("§cYou are already using the latest version.");
                         return;
                     }
 
                     if (downloadLock.getAndSet(true)) {
-                        sender.sendMessage("Â§cDownload in progress...");
+                        sender.sendMessage("§cDownload in progress...");
                     } else if (!update(player)) {
                         downloadLock.set(false);
                     }
@@ -215,10 +215,10 @@ public class PkLoginCommand extends BukkitAbstractCommand {
         }
 
         sender.sendMessage("");
-        sender.sendMessage(" Â§eThis server is running Â§fPkLogin v " + plugin.getDescription().getVersion() + ".");
-        sender.sendMessage(" Â§7Powered by Â§bwww.pumpkiiings.comÂ§7.");
+        sender.sendMessage(" §eThis server is running §fPkLogin v " + plugin.getDescription().getVersion() + ".");
+        sender.sendMessage(" §7Powered by §bwww.pumpkiiings.com§7.");
         sender.sendMessage("");
-        sender.sendMessage(" Â§7GitHub: Â§fhttps://github.com/pumpkiiings/pklogin");
+        sender.sendMessage(" §7GitHub: §fhttps://github.com/pumpkiiings/pklogin");
         sender.sendMessage("");
     }
 
@@ -230,15 +230,15 @@ public class PkLoginCommand extends BukkitAbstractCommand {
 
 
     private boolean downloadActionbar(Player player, String url, File output, boolean update, Runnable callback) {
-        player.sendMessage("Â§eDownloading...");
-        ActionbarAPI.getApi().send(player, "Â§eConnecting...");
+        player.sendMessage("§eDownloading...");
+        ActionbarAPI.getApi().send(player, "§eConnecting...");
 
         final int barsCount = 40;
         final HttpClient.AsyncDownloadResult downloadResult;
         try {
             if ((downloadResult = HttpClient.DEFAULT.download(url, output)) == null) {
-                ActionbarAPI.getApi().send(player, "Â§cDownload failed!");
-                player.sendMessage("Â§cDownload failed, could not delete old file.");
+                ActionbarAPI.getApi().send(player, "§cDownload failed!");
+                player.sendMessage("§cDownload failed, could not delete old file.");
                 return false;
             }
         } catch (IOException exception) {
@@ -251,21 +251,21 @@ public class PkLoginCommand extends BukkitAbstractCommand {
         plugin.getFoliaLib().runAtEntityTimer(player, task -> {
             if (downloadFinished.get()) {
                 if (downloadSuccessful.get()) {
-                    ActionbarAPI.getApi().send(player, "Â§aDownload finished! Â§7(Â§a" + repeatString("|", barsCount) + "Â§7)");
-                    player.sendMessage("Â§aDownload finished. Please restart your server.");
+                    ActionbarAPI.getApi().send(player, "§aDownload finished! §7(§a" + repeatString("|", barsCount) + "§7)");
+                    player.sendMessage("§aDownload finished. Please restart your server.");
                     if (callback != null) {
                         callback.run();
                     }
                 } else {
-                    ActionbarAPI.getApi().send(player, "Â§cDownload failed! Â§7(Â§a" + repeatString("|", barsCount) + "Â§7)");
-                    player.sendMessage("Â§cDownload failed, please try again.");
+                    ActionbarAPI.getApi().send(player, "§cDownload failed! §7(§a" + repeatString("|", barsCount) + "§7)");
+                    player.sendMessage("§cDownload failed, please try again.");
                 }
                 task.cancel();
                 return;
             }
             int bars = (int) (barsCount * (downloadResult.downloaded() / downloadResult.contentLength()));
-            String progressBar = "Â§a" + repeatString("|", bars) + "Â§c" + repeatString("|", barsCount - bars);
-            ActionbarAPI.getApi().send(player, "Â§eDownloading... Â§7(" + progressBar + "Â§7)");
+            String progressBar = "§a" + repeatString("|", bars) + "§c" + repeatString("|", barsCount - bars);
+            ActionbarAPI.getApi().send(player, "§eDownloading... §7(" + progressBar + "§7)");
         }, 0, 200, TimeUnit.MILLISECONDS);
 
         try {
@@ -278,8 +278,8 @@ public class PkLoginCommand extends BukkitAbstractCommand {
             downloadLock.set(false);
             e.printStackTrace();
             String msg = update ?
-                    "Â§cFailed to download new version. Update manually at: https://github.com/pumpkiiings/pklogin/releases" :
-                    "Â§cFailed to download nLogin :c. Download manually at: pumpkiiings.com";
+                    "§cFailed to download new version. Update manually at: https://github.com/pumpkiiings/pklogin/releases" :
+                    "§cFailed to download nLogin :c. Download manually at: pumpkiiings.com";
             plugin.sendMessage(msg);
             player.sendMessage(msg);
         } finally {

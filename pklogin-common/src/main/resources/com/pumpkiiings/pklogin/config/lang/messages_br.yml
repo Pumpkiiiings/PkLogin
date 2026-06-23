@@ -26,89 +26,89 @@ Messages:
         start: 0
         duration: 9999
         end: 6
-    # Mensagem enviada apÃ³s logar.
+    # Mensagem enviada após logar.
     after-login:
       title: ""
-      subtitle: "&aVocÃª se autenticou com sucesso!"
+      subtitle: "&aVocê se autenticou com sucesso!"
       delays:
         start: 0
         duration: 60
         end: 6
-    # Mensagem enviada apÃ³s registrar.
+    # Mensagem enviada após registrar.
     after-register:
       title: ""
-      subtitle: "&aVocÃª se registrou com sucesso!"
+      subtitle: "&aVocê se registrou com sucesso!"
       delays:
         start: 0
         duration: 60
         end: 6
 
   delay-kick:
-    # Mensagem enviada quando um usuÃ¡rio demora muito para se registrar.
-    register-kick: "&cVocÃª demorou muito para registrar."
+    # Mensagem enviada quando um usuário demora muito para se registrar.
+    register-kick: "&cVocê demorou muito para registrar."
 
-    # Mensagem enviada quando um usuÃ¡rio demora muito para se logar.
-    login-kick: "&cVocÃª demorou muito para logar."
+    # Mensagem enviada quando um usuário demora muito para se logar.
+    login-kick: "&cVocê demorou muito para logar."
 
   successful-operations:
-    # Mensagem enviada quando um usuÃ¡rio troca a sua senha.
+    # Mensagem enviada quando um usuário troca a sua senha.
     password-changed: "&aA sua senha foi alterada com sucesso."
 
-    # Mensagem enviada quando um usuÃ¡rio loga com sucesso..
-    successful-login: "&aVocÃª logou com sucesso."
+    # Mensagem enviada quando um usuário loga com sucesso..
+    successful-login: "&aVocê logou com sucesso."
 
-    # Mensagem enviada quando um usuÃ¡rio se registra com sucesso.
-    successful-register: "&aVocÃª se registrou com sucesso."
+    # Mensagem enviada quando um usuário se registra com sucesso.
+    successful-register: "&aVocê se registrou com sucesso."
 
     # Mensagem enviada quando um jogador se desregistra com sucesso.
-    unregister-kick: "&cVocÃª se desregistrou com sucesso."
+    unregister-kick: "&cVocê se desregistrou com sucesso."
 
   kick-messages:
-    # Mensagem quando um jogador tenta logar no servidor com uma pequena diferenÃ§a no nick.
-    nick-already-registered: "&cVocÃª nÃ£o pode entrar com o nick {0}&r\n&r&cEste nick jÃ¡ foi registrado como {1}&r\n&r\n&r&cPara entrar, vocÃª deverÃ¡ usar seu nick sem letras maiÃºsculas/minÃºsculas"
+    # Mensagem quando um jogador tenta logar no servidor com uma pequena diferença no nick.
+    nick-already-registered: "&cVocê não pode entrar com o nick {0}&r\n&r&cEste nick já foi registrado como {1}&r\n&r\n&r&cPara entrar, você deverá usar seu nick sem letras maiúsculas/minúsculas"
 
-    # Mensagem enviada quando um usuÃ¡rio erra muitas vezes.
-    failed-many-times: "&cVocÃª inseriu a senha incorreta."
+    # Mensagem enviada quando um usuário erra muitas vezes.
+    failed-many-times: "&cVocê inseriu a senha incorreta."
 
-    # Mensagem enviada quando a senha inserida Ã© incorreta.
+    # Mensagem enviada quando a senha inserida é incorreta.
     incorrect-password: "&cSenha incorreta. Por favor, tente novamente."
 
   error-messages:
-    # Mensagem enviada quando vocÃª jÃ¡ estÃ¡ logado.
-    already-login: "&cVocÃª jÃ¡ estÃ¡ logado."
+    # Mensagem enviada quando você já está logado.
+    already-login: "&cVocê já está logado."
 
-    # Mensagem enviada quando um nickname jÃ¡ foi registrado.
-    already-registered: "&cEste nickname jÃ¡ foi registrado."
+    # Mensagem enviada quando um nickname já foi registrado.
+    already-registered: "&cEste nickname já foi registrado."
 
-    # Mensagem enviada quando um nickname ainda nÃ£o foi registrado.
-    not-registered: "&cEste nickname ainda nÃ£o foi registrado."
+    # Mensagem enviada quando um nickname ainda não foi registrado.
+    not-registered: "&cEste nickname ainda não foi registrado."
 
-    # Mensagem enviada quando a senha inserida nÃ£o Ã© igual a segunda.
-    passwords-dont-match: "&cAs senhas nÃ£o sÃ£o iguais."
+    # Mensagem enviada quando a senha inserida não é igual a segunda.
+    passwords-dont-match: "&cAs senhas não são iguais."
 
     # Mensagem enviada quando um jogador tenta trocar a senha igual a atual.
-    password-same-as-old: "&cA senha inserida Ã© a mesma que a atual."
+    password-same-as-old: "&cA senha inserida é a mesma que a atual."
 
-    # Mensagem enviada quando a senha inserida Ã© muito grande.
-    password-too-large: "&cA senha inserida Ã© muito grande."
+    # Mensagem enviada quando a senha inserida é muito grande.
+    password-too-large: "&cA senha inserida é muito grande."
 
-    # Mensagem enviada quando a senha inserida Ã© muito pequena.
-    password-too-small: "&cA senha inserida Ã© muito pequena."
+    # Mensagem enviada quando a senha inserida é muito pequena.
+    password-too-small: "&cA senha inserida é muito pequena."
 
-    # Mensagem quando um jogador nÃ£o possuÃ­ a permissÃ£o necessÃ¡ria para executar determinado comando.
-    insufficient-permissions: "&cVocÃª nÃ£o tem permissÃ£o para executar este comando."
+    # Mensagem quando um jogador não possuí a permissão necessária para executar determinado comando.
+    insufficient-permissions: "&cVocê não tem permissão para executar este comando."
 
-    # Mensagem enviada quando um jogador com o mesmo nickname jÃ¡ estÃ¡ online.
-    already-online: "&cEste jogador jÃ¡ estÃ¡ online."
+    # Mensagem enviada quando um jogador com o mesmo nickname já está online.
+    already-online: "&cEste jogador já está online."
 
-    # Mensagem enviada quando um comando sÃ³ pode ser executado por jogadores.
+    # Mensagem enviada quando um comando só pode ser executado por jogadores.
     player-command-usage: "&cEste comando foi desativado via console."
 
-    # Mensagem enviada quando o plugin Ã© recarregado.
+    # Mensagem enviada quando o plugin é recarregado.
     plugin-reload-message: "&eO plugin foi recarregado com sucesso."
 
-    # Mensagem enviada quando uma operaÃ§Ã£o no banco de dados nÃ£o foi executada com Ãªxito.
-    database-error: "&cDesculpe, mas nÃ£o foi possÃ­vel completar esta operaÃ§Ã£o. Por favor, tente novamente. [SQL FAIL]"
+    # Mensagem enviada quando uma operação no banco de dados não foi executada com êxito.
+    database-error: "&cDesculpe, mas não foi possível completar esta operação. Por favor, tente novamente. [SQL FAIL]"
 
   other-messages:
     # Uso do comando /logar.

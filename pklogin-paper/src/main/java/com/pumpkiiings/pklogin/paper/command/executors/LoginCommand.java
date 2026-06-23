@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright Ãƒâ€šÃ‚Â© 2020 - 2026 - PkLogin Contributors
+ * Copyright © 2020 - 2026 - PkLogin Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -91,7 +91,7 @@ public class LoginCommand extends BukkitAbstractCommand {
             String loginCode = com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().generateLoginCode(name);
             com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorProvider discordProvider = com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().getDiscordProvider();
             discordProvider.sendVerificationCode(account, loginCode);
-            player.sendMessage("Ã‚Â§eTe hemos enviado un cÃƒÂ³digo a Discord. Escribe /2fa verify2fa <cÃƒÂ³digo> para entrar.");
+            player.sendMessage("§eTe hemos enviado un código a Discord. Escribe /2fa verify2fa <código> para entrar.");
         } else {
             AsyncLoginEvent loginEvent = new AsyncLoginEvent(player);
             if (loginEvent.callEvt()) {

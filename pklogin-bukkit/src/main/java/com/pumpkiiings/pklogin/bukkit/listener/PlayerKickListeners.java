@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright Â© 2020 - 2026 - PkLogin Contributors
+ * Copyright © 2020 - 2026 - PkLogin Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,7 +60,7 @@ public class PlayerKickListeners implements Listener {
 
         // prevent invalid nicknames
         if (!VALID_NICK.matcher(name).matches()) {
-            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Messages.INVALID_NICKNAME.asString("Â§cSorry, but you are using an invalid nickname."));
+            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Messages.INVALID_NICKNAME.asString("§cSorry, but you are using an invalid nickname."));
             return;
         }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright Â© 2020 - 2026 - PkLogin Contributors
+ * Copyright © 2020 - 2026 - PkLogin Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -115,10 +115,10 @@ public class AuthMeConverter {
             }
         }
 
-        sender.sendMessage("Â§aImport complete!");
-        sender.sendMessage("  Â§fImported: Â§a" + imported
-                + "  Â§fSkipped (already existed): Â§e" + skipped
-                + "  Â§fFailed: Â§c" + failed);
+        sender.sendMessage("§aImport complete!");
+        sender.sendMessage("  §fImported: §a" + imported
+                + "  §fSkipped (already existed): §e" + skipped
+                + "  §fFailed: §c" + failed);
         if (imported > 0) {
             sender.sendMessage(Messages.ADMIN_AUTHME_IMPORT_DONE.asString().replace("{0}", com.pumpkiiings.pklogin.common.settings.Settings.HASH_ALGORITHM.asString("BCRYPT")));
         }

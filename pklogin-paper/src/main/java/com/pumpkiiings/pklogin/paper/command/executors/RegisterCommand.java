@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright Ãƒâ€šÃ‚Â© 2020 - 2026 - PkLogin Contributors
+ * Copyright © 2020 - 2026 - PkLogin Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,7 @@ public class RegisterCommand extends BukkitAbstractCommand {
             int ipLimit = com.pumpkiiings.pklogin.common.settings.Settings.SECURITY_IP_LIMIT.asInt();
             String addressStr = sender.getAddress().getAddress().getHostAddress();
             if (plugin.getAccountManagement().countAccountsByIp(addressStr) >= ipLimit) {
-                sender.sendMessage("Ã‚Â§cHas alcanzado el lÃƒÂ­mite mÃƒÂ¡ximo de cuentas registradas en esta IP.");
+                sender.sendMessage("§cHas alcanzado el límite máximo de cuentas registradas en esta IP.");
                 return;
             }
         }
@@ -132,7 +132,7 @@ public class RegisterCommand extends BukkitAbstractCommand {
         }
 
         if (args.length != 2) {
-            sender.sendMessage("Ãƒâ€šÃ‚Â§cUsage: /" + lb + " <player> <password>");
+            sender.sendMessage("§cUsage: /" + lb + " <player> <password>");
             return;
         }
 

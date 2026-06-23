@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright Â© 2020 - 2026 - PkLogin Contributors
+ * Copyright © 2020 - 2026 - PkLogin Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ public class TextComponentMessage {
 
         TextComponent nlogin = new TextComponent("nLogin");
         nlogin.setColor(ChatColor.YELLOW);
-        HoverEvent nloginHover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("Â§6nLogin Â§7is a Â§6proprietary Â§7authentication plugin,\nÂ§7updated and maintained by Â§bpumpkiiings.comÂ§7. This means that you\nÂ§7cannot view and modify the source code of the plugin.\n\nÂ§eIf you still have questions, please contact us:\nÂ§bpumpkiiings.com/discord"));
+        HoverEvent nloginHover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("§6nLogin §7is a §6proprietary §7authentication plugin,\n§7updated and maintained by §bpumpkiiings.com§7. This means that you\n§7cannot view and modify the source code of the plugin.\n\n§eIf you still have questions, please contact us:\n§bpumpkiiings.com/discord"));
         ClickEvent nloginClick = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pklogin nlogin skip");
         nlogin.setHoverEvent(nloginHover);
         nlogin.setClickEvent(nloginClick);
@@ -46,7 +46,7 @@ public class TextComponentMessage {
 
         TextComponent pklogin = new TextComponent("PkLogin");
         pklogin.setColor(ChatColor.YELLOW);
-        HoverEvent pkloginHover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("Â§bPkLogin Â§7is a Â§bopen source Â§7authentication plugin,\nÂ§7updated and maintained by all PkLogin contributors.\n\nÂ§cCurrently the plugin does not have as many resources as nLogin."));
+        HoverEvent pkloginHover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("§bPkLogin §7is a §bopen source §7authentication plugin,\n§7updated and maintained by all PkLogin contributors.\n\n§cCurrently the plugin does not have as many resources as nLogin."));
         ClickEvent pkloginClick = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pklogin setup");
         pklogin.setHoverEvent(pkloginHover);
         pklogin.setClickEvent(pkloginClick);
@@ -77,7 +77,7 @@ public class TextComponentMessage {
 
         TextComponent nlogin = new TextComponent("Migrate to nLogin");
         nlogin.setColor(ChatColor.GREEN);
-        HoverEvent nloginHover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("Â§6nLogin Â§7is a Â§6proprietary Â§7authentication plugin,\nÂ§7updated and maintained by Â§bpumpkiiings.comÂ§7. This means that you\nÂ§7cannot view and modify the source code of the plugin.\n\nÂ§eIf you still have questions, please contact us:\nÂ§bpumpkiiings.com/discord"));
+        HoverEvent nloginHover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("§6nLogin §7is a §6proprietary §7authentication plugin,\n§7updated and maintained by §bpumpkiiings.com§7. This means that you\n§7cannot view and modify the source code of the plugin.\n\n§eIf you still have questions, please contact us:\n§bpumpkiiings.com/discord"));
         ClickEvent nloginClick = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pklogin nlogin skip");
         nlogin.setHoverEvent(nloginHover);
         nlogin.setClickEvent(nloginClick);
@@ -86,7 +86,7 @@ public class TextComponentMessage {
 
         TextComponent pklogin = new TextComponent("Keep PkLogin");
         pklogin.setColor(ChatColor.DARK_GRAY);
-        HoverEvent pkloginHover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("Â§7Continue using PkLogin."));
+        HoverEvent pkloginHover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("§7Continue using PkLogin."));
         ClickEvent pkloginClick = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pklogin nlogin_ad");
         pklogin.setHoverEvent(pkloginHover);
         pklogin.setClickEvent(pkloginClick);
@@ -102,9 +102,9 @@ public class TextComponentMessage {
 
         // start
         player.sendMessage("");
-        player.sendMessage(" Â§6nLogin Â§7is a free proprietary auth plugin with Â§6more featuresÂ§7.");
-        player.sendMessage(" Â§7When you click to migrate, the plugin will be installed");
-        player.sendMessage(" Â§7on the next restart. No data will be lost.");
+        player.sendMessage(" §6nLogin §7is a free proprietary auth plugin with §6more features§7.");
+        player.sendMessage(" §7When you click to migrate, the plugin will be installed");
+        player.sendMessage(" §7on the next restart. No data will be lost.");
         player.sendMessage("");
 
         Player.Spigot spigot = player.spigot();

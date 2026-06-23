@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright Â© 2020 - 2026 - PkLogin Contributors
+ * Copyright © 2020 - 2026 - PkLogin Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -79,7 +79,7 @@ public class UnregisterCommand extends BukkitAbstractCommand {
 
     private void performConsole(CommandSender sender, String lb, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage("Â§cUsage: /" + lb + " <player>");
+            sender.sendMessage("§cUsage: /" + lb + " <player>");
             return;
         }
 
@@ -102,7 +102,7 @@ public class UnregisterCommand extends BukkitAbstractCommand {
             plugin.getFoliaLib().runAtEntity(playerIfOnline, task -> playerIfOnline.kickPlayer(Messages.UNREGISTER_KICK.asString()));
         }
 
-        sender.sendMessage("Â§aSuccess!");
+        sender.sendMessage("§aSuccess!");
     }
 }
 

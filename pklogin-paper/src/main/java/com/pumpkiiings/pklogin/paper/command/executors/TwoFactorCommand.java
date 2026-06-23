@@ -20,7 +20,7 @@ public class TwoFactorCommand extends BukkitAbstractCommand {
     @Override
     protected void perform(CommandSender sender, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("Â§cOnly players can use this command.");
+            sender.sendMessage("§cOnly players can use this command.");
             return;
         }
 
@@ -62,7 +62,7 @@ public class TwoFactorCommand extends BukkitAbstractCommand {
 
         } else if (subCommand.equals("verify2fa")) {
             if (args.length < 2) {
-                player.sendMessage("Â§eUso: /2fa verify2fa <cÃ³digo>");
+                player.sendMessage("§eUso: /2fa verify2fa <código>");
                 return;
             }
             if (!loginManagement.isAwaiting2FA(name)) {

@@ -68,13 +68,13 @@ Messages:
 
   kick-messages:
     # Message when a player tries to log on to the server with a small difference in the nickname
-    nick-already-registered: "&cNie moÅ¼esz wejÅ›Ä‡ pod tym nickiem {0}\n&cTen uÅ¼ytkownik zostaÅ‚ zarejestrowany jako {1}\n\n&cBy wejÅ›Ä‡ na serwer musisz uÅ¼yÄ‡ starego nicku. ZwrÃ³Ä‡ uwagÄ™ na wielkie litery!"
+    nick-already-registered: "&cNie moÅ¼esz wejÅ›Ä‡ pod tym nickiem {0}\n&cTen uÅ¼ytkownik zostaÅ‚ zarejestrowany jako {1}\n\n&cBy wejÅ›Ä‡ na serwer musisz uÅ¼yÄ‡ starego nicku. ZwróÄ‡ uwagÄ™ na wielkie litery!"
 
     # Message sent when a user misses many times
     failed-many-times: "&cZbyt wiele razy wpisaÅ‚eÅ› zÅ‚e hasÅ‚o."
 
     # Message sent when password entered is incorrect
-    incorrect-password: "&cNie wÅ‚aÅ›ciwe hasÅ‚o! SprÃ³buj ponownie."
+    incorrect-password: "&cNie wÅ‚aÅ›ciwe hasÅ‚o! Spróbuj ponownie."
 
   error-messages:
     # Message sent when you are already logged in.
@@ -96,7 +96,7 @@ Messages:
     password-too-large: "&cPodane hasÅ‚o jest za dÅ‚ugie."
 
     # Message sent when the password entered is too small
-    password-too-small: "&cPodane hasÅ‚o jest za krÃ³tkie."
+    password-too-small: "&cPodane hasÅ‚o jest za krótkie."
 
     # Message when a player does not possess the required permission
     insufficient-permissions: "&cNie masz uprawnieÅ„ by to zrobiÄ‡."
@@ -111,7 +111,7 @@ Messages:
     plugin-reload-message: "&ePomyÅ›lnie przeÅ‚adowano plugin."
 
     # Komunikat wysyÅ‚any, gdy operacja na bazie danych nie zostaÅ‚a pomyÅ›lnie wykonana
-    database-error: "&cPrzepraszamy, nie mogliÅ›my ukoÅ„czyÄ‡ tej operacji. ProszÄ™ sprÃ³buj ponownie. [SQL FAIL]"
+    database-error: "&cPrzepraszamy, nie mogliÅ›my ukoÅ„czyÄ‡ tej operacji. ProszÄ™ spróbuj ponownie. [SQL FAIL]"
 
   other-messages:
     # Mensagem enviada para o uso do comando /logar

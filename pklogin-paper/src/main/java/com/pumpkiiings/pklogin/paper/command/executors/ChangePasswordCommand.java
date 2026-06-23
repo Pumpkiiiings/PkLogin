@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright Â© 2020 - 2026 - PkLogin Contributors
+ * Copyright © 2020 - 2026 - PkLogin Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -107,7 +107,7 @@ public class ChangePasswordCommand extends BukkitAbstractCommand {
         }
 
         if (args.length != 2) {
-            sender.sendMessage("Â§cUsage: /" + lb + " <player> <new password>");
+            sender.sendMessage("§cUsage: /" + lb + " <player> <new password>");
             return;
         }
 

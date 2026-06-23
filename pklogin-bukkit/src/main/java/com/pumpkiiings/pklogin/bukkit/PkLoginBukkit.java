@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright Â© 2020 - 2026 - PkLogin Contributors
+ * Copyright © 2020 - 2026 - PkLogin Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -85,7 +85,7 @@ public class PkLoginBukkit extends JavaPlugin {
             return;
         }
 
-        String c = "Â§9";
+        String c = "§9";
         sendMessage(c + "   ___                __  __             _ ");
         sendMessage(c + "  /___\\_ __   ___  /\\ \\ \\/ /  ___   __ _(_)_ __");
         sendMessage(c + " //  // '_ \\ / _ \\/  \\/ / /  / _ \\ / _` | | '_ \\");
@@ -212,13 +212,13 @@ public class PkLoginBukkit extends JavaPlugin {
                     registeredUsers = rs.getInt("COUNT(*)");
                 }
             } catch (Exception e) {
-                sendMessage("Â§cFailed to update the register count.");
+                sendMessage("§cFailed to update the register count.");
             }
             pluginSettings = new PluginSettings(database);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            sendMessage("Â§cFailed to start database. Shutting down server...");
+            sendMessage("§cFailed to start database. Shutting down server...");
             return false;
         }
     }
@@ -246,17 +246,17 @@ public class PkLoginBukkit extends JavaPlugin {
                 }
             }
         } catch (IOException e) {
-            sendMessage("Â§cFailed to find new updates.");
-            sendMessage("Â§cDownload the latest version at: https://github.com/pumpkiiings/pklogin/releases");
+            sendMessage("§cFailed to find new updates.");
+            sendMessage("§cDownload the latest version at: https://github.com/pumpkiiings/pklogin/releases");
         }
         if (tagName == null) {
-            sendMessage("Â§cFailed to find new updates: invalid response.");
-            sendMessage("Â§cDownload the latest version at: https://github.com/pumpkiiings/pklogin/releases");
+            sendMessage("§cFailed to find new updates: invalid response.");
+            sendMessage("§cDownload the latest version at: https://github.com/pumpkiiings/pklogin/releases");
         } else {
             String currentVersion = "v" + getDescription().getVersion();
             updateAvailable = !currentVersion.equals(tagName);
             if (updateAvailable) {
-                sendMessage("A new version of PkLogin is available (" + currentVersion + " -> " + latestVersion + ").", "Â§e");
+                sendMessage("A new version of PkLogin is available (" + currentVersion + " -> " + latestVersion + ").", "§e");
             }
         }
     }
@@ -291,7 +291,7 @@ public class PkLoginBukkit extends JavaPlugin {
         String lang = Settings.LANGUAGE_FILE.asString();
         File messagesFile = new File(getDataFolder() + "/lang", lang);
         if (!messagesFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/lang/" + lang, messagesFile) && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/lang/messages_en.yml", messagesFile)) {
-            sendMessage("Â§cFailed to create '" + lang + "' language file.");
+            sendMessage("§cFailed to create '" + lang + "' language file.");
             return false;
         }
 

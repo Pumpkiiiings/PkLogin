@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright Ãƒâ€šÃ‚Â© 2020 - 2026 - PkLogin Contributors
+ * Copyright © 2020 - 2026 - PkLogin Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -77,7 +77,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                         return;
                     }
                     if (args.length < 2) {
-                        sender.sendMessage("Ã‚Â§eUsage: /pklogin forcelogin <player>");
+                        sender.sendMessage("§eUsage: /pklogin forcelogin <player>");
                         return;
                     }
                     String targetName = args[1];
@@ -88,7 +88,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                         target.getScheduler().run(plugin, task -> target.sendMessage(Messages.SUCCESSFUL_LOGIN.asString()), null);
                         sender.sendMessage(Messages.ADMIN_FORCELOGIN_SUCCESS.asString().replace("{0}", target.getName()));
                     } else {
-                        sender.sendMessage("Ã‚Â§cPlayer not found or not online.");
+                        sender.sendMessage("§cPlayer not found or not online.");
                     }
                     return;
                 }
@@ -99,7 +99,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                         return;
                     }
                     if (args.length < 2) {
-                        sender.sendMessage("Ã‚Â§eUsage: /pklogin unregister <player>");
+                        sender.sendMessage("§eUsage: /pklogin unregister <player>");
                         return;
                     }
                     String targetName = args[1];
@@ -107,7 +107,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                         plugin.getLoginManagement().cleanup(targetName);
                         sender.sendMessage(Messages.ADMIN_UNREGISTER_SUCCESS.asString().replace("{0}", targetName));
                     } else {
-                        sender.sendMessage("Ã‚Â§cAccount not found.");
+                        sender.sendMessage("§cAccount not found.");
                     }
                     return;
                 }
@@ -118,7 +118,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                         return;
                     }
                     if (args.length < 3) {
-                        sender.sendMessage("Ã‚Â§eUsage: /pklogin changepass <player> <newpass>");
+                        sender.sendMessage("§eUsage: /pklogin changepass <player> <newpass>");
                         return;
                     }
                     String targetName = args[1];
@@ -133,7 +133,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                             target.getScheduler().run(plugin, task -> target.kick(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(Messages.ADMIN_CHANGEPASS_KICK.asString())), null);
                         }
                     } else {
-                        sender.sendMessage("Ã‚Â§cAccount not found.");
+                        sender.sendMessage("§cAccount not found.");
                     }
                     return;
                 }
@@ -144,7 +144,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                         return;
                     }
                     if (args.length < 2) {
-                        sender.sendMessage("Ã‚Â§eUsage: /pklogin dupeip <ip/player>");
+                        sender.sendMessage("§eUsage: /pklogin dupeip <ip/player>");
                         return;
                     }
                     String target = args[1];
@@ -198,12 +198,12 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                     }
 
                     if (!plugin.isUpdateAvailable()) {
-                        sender.sendMessage("Ãƒâ€šÃ‚Â§cYou are already using the latest version.");
+                        sender.sendMessage("§cYou are already using the latest version.");
                         return;
                     }
 
                     if (downloadLock.getAndSet(true)) {
-                        sender.sendMessage("Ãƒâ€šÃ‚Â§cDownload in progress...");
+                        sender.sendMessage("§cDownload in progress...");
                     } else if (!update(player)) {
                         downloadLock.set(false);
                     }
@@ -215,10 +215,10 @@ public class PkLoginCommand extends BukkitAbstractCommand {
         }
 
         sender.sendMessage("");
-        sender.sendMessage(" Ãƒâ€šÃ‚Â§eThis server is running Ãƒâ€šÃ‚Â§fPkLogin v " + plugin.getDescription().getVersion() + ".");
-        sender.sendMessage(" Ãƒâ€šÃ‚Â§7Powered by Ãƒâ€šÃ‚Â§bwww.pumpkiiings.comÃƒâ€šÃ‚Â§7.");
+        sender.sendMessage(" §eThis server is running §fPkLogin v " + plugin.getDescription().getVersion() + ".");
+        sender.sendMessage(" §7Powered by §bwww.pumpkiiings.com§7.");
         sender.sendMessage("");
-        sender.sendMessage(" Ãƒâ€šÃ‚Â§7GitHub: Ãƒâ€šÃ‚Â§fhttps://github.com/pumpkiiings/pklogin");
+        sender.sendMessage(" §7GitHub: §fhttps://github.com/pumpkiiings/pklogin");
         sender.sendMessage("");
     }
 
@@ -230,15 +230,15 @@ public class PkLoginCommand extends BukkitAbstractCommand {
 
 
     private boolean downloadActionbar(Player player, String url, File output, boolean update, Runnable callback) {
-        player.sendMessage("Ãƒâ€šÃ‚Â§eDownloading...");
-        com.pumpkiiings.pklogin.paper.util.AdventureAPI.sendActionBar(player, "Ãƒâ€šÃ‚Â§eConnecting...");
+        player.sendMessage("§eDownloading...");
+        com.pumpkiiings.pklogin.paper.util.AdventureAPI.sendActionBar(player, "§eConnecting...");
 
         final int barsCount = 40;
         final HttpClient.AsyncDownloadResult downloadResult;
         try {
             if ((downloadResult = HttpClient.DEFAULT.download(url, output)) == null) {
-                com.pumpkiiings.pklogin.paper.util.AdventureAPI.sendActionBar(player, "Ãƒâ€šÃ‚Â§cDownload failed!");
-                player.sendMessage("Ãƒâ€šÃ‚Â§cDownload failed, could not delete old file.");
+                com.pumpkiiings.pklogin.paper.util.AdventureAPI.sendActionBar(player, "§cDownload failed!");
+                player.sendMessage("§cDownload failed, could not delete old file.");
                 return false;
             }
         } catch (IOException exception) {
@@ -251,21 +251,21 @@ public class PkLoginCommand extends BukkitAbstractCommand {
         player.getScheduler().runAtFixedRate(plugin, task -> {
             if (downloadFinished.get()) {
                 if (downloadSuccessful.get()) {
-                    com.pumpkiiings.pklogin.paper.util.AdventureAPI.sendActionBar(player, "Ãƒâ€šÃ‚Â§aDownload finished! Ãƒâ€šÃ‚Â§7(Ãƒâ€šÃ‚Â§a" + repeatString("|", barsCount) + "Ãƒâ€šÃ‚Â§7)");
-                    player.sendMessage("Ãƒâ€šÃ‚Â§aDownload finished. Please restart your server.");
+                    com.pumpkiiings.pklogin.paper.util.AdventureAPI.sendActionBar(player, "§aDownload finished! §7(§a" + repeatString("|", barsCount) + "§7)");
+                    player.sendMessage("§aDownload finished. Please restart your server.");
                     if (callback != null) {
                         callback.run();
                     }
                 } else {
-                    com.pumpkiiings.pklogin.paper.util.AdventureAPI.sendActionBar(player, "Ãƒâ€šÃ‚Â§cDownload failed! Ãƒâ€šÃ‚Â§7(Ãƒâ€šÃ‚Â§a" + repeatString("|", barsCount) + "Ãƒâ€šÃ‚Â§7)");
-                    player.sendMessage("Ãƒâ€šÃ‚Â§cDownload failed, please try again.");
+                    com.pumpkiiings.pklogin.paper.util.AdventureAPI.sendActionBar(player, "§cDownload failed! §7(§a" + repeatString("|", barsCount) + "§7)");
+                    player.sendMessage("§cDownload failed, please try again.");
                 }
                 task.cancel();
                 return;
             }
             int bars = (int) (barsCount * (downloadResult.downloaded() / downloadResult.contentLength()));
-            String progressBar = "Ãƒâ€šÃ‚Â§a" + repeatString("|", bars) + "Ãƒâ€šÃ‚Â§c" + repeatString("|", barsCount - bars);
-            com.pumpkiiings.pklogin.paper.util.AdventureAPI.sendActionBar(player, "Ãƒâ€šÃ‚Â§eDownloading... Ãƒâ€šÃ‚Â§7(" + progressBar + "Ãƒâ€šÃ‚Â§7)");
+            String progressBar = "§a" + repeatString("|", bars) + "§c" + repeatString("|", barsCount - bars);
+            com.pumpkiiings.pklogin.paper.util.AdventureAPI.sendActionBar(player, "§eDownloading... §7(" + progressBar + "§7)");
         }, null, 0L, 10L);
 
         try {
@@ -278,8 +278,8 @@ public class PkLoginCommand extends BukkitAbstractCommand {
             downloadLock.set(false);
             e.printStackTrace();
             String msg = update ?
-                    "Ãƒâ€šÃ‚Â§cFailed to download new version. Update manually at: https://github.com/pumpkiiings/pklogin/releases" :
-                    "Ãƒâ€šÃ‚Â§cFailed to download nLogin :c. Download manually at: pumpkiiings.com";
+                    "§cFailed to download new version. Update manually at: https://github.com/pumpkiiings/pklogin/releases" :
+                    "§cFailed to download nLogin :c. Download manually at: pumpkiiings.com";
             plugin.sendMessage(msg);
             player.sendMessage(msg);
         } finally {

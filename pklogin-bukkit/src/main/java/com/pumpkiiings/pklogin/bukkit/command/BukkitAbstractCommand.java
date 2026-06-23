@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright Â© 2020 - 2026 - PkLogin Contributors
+ * Copyright © 2020 - 2026 - PkLogin Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -69,7 +69,7 @@ public abstract class BukkitAbstractCommand implements CommandExecutor {
                     perform(sender, lb, args);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    plugin.sendMessage("Â§cFailed to perform the command '" + lb + "', sender: " + sender.getName());
+                    plugin.sendMessage("§cFailed to perform the command '" + lb + "', sender: " + sender.getName());
                 }
             });
         }

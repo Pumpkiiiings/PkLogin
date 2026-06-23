@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright Ã‚Â© 2020 - 2026 - PkLogin Contributors
+ * Copyright © 2020 - 2026 - PkLogin Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -85,7 +85,7 @@ public class PkLoginPaper extends JavaPlugin {
             return;
         }
 
-        String c = "Ã‚Â§9";
+        String c = "§9";
         sendMessage(c + "   ___                __  __             _ ");
         sendMessage(c + "  /___\\_ __   ___  /\\ \\ \\/ /  ___   __ _(_)_ __");
         sendMessage(c + " //  // '_ \\ / _ \\/  \\/ / /  / _ \\ / _` | | '_ \\");
@@ -161,11 +161,11 @@ public class PkLoginPaper extends JavaPlugin {
         com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().init();
 
         if (getServer().getOnlineMode()) {
-            sendMessage("Â§c=========================================================");
-            sendMessage("Â§cWARNING: online-mode is set to true in server.properties!");
-            sendMessage("Â§cIf this server only allows premium players (no Proxy), you don't need a login plugin!");
-            sendMessage("Â§cIf you are using a proxy (like BungeeCord/Velocity), please set online-mode to false.");
-            sendMessage("Â§c=========================================================");
+            sendMessage("§c=========================================================");
+            sendMessage("§cWARNING: online-mode is set to true in server.properties!");
+            sendMessage("§cIf this server only allows premium players (no Proxy), you don't need a login plugin!");
+            sendMessage("§cIf you are using a proxy (like BungeeCord/Velocity), please set online-mode to false.");
+            sendMessage("§c=========================================================");
         }
     }
     
@@ -212,13 +212,13 @@ public class PkLoginPaper extends JavaPlugin {
                     registeredUsers = rs.getInt("COUNT(*)");
                 }
             } catch (Exception e) {
-                sendMessage("Ã‚Â§cFailed to update the register count.");
+                sendMessage("§cFailed to update the register count.");
             }
             pluginSettings = new PluginSettings(database);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            sendMessage("Ã‚Â§cFailed to start database. Shutting down server...");
+            sendMessage("§cFailed to start database. Shutting down server...");
             return false;
         }
     }
@@ -246,17 +246,17 @@ public class PkLoginPaper extends JavaPlugin {
                 }
             }
         } catch (IOException e) {
-            sendMessage("Ã‚Â§cFailed to find new updates.");
-            sendMessage("Ã‚Â§cDownload the latest version at: https://github.com/pumpkiiings/pklogin/releases");
+            sendMessage("§cFailed to find new updates.");
+            sendMessage("§cDownload the latest version at: https://github.com/pumpkiiings/pklogin/releases");
         }
         if (tagName == null) {
-            sendMessage("Ã‚Â§cFailed to find new updates: invalid response.");
-            sendMessage("Ã‚Â§cDownload the latest version at: https://github.com/pumpkiiings/pklogin/releases");
+            sendMessage("§cFailed to find new updates: invalid response.");
+            sendMessage("§cDownload the latest version at: https://github.com/pumpkiiings/pklogin/releases");
         } else {
             String currentVersion = "v" + getDescription().getVersion();
             updateAvailable = !currentVersion.equals(tagName);
             if (updateAvailable) {
-                sendMessage("A new version of PkLogin is available (" + currentVersion + " -> " + latestVersion + ").", "Ã‚Â§e");
+                sendMessage("A new version of PkLogin is available (" + currentVersion + " -> " + latestVersion + ").", "§e");
             }
         }
     }
@@ -264,7 +264,7 @@ public class PkLoginPaper extends JavaPlugin {
     public boolean setupSettings() {
         File configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/config.yml", configFile)) {
-            sendMessage("Â§cFailed to create 'config.yml' file.");
+            sendMessage("§cFailed to create 'config.yml' file.");
             return false;
         }
 
@@ -275,12 +275,12 @@ public class PkLoginPaper extends JavaPlugin {
 
         File discordFile = new File(twoFaFolder, "discord.yml");
         if (!discordFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/2fa/discord.yml", discordFile)) {
-            sendMessage("Â§cFailed to create 'discord.yml' file.");
+            sendMessage("§cFailed to create 'discord.yml' file.");
         }
 
         File emailFile = new File(twoFaFolder, "email.yml");
         if (!emailFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/2fa/email.yml", emailFile)) {
-            sendMessage("Â§cFailed to create 'email.yml' file.");
+            sendMessage("§cFailed to create 'email.yml' file.");
         }
 
         Settings.clear();
@@ -291,7 +291,7 @@ public class PkLoginPaper extends JavaPlugin {
         String lang = Settings.LANGUAGE_FILE.asString();
         File messagesFile = new File(getDataFolder() + "/lang", lang);
         if (!messagesFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/lang/" + lang, messagesFile) && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/lang/messages_en.yml", messagesFile)) {
-            sendMessage("Ã‚Â§cFailed to create '" + lang + "' language file.");
+            sendMessage("§cFailed to create '" + lang + "' language file.");
             return false;
         }
 

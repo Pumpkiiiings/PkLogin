@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.pumpkiiings.pklogin'
-version = '1.6.7'
+version = '1.6.8'
 archivesBaseName = 'pklogin-forge'
 
 sourceCompatibility = 17

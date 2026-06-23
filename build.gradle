@@ -2,7 +2,7 @@ subprojects {
     apply plugin: 'java'
 
     group = 'com.pumpkiiings.pklogin'
-    version = '1.6.7'
+    version = '1.6.8'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8

@@ -37,6 +37,7 @@ public class LoginManagement {
     private final Map<String, Long> lock = new HashMap<>();
     private final HashSet<String> logged = new HashSet<>();
     private final HashSet<String> awaiting2fa = new HashSet<>();
+    private final HashSet<String> mustChangePassword = new HashSet<>();
     private final Map<String, Integer> failedAttempts = new HashMap<>();
 
     private final AccountManagement accountManagement;
@@ -56,6 +57,9 @@ public class LoginManagement {
         }
         synchronized (awaiting2fa) {
             awaiting2fa.remove(nameLower);
+        }
+        synchronized (mustChangePassword) {
+            mustChangePassword.remove(nameLower);
         }
         synchronized (failedAttempts) {
             failedAttempts.remove(nameLower);
@@ -103,6 +107,24 @@ public class LoginManagement {
     public boolean isAwaiting2FA(@NonNull String name) {
         synchronized (awaiting2fa) {
             return awaiting2fa.contains(name.toLowerCase());
+        }
+    }
+
+    public void setMustChangePassword(@NonNull String name) {
+        synchronized (mustChangePassword) {
+            mustChangePassword.add(name.toLowerCase());
+        }
+    }
+
+    public void removeMustChangePassword(@NonNull String name) {
+        synchronized (mustChangePassword) {
+            mustChangePassword.remove(name.toLowerCase());
+        }
+    }
+
+    public boolean mustChangePassword(@NonNull String name) {
+        synchronized (mustChangePassword) {
+            return mustChangePassword.contains(name.toLowerCase());
         }
     }
 

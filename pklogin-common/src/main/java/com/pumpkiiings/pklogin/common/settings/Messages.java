@@ -65,6 +65,8 @@ public enum Messages {
     PASSWORD_SAME_AS_OLD("error-messages.password-same-as-old"),
     PASSWORD_TOO_LARGE("error-messages.password-too-large"),
     PASSWORD_TOO_SMALL("error-messages.password-too-small"),
+    INSECURE_PASSWORD("error-messages.insecure-password"),
+    CHANGE_PASSWORD_ENFORCED("error-messages.change-password-enforced"),
     INSUFFICIENT_PERMISSIONS("error-messages.insufficient-permissions"),
     ALREADY_ONLINE("error-messages.already-online"),
     PLAYER_COMMAND_USAGE("error-messages.player-command-usage"),

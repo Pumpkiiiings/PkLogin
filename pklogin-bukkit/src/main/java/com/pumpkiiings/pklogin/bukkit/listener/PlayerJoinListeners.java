@@ -83,7 +83,7 @@ public class PlayerJoinListeners implements Listener {
         if (com.pumpkiiings.pklogin.common.settings.Settings.TELEPORT_SAFE_LOCATION.asBoolean()) {
             com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.teleportToSpawn(player);
         }
-        com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.applyLimboState(player);
+        com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.applyLimboState(plugin, player);
 
         if (registered) {
             player.sendMessage(Messages.MESSAGE_LOGIN.asString());

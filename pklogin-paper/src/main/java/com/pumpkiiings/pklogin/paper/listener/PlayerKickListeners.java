@@ -50,10 +50,54 @@ public class PlayerKickListeners implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(AsyncPlayerPreLoginEvent e) {
         String name = e.getName();
+        
+        if (com.pumpkiiings.pklogin.common.settings.Settings.APPENDER_ENABLED.asBoolean()) {
+            Optional<Account> accountOpt = plugin.getAccountManagement().search(name);
+            boolean isPremium = false;
+            if (accountOpt.isPresent() && ("REAL".equalsIgnoreCase(accountOpt.get().getUuidType()) || "PREMIUM".equalsIgnoreCase(accountOpt.get().getUuidType()))) {
+                isPremium = true;
+            }
+
+            String newName = name;
+            if (isPremium) {
+                String appendix = com.pumpkiiings.pklogin.common.settings.Settings.APPENDER_PREMIUM_APPENDIX.asString();
+                String pos = com.pumpkiiings.pklogin.common.settings.Settings.APPENDER_PREMIUM_POSITION.asString();
+                if ("PREFIX".equalsIgnoreCase(pos)) {
+                    newName = appendix + newName;
+                } else {
+                    newName = newName + appendix;
+                }
+            } else {
+                String appendix = com.pumpkiiings.pklogin.common.settings.Settings.APPENDER_OFFLINE_APPENDIX.asString();
+                String pos = com.pumpkiiings.pklogin.common.settings.Settings.APPENDER_OFFLINE_POSITION.asString();
+                if ("PREFIX".equalsIgnoreCase(pos)) {
+                    newName = appendix + newName;
+                } else {
+                    newName = newName + appendix;
+                }
+            }
+
+            if (!newName.equals(name)) {
+                if (newName.length() > 16) {
+                    newName = newName.substring(0, 16);
+                }
+                e.getPlayerProfile().setName(newName);
+                name = newName;
+            }
+        }
+        
         Player player = Bukkit.getPlayerExact(name);
 
         // prevent double online nickname
         if (player != null) {
+            if (com.pumpkiiings.pklogin.common.settings.Settings.BYPASS_ONLINE_CHECK_WITH_SAME_ADDRESS.asBoolean()) {
+                String existingIp = player.getAddress().getAddress().getHostAddress();
+                String newIp = e.getAddress().getHostAddress();
+                if (existingIp.equals(newIp)) {
+                    Bukkit.getScheduler().runTask(plugin, () -> player.kickPlayer("Reconnecting..."));
+                    return;
+                }
+            }
             e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Messages.ALREADY_ONLINE.asString());
             return;
         }
@@ -83,6 +127,14 @@ public class PlayerKickListeners implements Listener {
 
         // prevent double online nickname
         if (player != null) {
+            if (com.pumpkiiings.pklogin.common.settings.Settings.BYPASS_ONLINE_CHECK_WITH_SAME_ADDRESS.asBoolean()) {
+                String existingIp = player.getAddress().getAddress().getHostAddress();
+                String newIp = e.getAddress().getHostAddress();
+                if (existingIp.equals(newIp)) {
+                    // Already kicked in AsyncPreLogin, just return
+                    return;
+                }
+            }
             e.disallow(PlayerLoginEvent.Result.KICK_OTHER, Messages.ALREADY_ONLINE.asString());
         }
     }

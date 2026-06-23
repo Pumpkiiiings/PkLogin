@@ -53,6 +53,18 @@ public enum Settings {
             "Security.password.large",
             15
     ),
+    SECURE_PASSWORDS_ENABLE(
+            "Security.password.secure.enable",
+            false
+    ),
+    SECURE_PASSWORDS_ENFORCE(
+            "Security.password.secure.enforce",
+            false
+    ),
+    SECURE_PASSWORDS_REGEX(
+            "Security.password.secure.secure-regex",
+            "(?=\\S*\\d)(?=\\S*[A-Z])(?=\\S*[a-z])(?=\\S*[!@#$%^&*?])\\S*$"
+    ),
     DATABASE_TYPE(
             "Database.type",
             "sqlite"
@@ -129,6 +141,18 @@ public enum Settings {
             "limbo.blindness-effect",
             false
     ),
+    LIMBO_HIDE_PLAYERS(
+            "limbo.hide-players-before-login",
+            true
+    ),
+    LIMBO_HIDE_INVENTORY(
+            "limbo.inventory.hide-inventory",
+            true
+    ),
+    LIMBO_BLOCK_WALK(
+            "limbo.block-player-walk",
+            true
+    ),
     BRUTEFORCE_MAX_LOGIN_TRIES(
             "passwords.bruteforce.max-login-tries",
             3
@@ -140,6 +164,10 @@ public enum Settings {
     SECURITY_IP_LIMIT(
             "security.ip-limit.limit",
             3
+    ),
+    BYPASS_ONLINE_CHECK_WITH_SAME_ADDRESS(
+            "security.bypass-online-check-with-same-address",
+            true
     ),
     HASH_ALGORITHM(
             "security.hash-algorithm",

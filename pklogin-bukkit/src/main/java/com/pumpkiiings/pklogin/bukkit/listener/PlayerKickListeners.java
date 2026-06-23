@@ -54,6 +54,14 @@ public class PlayerKickListeners implements Listener {
 
         // prevent double online nickname
         if (player != null) {
+            if (com.pumpkiiings.pklogin.common.settings.Settings.BYPASS_ONLINE_CHECK_WITH_SAME_ADDRESS.asBoolean()) {
+                String existingIp = player.getAddress().getAddress().getHostAddress();
+                String newIp = e.getAddress().getHostAddress();
+                if (existingIp.equals(newIp)) {
+                    plugin.getFoliaLib().runAtEntity(player, task -> player.kickPlayer("Reconnecting..."));
+                    return;
+                }
+            }
             e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Messages.ALREADY_ONLINE.asString());
             return;
         }
@@ -83,6 +91,14 @@ public class PlayerKickListeners implements Listener {
 
         // prevent double online nickname
         if (player != null) {
+            if (com.pumpkiiings.pklogin.common.settings.Settings.BYPASS_ONLINE_CHECK_WITH_SAME_ADDRESS.asBoolean()) {
+                String existingIp = player.getAddress().getAddress().getHostAddress();
+                String newIp = e.getAddress().getHostAddress();
+                if (existingIp.equals(newIp)) {
+                    // Already kicked in AsyncPreLogin, just return
+                    return;
+                }
+            }
             e.disallow(PlayerLoginEvent.Result.KICK_OTHER, Messages.ALREADY_ONLINE.asString());
         }
     }

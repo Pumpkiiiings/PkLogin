@@ -93,6 +93,13 @@ public class RegisterCommand extends BukkitAbstractCommand {
             return;
         }
 
+        if (com.pumpkiiings.pklogin.common.settings.Settings.SECURE_PASSWORDS_ENABLE.asBoolean()) {
+            if (!password.matches(com.pumpkiiings.pklogin.common.settings.Settings.SECURE_PASSWORDS_REGEX.asString())) {
+                sender.sendMessage(Messages.INSECURE_PASSWORD.asString());
+                return;
+            }
+        }
+
         AccountManagement accountManagement = plugin.getAccountManagement();
         boolean exists = accountManagement.retrieveOrLoad(name).isPresent();
         if (exists) {
@@ -113,12 +120,12 @@ public class RegisterCommand extends BukkitAbstractCommand {
 
             com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(sender, Messages.TITLE_AFTER_REGISTER.asTitle().title, Messages.TITLE_AFTER_REGISTER.asTitle().subtitle, Messages.TITLE_AFTER_REGISTER.asTitle().start, Messages.TITLE_AFTER_REGISTER.asTitle().duration, Messages.TITLE_AFTER_REGISTER.asTitle().end);
             sender.sendMessage(Messages.SUCCESSFUL_REGISTER.asString());
-
-            sender.getScheduler().run(plugin, task -> {
-                sender.setWalkSpeed(0.2F);
-                sender.setFlySpeed(0.1F);
-                com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.removeLimboState(sender);
-                com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.restoreLastLocation(sender);
+            Player player = (Player) sender;
+            player.getScheduler().run(plugin, task -> {
+                player.setWalkSpeed(0.2F);
+                player.setFlySpeed(0.1F);
+                com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.removeLimboState(plugin, player);
+                com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.restoreLastLocation(player);
             }, null);
 
             new AsyncAuthenticateEvent(sender).callEvt();
@@ -183,7 +190,7 @@ public class RegisterCommand extends BukkitAbstractCommand {
                 playerIfOnline.getScheduler().run(plugin, task -> {
                     playerIfOnline.setWalkSpeed(0.2F);
                     playerIfOnline.setFlySpeed(0.1F);
-                    com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.removeLimboState(playerIfOnline);
+                    com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.removeLimboState(plugin, playerIfOnline);
                     com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.restoreLastLocation(playerIfOnline);
                 }, null);
 

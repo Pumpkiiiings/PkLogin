@@ -46,7 +46,6 @@ public class PkLoginVelocity {
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         instance = this;
-        logger.info("PkLogin Velocity module has been initialized!");
 
         File dataFolder = dataDirectory.toFile();
         if (!dataFolder.exists()) {
@@ -94,6 +93,24 @@ public class PkLoginVelocity {
         } catch (Exception e) {
             logger.error("Failed to connect to database!", e);
         }
+
+        String c = "§b";
+        String lg = "§7";
+        String dg = "§8";
+        logger.info(c + "   ___                __  __             _ ");
+        logger.info(c + "  /___\\_ __   ___  /\\ \\ \\/ /  ___   __ _(_)_ __");
+        logger.info(c + " //  // '_ \\ / _ \\/  \\/ / /  / _ \\ / _` | | '_ \\");
+        logger.info(c + "/ \\_//| |_) |  __/ /\\  / /__| (_) | (_| | | | | |");
+        logger.info(c + "\\___/ | .__/ \\___\\_\\ \\/\\____/\\___/ \\__, |_|_| |_|");
+        logger.info(c + "      |_|                          |___/         ");
+        logger.info(dg + "A fork of OpenLogin but better");
+        logger.info(lg + "Support: " + dg + "https://discord.gg/MVQ5r7X4Qd");
+        logger.info(lg + "Database Type: " + dg + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
+        logger.info(lg + "Version: " + dg + "2.0.0");
+        logger.info(lg + "Source: " + dg + "github.com/pumpkiiings/pklogin");
+        logger.info("");
+        logger.info(dg + "Thanks for use my plugin!");
+        logger.info("");
 
         // Register channel
         server.getChannelRegistrar().register(PluginMessageListener.IDENTIFIER);

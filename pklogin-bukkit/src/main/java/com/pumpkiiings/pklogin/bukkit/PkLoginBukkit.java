@@ -85,16 +85,6 @@ public class PkLoginBukkit extends JavaPlugin {
             return;
         }
 
-        String c = "§9";
-        sendMessage(c + "   ___                __  __             _ ");
-        sendMessage(c + "  /___\\_ __   ___  /\\ \\ \\/ /  ___   __ _(_)_ __");
-        sendMessage(c + " //  // '_ \\ / _ \\/  \\/ / /  / _ \\ / _` | | '_ \\");
-        sendMessage(c + "/ \\_//| |_) |  __/ /\\  / /__| (_) | (_| | | | | |");
-        sendMessage(c + "\\___/ | .__/ \\___\\_\\ \\/\\____/\\___/ \\__, |_|_| |_|");
-        sendMessage(c + "      |_|                          |___/         ");
-        sendMessage(c + "By: www.pumpkiiings.com / github.com/pumpkiiings/pklogin - V " + getDescription().getVersion());
-        sendMessage("");
-
         Server server = getServer();
 
         File newUserfile = new File(getDataFolder(), "new-user");
@@ -114,6 +104,26 @@ public class PkLoginBukkit extends JavaPlugin {
             return;
         }
 
+        String c = "§9";
+        String lg = "§7";
+        String dg = "§8";
+        sendMessage(c + "▄▄▄▄▄▄▄          ▄▄▄                      ");
+        sendMessage(c + "███▀▀███▄ ▄▄     ███                  ▀▀ ");
+        sendMessage(c + "███▄▄███▀ ██ ▄█▀ ███      ▄███▄ ▄████ ██  ████▄ ");
+        sendMessage(c + "███▀▀▀▀   ████   ███      ██ ██ ██ ██ ██  ██ ██ ");
+        sendMessage(c + "███       ██ ▀█▄ ████████ ▀███▀ ▀████ ██▄ ██ ██ ");
+        sendMessage(c + "                                   ██  ");
+        sendMessage(c + "                                 ▀▀▀  ");
+        sendMessage(dg + "A fork of OpenLogin but better");
+        sendMessage(lg + "Support: " + dg + "https://discord.gg/MVQ5r7X4Qd");
+        sendMessage(lg + "Database Type: " + dg
+                + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
+        sendMessage(lg + "Version: " + dg + getDescription().getVersion());
+        sendMessage(lg + "Source: " + dg + "github.com/pumpkiiings/pklogin");
+        sendMessage("");
+        sendMessage(dg + "Thanks for use my plugin!");
+        sendMessage("");
+
         // setup Folia lib
         foliaLib = new FoliaLib(this).getImpl();
 
@@ -122,8 +132,6 @@ public class PkLoginBukkit extends JavaPlugin {
 
         // setup login management
         loginManagement = new LoginManagement(accountManagement);
-
-
 
         // setup commands
         commandManagement = new CommandManagement(this);
@@ -153,11 +161,12 @@ public class PkLoginBukkit extends JavaPlugin {
         PkLogin.setApi(new OLBukkitAPI(this));
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "pklogin:main");
-        getServer().getMessenger().registerIncomingPluginChannel(this, "pklogin:main", new com.pumpkiiings.pklogin.bukkit.listener.ProxyMessageListener(this));
+        getServer().getMessenger().registerIncomingPluginChannel(this, "pklogin:main",
+                new com.pumpkiiings.pklogin.bukkit.listener.ProxyMessageListener(this));
 
         // updates
         foliaLib.runAsync(task -> this.detectUpdates());
-        
+
         com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().init();
 
         if (getServer().getOnlineMode()) {
@@ -168,7 +177,7 @@ public class PkLoginBukkit extends JavaPlugin {
             sendMessage("§c=========================================================");
         }
     }
-    
+
     @Override
     public void onDisable() {
         com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().shutdown();
@@ -187,25 +196,31 @@ public class PkLoginBukkit extends JavaPlugin {
         database = new SQLite(databaseFile);
         try {
             database.openConnection();
-            database.update("CREATE TABLE IF NOT EXISTS `pklogin` (`name` TEXT, `realname` TEXT, `password` TEXT, `address` TEXT, `lastlogin` INTEGER, `regdate` INTEGER, `totp_secret` TEXT, `uuid_type` TEXT DEFAULT 'REAL', `random_uuid` TEXT, `discord_id` TEXT, `email_address` TEXT)");
+            database.update(
+                    "CREATE TABLE IF NOT EXISTS `pklogin` (`name` TEXT, `realname` TEXT, `password` TEXT, `address` TEXT, `lastlogin` INTEGER, `regdate` INTEGER, `totp_secret` TEXT, `uuid_type` TEXT DEFAULT 'REAL', `random_uuid` TEXT, `discord_id` TEXT, `email_address` TEXT)");
             database.update("CREATE TABLE IF NOT EXISTS `settings` (`key` TEXT, `value` TEXT)");
 
             // Check if columns exist, if not, add them (for existing SQLite databases)
             try {
                 database.update("ALTER TABLE `pklogin` ADD COLUMN `totp_secret` TEXT");
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
             try {
                 database.update("ALTER TABLE `pklogin` ADD COLUMN `uuid_type` TEXT DEFAULT 'REAL'");
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
             try {
                 database.update("ALTER TABLE `pklogin` ADD COLUMN `random_uuid` TEXT");
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
             try {
                 database.update("ALTER TABLE `pklogin` ADD COLUMN `discord_id` TEXT");
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
             try {
                 database.update("ALTER TABLE `pklogin` ADD COLUMN `email_address` TEXT");
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
             try (Database.Query query = database.query("SELECT COUNT(*) FROM `pklogin`")) {
                 ResultSet rs = query.resultSet;
                 if (rs.next()) {
@@ -231,8 +246,6 @@ public class PkLoginBukkit extends JavaPlugin {
         pm.registerEvents(new PlayerAuthenticateListener(this), this);
     }
 
-
-
     public void detectUpdates() {
         String tagName = null;
         try {
@@ -256,7 +269,8 @@ public class PkLoginBukkit extends JavaPlugin {
             String currentVersion = "v" + getDescription().getVersion();
             updateAvailable = !currentVersion.equals(tagName);
             if (updateAvailable) {
-                sendMessage("A new version of PkLogin is available (" + currentVersion + " -> " + latestVersion + ").", "§e");
+                sendMessage("A new version of PkLogin is available (" + currentVersion + " -> " + latestVersion + ").",
+                        "§e");
             }
         }
     }
@@ -274,7 +288,8 @@ public class PkLoginBukkit extends JavaPlugin {
         }
 
         File discordFile = new File(twoFaFolder, "discord.yml");
-        if (!discordFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/2fa/discord.yml", discordFile)) {
+        if (!discordFile.exists()
+                && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/2fa/discord.yml", discordFile)) {
             sendMessage("§cFailed to create 'discord.yml' file.");
         }
 
@@ -290,7 +305,9 @@ public class PkLoginBukkit extends JavaPlugin {
 
         String lang = Settings.LANGUAGE_FILE.asString();
         File messagesFile = new File(getDataFolder() + "/lang", lang);
-        if (!messagesFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/lang/" + lang, messagesFile) && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/lang/messages_en.yml", messagesFile)) {
+        if (!messagesFile.exists()
+                && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/lang/" + lang, messagesFile)
+                && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/lang/messages_en.yml", messagesFile)) {
             sendMessage("§cFailed to create '" + lang + "' language file.");
             return false;
         }
@@ -323,4 +340,3 @@ public class PkLoginBukkit extends JavaPlugin {
         return PkLogin.getApi();
     }
 }
-

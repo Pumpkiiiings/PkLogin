@@ -15,6 +15,7 @@ import java.util.Random;
 import java.util.UUID;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.PostOrder;
+import com.velocitypowered.api.event.player.GameProfileRequestEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -96,6 +97,45 @@ public class VelocityListeners {
             event.getServer().sendPluginMessage(PluginMessageListener.IDENTIFIER, out.toByteArray());
             
             plugin.getAuthenticatedPlayers().add(player.getUniqueId());
+        }
+    }
+
+    @Subscribe
+    public void onGameProfileRequest(GameProfileRequestEvent event) {
+        if (!com.pumpkiiings.pklogin.common.settings.Settings.APPENDER_ENABLED.asBoolean()) return;
+
+        String username = event.getUsername();
+        Optional<Account> accountOpt = plugin.getAccountManagement().search(username);
+
+        boolean isPremium = false;
+        if (accountOpt.isPresent() && ("REAL".equalsIgnoreCase(accountOpt.get().getUuidType()) || "PREMIUM".equalsIgnoreCase(accountOpt.get().getUuidType()))) {
+            isPremium = true;
+        }
+
+        String newName = username;
+        if (isPremium) {
+            String appendix = com.pumpkiiings.pklogin.common.settings.Settings.APPENDER_PREMIUM_APPENDIX.asString();
+            String pos = com.pumpkiiings.pklogin.common.settings.Settings.APPENDER_PREMIUM_POSITION.asString();
+            if ("PREFIX".equalsIgnoreCase(pos)) {
+                newName = appendix + newName;
+            } else {
+                newName = newName + appendix;
+            }
+        } else {
+            String appendix = com.pumpkiiings.pklogin.common.settings.Settings.APPENDER_OFFLINE_APPENDIX.asString();
+            String pos = com.pumpkiiings.pklogin.common.settings.Settings.APPENDER_OFFLINE_POSITION.asString();
+            if ("PREFIX".equalsIgnoreCase(pos)) {
+                newName = appendix + newName;
+            } else {
+                newName = newName + appendix;
+            }
+        }
+
+        if (!newName.equals(username)) {
+            if (newName.length() > 16) {
+                newName = newName.substring(0, 16);
+            }
+            event.setGameProfile(event.getOriginalProfile().withName(newName));
         }
     }
 }

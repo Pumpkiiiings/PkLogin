@@ -76,6 +76,13 @@ public class ChangePasswordCommand extends BukkitAbstractCommand {
             return;
         }
 
+        if (com.pumpkiiings.pklogin.common.settings.Settings.SECURE_PASSWORDS_ENABLE.asBoolean()) {
+            if (!newPassword.matches(com.pumpkiiings.pklogin.common.settings.Settings.SECURE_PASSWORDS_REGEX.asString())) {
+                sender.sendMessage(Messages.INSECURE_PASSWORD.asString());
+                return;
+            }
+        }
+
         AccountManagement accountManagement = plugin.getAccountManagement();
         String name = sender.getName();
         Optional<Account> accountOpt = accountManagement.retrieveOrLoad(name);
@@ -98,6 +105,12 @@ public class ChangePasswordCommand extends BukkitAbstractCommand {
         }
 
         sender.sendMessage(Messages.PASSWORD_CHANGED.asString());
+
+        com.pumpkiiings.pklogin.common.manager.LoginManagement loginManagement = plugin.getLoginManagement();
+        if (loginManagement.mustChangePassword(name)) {
+            loginManagement.removeMustChangePassword(name);
+            loginManagement.setAuthenticated(name);
+        }
     }
 
     private void performConsole(CommandSender sender, String lb, String[] args) {
@@ -123,6 +136,13 @@ public class ChangePasswordCommand extends BukkitAbstractCommand {
         if (passwordLength >= Settings.PASSWORD_LARGE.asInt()) {
             sender.sendMessage(Messages.PASSWORD_TOO_LARGE.asString());
             return;
+        }
+
+        if (com.pumpkiiings.pklogin.common.settings.Settings.SECURE_PASSWORDS_ENABLE.asBoolean()) {
+            if (!newPassword.matches(com.pumpkiiings.pklogin.common.settings.Settings.SECURE_PASSWORDS_REGEX.asString())) {
+                sender.sendMessage(Messages.INSECURE_PASSWORD.asString());
+                return;
+            }
         }
 
         Player playerIfOnline = plugin.getServer().getPlayerExact(playerName);

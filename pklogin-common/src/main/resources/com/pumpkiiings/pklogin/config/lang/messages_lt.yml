@@ -1,9 +1,10 @@
-#          __             _
-#  _ __   / /  ___   __ _(_)_ __
-# | '_ \ / /  / _ \ / _` | | '_ \
-# | | | / /__| (_) | (_| | | | | |
-# |_| |_\____/\___/ \__, |_|_| |_|
-#                   |___/
+#  ________  ___  __    ___       ________  ________  ___  ________     
+# |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
+# \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
+#  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
+#   \ \  \___|\ \  \\ \  \ \  \____\ \  \\\  \ \  \|\  \ \  \ \  \\ \  \
+#    \ \__\    \ \__\\ \__\ \_______\ \_______\ \_______\ \__\ \__\\ \__\
+#     \|__|     \|__| \|__|\|_______|\|_______|\|_______|\|__|\|__| \|__|
 
 # Official Website: https://www.pumpkiiings.com
 # Discord: https://www.pumpkiiings.com/discord
@@ -133,6 +134,21 @@ Messages:
 
     # Message sent on the player's actionbar before login (plural).
     plural: "&cJÅ«s turite {0} sekundes kad {lprisijunktumÄ—te/UÅ¾soregistruotumÄ—te}."
+
+        bedrock-auto-login:
+        title: "&a&lWelcome!"
+        subtitle: "&7Logged in as &eBedrock&7."
+        delays:
+          start: 0
+          duration: 30
+          end: 6
+      premium-auto-login:
+        title: "&a&lWelcome!"
+        subtitle: "&7Logged in as &6Premium&7."
+        delays:
+          start: 0
+          duration: 30
+          end: 6
 
   delay-kick:
     # Message sent when a user takes a long time to register.
@@ -304,6 +320,8 @@ Messages:
 
     # Message sent when the password entered is too small.
     password-too-small: "&cÄ®vestas slaptaÅ¾odis per trumpas."
+    insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
+    change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
 
     # Message sent when a user attempts to disable nLogin using PlugMan/System.
     plugman-block: "&cJÅ«s negalite liesti plugino (naudokite /nlogin reload)."

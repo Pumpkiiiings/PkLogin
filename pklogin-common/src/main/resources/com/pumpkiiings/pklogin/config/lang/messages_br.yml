@@ -1,9 +1,10 @@
-#    ___                __  __
-#   /___\_ __   ___  /\ \ \/ /  ___   __ _(_)_ __
-#  //  // '_ \ / _ \/  \/ / /  / _ \ / _` | | '_ \
-# / \_//| |_) |  __/ /\  / /__| (_) | (_| | | | | |
-# \___/ | .__/ \___\_\ \/\____/\___/ \__, |_|_| |_|
-#       |_|                          |___/
+#  ________  ___  __    ___       ________  ________  ___  ________     
+# |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
+# \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
+#  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
+#   \ \  \___|\ \  \\ \  \ \  \____\ \  \\\  \ \  \|\  \ \  \ \  \\ \  \
+#    \ \__\    \ \__\\ \__\ \_______\ \_______\ \_______\ \__\ \__\\ \__\
+#     \|__|     \|__| \|__|\|_______|\|_______|\|_______|\|__|\|__| \|__|
 
 # Site oficial: https://www.pumpkiiings.com
 # Discord: https://www.pumpkiiings.com/discord
@@ -42,6 +43,21 @@ Messages:
         start: 0
         duration: 60
         end: 6
+
+        bedrock-auto-login:
+        title: "&a&lWelcome!"
+        subtitle: "&7Logged in as &eBedrock&7."
+        delays:
+          start: 0
+          duration: 30
+          end: 6
+      premium-auto-login:
+        title: "&a&lWelcome!"
+        subtitle: "&7Logged in as &6Premium&7."
+        delays:
+          start: 0
+          duration: 30
+          end: 6
 
   delay-kick:
     # Mensagem enviada quando um usuário demora muito para se registrar.
@@ -94,6 +110,8 @@ Messages:
 
     # Mensagem enviada quando a senha inserida é muito pequena.
     password-too-small: "&cA senha inserida é muito pequena."
+    insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
+    change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
 
     # Mensagem quando um jogador não possuí a permissão necessária para executar determinado comando.
     insufficient-permissions: "&cVocê não tem permissão para executar este comando."

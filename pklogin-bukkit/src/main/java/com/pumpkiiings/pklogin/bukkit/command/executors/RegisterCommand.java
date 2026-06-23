@@ -93,6 +93,13 @@ public class RegisterCommand extends BukkitAbstractCommand {
             return;
         }
 
+        if (com.pumpkiiings.pklogin.common.settings.Settings.SECURE_PASSWORDS_ENABLE.asBoolean()) {
+            if (!password.matches(com.pumpkiiings.pklogin.common.settings.Settings.SECURE_PASSWORDS_REGEX.asString())) {
+                sender.sendMessage(Messages.INSECURE_PASSWORD.asString());
+                return;
+            }
+        }
+
         AccountManagement accountManagement = plugin.getAccountManagement();
         boolean exists = accountManagement.retrieveOrLoad(name).isPresent();
         if (exists) {
@@ -114,11 +121,12 @@ public class RegisterCommand extends BukkitAbstractCommand {
             TitleAPI.getApi().send(sender, Messages.TITLE_AFTER_REGISTER.asTitle());
             sender.sendMessage(Messages.SUCCESSFUL_REGISTER.asString());
 
-            plugin.getFoliaLib().runAtEntity(sender, task -> {
-                sender.setWalkSpeed(0.2F);
-                sender.setFlySpeed(0.1F);
-                com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.removeLimboState(sender);
-                com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.restoreLastLocation(sender);
+            Player player = (Player) sender;
+            plugin.getFoliaLib().runAtEntity(player, task -> {
+                player.setWalkSpeed(0.2F);
+                player.setFlySpeed(0.1F);
+                com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.removeLimboState(plugin, player);
+                com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.restoreLastLocation(player);
             });
 
             new AsyncAuthenticateEvent(sender).callEvt();
@@ -183,7 +191,7 @@ public class RegisterCommand extends BukkitAbstractCommand {
                 plugin.getFoliaLib().runAtEntity(playerIfOnline, task -> {
                     playerIfOnline.setWalkSpeed(0.2F);
                     playerIfOnline.setFlySpeed(0.1F);
-                    com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.removeLimboState(playerIfOnline);
+                    com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.removeLimboState(plugin, playerIfOnline);
                     com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.restoreLastLocation(playerIfOnline);
                 });
 

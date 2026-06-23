@@ -77,7 +77,7 @@ public class TwoFactorCommand extends BukkitAbstractCommand {
                 plugin.getFoliaLib().runAtEntity(player, task -> {
                     player.setWalkSpeed(0.2F);
                     player.setFlySpeed(0.1F);
-                    com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.removeLimboState(player);
+                    com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.removeLimboState(plugin, player);
                     com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.restoreLastLocation(player);
                 });
                 new com.pumpkiiings.pklogin.bukkit.api.events.AsyncAuthenticateEvent(player).callEvt();

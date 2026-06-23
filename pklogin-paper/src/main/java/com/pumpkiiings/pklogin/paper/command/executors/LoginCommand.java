@@ -57,6 +57,11 @@ public class LoginCommand extends BukkitAbstractCommand {
             return;
         }
 
+        if (loginManagement.mustChangePassword(name)) {
+            sender.sendMessage(Messages.CHANGE_PASSWORD_ENFORCED.asString());
+            return;
+        }
+
         if (args.length != 1) {
             sender.sendMessage(Messages.MESSAGE_LOGIN.asString());
             return;
@@ -95,15 +100,20 @@ public class LoginCommand extends BukkitAbstractCommand {
         } else {
             AsyncLoginEvent loginEvent = new AsyncLoginEvent(player);
             if (loginEvent.callEvt()) {
-                plugin.getLoginManagement().setAuthenticated(name);
-
-                player.sendMessage(Messages.SUCCESSFUL_LOGIN.asString());
+                if (com.pumpkiiings.pklogin.common.settings.Settings.SECURE_PASSWORDS_ENFORCE.asBoolean() && !password.matches(com.pumpkiiings.pklogin.common.settings.Settings.SECURE_PASSWORDS_REGEX.asString())) {
+                    loginManagement.setMustChangePassword(name);
+                    player.sendMessage(Messages.CHANGE_PASSWORD_ENFORCED.asString());
+                    // Do not call setAuthenticated yet
+                } else {
+                    plugin.getLoginManagement().setAuthenticated(name);
+                    player.sendMessage(Messages.SUCCESSFUL_LOGIN.asString());
+                }
                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player, Messages.TITLE_AFTER_LOGIN.asTitle().title, Messages.TITLE_AFTER_LOGIN.asTitle().subtitle, Messages.TITLE_AFTER_LOGIN.asTitle().start, Messages.TITLE_AFTER_LOGIN.asTitle().duration, Messages.TITLE_AFTER_LOGIN.asTitle().end);
 
                 player.getScheduler().run(plugin, task -> {
                     player.setWalkSpeed(0.2F);
                     player.setFlySpeed(0.1F);
-                    com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.removeLimboState(player);
+                    com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.removeLimboState(plugin, player);
                     com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.restoreLastLocation(player);
                 }, null);
 

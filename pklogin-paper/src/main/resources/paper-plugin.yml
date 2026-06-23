@@ -19,22 +19,4 @@ dependencies:
       required: false
       join-classpath: true
 
-permissions:
-  pklogin.admin:
-    description: 'Defines a player as admin'
-    default: op
-  pklogin.command.changepassword:
-    description: 'Allows use the command /changepassword'
-    default: true
-  pklogin.command.login:
-    description: 'Allows use the command /login'
-    default: true
-  pklogin.command.pklogin:
-    description: 'Allows use the command /pklogin'
-    default: true
-  pklogin.command.register:
-    description: 'Allows use the command /register'
-    default: true
-  pklogin.command.unregister:
-    description: 'Allows use the command /unregister'
-    default: true
+

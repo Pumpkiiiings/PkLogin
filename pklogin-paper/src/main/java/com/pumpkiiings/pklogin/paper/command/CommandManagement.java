@@ -62,7 +62,17 @@ public class CommandManagement {
             java.lang.reflect.Constructor<PluginCommand> pluginCommandConstructor = PluginCommand.class.getDeclaredConstructor(String.class, org.bukkit.plugin.Plugin.class);
             pluginCommandConstructor.setAccessible(true);
 
+            try {
+                org.bukkit.permissions.Permission adminPerm = new org.bukkit.permissions.Permission("pklogin.admin", "Defines a player as admin", org.bukkit.permissions.PermissionDefault.OP);
+                org.bukkit.Bukkit.getPluginManager().addPermission(adminPerm);
+            } catch (Exception ignored) {}
+
             for (Commands command : Commands.values()) {
+                try {
+                    org.bukkit.permissions.Permission cmdPerm = new org.bukkit.permissions.Permission("pklogin.command." + command.name.toLowerCase(), "Allows use the command /" + command.name, org.bukkit.permissions.PermissionDefault.TRUE);
+                    org.bukkit.Bukkit.getPluginManager().addPermission(cmdPerm);
+                } catch (Exception ignored) {}
+
                 PluginCommand pluginCommand = plugin.getCommand(command.name);
                 
                 if (pluginCommand == null) {

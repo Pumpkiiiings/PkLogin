@@ -56,6 +56,21 @@ public class PkLoginForge {
 
     @SubscribeEvent
     public void onServerAboutToStart(ServerAboutToStartEvent event) {
+        LOGGER.info("▄▄▄▄▄▄▄          ▄▄▄                      ");
+        LOGGER.info("███▀▀███▄ ▄▄     ███                  ▀▀ ");
+        LOGGER.info("███▄▄███▀ ██ ▄█▀ ███      ▄███▄ ▄████ ██  ████▄ ");
+        LOGGER.info("███▀▀▀▀   ████   ███      ██ ██ ██ ██ ██  ██ ██ ");
+        LOGGER.info("███       ██ ▀█▄ ████████ ▀███▀ ▀████ ██▄ ██ ██ ");
+        LOGGER.info("                                   ██  ");
+        LOGGER.info("                                 ▀▀▀  ");
+        LOGGER.info("A fork of OpenLogin but better");
+        LOGGER.info("Support: https://discord.gg/MVQ5r7X4Qd");
+        LOGGER.info("Database Type: " + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
+        LOGGER.info("Version: 1.6.8");
+        LOGGER.info("Source: github.com/pumpkiiings/pklogin");
+        LOGGER.info("");
+        LOGGER.info("Thanks for use my plugin!");
+        LOGGER.info("");
         LOGGER.info("[PkLogin] Starting PkLogin Forge...");
         
         File dataFolder = new File("config/pklogin");

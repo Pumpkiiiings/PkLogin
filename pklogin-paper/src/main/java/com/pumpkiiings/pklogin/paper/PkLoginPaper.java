@@ -32,7 +32,7 @@ import com.pumpkiiings.pklogin.paper.listener.PlayerJoinListeners;
 import com.pumpkiiings.pklogin.paper.listener.PlayerKickListeners;
 import com.pumpkiiings.pklogin.paper.task.LoginQueue;
 import com.pumpkiiings.pklogin.common.PkLogin;
-import com.pumpkiiings.pklogin.common.api.PkLoginAPI;
+import com.pumpkiiings.pklogin.api.PkLoginAPI;
 import com.pumpkiiings.pklogin.common.database.Database;
 import com.pumpkiiings.pklogin.common.database.PluginSettings;
 import com.pumpkiiings.pklogin.common.database.SQLite;
@@ -158,6 +158,7 @@ public class PkLoginPaper extends JavaPlugin {
 
         // setup api
         PkLogin.setApi(new OLBukkitAPI(this));
+        PkLogin.setAccountManagement(accountManagement);
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "pklogin:main");
         getServer().getMessenger().registerIncomingPluginChannel(this, "pklogin:main",

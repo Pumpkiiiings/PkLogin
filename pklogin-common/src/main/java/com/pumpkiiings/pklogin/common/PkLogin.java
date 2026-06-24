@@ -24,7 +24,7 @@
 
 package com.pumpkiiings.pklogin.common;
 
-import com.pumpkiiings.pklogin.common.api.PkLoginAPI;
+import com.pumpkiiings.pklogin.api.PkLoginAPI;
 import lombok.NonNull;
 
 public class PkLogin {
@@ -43,6 +43,16 @@ public class PkLogin {
             throw new IllegalStateException("The api instance has already been defined.");
         }
         PkLogin.api = api;
+    }
+
+    private static com.pumpkiiings.pklogin.common.manager.AccountManagement accountManagement;
+
+    public static com.pumpkiiings.pklogin.common.manager.AccountManagement getAccountManagement() {
+        return accountManagement;
+    }
+
+    public static void setAccountManagement(com.pumpkiiings.pklogin.common.manager.AccountManagement accountManagement) {
+        PkLogin.accountManagement = accountManagement;
     }
 }
 

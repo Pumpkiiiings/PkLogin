@@ -62,7 +62,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
             String subcommand = args[0].toLowerCase();
             switch (subcommand) {
                 case "authme-import": {
-                    if (!sender.hasPermission("pklogin.admin")) {
+                    if (!sender.hasPermission("pklogin.admin.authme-import")) {
                         sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
                         return;
                     }
@@ -72,7 +72,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                 }
 
                 case "forcelogin": {
-                    if (!sender.hasPermission("pklogin.admin")) {
+                    if (!sender.hasPermission("pklogin.admin.forcelogin")) {
                         sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
                         return;
                     }
@@ -94,7 +94,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                 }
 
                 case "unregister": {
-                    if (!sender.hasPermission("pklogin.admin")) {
+                    if (!sender.hasPermission("pklogin.admin.unregister")) {
                         sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
                         return;
                     }
@@ -103,17 +103,86 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                         return;
                     }
                     String targetName = args[1];
-                    if (plugin.getAccountManagement().delete(targetName)) {
+                    if (plugin.getAccountManagement().removePassword(targetName)) {
                         plugin.getLoginManagement().cleanup(targetName);
                         sender.sendMessage(Messages.ADMIN_UNREGISTER_SUCCESS.asString().replace("{0}", targetName));
                     } else {
-                        sender.sendMessage("§cAccount not found.");
+                        sender.sendMessage(Messages.ADMIN_ACCOUNT_NOT_FOUND.asString());
+                    }
+                    return;
+                }
+
+                case "delete": {
+                    if (!sender.hasPermission("pklogin.admin.delete")) {
+                        sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
+                        return;
+                    }
+                    if (args.length < 2) {
+                        sender.sendMessage("§eUsage: /pklogin delete <player>");
+                        return;
+                    }
+                    String targetName = args[1];
+                    if (plugin.getAccountManagement().delete(targetName)) {
+                        plugin.getLoginManagement().cleanup(targetName);
+                        sender.sendMessage(Messages.ADMIN_DELETE_SUCCESS.asString().replace("{0}", targetName));
+                    } else {
+                        sender.sendMessage(Messages.ADMIN_ACCOUNT_NOT_FOUND.asString());
+                    }
+                    return;
+                }
+
+                case "verify": {
+                    if (!sender.hasPermission("pklogin.admin.verify")) {
+                        sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
+                        return;
+                    }
+                    if (args.length < 2) {
+                        sender.sendMessage("§eUsage: /pklogin verify <player>");
+                        return;
+                    }
+                    String targetName = args[1];
+                    Optional<Account> accOpt = plugin.getAccountManagement().search(targetName);
+                    if (accOpt.isPresent()) {
+                        Account acc = accOpt.get();
+                        java.util.List<String> verifyFormat = Messages.ADMIN_VERIFY_FORMAT.asList();
+                        for (String line : verifyFormat) {
+                            sender.sendMessage(line.replace("{0}", targetName)
+                                    .replace("{1}", acc.getAddress())
+                                    .replace("{2}", new java.util.Date(acc.getRegDate()).toString())
+                                    .replace("{3}", new java.util.Date(acc.getLastLogin()).toString())
+                                    .replace("{4}", (!"OFFLINE".equals(acc.getUuidType()) ? "Yes" : "No")));
+                        }
+                    } else {
+                        sender.sendMessage(Messages.ADMIN_ACCOUNT_NOT_FOUND.asString());
+                    }
+                    return;
+                }
+
+                case "setspawn": {
+                    if (!sender.hasPermission("pklogin.admin.setspawn")) {
+                        sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
+                        return;
+                    }
+                    if (!(sender instanceof Player)) {
+                        sender.sendMessage(Messages.PLAYER_COMMAND_USAGE.asString());
+                        return;
+                    }
+                    Player player = (Player) sender;
+                    File file = new File(plugin.getDataFolder(), "spawn.yml");
+                    org.bukkit.configuration.file.YamlConfiguration config = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(file);
+                    config.set("spawn", player.getLocation());
+                    try {
+                        config.save(file);
+                        sender.sendMessage(Messages.ADMIN_SETSPAWN_SUCCESS.asString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        sender.sendMessage("§cFailed to save spawn location.");
                     }
                     return;
                 }
 
                 case "changepass": {
-                    if (!sender.hasPermission("pklogin.admin")) {
+                    if (!sender.hasPermission("pklogin.admin.changepass")) {
                         sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
                         return;
                     }
@@ -139,7 +208,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                 }
 
                 case "dupeip": {
-                    if (!sender.hasPermission("pklogin.admin")) {
+                    if (!sender.hasPermission("pklogin.admin.dupeip")) {
                         sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
                         return;
                     }
@@ -175,6 +244,10 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                 case "reload":
                 case "rl":
                 case "r": {
+                    if (!sender.hasPermission("pklogin.admin.reload")) {
+                        sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
+                        return;
+                    }
                     if (sender instanceof Player && !plugin.getLoginManagement().isAuthenticated(sender.getName())) {
                         return;
                     }
@@ -186,6 +259,10 @@ public class PkLoginCommand extends BukkitAbstractCommand {
                 }
 
                 case "update": {
+                    if (!sender.hasPermission("pklogin.admin.update")) {
+                        sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
+                        return;
+                    }
                     if (!(sender instanceof Player)) {
                         sender.sendMessage(Messages.PLAYER_COMMAND_USAGE.asString());
                         return;

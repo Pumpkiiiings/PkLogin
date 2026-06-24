@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.pumpkiiings.pklogin.paper.api.events;
+package com.pumpkiiings.pklogin.api.event.bukkit;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,15 +30,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
 @Getter
-public class AsyncLoginEvent extends PkLoginEvent implements Cancellable {
+public class AsyncRegisterEvent extends PkLoginEvent implements Cancellable {
 
     private final Player player;
     @Setter
     private boolean cancelled;
 
-    public AsyncLoginEvent(Player player) {
+    public AsyncRegisterEvent(Player player) {
         super(true);
         this.player = player;
     }
 }
-

@@ -25,8 +25,8 @@
 package com.pumpkiiings.pklogin.paper.command.executors;
 
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
-import com.pumpkiiings.pklogin.paper.api.events.AsyncAuthenticateEvent;
-import com.pumpkiiings.pklogin.paper.api.events.AsyncRegisterEvent;
+import com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent;
+import com.pumpkiiings.pklogin.api.event.bukkit.AsyncRegisterEvent;
 import com.pumpkiiings.pklogin.paper.command.BukkitAbstractCommand;
 
 import com.pumpkiiings.pklogin.common.manager.AccountManagement;

@@ -80,7 +80,7 @@ public class TwoFactorCommand extends BukkitAbstractCommand {
                     com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.removeLimboState(plugin, player);
                     com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.restoreLastLocation(player);
                 }, null);
-                new com.pumpkiiings.pklogin.paper.api.events.AsyncAuthenticateEvent(player).callEvt();
+                new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt();
             } else {
                 player.sendMessage(Messages.TWO_FACTOR_INVALID_CODE.asString());
             }

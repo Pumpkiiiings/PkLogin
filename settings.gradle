@@ -8,6 +8,7 @@ pluginManagement {
 }
 
 rootProject.name = 'pklogin'
+include 'pklogin-api'
 include 'pklogin-common'
 include 'pklogin-bukkit'
 include 'pklogin-forge'

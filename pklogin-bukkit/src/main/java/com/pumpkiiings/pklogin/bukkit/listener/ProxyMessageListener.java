@@ -32,7 +32,7 @@ public class ProxyMessageListener implements PluginMessageListener {
                 plugin.getLoginManagement().setAuthenticated(player.getName());
                 player.sendMessage(Messages.PREMIUM_AUTO_LOGIN.asString());
                 LoginQueue.removeFromQueue(player.getName());
-                plugin.getFoliaLib().runAsync(task -> new com.pumpkiiings.pklogin.bukkit.api.events.AsyncAuthenticateEvent(player).callEvt());
+                plugin.getFoliaLib().runAsync(task -> new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt());
             }
         }
     }

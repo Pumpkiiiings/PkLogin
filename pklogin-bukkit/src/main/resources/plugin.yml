@@ -44,6 +44,36 @@ permissions:
   pklogin.admin:
     description: 'Defines a player as admin'
     default: op
+  pklogin.admin.authme-import:
+    description: 'Allows use the command /pklogin authme-import'
+    default: op
+  pklogin.admin.forcelogin:
+    description: 'Allows use the command /pklogin forcelogin'
+    default: op
+  pklogin.admin.unregister:
+    description: 'Allows use the command /pklogin unregister'
+    default: op
+  pklogin.admin.delete:
+    description: 'Allows use the command /pklogin delete'
+    default: op
+  pklogin.admin.verify:
+    description: 'Allows use the command /pklogin verify'
+    default: op
+  pklogin.admin.setspawn:
+    description: 'Allows use the command /pklogin setspawn'
+    default: op
+  pklogin.admin.changepass:
+    description: 'Allows use the command /pklogin changepass'
+    default: op
+  pklogin.admin.dupeip:
+    description: 'Allows use the command /pklogin dupeip'
+    default: op
+  pklogin.admin.reload:
+    description: 'Allows use the command /pklogin reload'
+    default: op
+  pklogin.admin.update:
+    description: 'Allows use the command /pklogin update'
+    default: op
   pklogin.command.changepassword:
     description: 'Allows use the command /changepassword'
     default: true

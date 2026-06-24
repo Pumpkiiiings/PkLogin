@@ -158,6 +158,15 @@ Messages:
     authme-import-progress: "&7Progress: &f{0} &7/ &f{1}"
     authme-import-done: "&aImport complete! &7Players will be re-hashed to &f{0} &7on next login."
     authme-import-fail: "&cFailed to read AuthMe database: {0}"
+    delete-success: "&aPlayer {0} has been deleted."
+    setspawn-success: "&aSpawn location set successfully!"
+    verify-format: 
+      - "&a[PkLogin] Info for {0}:"
+      - "&7IP Address: &f{1}"
+      - "&7Registered: &f{2}"
+      - "&7Last Login: &f{3}"
+      - "&7Premium: &f{4}"
+    account-not-found: "&cAccount not found."
 
   two-factor:
     usage: "&eUsage: /2fa <setup|verify|disable|discord|verify2fa>"

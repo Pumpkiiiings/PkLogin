@@ -25,7 +25,7 @@
 package com.pumpkiiings.pklogin.paper.listener;
 
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
-import com.pumpkiiings.pklogin.paper.api.events.AsyncAuthenticateEvent;
+import com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent;
 import com.pumpkiiings.pklogin.paper.util.TextComponentMessage;
 import com.pumpkiiings.pklogin.common.util.ClassUtils;
 import lombok.AllArgsConstructor;

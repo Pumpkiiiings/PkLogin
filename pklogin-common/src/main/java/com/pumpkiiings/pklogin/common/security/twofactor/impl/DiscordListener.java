@@ -22,7 +22,7 @@ public class DiscordListener extends ListenerAdapter {
                 String discordId = event.getAuthor().getId();
                 
                 // Link in database
-                if (PkLogin.getApi().getAccountManagement().updateDiscordId(link.username, discordId)) {
+                if (PkLogin.getAccountManagement().updateDiscordId(link.username, discordId)) {
                     event.getChannel().sendMessage("¡Tu cuenta de Minecraft **" + link.username + "** ha sido vinculada exitosamente a Discord!").queue();
                     TwoFactorManager.getInstance().removeLinkCode(message);
                 } else {

@@ -93,6 +93,10 @@ public enum Messages {
     ADMIN_AUTHME_IMPORT_PROGRESS("admin.authme-import-progress"),
     ADMIN_AUTHME_IMPORT_DONE("admin.authme-import-done"),
     ADMIN_AUTHME_IMPORT_FAIL("admin.authme-import-fail"),
+    ADMIN_DELETE_SUCCESS("admin.delete-success"),
+    ADMIN_SETSPAWN_SUCCESS("admin.setspawn-success"),
+    ADMIN_VERIFY_FORMAT("admin.verify-format"),
+    ADMIN_ACCOUNT_NOT_FOUND("admin.account-not-found"),
 
     // two factor
     TWO_FACTOR_USAGE("two-factor.usage"),

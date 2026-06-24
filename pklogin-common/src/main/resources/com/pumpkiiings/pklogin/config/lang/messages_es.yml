@@ -161,6 +161,15 @@ Messages:
     authme-import-progress: "&7Progreso: &f{0} &7/ &f{1}"
     authme-import-done: "&a¡Importación completa! &7Los jugadores serán re-hasheados a &f{0} &7en su próximo inicio de sesión."
     authme-import-fail: "&cError al leer la base de datos de AuthMe: {0}"
+    delete-success: "&aEl jugador {0} ha sido eliminado."
+    setspawn-success: "&a¡Punto de aparición establecido exitosamente!"
+    verify-format: 
+      - "&a[PkLogin] Info de {0}:"
+      - "&7IP Address: &f{1}"
+      - "&7Registrado: &f{2}"
+      - "&7Último Login: &f{3}"
+      - "&7Premium: &f{4}"
+    account-not-found: "&cCuenta no encontrada."
 
   two-factor:
     usage: "&eUso: /2fa <setup|verify|disable|discord|verify2fa>"

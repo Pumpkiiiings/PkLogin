@@ -233,6 +233,27 @@ public class AccountManagement {
     }
 
     /**
+     * Remove the player's password (unregister without deleting data).
+     *
+     * @param name the name of the player
+     * @return true on success
+     */
+    public boolean removePassword(@NonNull String name) {
+        boolean exists = search(name).isPresent();
+        if (!exists) {
+            return false;
+        }
+
+        try {
+            database.update("UPDATE `pklogin` SET `password` = '' WHERE `name` = ?", name.toLowerCase());
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
      * Update the TOTP secret for the player.
      *
      * @param name       the name of the player

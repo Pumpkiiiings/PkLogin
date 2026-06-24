@@ -24,12 +24,13 @@
 
 package com.pumpkiiings.pklogin.common.model;
 
+import com.pumpkiiings.pklogin.api.AccountData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class Account {
+public class Account implements AccountData {
 
     private final String realName, hashedPassword, address, totpSecret;
     private final String uuidType;

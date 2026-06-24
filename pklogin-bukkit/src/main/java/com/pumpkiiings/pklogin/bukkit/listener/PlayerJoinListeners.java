@@ -61,7 +61,7 @@ public class PlayerJoinListeners implements Listener {
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
                 TitleAPI.getApi().send(player, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle());
             }
-            plugin.getFoliaLib().runAsync(task -> new com.pumpkiiings.pklogin.bukkit.api.events.AsyncAuthenticateEvent(player).callEvt());
+            plugin.getFoliaLib().runAsync(task -> new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt());
             return;
         }
 
@@ -71,7 +71,7 @@ public class PlayerJoinListeners implements Listener {
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
                 TitleAPI.getApi().send(player, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle());
             }
-            plugin.getFoliaLib().runAsync(task -> new com.pumpkiiings.pklogin.bukkit.api.events.AsyncAuthenticateEvent(player).callEvt());
+            plugin.getFoliaLib().runAsync(task -> new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt());
             return;
         }
 
@@ -81,7 +81,7 @@ public class PlayerJoinListeners implements Listener {
         player.setFlySpeed(0F);
 
         if (com.pumpkiiings.pklogin.common.settings.Settings.TELEPORT_SAFE_LOCATION.asBoolean()) {
-            com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.teleportToSpawn(player);
+            com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.teleportToSpawn(plugin, player);
         }
         com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.applyLimboState(plugin, player);
 

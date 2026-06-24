@@ -154,6 +154,7 @@ public class PkLoginForge {
         loginManagement = new LoginManagement(accountManagement);
         
         com.pumpkiiings.pklogin.common.PkLogin.setApi(new com.pumpkiiings.pklogin.forge.api.OLForgeAPI(this));
+        com.pumpkiiings.pklogin.common.PkLogin.setAccountManagement(accountManagement);
         
         spawnManager = new com.pumpkiiings.pklogin.forge.manager.ForgeSpawnManager(dataFolder);
         spawnManager.loadSpawns();

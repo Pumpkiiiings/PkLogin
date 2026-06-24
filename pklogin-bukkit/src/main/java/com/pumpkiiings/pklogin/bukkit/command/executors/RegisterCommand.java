@@ -25,8 +25,8 @@
 package com.pumpkiiings.pklogin.bukkit.command.executors;
 
 import com.pumpkiiings.pklogin.bukkit.PkLoginBukkit;
-import com.pumpkiiings.pklogin.bukkit.api.events.AsyncAuthenticateEvent;
-import com.pumpkiiings.pklogin.bukkit.api.events.AsyncRegisterEvent;
+import com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent;
+import com.pumpkiiings.pklogin.api.event.bukkit.AsyncRegisterEvent;
 import com.pumpkiiings.pklogin.bukkit.command.BukkitAbstractCommand;
 import com.pumpkiiings.pklogin.bukkit.ui.title.TitleAPI;
 import com.pumpkiiings.pklogin.common.manager.AccountManagement;

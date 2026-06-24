@@ -61,7 +61,7 @@ public class PlayerJoinListeners implements Listener {
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().title, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().subtitle, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().start, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().duration, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().end);
             }
-            plugin.getServer().getAsyncScheduler().runNow(plugin, task -> new com.pumpkiiings.pklogin.paper.api.events.AsyncAuthenticateEvent(player).callEvt());
+            plugin.getServer().getAsyncScheduler().runNow(plugin, task -> new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt());
             return;
         }
 
@@ -71,7 +71,7 @@ public class PlayerJoinListeners implements Listener {
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().title, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().subtitle, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().start, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().duration, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().end);
             }
-            plugin.getServer().getAsyncScheduler().runNow(plugin, task -> new com.pumpkiiings.pklogin.paper.api.events.AsyncAuthenticateEvent(player).callEvt());
+            plugin.getServer().getAsyncScheduler().runNow(plugin, task -> new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt());
             return;
         }
 
@@ -81,7 +81,7 @@ public class PlayerJoinListeners implements Listener {
         player.setFlySpeed(0F);
 
         if (com.pumpkiiings.pklogin.common.settings.Settings.TELEPORT_SAFE_LOCATION.asBoolean()) {
-            com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.teleportToSpawn(player);
+            com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.teleportToSpawn(plugin, player);
         }
         com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.applyLimboState(plugin, player);
 

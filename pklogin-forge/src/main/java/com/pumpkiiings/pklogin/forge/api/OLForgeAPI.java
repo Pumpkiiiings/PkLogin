@@ -1,12 +1,13 @@
 package com.pumpkiiings.pklogin.forge.api;
 
-import com.pumpkiiings.pklogin.common.api.PkLoginAPI;
+import com.pumpkiiings.pklogin.api.AccountData;
+import com.pumpkiiings.pklogin.api.PkLoginAPI;
 import com.pumpkiiings.pklogin.common.manager.AccountManagement;
 import com.pumpkiiings.pklogin.common.model.Account;
 import com.pumpkiiings.pklogin.common.security.hashing.HashStrategyFactory;
 import com.pumpkiiings.pklogin.forge.PkLoginForge;
-import lombok.NonNull;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class OLForgeAPI implements PkLoginAPI {
@@ -18,30 +19,58 @@ public class OLForgeAPI implements PkLoginAPI {
     }
 
     @Override
-    public AccountManagement getAccountManagement() {
-        return plugin.getAccountManagement();
+    public boolean isAuthenticated(String player) {
+        return plugin.getLoginManagement().isAuthenticated(player);
     }
 
     @Override
-    public Optional<Account> getAccount(@NonNull String player) {
-        return plugin.getAccountManagement().search(player);
+    public boolean forceLogin(String player) {
+        plugin.getLoginManagement().setAuthenticated(player);
+        return true;
     }
 
     @Override
-    public boolean comparePassword(@NonNull String player, @NonNull String password) {
+    public boolean changePassword(String player, String newPassword) {
+        String hashedPassword = HashStrategyFactory.fromSettings().hash(newPassword);
+        return plugin.getAccountManagement().update(player, hashedPassword, null, true);
+    }
+
+    @Override
+    public boolean performRegister(String player, String password) {
+        String hashedPassword = HashStrategyFactory.fromSettings().hash(password);
+        return plugin.getAccountManagement().update(player, hashedPassword, null, false);
+    }
+
+    @Override
+    public boolean performUnregister(String player) {
+        return plugin.getAccountManagement().removePassword(player);
+    }
+
+    @Override
+    public Map<String, Long> getAccountsByIp(String ip) {
+        return plugin.getAccountManagement().getAccountsByIp(ip);
+    }
+
+    @Override
+    public long getAccountCount() {
+        return plugin.getRegisteredUsers();
+    }
+
+    @Override
+    public Optional<AccountData> getAccount(String player) {
+        return plugin.getAccountManagement().search(player).map(acc -> acc);
+    }
+
+    @Override
+    public boolean comparePassword(String player, String password) {
         AccountManagement accountManagement = plugin.getAccountManagement();
         Optional<Account> account = accountManagement.retrieveOrLoad(player);
         return account.isPresent() && accountManagement.comparePassword(account.get(), password);
     }
 
     @Override
-    public boolean isRegistered(@NonNull String player) {
-        return plugin.getAccountManagement().retrieveOrLoad(player).isPresent();
-    }
-
-    @Override
-    public boolean update(@NonNull String player, @NonNull String password, String address, boolean replace) {
-        String hashedPassword = HashStrategyFactory.fromSettings().hash(password);
-        return plugin.getAccountManagement().update(player, hashedPassword, address, replace);
+    public boolean isRegistered(String player) {
+        Optional<Account> accountOpt = plugin.getAccountManagement().retrieveOrLoad(player);
+        return accountOpt.isPresent() && accountOpt.get().getHashedPassword() != null && !accountOpt.get().getHashedPassword().isEmpty();
     }
 }

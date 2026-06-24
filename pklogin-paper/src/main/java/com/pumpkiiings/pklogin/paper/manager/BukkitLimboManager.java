@@ -19,13 +19,21 @@ public class BukkitLimboManager {
     private static final Map<UUID, ItemStack[]> savedInventories = new ConcurrentHashMap<>();
     private static final Map<UUID, ItemStack[]> savedArmor = new ConcurrentHashMap<>();
 
-    public static void teleportToSpawn(Player player) {
+    public static void teleportToSpawn(JavaPlugin plugin, Player player) {
         if (Settings.TELEPORT_LAST_LOCATION.asBoolean()) {
             lastLocations.put(player.getUniqueId(), player.getLocation());
         }
         
-        // Normally teleport to spawn. In a real plugin, this would read from spawn location.
-        // For now, we will just teleport to the world's spawn location.
+        java.io.File file = new java.io.File(plugin.getDataFolder(), "spawn.yml");
+        if (file.exists()) {
+            org.bukkit.configuration.file.YamlConfiguration config = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(file);
+            if (config.contains("spawn")) {
+                player.teleport((org.bukkit.Location) config.get("spawn"));
+                return;
+            }
+        }
+        
+        // Fallback to world spawn if spawn.yml does not exist or has no 'spawn'
         player.teleport(player.getWorld().getSpawnLocation());
     }
 

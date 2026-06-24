@@ -192,7 +192,11 @@ Messages:
     already-premium: "&cYour account is already premium."
     success: "&aYour account is now Premium! You won't need to use /login."
     current-mode: "&eYour account is currently in {0} mode."
-    warning: "&cWARNING! &eIf you enable premium mode, you will enter without /login. &4If you are NOT premium, you will lose your account forever!"
+    warning: 
+      - "&cWARNING!"
+      - "&eIf you enable premium mode, you will enter without /login."
+      - "&4If you are NOT premium, you will lose your account forever!"
+      - "&eUse /premium confirm to confirm."
     auto-login: "&aYou have been automatically logged in via Premium!"
 
   queue:

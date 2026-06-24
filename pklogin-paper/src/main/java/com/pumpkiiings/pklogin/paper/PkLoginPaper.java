@@ -83,8 +83,6 @@ public class PkLoginPaper extends JavaPlugin {
             return;
         }
 
-
-
         Server server = getServer();
 
         File newUserfile = new File(getDataFolder(), "new-user");
@@ -103,21 +101,23 @@ public class PkLoginPaper extends JavaPlugin {
             server.shutdown();
             return;
         }
-        
+
         String c = "§b";
         String lg = "§7";
         String dg = "§8";
         String aq = "§b";
-        sendMessage(c + "▄▄▄▄▄▄▄          ▄▄▄                      ");
-        sendMessage(c + "███▀▀███▄ ▄▄     ███                  ▀▀ ");
-        sendMessage(c + "███▄▄███▀ ██ ▄█▀ ███      ▄███▄ ▄████ ██  ████▄ ");
-        sendMessage(c + "███▀▀▀▀   ████   ███      ██ ██ ██ ██ ██  ██ ██ ");
-        sendMessage(c + "███       ██ ▀█▄ ████████ ▀███▀ ▀████ ██▄ ██ ██ ");
-        sendMessage(c + "                                   ██  ");
-        sendMessage(c + "                                 ▀▀▀  ");
+        String a = "§e";
+        sendMessage(a + "▄▄▄▄▄▄▄          ▄▄▄                      ");
+        sendMessage(a + "███▀▀███▄ ▄▄     ███                  ▀▀ ");
+        sendMessage(a + "███▄▄███▀ ██ ▄█▀ ███      ▄███▄ ▄████ ██  ████▄ ");
+        sendMessage(a + "███▀▀▀▀   ████   ███      ██ ██ ██ ██ ██  ██ ██ ");
+        sendMessage(a + "███       ██ ▀█▄ ████████ ▀███▀ ▀████ ██▄ ██ ██ ");
+        sendMessage(a + "                                   ██  ");
+        sendMessage(a + "                                 ▀▀▀  ");
         sendMessage(dg + "A fork of OpenLogin but better");
         sendMessage(lg + "Support: " + aq + "https://discord.gg/MVQ5r7X4Qd");
-        sendMessage(lg + "Database Type: " + aq + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
+        sendMessage(lg + "Database Type: " + aq
+                + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
         sendMessage(lg + "Version: " + aq + getDescription().getVersion());
         sendMessage(lg + "Source: " + aq + "github.com/pumpkiiings/pklogin");
         sendMessage("");

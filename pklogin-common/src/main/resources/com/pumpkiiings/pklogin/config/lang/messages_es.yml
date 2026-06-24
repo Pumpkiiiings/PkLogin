@@ -200,6 +200,7 @@ Messages:
       - "&cAl activar el modo Premium, tu UUID cambiará a tu UUID oficial de Mojang."
       - "&cEsto significa que &lPERDERÁS&c todo tu inventario, progreso, dinero e islas en modalidades que usen UUID."
       - "&cSi estás seguro y deseas continuar asumiendo este riesgo:"
+      - "&eUsa /premium confirm para confirmar."
       - "&eEscribe &a/premium confirm &epara confirmar."
     auto-login: "&a¡Has iniciado sesión automáticamente vía Premium!"
 

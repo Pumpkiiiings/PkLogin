@@ -84,7 +84,11 @@ public abstract class ServerLoginPacketListenerImplMixin {
                         this.connection.setEncryptionKey(decryptCipher, encryptCipher);
                         
                         GameProfile verifiedProfile = new GameProfile(premiumUUID, this.currentHandlingName);
-                        com.pumpkiiings.pklogin.forge.PkLoginForge.getInstance().getVerifiedSessions().put(this.currentHandlingName, true);
+                        String ip = this.connection.getRemoteAddress().toString();
+                        if (this.connection.getRemoteAddress() instanceof java.net.InetSocketAddress) {
+                            ip = ((java.net.InetSocketAddress) this.connection.getRemoteAddress()).getAddress().getHostAddress();
+                        }
+                        com.pumpkiiings.pklogin.forge.PkLoginForge.getInstance().getVerifiedSessions().put(ip, this.currentHandlingName);
                         this.startClientVerification(verifiedProfile);
                     } else {
                         this.connection.disconnect(net.minecraft.network.chat.Component.literal("Invalid session (Mojang rejected)."));

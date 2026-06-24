@@ -40,7 +40,7 @@ public class PkLoginForge {
     
     private int registeredUsers;
 
-    private final ConcurrentHashMap<String, Boolean> verifiedSessions = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, String> verifiedSessions = new ConcurrentHashMap<>();
 
     public PkLoginForge() {
         instance = this;

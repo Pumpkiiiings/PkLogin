@@ -24,7 +24,12 @@ public class ForgeGeneralListeners {
         java.util.Optional<com.pumpkiiings.pklogin.common.model.Account> accountOpt = PkLoginForge.getInstance().getAccountManagement().retrieveOrLoad(name);
         boolean registered = accountOpt.isPresent();
 
-        boolean isPremium = com.pumpkiiings.pklogin.forge.PkLoginForge.getInstance().getVerifiedSessions().remove(name) != null;
+        String ip = ((net.minecraft.server.level.ServerPlayer) player).connection.connection.getRemoteAddress().toString();
+        if (((net.minecraft.server.level.ServerPlayer) player).connection.connection.getRemoteAddress() instanceof java.net.InetSocketAddress) {
+            ip = ((java.net.InetSocketAddress) ((net.minecraft.server.level.ServerPlayer) player).connection.connection.getRemoteAddress()).getAddress().getHostAddress();
+        }
+        String verifiedName = com.pumpkiiings.pklogin.forge.PkLoginForge.getInstance().getVerifiedSessions().remove(ip);
+        boolean isPremium = verifiedName != null && verifiedName.equalsIgnoreCase(name);
 
         if (isPremium) {
             PkLoginForge.getInstance().getLoginManagement().setAuthenticated(name);

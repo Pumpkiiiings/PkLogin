@@ -47,14 +47,18 @@ public class PkLoginVelocity {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         instance = this;
 
+        // Download and inject dependencies first
+        DependencyDownloader downloader = new DependencyDownloader(this, server.getPluginManager(), logger, dataDirectory.toFile());
+        downloader.loadDependencies();
+
         File dataFolder = dataDirectory.toFile();
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
         }
 
-        this.yamlConfig = new YamlConfig(new File(dataFolder, "config.yml"));
         // Need to save default config.yml if it doesn't exist
         saveDefaultConfig();
+        this.yamlConfig = new YamlConfig(new File(dataFolder, "config.yml"));
         
         for (Settings setting : Settings.values()) {
             Object val = yamlConfig.get(setting.getKey());
@@ -62,6 +66,9 @@ public class PkLoginVelocity {
                 Settings.define(setting, val);
             }
         }
+
+        // Setup messages
+        setupMessages(dataFolder);
 
         this.backendConfig = new BackendConfig(dataDirectory.resolve("backend.yml"));
         try {
@@ -84,34 +91,72 @@ public class PkLoginVelocity {
                 File databaseFile = new File(dataFolder, "accounts");
                 database = new com.pumpkiiings.pklogin.common.database.H2(databaseFile);
             } else {
-                File databaseFile = new File(dataFolder, "accounts.db");
+                File databaseFile;
+                String customPath = com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_SQLITE_FILE_PATH.asString("");
+                if (!customPath.isEmpty()) {
+                    databaseFile = new File(customPath);
+                } else {
+                    databaseFile = new File(dataFolder, "accounts.db");
+                }
                 database = new com.pumpkiiings.pklogin.common.database.SQLite(databaseFile);
             }
             database.openConnection();
+            database.update(
+                    "CREATE TABLE IF NOT EXISTS `pklogin` (`name` TEXT, `realname` TEXT, `password` TEXT, `address` TEXT, `lastlogin` BIGINT, `regdate` BIGINT, `totp_secret` TEXT, `uuid_type` TEXT DEFAULT 'REAL', `random_uuid` TEXT, `discord_id` TEXT, `email_address` TEXT)");
+            database.update("CREATE TABLE IF NOT EXISTS `settings` (`key` TEXT, `value` TEXT)");
+
+            try {
+                database.update("ALTER TABLE `pklogin` MODIFY COLUMN `lastlogin` BIGINT");
+                database.update("ALTER TABLE `pklogin` MODIFY COLUMN `regdate` BIGINT");
+            } catch (Exception ignored) {
+            }
+
+            try {
+                database.update("ALTER TABLE `pklogin` ADD COLUMN `totp_secret` TEXT");
+            } catch (Exception ignored) {
+            }
+            try {
+                database.update("ALTER TABLE `pklogin` ADD COLUMN `uuid_type` TEXT DEFAULT 'REAL'");
+            } catch (Exception ignored) {
+            }
+            try {
+                database.update("ALTER TABLE `pklogin` ADD COLUMN `random_uuid` TEXT");
+            } catch (Exception ignored) {
+            }
+            try {
+                database.update("ALTER TABLE `pklogin` ADD COLUMN `discord_id` TEXT");
+            } catch (Exception ignored) {
+            }
+            try {
+                database.update("ALTER TABLE `pklogin` ADD COLUMN `email_address` TEXT");
+            } catch (Exception ignored) {
+            }
+
             this.accountManagement = new AccountManagement(this.database);
             logger.info("Database connected successfully.");
         } catch (Exception e) {
             logger.error("Failed to connect to database!", e);
         }
 
-        String c = "§b";
         String lg = "§7";
         String dg = "§8";
         String aq = "§b";
-        logger.info(c + "   ___                __  __             _ ");
-        logger.info(c + "  /___\\_ __   ___  /\\ \\ \\/ /  ___   __ _(_)_ __");
-        logger.info(c + " //  // '_ \\ / _ \\/  \\/ / /  / _ \\ / _` | | '_ \\");
-        logger.info(c + "/ \\_//| |_) |  __/ /\\  / /__| (_) | (_| | | | | |");
-        logger.info(c + "\\___/ | .__/ \\___\\_\\ \\/\\____/\\___/ \\__, |_|_| |_|");
-        logger.info(c + "      |_|                          |___/         ");
-        logger.info(dg + "A fork of OpenLogin but better");
-        logger.info(lg + "Support: " + aq + "https://discord.gg/MVQ5r7X4Qd");
-        logger.info(lg + "Database Type: " + aq + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
-        logger.info(lg + "Version: " + aq + "2.0.0");
-        logger.info(lg + "Source: " + aq + "github.com/pumpkiiings/pklogin");
-        logger.info("");
-        logger.info("§e" + "Thanks for use my plugin!");
-        logger.info("");
+        String a = "§e";
+        sendMessage(a + "▄▄▄▄▄▄▄          ▄▄▄                      ");
+        sendMessage(a + "███▀▀███▄ ▄▄     ███                  ▀▀ ");
+        sendMessage(a + "███▄▄███▀ ██ ▄█▀ ███      ▄███▄ ▄████ ██  ████▄ ");
+        sendMessage(a + "███▀▀▀▀   ████   ███      ██ ██ ██ ██ ██  ██ ██ ");
+        sendMessage(a + "███       ██ ▀█▄ ████████ ▀███▀ ▀████ ██▄ ██ ██ ");
+        sendMessage(a + "                                   ██  ");
+        sendMessage(a + "                                 ▀▀▀  ");
+        sendMessage(dg + "A fork of OpenLogin but better");
+        sendMessage(lg + "Support: " + aq + "https://discord.gg/MVQ5r7X4Qd");
+        sendMessage(lg + "Database Type: " + aq + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
+        sendMessage(lg + "Version: " + aq + "2.0.0");
+        sendMessage(lg + "Source: " + aq + "github.com/pumpkiiings/pklogin");
+        sendMessage("");
+        sendMessage("§e" + "Thanks for use my plugin!");
+        sendMessage("");
 
         // Register channel
         server.getChannelRegistrar().register(PluginMessageListener.IDENTIFIER);
@@ -119,12 +164,15 @@ public class PkLoginVelocity {
         // Register listeners
         server.getEventManager().register(this, new VelocityListeners(this));
         server.getEventManager().register(this, new PluginMessageListener(this));
+
+        // Register global proxy commands
+        new com.pumpkiiings.pklogin.velocity.command.VelocityCommandManager(this).registerCommands();
     }
 
     private void saveDefaultConfig() {
         File file = new File(dataDirectory.toFile(), "config.yml");
         if (!file.exists()) {
-            try (java.io.InputStream in = getClass().getClassLoader().getResourceAsStream("config.yml")) {
+            try (java.io.InputStream in = getClass().getClassLoader().getResourceAsStream("com/pumpkiiings/pklogin/config/config.yml")) {
                 if (in != null) {
                     java.nio.file.Files.copy(in, file.toPath());
                 } else {
@@ -137,6 +185,61 @@ public class PkLoginVelocity {
         
         // Re-load to get the values just saved
         this.yamlConfig = new YamlConfig(file);
+    }
+
+    private void setupMessages(File dataFolder) {
+        String lang = Settings.LANGUAGE_FILE.asString();
+        File langFolder = new File(dataFolder, "lang");
+        if (!langFolder.exists()) {
+            langFolder.mkdirs();
+        }
+
+        File messagesFile = new File(langFolder, lang);
+        if (!messagesFile.exists()) {
+            try (java.io.InputStream in = getClass().getClassLoader().getResourceAsStream("com/pumpkiiings/pklogin/config/lang/" + lang)) {
+                if (in != null) {
+                    java.nio.file.Files.copy(in, messagesFile.toPath());
+                } else {
+                    // Try to copy English default
+                    try (java.io.InputStream fallback = getClass().getClassLoader().getResourceAsStream("com/pumpkiiings/pklogin/config/lang/messages_en.yml")) {
+                        if (fallback != null) {
+                            java.nio.file.Files.copy(fallback, messagesFile.toPath());
+                        } else {
+                            messagesFile.createNewFile();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                logger.error("Failed to save default messages file", e);
+            }
+        }
+
+        YamlConfig messagesConfig = new YamlConfig(messagesFile);
+        for (com.pumpkiiings.pklogin.common.settings.Messages message : com.pumpkiiings.pklogin.common.settings.Messages.values()) {
+            String path = message.getKey();
+            if (path.startsWith("Messages.Title")) {
+                String title = "", subtitle = "";
+                int start = 0, duration = 0, end = 0;
+
+                path = path + ".";
+                if (messagesConfig.get(path + "title") != null && messagesConfig.get(path + "subtitle") != null) {
+                    title = (String) messagesConfig.get(path + "title");
+                    subtitle = (String) messagesConfig.get(path + "subtitle");
+                    Object startObj = messagesConfig.get(path + "delays.start");
+                    Object durationObj = messagesConfig.get(path + "delays.duration");
+                    Object endObj = messagesConfig.get(path + "delays.end");
+
+                    start = startObj instanceof Integer ? (Integer) startObj : 0;
+                    duration = durationObj instanceof Integer ? (Integer) durationObj : 60;
+                    end = endObj instanceof Integer ? (Integer) endObj : 6;
+                    
+                    com.pumpkiiings.pklogin.common.settings.Messages.define(message, new com.pumpkiiings.pklogin.common.model.Title(title, subtitle, start, duration, end));
+                }
+            } else if (messagesConfig.get(path) != null) {
+                Object obj = messagesConfig.get(path);
+                com.pumpkiiings.pklogin.common.settings.Messages.define(message, obj);
+            }
+        }
     }
 
     public static PkLoginVelocity getInstance() {
@@ -165,5 +268,9 @@ public class PkLoginVelocity {
 
     public Path getDataDirectory() {
         return dataDirectory;
+    }
+
+    public void sendMessage(String message) {
+        server.getConsoleCommandSource().sendMessage(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize("§b[PkLogin] §r" + message));
     }
 }

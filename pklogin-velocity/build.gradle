@@ -1,7 +1,9 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '8.3.0'
 }
+
+tasks.build.dependsOn('shadowJar')
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -23,11 +25,28 @@ dependencies {
 
     implementation project(':pklogin-common')
     implementation 'org.yaml:snakeyaml:2.2'
+    implementation 'org.xerial:sqlite-jdbc:3.42.0.0'
+}
+
+jar {
+    archiveClassifier.set('unshaded')
 }
 
 shadowJar {
     archiveBaseName.set("pklogin-velocity")
     archiveClassifier.set('')
+    
+    dependencies {
+        exclude(dependency('org.slf4j:.*'))
+        exclude(dependency('net.java.dev.jna:.*'))
+        
+        // Exclude heavy dependencies to download them at runtime
+        exclude(dependency('org.xerial:sqlite-jdbc:.*'))
+        exclude(dependency('com.h2database:h2:.*'))
+        exclude(dependency('org.mariadb.jdbc:mariadb-java-client:.*'))
+        exclude(dependency('com.zaxxer:HikariCP:.*'))
+        exclude(dependency('org.yaml:snakeyaml:.*'))
+    }
 }
 
 processResources {

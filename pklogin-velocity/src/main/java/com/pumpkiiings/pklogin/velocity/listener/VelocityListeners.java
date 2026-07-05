@@ -90,11 +90,15 @@ public class VelocityListeners {
 
         Optional<Account> accountOpt = plugin.getAccountManagement().search(username);
         if (isBedrock || (accountOpt.isPresent() && ("REAL".equalsIgnoreCase(accountOpt.get().getUuidType()) || "PREMIUM".equalsIgnoreCase(accountOpt.get().getUuidType())))) {
-            ByteArrayDataOutput out = ByteStreams.newDataOutput();
-            out.writeUTF("PremiumAutoLogin");
-            out.writeUTF(username);
-
-            event.getServer().sendPluginMessage(PluginMessageListener.IDENTIFIER, out.toByteArray());
+            plugin.getServer().getScheduler()
+                .buildTask(plugin, () -> {
+                    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                    out.writeUTF("PremiumAutoLogin");
+                    out.writeUTF(username);
+                    event.getServer().sendPluginMessage(PluginMessageListener.IDENTIFIER, out.toByteArray());
+                })
+                .delay(500, java.util.concurrent.TimeUnit.MILLISECONDS)
+                .schedule();
             
             plugin.getAuthenticatedPlayers().add(player.getUniqueId());
         }

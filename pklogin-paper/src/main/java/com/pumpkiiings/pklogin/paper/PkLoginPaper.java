@@ -142,8 +142,13 @@ public class PkLoginPaper extends JavaPlugin {
         // setup listeners
         setupListeners();
 
+        // setup Captcha Handler
+        new com.pumpkiiings.pklogin.paper.captcha.PaperCaptchaHandler(this);
+
         // setup PacketEvents or ProtocolLib auto-login
-        if (getServer().getPluginManager().getPlugin("packetevents") != null) {
+        if (com.pumpkiiings.pklogin.common.settings.Settings.PREMIUM_PROXY_MODE.asBoolean()) {
+            sendMessage("Proxy mode is enabled. The backend will let the proxy handle Premium Auto-Login.");
+        } else if (getServer().getPluginManager().getPlugin("packetevents") != null) {
             sendMessage("PacketEvents detected. Using PacketEvents for Premium Auto-Login.");
             com.pumpkiiings.pklogin.paper.packetevents.PacketEventsHook.init(this);
         } else if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
@@ -192,13 +197,42 @@ public class PkLoginPaper extends JavaPlugin {
     }
 
     private boolean setupDatabase() {
-        File databaseFile = new File(getDataFolder(), "accounts.db");
-        database = new SQLite(databaseFile);
+        String dbType = com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString().toLowerCase();
+
+        if (dbType.equals("mariadb") || dbType.equals("mysql")) {
+            database = new com.pumpkiiings.pklogin.common.database.MariaDB(
+                com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_HOST.asString(),
+                com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_PORT.asInt(),
+                com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_NAME.asString(),
+                com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_USERNAME.asString(),
+                com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_PASSWORD.asString()
+            );
+        } else if (dbType.equals("h2")) {
+            File databaseFile = new File(getDataFolder(), "accounts");
+            database = new com.pumpkiiings.pklogin.common.database.H2(databaseFile);
+        } else {
+            File databaseFile;
+            String customPath = Settings.DATABASE_SQLITE_FILE_PATH.asString("");
+            if (!customPath.isEmpty()) {
+                databaseFile = new File(customPath);
+            } else {
+                databaseFile = new File(getDataFolder(), "accounts.db");
+            }
+            database = new SQLite(databaseFile);
+        }
+
         try {
             database.openConnection();
             database.update(
-                    "CREATE TABLE IF NOT EXISTS `pklogin` (`name` TEXT, `realname` TEXT, `password` TEXT, `address` TEXT, `lastlogin` INTEGER, `regdate` INTEGER, `totp_secret` TEXT, `uuid_type` TEXT DEFAULT 'REAL', `random_uuid` TEXT, `discord_id` TEXT, `email_address` TEXT)");
+                    "CREATE TABLE IF NOT EXISTS `pklogin` (`name` TEXT, `realname` TEXT, `password` TEXT, `address` TEXT, `lastlogin` BIGINT, `regdate` BIGINT, `totp_secret` TEXT, `uuid_type` TEXT DEFAULT 'REAL', `random_uuid` TEXT, `discord_id` TEXT, `email_address` TEXT)");
             database.update("CREATE TABLE IF NOT EXISTS `settings` (`key` TEXT, `value` TEXT)");
+
+            try {
+                // For MariaDB/MySQL where INTEGER was created as INT (32-bit), we need to upgrade it to BIGINT (64-bit)
+                database.update("ALTER TABLE `pklogin` MODIFY COLUMN `lastlogin` BIGINT");
+                database.update("ALTER TABLE `pklogin` MODIFY COLUMN `regdate` BIGINT");
+            } catch (Exception ignored) {
+            }
 
             // Check if columns exist, if not, add them (for existing SQLite databases)
             try {

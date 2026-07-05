@@ -1,0 +1,25 @@
+menu:
+  title: "<#FFAA00><b>Piedra, Papel o Tijeras</b>"
+  items:
+    rock:
+      slot: 11
+      material: "COBBLESTONE"
+      name: "<#AAAAAA>Piedra"
+    paper:
+      slot: 13
+      material: "PAPER"
+      name: "<#FFFFFF>Papel"
+    scissors:
+      slot: 15
+      material: "SHEARS"
+      name: "<#FFAA00>Tijeras"
+
+messages:
+  vs_bot_result: "<#AAAAAA>Bot eligió: %bot_choice%. <#FFFFFF>¡%result%!"
+  waiting_opponent: "<#55FF55>Has elegido %choice%. Esperando al rival..."
+  vs_player_result: "<#AAAAAA>%opponent% eligió %opponent_choice%. <#FFFFFF>¡%result%!"
+  challenge_sent: "<#55FF55>Desafiaste a %target% a RPS."
+  challenge_received: "<#FFAA00>%challenger% te ha desafiado a RPS. Usa /auth play rps accept"
+  no_challenges: "<#FF5555>No tienes desafíos pendientes."
+  player_offline: "<#FF5555>El jugador ya no está conectado."
+  quit: "<#FF5555>Has salido del juego."

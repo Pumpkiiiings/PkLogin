@@ -1,0 +1,7 @@
+name: PkAuthAddon
+version: 1.0.0
+main: com.pumpkiiings.pkauth.PkAuthAddon
+api-version: '1.21'
+depend: [PkLogin]
+description: An addon for PkLogin to handle void world spawning and aggressive hiding.
+author: Pumpkiiiings

@@ -135,6 +135,15 @@ public enum Messages {
     // queues and limits
     QUEUE_MESSAGE("queue.message"),
     MAX_IPS_REACHED("error-messages.max-ips-reached"),
+    
+    // captcha
+    CAPTCHA_REQUIRED("captcha.required"),
+    CAPTCHA_SUCCESS("captcha.success"),
+    CAPTCHA_FAILED("captcha.failed"),
+    CAPTCHA_INVENTORY_TITLE("captcha.inventory-title"),
+    CAPTCHA_INVENTORY_ITEM_NAME("captcha.inventory-item"),
+    CAPTCHA_CHAT_INSTRUCTION("captcha.chat-instruction"),
+    CAPTCHA_MAP_INSTRUCTION("captcha.map-instruction"),
     ;
 
     @Getter

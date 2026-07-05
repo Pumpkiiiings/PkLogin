@@ -1,0 +1,36 @@
+# Configuración de PkAuth Addon
+# Puedes usar códigos de colores hexadecimales o formato MiniMessage (Paper).
+
+ui:
+  scoreboard:
+    title: "<#FFAA00><b>PkLogin Auth</b>"
+    lines:
+      - ""
+      - "<#AAAAAA>Estado:"
+      - "<#FF5555> No Autenticado"
+      - ""
+      - "<#AAAAAA>Servidor:"
+      - "<#55FF55> Lobby Principal"
+      - ""
+      - "<#AAAAAA>Tu IP:"
+      - "<#FFFFFF>%player_ip%"
+      - ""
+      - "<#FFAA00>play.tuserver.com"
+  
+  scoreboard-authenticated:
+    title: "<#FFAA00><b>PkLogin Auth</b>"
+    lines:
+      - ""
+      - "<#AAAAAA>Estado:"
+      - "<#55FF55> Autenticado"
+      - ""
+      - "<#AAAAAA>Servidor:"
+      - "<#55FF55> Lobby Principal"
+      - ""
+      - "<#AAAAAA>Esperando al proxy..."
+      - ""
+      - "<#FFAA00>play.tuserver.com"
+
+  tablist:
+    header: "\n<#FFAA00><b>BIENVENIDO A PKLOGIN</b>\n<#AAAAAA>Por favor, inicia sesión para jugar.\n"
+    footer: "\n<#AAAAAA>IP: <#FFFFFF>play.tuserver.com\n<#AAAAAA>Discord: <#55FF55>discord.gg/tuserver\n"

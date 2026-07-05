@@ -85,6 +85,14 @@ public class PlayerJoinListeners implements Listener {
         }
         com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.applyLimboState(plugin, player);
 
+        if (com.pumpkiiings.pklogin.common.settings.Settings.SECURITY_CAPTCHA_ENABLE.asBoolean()) {
+            com.pumpkiiings.pklogin.common.manager.CaptchaManager.getInstance().addPending(name, "");
+            player.sendMessage(Messages.CAPTCHA_REQUIRED.asString());
+            
+            com.pumpkiiings.pklogin.paper.captcha.PaperCaptchaHandler.sendCaptcha(plugin, player);
+            return;
+        }
+
         if (registered) {
             player.sendMessage(Messages.MESSAGE_LOGIN.asString());
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {

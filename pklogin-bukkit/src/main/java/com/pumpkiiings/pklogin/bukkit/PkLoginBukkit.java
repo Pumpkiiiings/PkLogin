@@ -145,8 +145,13 @@ public class PkLoginBukkit extends JavaPlugin {
         // setup listeners
         setupListeners();
 
+        // setup Captcha Handler
+        new com.pumpkiiings.pklogin.bukkit.captcha.BukkitCaptchaHandler(this);
+
         // setup PacketEvents or ProtocolLib auto-login
-        if (getServer().getPluginManager().getPlugin("packetevents") != null) {
+        if (com.pumpkiiings.pklogin.common.settings.Settings.PREMIUM_PROXY_MODE.asBoolean()) {
+            sendMessage("Proxy mode is enabled. The backend will let the proxy handle Premium Auto-Login.");
+        } else if (getServer().getPluginManager().getPlugin("packetevents") != null) {
             sendMessage("PacketEvents detected. Using PacketEvents for Premium Auto-Login.");
             com.pumpkiiings.pklogin.bukkit.packetevents.PacketEventsHook.init(this);
         } else if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {

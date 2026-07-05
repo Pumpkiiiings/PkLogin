@@ -60,6 +60,18 @@ public class PacketEventsListener extends PacketListenerAbstract {
             // Check if behind proxy
             boolean isBungee = plugin.getServer().spigot().getConfig().getBoolean("settings.bungeecord", false);
             boolean isVelocity = plugin.getServer().spigot().getConfig().getBoolean("settings.velocity-support.enabled", false);
+            
+            // Modern Paper support (1.19+)
+            java.io.File paperGlobal = new java.io.File("config/paper-global.yml");
+            if (paperGlobal.exists()) {
+                try {
+                    org.bukkit.configuration.file.YamlConfiguration paperConfig = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(paperGlobal);
+                    if (paperConfig.getBoolean("proxies.velocity.enabled", false)) {
+                        isVelocity = true;
+                    }
+                } catch (Exception ignored) {}
+            }
+
             if (isBungee || isVelocity) {
                 return; // Let it pass, proxy handles it
             }

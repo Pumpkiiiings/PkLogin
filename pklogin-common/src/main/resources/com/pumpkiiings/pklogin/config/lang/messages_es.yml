@@ -214,4 +214,13 @@ Messages:
     auto-login: "&a¡Has iniciado sesión automáticamente vía Premium!"
 
   queue:
-    message: "&eTienes {0} segundos para {1}!"
+    message: "&eTienes &b{0} &esegundos para tu &b{1} &eo serás expulsado."
+
+  captcha:
+    required: "&c¡Debes completar el captcha antes de autenticarte!"
+    success: "&a¡Captcha completado con éxito! Ya puedes iniciar sesión/registrarte."
+    failed: "&c¡Captcha incorrecto! Inténtalo de nuevo."
+    inventory-title: "Haz clic en la &aLana Verde"
+    inventory-item: "&a¡Haz clic aquí!"
+    chat-instruction: "&ePor favor escribe el siguiente código en el chat: &b{code}"
+    map-instruction: "&e¡Mira el mapa en tu mano y escribe el código!"

@@ -57,6 +57,9 @@ Security:
 Database:
   # Available types: sqlite, mariadb, h2, mysql
   type: sqlite
+  # If using sqlite and you want Velocity and Auth to share the same file, set the absolute path here:
+  # Example: "C:/ruta/a/tu/servidor/plugins/pklogin/accounts.db" (Leave empty to use default)
+  sqlite-file-path: ""
   host: localhost
   port: 3306
   database: pklogin
@@ -65,6 +68,10 @@ Database:
 
 # Paid features of the plugin (premium version).
 premium:
+  # Enable this if you have PkLogin installed on your proxy (BungeeCord/Velocity).
+  # If true, the backend server will not perform premium checks and will let the proxy handle it.
+  proxy-mode: false
+
   username-appender:
     enabled: false
     premium:
@@ -125,6 +132,14 @@ passwords:
 
 # General security settings.
 security:
+  captcha:
+    # Enable captcha before login/register?
+    enable: false
+    # Type of captcha: INVENTORY, CHAT, MAP
+    type: INVENTORY
+    # Commands blocked before completing captcha (login, register are always blocked)
+    blocked-commands: true
+    
   ip-limit:
     # Sets whether the per-IP account limiter should be used.
     enable: true

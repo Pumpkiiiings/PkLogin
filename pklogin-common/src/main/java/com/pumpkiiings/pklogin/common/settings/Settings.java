@@ -69,6 +69,10 @@ public enum Settings {
             "Database.type",
             "sqlite"
     ),
+    DATABASE_SQLITE_FILE_PATH(
+            "Database.sqlite-file-path",
+            ""
+    ),
     DATABASE_HOST(
             "Database.host",
             "localhost"
@@ -88,6 +92,10 @@ public enum Settings {
     DATABASE_PASSWORD(
             "Database.password",
             ""
+    ),
+    PREMIUM_PROXY_MODE(
+            "premium.proxy-mode",
+            false
     ),
     APPENDER_ENABLED(
             "premium.username-appender.enabled",
@@ -156,6 +164,14 @@ public enum Settings {
     BRUTEFORCE_MAX_LOGIN_TRIES(
             "passwords.bruteforce.max-login-tries",
             3
+    ),
+    SECURITY_CAPTCHA_ENABLE(
+            "security.captcha.enable",
+            false
+    ),
+    SECURITY_CAPTCHA_TYPE(
+            "security.captcha.type",
+            "INVENTORY"
     ),
     SECURITY_IP_LIMIT_ENABLE(
             "security.ip-limit.enable",

@@ -85,6 +85,16 @@ public class PlayerJoinListeners implements Listener {
         }
         com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.applyLimboState(plugin, player);
 
+        if (com.pumpkiiings.pklogin.common.settings.Settings.SECURITY_CAPTCHA_ENABLE.asBoolean()) {
+            com.pumpkiiings.pklogin.common.manager.CaptchaManager.getInstance().addPending(name, "");
+            player.sendMessage(Messages.CAPTCHA_REQUIRED.asString());
+            
+            // Depending on the type of captcha, we might need to open an inventory or give a map.
+            // For now, we just add them to pending. The actual GUI/Map handling will be in a Captcha handler class.
+            com.pumpkiiings.pklogin.bukkit.captcha.BukkitCaptchaHandler.sendCaptcha(plugin, player);
+            return; // Don't send login/register messages yet
+        }
+
         if (registered) {
             player.sendMessage(Messages.MESSAGE_LOGIN.asString());
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {

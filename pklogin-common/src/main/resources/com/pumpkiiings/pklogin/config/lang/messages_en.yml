@@ -209,4 +209,13 @@ Messages:
     auto-login: "&aYou have been automatically logged in via Premium!"
 
   queue:
-    message: "&eYou have {0} seconds to {1}!"
+    message: "&eYou have &b{0} &econds left to {1} or you will be kicked."
+
+  captcha:
+    required: "&cYou must complete the captcha before authenticating!"
+    success: "&aCaptcha completed successfully! You can now login/register."
+    failed: "&cWrong captcha! Try again."
+    inventory-title: "Click the &aGreen Wool"
+    inventory-item: "&aClick Me!"
+    chat-instruction: "&ePlease type the following code in chat: &b{code}"
+    map-instruction: "&eLook at the map in your hand and type the code!"

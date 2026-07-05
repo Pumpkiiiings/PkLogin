@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '8.3.0'
+}
+
+repositories {
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url 'https://repo.codemc.io/repository/maven-public/' }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT'
+    compileOnly project(':pklogin-api')
+    compileOnly project(':pklogin-common')
+    
+    compileOnly 'com.github.retrooper:packetevents-spigot:2.10.1'
+    implementation 'com.github.Tofaa2.EntityLib:spigot:2.4.11'
+}
+
+shadowJar {
+    archiveClassifier.set('')
+}
+
+tasks.build.dependsOn('shadowJar')
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

@@ -136,7 +136,11 @@ public class PkLoginBukkit extends JavaPlugin {
         loginManagement.setAuthCallback(playerName -> {
             org.bukkit.entity.Player player = getServer().getPlayer(playerName);
             if (player != null) {
-                getServer().getPluginManager().callEvent(new com.pumpkiiings.pklogin.api.event.bukkit.auth.PlayerAuthLoginEvent(player));
+                if (getServer().isPrimaryThread()) {
+                    foliaLib.runAsync(task -> getServer().getPluginManager().callEvent(new com.pumpkiiings.pklogin.api.event.bukkit.auth.PlayerAuthLoginEvent(player)));
+                } else {
+                    getServer().getPluginManager().callEvent(new com.pumpkiiings.pklogin.api.event.bukkit.auth.PlayerAuthLoginEvent(player));
+                }
             }
         });
         

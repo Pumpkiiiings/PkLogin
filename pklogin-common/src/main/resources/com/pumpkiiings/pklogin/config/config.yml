@@ -62,6 +62,10 @@ Database:
   username: root
   password: ""
 
+# Enable this if you have PkLogin installed on your proxy (BungeeCord/Velocity).
+# If true, the backend server will not perform premium checks and will let the proxy handle it.
+proxy-mode: true
+
 username-appender:
   enabled: false
   premium:

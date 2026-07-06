@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://i.ibb.co/bjNT8cPW/pkloginlogo.png" alt="PkLogin" width="1200" height="200"/>
+<img src="https://i.ibb.co/bjNT8cPW/pkloginlogo.png" alt="PkLogin" width="1200" height="180"/>
 
 # PkLogin
 

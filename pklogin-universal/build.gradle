@@ -10,9 +10,7 @@ dependencies {
     implementation project(path: ':pklogin-common')
     implementation project(path: ':pklogin-bukkit', configuration: 'shadow')
     implementation project(path: ':pklogin-paper', configuration: 'shadow')
-    implementation(project(path: ':pklogin-forge', configuration: 'shadow')) {
-        transitive = false
-    }
+
 }
 
 shadowJar {
@@ -30,5 +28,4 @@ shadowJar {
     dependsOn project(':pklogin-bukkit').tasks.named('jar')
     dependsOn project(':pklogin-paper').tasks.named('shadowJar')
     dependsOn project(':pklogin-paper').tasks.named('jar')
-    dependsOn project(':pklogin-forge').tasks.named('shadowJar')
 }

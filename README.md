@@ -4,7 +4,7 @@
 
 # PkLogin
 
-**A practical, secure and feature-rich authentication plugin for Spigot/Paper/Folia and Forge 1.20.1**
+**A practical, secure and feature-rich authentication plugin for Spigot/Paper/Folia and Velocity**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-8%2B-blue.svg)](https://www.java.com)
@@ -19,7 +19,7 @@
 ## ✨ Features
 
 ### 🔐 Authentication
-- **Dual-mode**: Works on both **Spigot/Paper/Folia** (plugin) and **Forge 1.20.1** (mod)
+- **Dual-mode**: Works on both **Spigot/Paper/Folia and Velocity**
 - **Premium / Cracked**: Auto-login for premium (paid) players, manual login for cracked players
 - **Username Appender**: Prevent username collisions between premium and cracked players sharing a name
 - **Brute-force protection**: Configurable max login attempts before kick

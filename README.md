@@ -206,7 +206,7 @@ Optional<Account> account = api.getAccountManagement().retrieveOrLoad("Steve");
 
 ## 🚀 Installation
 
-1. Download `PkLogin-Bukkit-X.X.jar` or `PkLogin-Forge-X.X.jar` from [Releases](https://github.com/Pumpkiiiings/PkLogin/releases)
+1. Download `PkLogin-XXXXX-X.X.jar` from [Releases](https://github.com/Pumpkiiiings/PkLogin/releases)
 2. Drop it into your `plugins/` (Spigot/Paper) or `mods/` (Forge) folder
 3. Start the server — config files are auto-generated
 4. Edit `plugins/PkLogin/config.yml` (or `config/pklogin/config.yml` on Forge)

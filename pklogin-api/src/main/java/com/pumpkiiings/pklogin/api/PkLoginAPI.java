@@ -3,6 +3,7 @@ package com.pumpkiiings.pklogin.api;
 import java.util.Map;
 import java.util.Optional;
 
+@Deprecated
 public interface PkLoginAPI {
 
     /**

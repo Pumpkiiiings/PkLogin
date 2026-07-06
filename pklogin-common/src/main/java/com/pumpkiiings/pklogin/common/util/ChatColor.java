@@ -28,8 +28,10 @@ import lombok.NonNull;
 
 public class ChatColor {
 
-    private static final String CHARACTERS = "0123456789AaBbCcDdEeFfKkLlMmNnOoRr";
+    private static final String CHARACTERS = "0123456789AaBbCcDdEeFfKkLlMmNnOoRrXx";
     private static final char COLOR_CODE = 167;
+
+    private static final java.util.regex.Pattern HEX_PATTERN = java.util.regex.Pattern.compile("(?:&#|<color:#)([A-Fa-f0-9]{6})(?:>|)");
 
     /**
      * This method was taken from Bukkit-API (class: org.bukkit.ChatColor)
@@ -44,6 +46,21 @@ public class ChatColor {
      * @return Text containing the Messages.COLOR_CODE color code character.
      */
     public static String translateAlternateColorCodes(char altColorChar, @NonNull String textToTranslate) {
+        textToTranslate = textToTranslate.replace("</color>", String.valueOf(altColorChar) + "r");
+        
+        java.util.regex.Matcher matcher = HEX_PATTERN.matcher(textToTranslate);
+        StringBuffer buffer = new StringBuffer();
+        while (matcher.find()) {
+            String hex = matcher.group(1);
+            StringBuilder replacement = new StringBuilder(String.valueOf(COLOR_CODE) + "x");
+            for (char c : hex.toCharArray()) {
+                replacement.append(COLOR_CODE).append(c);
+            }
+            matcher.appendReplacement(buffer, replacement.toString());
+        }
+        matcher.appendTail(buffer);
+        textToTranslate = buffer.toString();
+
         char[] b = textToTranslate.toCharArray();
         for (int i = 0; i < b.length - 1; i++) {
             if (b[i] == altColorChar && CHARACTERS.indexOf(b[i + 1]) > -1) {

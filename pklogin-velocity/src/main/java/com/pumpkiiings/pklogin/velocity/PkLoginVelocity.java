@@ -153,7 +153,7 @@ public class PkLoginVelocity {
         sendMessage(lg + "Support: " + aq + "https://discord.gg/MVQ5r7X4Qd");
         sendMessage(lg + "Database Type: " + aq + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
         sendMessage(lg + "Version: " + aq + "2.0.0");
-        sendMessage(lg + "Source: " + aq + "github.com/pumpkiiings/pklogin");
+        sendMessage(lg + "Source: " + aq + "github.com/Pumpkiiiings/PkLogin");
         sendMessage("");
         sendMessage("§e" + "Thanks for use my plugin!");
         sendMessage("");
@@ -172,7 +172,7 @@ public class PkLoginVelocity {
     private void saveDefaultConfig() {
         File file = new File(dataDirectory.toFile(), "config.yml");
         if (!file.exists()) {
-            try (java.io.InputStream in = getClass().getClassLoader().getResourceAsStream("com/pumpkiiings/pklogin/config/config.yml")) {
+            try (java.io.InputStream in = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/config.yml")) {
                 if (in != null) {
                     java.nio.file.Files.copy(in, file.toPath());
                 } else {
@@ -196,12 +196,12 @@ public class PkLoginVelocity {
 
         File messagesFile = new File(langFolder, lang);
         if (!messagesFile.exists()) {
-            try (java.io.InputStream in = getClass().getClassLoader().getResourceAsStream("com/pumpkiiings/pklogin/config/lang/" + lang)) {
+            try (java.io.InputStream in = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/" + lang)) {
                 if (in != null) {
                     java.nio.file.Files.copy(in, messagesFile.toPath());
                 } else {
                     // Try to copy English default
-                    try (java.io.InputStream fallback = getClass().getClassLoader().getResourceAsStream("com/pumpkiiings/pklogin/config/lang/messages_en.yml")) {
+                    try (java.io.InputStream fallback = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/messages_en.yml")) {
                         if (fallback != null) {
                             java.nio.file.Files.copy(fallback, messagesFile.toPath());
                         } else {
@@ -239,6 +239,23 @@ public class PkLoginVelocity {
                 Object obj = messagesConfig.get(path);
                 com.pumpkiiings.pklogin.common.settings.Messages.define(message, obj);
             }
+        }
+    }
+
+    public void reloadConfig() {
+        File dataFolder = dataDirectory.toFile();
+        this.yamlConfig = new YamlConfig(new File(dataFolder, "config.yml"));
+        for (Settings setting : Settings.values()) {
+            Object val = yamlConfig.get(setting.getKey());
+            if (val != null) {
+                Settings.define(setting, val);
+            }
+        }
+        setupMessages(dataFolder);
+        try {
+            this.backendConfig.load();
+        } catch (Exception e) {
+            logger.error("Failed to load backend.yml", e);
         }
     }
 

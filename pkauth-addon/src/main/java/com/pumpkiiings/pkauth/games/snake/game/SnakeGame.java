@@ -54,7 +54,8 @@ public class SnakeGame {
         renderer.initialize();
         renderer.render(snake, food, score);
 
-        player.sendActionBar("§7Press §a§lShift §7to exit the game");
+        String actionBar = PkAuthAddon.getInstance().getConfig().getString("snake.messages.actionbar_exit", "<#AAAAAA>Presiona <#55FF55><b>Shift</b> <#AAAAAA>para salir del juego");
+        player.sendActionBar(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(actionBar));
 
         gameTask = Bukkit.getScheduler().runTaskTimer(PkAuthAddon.getInstance(),
                 this::tick, 20L, 10L);
@@ -79,8 +80,10 @@ public class SnakeGame {
         if (snake.getHead().equals(food.getPosition())) {
             snake.grow();
             score += 10;
-            // play for camera location
-            player.playSound(cameraController.getCameraLocation(), Sound.ENTITY_PLAYER_BURP, 1.0f, 1.0f);
+            String eatSound = PkAuthAddon.getInstance().getConfig().getString("snake.sounds.eat", "ENTITY_PLAYER_BURP");
+            try {
+                player.playSound(cameraController.getCameraLocation(), Sound.valueOf(eatSound), 1.0f, 1.0f);
+            } catch (Exception ignored) {}
 
 
             if (snake.getBody().size() >= board.getWidth() * board.getHeight()) {
@@ -97,8 +100,11 @@ public class SnakeGame {
 
     private void win() {
         isRunning = false;
-        player.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
-        player.sendMessage("§aYou Win! Score: " + score);
+        String winSound = PkAuthAddon.getInstance().getConfig().getString("snake.sounds.win", "UI_TOAST_CHALLENGE_COMPLETE");
+        try { player.playSound(player, Sound.valueOf(winSound), 1.0f, 1.0f); } catch (Exception ignored) {}
+        
+        String winMsg = PkAuthAddon.getInstance().getConfig().getString("snake.messages.win", "<#55FF55>¡Ganaste! Puntaje: %score%");
+        player.sendRichMessage(winMsg.replace("%score%", String.valueOf(score)));
         stop();
     }
 
@@ -111,16 +117,22 @@ public class SnakeGame {
 
     private void gameOver() {
         isRunning = false;
-        player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1.0f, 0.8f);
-        player.sendMessage("§cGame Over! Score: " + score);
+        String goSound = PkAuthAddon.getInstance().getConfig().getString("snake.sounds.game_over", "BLOCK_AMETHYST_BLOCK_BREAK");
+        try { player.playSound(player, Sound.valueOf(goSound), 1.0f, 0.8f); } catch (Exception ignored) {}
+        
+        String goMsg = PkAuthAddon.getInstance().getConfig().getString("snake.messages.game_over", "<#FF5555>¡Juego Terminado! Puntaje: %score%");
+        player.sendRichMessage(goMsg.replace("%score%", String.valueOf(score)));
         stop();
     }
 
     public void stop() {
         if (isRunning) {
             isRunning = false;
-            player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1.0f, 0.8f);
-            player.sendMessage("§cGame Over! Score: " + score);
+            String goSound = PkAuthAddon.getInstance().getConfig().getString("snake.sounds.game_over", "BLOCK_AMETHYST_BLOCK_BREAK");
+            try { player.playSound(player, Sound.valueOf(goSound), 1.0f, 0.8f); } catch (Exception ignored) {}
+            
+            String goMsg = PkAuthAddon.getInstance().getConfig().getString("snake.messages.game_over", "<#FF5555>¡Juego Terminado! Puntaje: %score%");
+            player.sendRichMessage(goMsg.replace("%score%", String.valueOf(score)));
         }
 
         if (gameTask != null) {

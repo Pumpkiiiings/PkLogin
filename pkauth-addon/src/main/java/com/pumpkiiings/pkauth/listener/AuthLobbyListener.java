@@ -96,6 +96,8 @@ public class AuthLobbyListener implements Listener {
         Bukkit.getScheduler().runTask(plugin, () -> {
             // Player is authenticated, but they still shouldn't be able to move or lose fly.
             // (Velocity handles the teleportation out of this server)
+            
+            player.resetTitle();
 
             // Show all authenticated players to this player, and show this player to all authenticated players
             for (Player online : Bukkit.getOnlinePlayers()) {

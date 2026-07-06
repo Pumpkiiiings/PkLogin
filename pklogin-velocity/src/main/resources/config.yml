@@ -17,7 +17,7 @@
 file-version: 1
 
 # Language of the plugin.
-# For more information: https://github.com/pumpkiiings/pklogin/blob/master/docs/lang.md
+# For more information: https://github.com/Pumpkiiiings/PkLogin/blob/master/docs/lang.md
 languageFile: 'messages_en.yml'
 
 # The plugin will be able to send advertisements to the administrators.

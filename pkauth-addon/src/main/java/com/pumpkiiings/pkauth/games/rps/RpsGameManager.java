@@ -41,7 +41,8 @@ public class RpsGameManager implements Listener {
     }
 
     public void openBotGame(Player player) {
-        Inventory inv = Bukkit.createInventory(null, 27, mm.deserialize("<#FFAA00><b>Piedra, Papel o Tijeras (vs Bot)</b>"));
+        String titleStr = config.getString("menu.title_bot", "<#FFAA00><b>Piedra, Papel o Tijeras (vs Bot)</b>");
+        Inventory inv = Bukkit.createInventory(null, 27, mm.deserialize(titleStr));
         setupMenu(inv);
         player.openInventory(inv);
         activeMatches.put(player.getUniqueId(), new RpsMatch(player.getUniqueId(), null));
@@ -109,8 +110,11 @@ public class RpsGameManager implements Listener {
         RpsMatch match = activeMatches.get(player.getUniqueId());
         if (match == null) return;
 
-        if (e.getView().title().equals(mm.deserialize("<#FFAA00><b>Piedra, Papel o Tijeras (vs Bot)</b>")) ||
-            e.getView().title().equals(mm.deserialize("<#FFAA00><b>Piedra, Papel o Tijeras</b>"))) {
+        String titleBotStr = config.getString("menu.title_bot", "<#FFAA00><b>Piedra, Papel o Tijeras (vs Bot)</b>");
+        String titlePvpStr = config.getString("menu.title", "<#FFAA00><b>Piedra, Papel o Tijeras</b>");
+
+        if (e.getView().title().equals(mm.deserialize(titleBotStr)) ||
+            e.getView().title().equals(mm.deserialize(titlePvpStr))) {
             
             e.setCancelled(true);
             
@@ -129,6 +133,8 @@ public class RpsGameManager implements Listener {
     }
 
     private void handleChoice(Player player, RpsMatch match, String choice) {
+        player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
+        
         if (match.opponent == null) {
             String[] choices = {"PIEDRA", "PAPEL", "TIJERAS"};
             String botChoice = choices[new Random().nextInt(choices.length)];
@@ -136,6 +142,11 @@ public class RpsGameManager implements Listener {
             String result = getResult(choice, botChoice);
             String msg = config.getString("messages.vs_bot_result", "<#AAAAAA>Bot eligió: %bot_choice%. <#FFFFFF>¡%result%!");
             player.sendRichMessage(msg.replace("%bot_choice%", botChoice).replace("%result%", result));
+            
+            if (result.equals("Ganaste")) player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+            else if (result.equals("Perdiste")) player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_VILLAGER_NO, 1f, 1f);
+            else player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_BELL, 1f, 1f);
+            
             player.closeInventory();
             activeMatches.remove(player.getUniqueId());
         } else {
@@ -156,6 +167,14 @@ public class RpsGameManager implements Listener {
                     
                     p1.sendRichMessage(msgBase.replace("%opponent%", p2.getName()).replace("%opponent_choice%", match.choice2).replace("%result%", resultP1));
                     p2.sendRichMessage(msgBase.replace("%opponent%", p1.getName()).replace("%opponent_choice%", match.choice1).replace("%result%", resultP2));
+                    
+                    if (resultP1.equals("Ganaste")) p1.playSound(p1.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+                    else if (resultP1.equals("Perdiste")) p1.playSound(p1.getLocation(), org.bukkit.Sound.ENTITY_VILLAGER_NO, 1f, 1f);
+                    else p1.playSound(p1.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_BELL, 1f, 1f);
+                    
+                    if (resultP2.equals("Ganaste")) p2.playSound(p2.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+                    else if (resultP2.equals("Perdiste")) p2.playSound(p2.getLocation(), org.bukkit.Sound.ENTITY_VILLAGER_NO, 1f, 1f);
+                    else p2.playSound(p2.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_BELL, 1f, 1f);
                 }
                 
                 activeMatches.remove(match.player1);

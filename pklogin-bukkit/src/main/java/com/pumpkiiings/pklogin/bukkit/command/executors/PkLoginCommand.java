@@ -295,13 +295,13 @@ public class PkLoginCommand extends BukkitAbstractCommand {
         sender.sendMessage(" §eThis server is running §fPkLogin v " + plugin.getDescription().getVersion() + ".");
         sender.sendMessage(" §7Powered by §bwww.pumpkiiings.com§7.");
         sender.sendMessage("");
-        sender.sendMessage(" §7GitHub: §fhttps://github.com/pumpkiiings/pklogin");
+        sender.sendMessage(" §7GitHub: §fhttps://github.com/Pumpkiiiings/PkLogin");
         sender.sendMessage("");
     }
 
     private boolean update(Player player) {
         File output = new File(plugin.getDataFolder().getParentFile(), "PkLogin-" + plugin.getLatestVersion() + ".jar");
-        return downloadActionbar(player, "https://github.com/pumpkiiings/pklogin/releases/download/" + plugin.getLatestVersion() + "/PkLogin.jar", output, true, null);
+        return downloadActionbar(player, "https://github.com/Pumpkiiiings/PkLogin/releases/download/" + plugin.getLatestVersion() + "/PkLogin.jar", output, true, null);
     }
 
 
@@ -355,7 +355,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
             downloadLock.set(false);
             e.printStackTrace();
             String msg = update ?
-                    "§cFailed to download new version. Update manually at: https://github.com/pumpkiiings/pklogin/releases" :
+                    "§cFailed to download new version. Update manually at: https://github.com/Pumpkiiiings/PkLogin/releases" :
                     "§cFailed to download nLogin :c. Download manually at: pumpkiiings.com";
             plugin.sendMessage(msg);
             player.sendMessage(msg);

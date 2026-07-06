@@ -1,5 +1,5 @@
 menu:
-  title: "<#FFAA00><b>Piedra, Papel o Tijeras</b>"
+  title: "&8Piedra, Papel o Tijera"
   items:
     rock:
       slot: 11
@@ -15,11 +15,11 @@ menu:
       name: "<#FFAA00>Tijeras"
 
 messages:
-  vs_bot_result: "<#AAAAAA>Bot eligió: %bot_choice%. <#FFFFFF>¡%result%!"
-  waiting_opponent: "<#55FF55>Has elegido %choice%. Esperando al rival..."
-  vs_player_result: "<#AAAAAA>%opponent% eligió %opponent_choice%. <#FFFFFF>¡%result%!"
-  challenge_sent: "<#55FF55>Desafiaste a %target% a RPS."
-  challenge_received: "<#FFAA00>%challenger% te ha desafiado a RPS. Usa /auth play rps accept"
-  no_challenges: "<#FF5555>No tienes desafíos pendientes."
-  player_offline: "<#FF5555>El jugador ya no está conectado."
-  quit: "<#FF5555>Has salido del juego."
+  vs_bot_result: "<#00EEFF>⚙ <#FFFFFF>El Bot eligió: <#F4D03F>%bot_choice%<#FFFFFF>. <#55DA50>¡%result%! 🌟"
+  waiting_opponent: "<#55DA50>✔ <#FFFFFF>Has elegido <#F4D03F>%choice%<#FFFFFF>. <#AAAAAA>Esperando al rival... ⏳"
+  vs_player_result: "<#FF4C4C>⚔ <#F4D03F>%opponent% <#FFFFFF>eligió <#F4D03F>%opponent_choice%<#FFFFFF>. <#55DA50>¡%result%! 🎉"
+  challenge_sent: "<#00EEFF>⚡ <#FFFFFF>¡Has desafiado a <#F4D03F>%target% <#FFFFFF>a un duelo de RPS! ⚔"
+  challenge_received: "<#FFCC00>🔥 ¡<#FF4C4C>%challenger% <#FFCC00>te ha desafiado a RPS! <#FFFFFF>Escribe <#00EEFF>/auth play rps accept <#FFFFFF>para aceptar. ✔"
+  no_challenges: "<#FF4C4C>❌ <#FFFFFF>No tienes ningún desafío pendiente en este momento."
+  player_offline: "<#FF4C4C>⚠ <#FFFFFF>El rival se ha desconectado o ya no está disponible."
+  quit: "<#FF4C4C>🚪 <#FFFFFF>Has abandonado la partida."

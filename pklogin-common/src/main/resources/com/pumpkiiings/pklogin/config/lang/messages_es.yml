@@ -147,6 +147,11 @@ Messages:
     # Mensaje enviado para usar el comando /unregister
     message-unregister: "&eUtilice el comando &7/unregister <contraseña actual>&e."
 
+    updates-failed: "&cNo se pudieron buscar nuevas actualizaciones."
+    updates-download-link: "&cDescarga la última versión en: https://github.com/Pumpkiiiings/PkLogin/releases"
+    updates-invalid-response: "&cNo se pudieron buscar nuevas actualizaciones: respuesta inválida de GitHub."
+    updates-available: "&e¡Hay una nueva versión de PkLogin disponible! ({0} -> {1})"
+
   admin:
     forcelogin-success: "&aEl jugador {0} ha sido autenticado a la fuerza."
     unregister-success: "&aEl jugador {0} ha sido desregistrado."

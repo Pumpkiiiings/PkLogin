@@ -41,7 +41,7 @@ import java.nio.charset.StandardCharsets;
 public final class HttpClient {
 
     public static final HttpClient DEFAULT = new HttpClient(
-            "PkLogin (+https://github.com/pumpkiiings/pklogin)",
+            "PkLogin (+https://github.com/Pumpkiiiings/PkLogin)",
             10000,
             16000
     );

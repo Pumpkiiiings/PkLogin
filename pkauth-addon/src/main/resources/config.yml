@@ -3,34 +3,53 @@
 
 ui:
   scoreboard:
-    title: "<#FFAA00><b>PkLogin Auth</b>"
+    title: "<u><b><color:#C8B470><shadow:#322D1C:1><u><b>AUTH</b></u></shadow></color></b></u>"
     lines:
       - ""
-      - "<#AAAAAA>Estado:"
-      - "<#FF5555> No Autenticado"
+      - "<color:#FFFFFF><shadow:#404040:1>Estado:</shadow></color>"
+      - "<color:#FF0000><shadow:#400000:1> ✘ No Autenticado</shadow></color>"
       - ""
-      - "<#AAAAAA>Servidor:"
-      - "<#55FF55> Lobby Principal"
+      - "<color:#FFFFFF><shadow:#404040:1>Registrate con:</shadow></color>"
+      - " <color:#FFE300><shadow:#403900:1>/register <c> <c></shadow></color>"
       - ""
-      - "<#AAAAAA>Tu IP:"
-      - "<#FFFFFF>%player_ip%"
+      - "<color:#FFFFFF><shadow:#404040:1>Ingresa con:</shadow></color>"
+      - " <color:#FFE300><shadow:#403900:1>/login <contraseña></shadow></color>"
       - ""
-      - "<#FFAA00>play.tuserver.com"
+      - "<color:#D3BC6F><shadow:#352F1C:1>mc.liric.xyz</shadow></color>"
   
   scoreboard-authenticated:
-    title: "<#FFAA00><b>PkLogin Auth</b>"
+    title: "<u><b><color:#C8B470><shadow:#322D1C:1><u><b>AUTH</b></u></shadow></color></b></u>"
     lines:
       - ""
-      - "<#AAAAAA>Estado:"
-      - "<#55FF55> Autenticado"
+      - "<color:#FFFFFF><shadow:#404040:1>Estado:</shadow></color>"
+      - "<color:#03FF00><shadow:#014000:1> ✔ Autenticado</shadow></color>"
       - ""
-      - "<#AAAAAA>Servidor:"
-      - "<#55FF55> Lobby Principal"
+      - "<color:#FF9500><shadow:#402500:1>⏳ Esperando el proxy...</shadow></color>"
       - ""
-      - "<#AAAAAA>Esperando al proxy..."
-      - ""
-      - "<#FFAA00>play.tuserver.com"
+      - "<color:#D3BC6F><shadow:#352F1C:1>mc.liric.xyz</shadow></color>"
 
   tablist:
-    header: "\n<#FFAA00><b>BIENVENIDO A PKLOGIN</b>\n<#AAAAAA>Por favor, inicia sesión para jugar.\n"
-    footer: "\n<#AAAAAA>IP: <#FFFFFF>play.tuserver.com\n<#AAAAAA>Discord: <#55FF55>discord.gg/tuserver\n"
+    header:
+      - ""
+      - "<#FFAA00><b>BIENVENIDO A PKLOGIN</b>"
+      - "<#AAAAAA>Por favor, inicia sesión para jugar."
+      - ""
+    footer:
+      - ""
+      - "<#AAAAAA>IP: <#FFFFFF>play.tuserver.com"
+      - "<#AAAAAA>Discord: <#55FF55>discord.gg/tuserver"
+      - ""
+
+messages:
+  player_not_found: "<#FF5555>Jugador no encontrado."
+  config_reloaded: "<#55FF55>Configuración de PkAuth recargada correctamente."
+
+snake:
+  messages:
+    actionbar_exit: "<#AAAAAA>Presiona <#55FF55><b>Shift</b> <#AAAAAA>para salir del juego"
+    win: "<#55FF55>¡Ganaste! Puntaje: %score%"
+    game_over: "<#FF5555>¡Juego Terminado! Puntaje: %score%"
+  sounds:
+    eat: "ENTITY_PLAYER_BURP"
+    win: "UI_TOAST_CHALLENGE_COMPLETE"
+    game_over: "BLOCK_AMETHYST_BLOCK_BREAK"

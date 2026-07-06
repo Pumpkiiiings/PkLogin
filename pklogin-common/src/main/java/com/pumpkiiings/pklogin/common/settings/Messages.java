@@ -78,6 +78,10 @@ public enum Messages {
     MESSAGE_REGISTER("other-messages.message-register"),
     MESSAGE_CHANGEPASSWORD("other-messages.message-changepassword"),
     MESSAGE_UNREGISTER("other-messages.message-unregister"),
+    UPDATES_FAILED("other-messages.updates-failed"),
+    UPDATES_DOWNLOAD_LINK("other-messages.updates-download-link"),
+    UPDATES_INVALID_RESPONSE("other-messages.updates-invalid-response"),
+    UPDATES_AVAILABLE("other-messages.updates-available"),
 
     // admin commands
     ADMIN_FORCELOGIN_SUCCESS("admin.forcelogin-success"),

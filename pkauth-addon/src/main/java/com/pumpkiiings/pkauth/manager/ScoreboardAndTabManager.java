@@ -47,12 +47,17 @@ public class ScoreboardAndTabManager implements Listener {
     }
 
     private void setupTablist(Player player) {
-        String headerStr = plugin.getConfig().getString("ui.tablist.header", "<#FFAA00><b>BIENVENIDO</b>");
-        String footerStr = plugin.getConfig().getString("ui.tablist.footer", "");
+        List<String> headerList = plugin.getConfig().getStringList("ui.tablist.header");
+        List<String> footerList = plugin.getConfig().getStringList("ui.tablist.footer");
+        
+        if (headerList.isEmpty()) headerList = List.of("<#FFAA00><b>BIENVENIDO</b>");
+        
+        String headerStr = String.join("<br>", headerList).replace("%player%", player.getName());
+        String footerStr = String.join("<br>", footerList).replace("%player%", player.getName());
         
         player.sendPlayerListHeaderAndFooter(
-            mm.deserialize(headerStr.replace("%player%", player.getName())),
-            mm.deserialize(footerStr)
+            colorize(headerStr),
+            colorize(footerStr)
         );
     }
 
@@ -60,6 +65,10 @@ public class ScoreboardAndTabManager implements Listener {
         Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective obj = board.registerNewObjective("auth_board", Criteria.DUMMY, Component.empty());
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+        
+        try {
+            obj.numberFormat(io.papermc.paper.scoreboard.numbers.NumberFormat.blank());
+        } catch (Throwable ignored) {}
         
         player.setScoreboard(board);
         scoreboards.put(player.getUniqueId(), board);
@@ -76,6 +85,12 @@ public class ScoreboardAndTabManager implements Listener {
         }
     }
 
+    public void setupAllTablists() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            setupTablist(player);
+        }
+    }
+
     private void updateScoreboard(Player player, Scoreboard board) {
         boolean isAuthenticated = PkLogin.getApi().isAuthenticated(player.getName());
         String configPath = isAuthenticated ? "ui.scoreboard-authenticated" : "ui.scoreboard";
@@ -86,7 +101,7 @@ public class ScoreboardAndTabManager implements Listener {
         Objective obj = board.getObjective("auth_board");
         if (obj == null) return;
 
-        obj.displayName(mm.deserialize(titleStr));
+        obj.displayName(colorize(titleStr));
         
         int score = 15;
         for (String line : lines) {
@@ -106,10 +121,42 @@ public class ScoreboardAndTabManager implements Listener {
                 team.addEntry(entry);
             }
             
-            team.prefix(mm.deserialize(parsedLine));
+            team.prefix(colorize(parsedLine));
             obj.getScore(entry).setScore(score);
             
             score--;
         }
+        
+        for (int i = 15; i >= 0; i--) {
+            if (i <= score) {
+                String entry = org.bukkit.ChatColor.values()[i % 16].toString() + org.bukkit.ChatColor.RESET.toString();
+                board.resetScores(entry);
+            }
+        }
+    }
+
+    public static Component colorize(String text) {
+        if (text == null) return Component.empty();
+        
+        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("[&§]x([&§][a-fA-F0-9]){6}").matcher(text);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            String hex = matcher.group().replaceAll("[&§x]", "");
+            matcher.appendReplacement(sb, "<#" + hex + ">");
+        }
+        matcher.appendTail(sb);
+        text = sb.toString();
+        
+        matcher = java.util.regex.Pattern.compile("&#([a-fA-F0-9]{6})").matcher(text);
+        sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, "<#" + matcher.group(1) + ">");
+        }
+        matcher.appendTail(sb);
+        text = sb.toString();
+        
+        text = text.replace("&0", "<black>").replace("&1", "<dark_blue>").replace("&2", "<dark_green>").replace("&3", "<dark_aqua>").replace("&4", "<dark_red>").replace("&5", "<dark_purple>").replace("&6", "<gold>").replace("&7", "<gray>").replace("&8", "<dark_gray>").replace("&9", "<blue>").replace("&a", "<green>").replace("&b", "<aqua>").replace("&c", "<red>").replace("&d", "<light_purple>").replace("&e", "<yellow>").replace("&f", "<white>").replace("&k", "<obfuscated>").replace("&l", "<bold>").replace("&m", "<strikethrough>").replace("&n", "<underlined>").replace("&o", "<italic>").replace("&r", "<reset>").replace("§0", "<black>").replace("§1", "<dark_blue>").replace("§2", "<dark_green>").replace("§3", "<dark_aqua>").replace("§4", "<dark_red>").replace("§5", "<dark_purple>").replace("§6", "<gold>").replace("§7", "<gray>").replace("§8", "<dark_gray>").replace("§9", "<blue>").replace("§a", "<green>").replace("§b", "<aqua>").replace("§c", "<red>").replace("§d", "<light_purple>").replace("§e", "<yellow>").replace("§f", "<white>").replace("§k", "<obfuscated>").replace("§l", "<bold>").replace("§m", "<strikethrough>").replace("§n", "<underlined>").replace("§o", "<italic>").replace("§r", "<reset>");
+                   
+        return MiniMessage.miniMessage().deserialize(text);
     }
 }

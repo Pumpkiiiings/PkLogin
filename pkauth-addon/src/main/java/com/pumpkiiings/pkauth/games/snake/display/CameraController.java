@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class CameraController {
 
     private final Player player;
-    private ArmorStand cameraEntity;
+    private org.bukkit.entity.Entity cameraEntity;
     private Location originalLocation;
     private GameMode originalGameMode;
 
@@ -34,11 +34,9 @@ public class CameraController {
         cameraLoc.setYaw(0f);
         cameraLoc.setPitch(0f);
 
-        cameraEntity = player.getWorld().spawn(cameraLoc, ArmorStand.class, stand -> {
-            stand.setVisible(false);
-            stand.setGravity(false);
-            stand.setInvulnerable(true);
-            stand.setMarker(true);
+        cameraEntity = player.getWorld().spawn(cameraLoc, org.bukkit.entity.Interaction.class, interaction -> {
+            interaction.setInteractionWidth(0f);
+            interaction.setInteractionHeight(0f);
         });
 
         User user = PacketEvents.getAPI().getPlayerManager().getUser(player);

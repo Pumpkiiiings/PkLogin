@@ -158,6 +158,25 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
                 return;
             }
 
+            case "reload": {
+                if (!sender.hasPermission("pklogin.admin.reload")) {
+                    sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
+                    return;
+                }
+                plugin.reloadConfig();
+                sendMessage(sender, "§aConfiguration and messages reloaded successfully.");
+                return;
+            }
+
+            case "help": {
+                if (!sender.hasPermission("pklogin.admin.help")) {
+                    sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
+                    return;
+                }
+                sendHelp(sender);
+                return;
+            }
+
             default: {
                 if (sender instanceof Player) {
                     // Forward unknown commands like forcelogin, setspawn, etc to the backend server
@@ -176,7 +195,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
         sendMessage(sender, " §eThis proxy is running §fPkLogin v2.0.0.");
         sendMessage(sender, " §7Powered by §bwww.pumpkiiings.com§7.");
         sendMessage(sender, "");
-        sendMessage(sender, " §7GitHub: §fhttps://github.com/pumpkiiings/pklogin");
+        sendMessage(sender, " §7GitHub: §fhttps://github.com/Pumpkiiiings/PkLogin");
         sendMessage(sender, "");
     }
 }

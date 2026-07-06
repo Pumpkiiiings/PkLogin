@@ -121,7 +121,7 @@ public class PkLoginBukkit extends JavaPlugin {
         sendMessage(lg + "Database Type: " + aq
                 + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
         sendMessage(lg + "Version: " + aq + getDescription().getVersion());
-        sendMessage(lg + "Source: " + aq + "github.com/pumpkiiings/pklogin");
+        sendMessage(lg + "Source: " + aq + "github.com/Pumpkiiiings/PkLogin");
         sendMessage("");
         sendMessage("§e" + "Thanks for use my plugin!");
         sendMessage("");
@@ -257,7 +257,7 @@ public class PkLoginBukkit extends JavaPlugin {
     public void detectUpdates() {
         String tagName = null;
         try {
-            String result = HttpClient.DEFAULT.get("https://api.github.com/repos/pumpkiiings/PkLogin/releases/latest");
+            String result = HttpClient.DEFAULT.get("https://api.github.com/repos/Pumpkiiiings/PkLogin/releases/latest");
 
             // avoid use Google Gson to avoid problems with older versions.
             if (result.contains("\"tag_name\":\"")) {
@@ -267,25 +267,25 @@ public class PkLoginBukkit extends JavaPlugin {
                 }
             }
         } catch (IOException e) {
-            sendMessage("§cFailed to find new updates.");
-            sendMessage("§cDownload the latest version at: https://github.com/pumpkiiings/pklogin/releases");
+            sendMessage(Messages.UPDATES_FAILED.asString());
+            sendMessage(Messages.UPDATES_DOWNLOAD_LINK.asString());
+            return;
         }
         if (tagName == null) {
-            sendMessage("§cFailed to find new updates: invalid response.");
-            sendMessage("§cDownload the latest version at: https://github.com/pumpkiiings/pklogin/releases");
+            sendMessage(Messages.UPDATES_INVALID_RESPONSE.asString());
+            sendMessage(Messages.UPDATES_DOWNLOAD_LINK.asString());
         } else {
             String currentVersion = "v" + getDescription().getVersion();
             updateAvailable = !currentVersion.equals(tagName);
             if (updateAvailable) {
-                sendMessage("A new version of PkLogin is available (" + currentVersion + " -> " + latestVersion + ").",
-                        "§e");
+                sendMessage(Messages.UPDATES_AVAILABLE.asString().replace("{0}", currentVersion).replace("{1}", latestVersion));
             }
         }
     }
 
     public boolean setupSettings() {
         File configFile = new File(getDataFolder(), "config.yml");
-        if (!configFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/config.yml", configFile)) {
+        if (!configFile.exists() && !FileUtils.copyFromJar("com/Pumpkiiiings/PkLogin/config/config.yml", configFile)) {
             sendMessage("§cFailed to create 'config.yml' file.");
             return false;
         }
@@ -297,12 +297,12 @@ public class PkLoginBukkit extends JavaPlugin {
 
         File discordFile = new File(twoFaFolder, "discord.yml");
         if (!discordFile.exists()
-                && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/2fa/discord.yml", discordFile)) {
+                && !FileUtils.copyFromJar("com/Pumpkiiiings/PkLogin/config/2fa/discord.yml", discordFile)) {
             sendMessage("§cFailed to create 'discord.yml' file.");
         }
 
         File emailFile = new File(twoFaFolder, "email.yml");
-        if (!emailFile.exists() && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/2fa/email.yml", emailFile)) {
+        if (!emailFile.exists() && !FileUtils.copyFromJar("com/Pumpkiiiings/PkLogin/config/2fa/email.yml", emailFile)) {
             sendMessage("§cFailed to create 'email.yml' file.");
         }
 
@@ -314,8 +314,8 @@ public class PkLoginBukkit extends JavaPlugin {
         String lang = Settings.LANGUAGE_FILE.asString();
         File messagesFile = new File(getDataFolder() + "/lang", lang);
         if (!messagesFile.exists()
-                && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/lang/" + lang, messagesFile)
-                && !FileUtils.copyFromJar("com/pumpkiiings/pklogin/config/lang/messages_en.yml", messagesFile)) {
+                && !FileUtils.copyFromJar("com/Pumpkiiiings/PkLogin/config/lang/" + lang, messagesFile)
+                && !FileUtils.copyFromJar("com/Pumpkiiiings/PkLogin/config/lang/messages_en.yml", messagesFile)) {
             sendMessage("§cFailed to create '" + lang + "' language file.");
             return false;
         }

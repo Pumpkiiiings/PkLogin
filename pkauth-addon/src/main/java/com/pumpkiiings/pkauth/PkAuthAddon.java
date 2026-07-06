@@ -18,6 +18,7 @@ public class PkAuthAddon extends JavaPlugin {
     private static PkAuthAddon instance;
     private World authWorld;
     private com.pumpkiiings.pkauth.games.rps.RpsGameManager rpsManager;
+    private com.pumpkiiings.pkauth.manager.ScoreboardAndTabManager scoreboardManager;
 
     public static PkAuthAddon getInstance() {
         return instance;
@@ -25,6 +26,10 @@ public class PkAuthAddon extends JavaPlugin {
 
     public com.pumpkiiings.pkauth.games.rps.RpsGameManager getRpsManager() {
         return rpsManager;
+    }
+
+    public com.pumpkiiings.pkauth.manager.ScoreboardAndTabManager getScoreboardManager() {
+        return scoreboardManager;
     }
 
     @Override
@@ -39,14 +44,21 @@ public class PkAuthAddon extends JavaPlugin {
         PacketEvents.getAPI().init();
         getLogger().info("PkAuthAddon is enabling...");
         
+        me.tofaa.entitylib.spigot.SpigotEntityLibPlatform platform = new me.tofaa.entitylib.spigot.SpigotEntityLibPlatform(this);
+        me.tofaa.entitylib.APIConfig settings = new me.tofaa.entitylib.APIConfig(PacketEvents.getAPI())
+                .trackPlatformEntities()
+                .usePlatformLogger();
+        me.tofaa.entitylib.EntityLib.init(platform, settings);
+        
         saveDefaultConfig();
         
         // Create the empty void world
         authWorld = createVoidWorld("auth");
         
         // Register listeners
+        scoreboardManager = new com.pumpkiiings.pkauth.manager.ScoreboardAndTabManager(this);
         getServer().getPluginManager().registerEvents(new AuthLobbyListener(this), this);
-        getServer().getPluginManager().registerEvents(new com.pumpkiiings.pkauth.manager.ScoreboardAndTabManager(this), this);
+        getServer().getPluginManager().registerEvents(scoreboardManager, this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         PacketEvents.getAPI().getEventManager().registerListener(new PlayerMovementPacketListener());
 

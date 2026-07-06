@@ -2,7 +2,7 @@ subprojects {
     apply plugin: 'java'
 
     group = 'com.pumpkiiings.pklogin'
-    version = '1.6.8'
+    version = '1.7'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -16,7 +16,7 @@ subprojects {
     }
 
     dependencies {
-        def lombok = 'org.projectlombok:lombok:1.18.32'
+        def lombok = 'org.projectlombok:lombok:1.18.36'
         compileOnly lombok
         annotationProcessor lombok
         testCompileOnly lombok

@@ -1,13 +1,11 @@
 package com.pumpkiiings.pklogin.api.event.velocity.auth;
 
-import com.velocitypowered.api.proxy.Player;
-
 public class VelocityPreLoginEvent {
-    private final Player player;
+    private final String username;
 
-    public VelocityPreLoginEvent(Player player) {
-        this.player = player;
+    public VelocityPreLoginEvent(String username) {
+        this.username = username;
     }
 
-    public Player getPlayer() { return player; }
+    public String getUsername() { return username; }
 }

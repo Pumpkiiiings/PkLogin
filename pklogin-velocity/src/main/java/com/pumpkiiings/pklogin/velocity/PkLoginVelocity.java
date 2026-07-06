@@ -133,6 +133,16 @@ public class PkLoginVelocity {
             }
 
             this.accountManagement = new AccountManagement(this.database);
+            this.accountManagement.setPasswordChangeCallback(playerName -> {
+                this.getServer().getPlayer(playerName).ifPresent(player -> {
+                    this.getServer().getEventManager().fire(new com.pumpkiiings.pklogin.api.event.velocity.auth.VelocityPlayerPasswordChangeEvent(player));
+                });
+            });
+            com.pumpkiiings.pklogin.common.PkLogin.setAccountManagement(this.accountManagement);
+            com.pumpkiiings.pklogin.api.service.PkLoginProvider.registerAccountManager(new com.pumpkiiings.pklogin.common.api.CommonAccountManagerAPI());
+            com.pumpkiiings.pklogin.api.service.PkLoginProvider.registerSecurityAPI(new com.pumpkiiings.pklogin.common.api.CommonSecurityAPI());
+            com.pumpkiiings.pklogin.api.service.PkLoginProvider.registerSessionAPI(new com.pumpkiiings.pklogin.velocity.api.VelocitySessionAPI(this));
+            
             logger.info("Database connected successfully.");
         } catch (Exception e) {
             logger.error("Failed to connect to database!", e);
@@ -149,7 +159,7 @@ public class PkLoginVelocity {
         sendMessage(a + "███       ██ ▀█▄ ████████ ▀███▀ ▀████ ██▄ ██ ██ ");
         sendMessage(a + "                                   ██  ");
         sendMessage(a + "                                 ▀▀▀  ");
-        sendMessage(dg + "A fork of OpenLogin but better");
+        sendMessage(dg + "A powerful open source login plugin");
         sendMessage(lg + "Support: " + aq + "https://discord.gg/MVQ5r7X4Qd");
         sendMessage(lg + "Database Type: " + aq + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
         sendMessage(lg + "Version: " + aq + "2.0.0");

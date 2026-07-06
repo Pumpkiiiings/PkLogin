@@ -41,6 +41,11 @@ public class LoginManagement {
     private final Map<String, Integer> failedAttempts = new HashMap<>();
 
     private final AccountManagement accountManagement;
+    private java.util.function.Consumer<String> authCallback;
+
+    public void setAuthCallback(java.util.function.Consumer<String> authCallback) {
+        this.authCallback = authCallback;
+    }
 
     /**
      * Clears the player cache
@@ -75,6 +80,9 @@ public class LoginManagement {
     public void setAuthenticated(@NonNull String name) {
         synchronized (logged) {
             logged.add(name.toLowerCase());
+        }
+        if (authCallback != null) {
+            authCallback.accept(name);
         }
     }
 

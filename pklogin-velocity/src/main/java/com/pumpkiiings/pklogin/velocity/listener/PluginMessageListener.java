@@ -43,6 +43,11 @@ public class PluginMessageListener {
         if ("Authenticated".equals(subChannel)) {
             // Player has successfully logged in or registered on the auth server
             plugin.getAuthenticatedPlayers().add(player.getUniqueId());
+            
+            com.pumpkiiings.pklogin.api.event.velocity.auth.VelocityPlayerAuthLoginEvent apiEvent = 
+                new com.pumpkiiings.pklogin.api.event.velocity.auth.VelocityPlayerAuthLoginEvent(player);
+            plugin.getServer().getEventManager().fire(apiEvent);
+            
             handleAuthenticationSuccess(player);
         }
     }

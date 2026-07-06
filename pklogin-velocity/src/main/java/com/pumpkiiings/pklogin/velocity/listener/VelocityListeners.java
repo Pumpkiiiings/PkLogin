@@ -33,6 +33,10 @@ public class VelocityListeners {
     public void onPreLogin(PreLoginEvent event) {
         String username = event.getUsername();
         
+        com.pumpkiiings.pklogin.api.event.velocity.auth.VelocityPreLoginEvent apiEvent = 
+            new com.pumpkiiings.pklogin.api.event.velocity.auth.VelocityPreLoginEvent(username);
+        plugin.getServer().getEventManager().fire(apiEvent);
+
         Optional<Account> accountOpt = plugin.getAccountManagement().search(username);
         if (accountOpt.isPresent()) {
             String uuidType = accountOpt.get().getUuidType();

@@ -24,7 +24,6 @@ commands:
     description: 'PkLogin management command'
     aliases:
       - 'ologin'
-      - 'nlogin'
   register:
     description: 'Register your account'
     aliases:

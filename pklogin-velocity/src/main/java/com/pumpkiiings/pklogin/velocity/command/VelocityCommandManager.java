@@ -19,7 +19,7 @@ public class VelocityCommandManager {
         register(commandManager, "premium", new PremiumCommand(plugin));
         register(commandManager, "2fa", new TwoFactorCommand(plugin));
         register(commandManager, "offline", new OfflineCommand(plugin));
-        register(commandManager, "pklogin", new PkLoginAdminCommand(plugin), "openlogin");
+        register(commandManager, "pklogin", new PkLoginAdminCommand(plugin));
     }
 
     private void register(CommandManager manager, String name, com.velocitypowered.api.command.SimpleCommand command, String... aliases) {

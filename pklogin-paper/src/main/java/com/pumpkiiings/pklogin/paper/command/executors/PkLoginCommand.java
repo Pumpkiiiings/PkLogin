@@ -354,9 +354,7 @@ public class PkLoginCommand extends BukkitAbstractCommand {
         } catch (IOException e) {
             downloadLock.set(false);
             e.printStackTrace();
-            String msg = update ?
-                    "§cFailed to download new version. Update manually at: https://github.com/Pumpkiiiings/PkLogin/releases" :
-                    "§cFailed to download nLogin :c. Download manually at: pumpkiiings.com";
+            String msg = "§cFailed to download new version. Update manually at: https://github.com/Pumpkiiiings/PkLogin/releases";
             plugin.sendMessage(msg);
             player.sendMessage(msg);
         } finally {

@@ -16,10 +16,6 @@ file-version: 1
 # For more information: https://github.com/Pumpkiiiings/PkLogin/blob/master/docs/lang.md
 languageFile: 'messages_en.yml'
 
-# The plugin will be able to send advertisements to the administrators.
-# For example: nLogin recommendation.
-allow-advertising: true
-
 # Security system related settings.
 Security:
   # Amount of time for a player to log in/register (set in seconds).
@@ -66,33 +62,28 @@ Database:
   username: root
   password: ""
 
-# Paid features of the plugin (premium version).
-premium:
-  # Enable this if you have PkLogin installed on your proxy (BungeeCord/Velocity).
-  # If true, the backend server will not perform premium checks and will let the proxy handle it.
-  proxy-mode: false
+username-appender:
+  enabled: false
+  premium:
+    username-appendix: ""
+    position: "suffix"
+    domains:
+      - "premium.myserver.com"
+  offline:
+    username-appendix: "+"
+    position: "suffix"
+    domains:
+      - "myserver.com"
 
-  username-appender:
-    enabled: false
-    premium:
-      username-appendix: ""
-      position: "suffix"
-      domains:
-        - "premium.myserver.com"
-    offline:
-      username-appendix: "+"
-      position: "suffix"
-      domains:
-        - "myserver.com"
+legacy:
+  # Defines the type of unique id for users.
+  #
+  # - Options available:
+  #  |=> REAL [recommended]
+  #  |=> RANDOM
+  #  |=> OFFLINE
+  unique-id-type: OFFLINE
 
-  legacy:
-    # Defines the type of unique id for users.
-    #
-    # - Options available:
-    #  |=> REAL [recommended]
-    #  |=> RANDOM
-    #  |=> OFFLINE
-    unique-id-type: OFFLINE
 
 # User Interface settings.
 ui:

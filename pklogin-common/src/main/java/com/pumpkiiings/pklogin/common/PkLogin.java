@@ -46,6 +46,7 @@ public class PkLogin {
     }
 
     private static com.pumpkiiings.pklogin.common.manager.AccountManagement accountManagement;
+    private static com.pumpkiiings.pklogin.common.manager.LoginManagement loginManagement;
 
     public static com.pumpkiiings.pklogin.common.manager.AccountManagement getAccountManagement() {
         return accountManagement;
@@ -54,5 +55,12 @@ public class PkLogin {
     public static void setAccountManagement(com.pumpkiiings.pklogin.common.manager.AccountManagement accountManagement) {
         PkLogin.accountManagement = accountManagement;
     }
-}
 
+    public static com.pumpkiiings.pklogin.common.manager.LoginManagement getLoginManagement() {
+        return loginManagement;
+    }
+
+    public static void setLoginManagement(com.pumpkiiings.pklogin.common.manager.LoginManagement loginManagement) {
+        PkLogin.loginManagement = loginManagement;
+    }
+}

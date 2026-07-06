@@ -10,7 +10,7 @@
 # Settings related to the backend servers.
 backend:
   # Sets the list of authentication servers.
-  # - You must enter this list ALL servers that nLogin is installed on.
+  # - You must enter this list ALL servers that PkLogin is installed on.
   # - Most servers use either an authentication server or a main lobby.
   # - For more information, go to the tutorial:
   #  ==> https://docs.nickuc.com/nlogin/proxy
@@ -18,7 +18,7 @@ backend:
     - 'auth'
 
   # Defines whether the proxy should check if authentication servers are properly configured.
-  # - If you are using a server without nLogin (e.g. limbo servers not based on Spigot)
+  # - If you are using a server without PkLogin (e.g. limbo servers not based on Spigot)
   #   it is recommended to disable this option.
   check-ack-message: true
 
@@ -33,7 +33,7 @@ backend:
 
 # Server redirection settings.
 redirect:
-  # Defines whether the redirection of the first server should be overwritten by nLogin.
+  # Defines whether the redirection of the first server should be overwritten by PkLogin.
   # - This option prevents players from bypassing the authentication server
   #   and restores the first server provided by the proxy.
   override-first-server: true

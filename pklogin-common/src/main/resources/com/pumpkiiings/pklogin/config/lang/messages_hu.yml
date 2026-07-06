@@ -9,7 +9,7 @@
 # Official Website: https://www.pumpkiiings.com
 # Discord: https://www.pumpkiiings.com/discord
 
-# WARNING: This is a translation made to nLogin. It will probably be compatible with all features of PkLogin.
+# WARNING: This is a translation made to PkLogin. It will probably be compatible with all features of PkLogin.
 
 # Hungarian translation made by simon21 <3
 
@@ -321,7 +321,7 @@ Messages:
     insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
     change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
 
-    # Message sent when a user attempts to disable nLogin using PlugMan/System.
+    # Message sent when a user attempts to disable PkLogin using PlugMan/System.
     plugman-block: "&cItt nem érheti meg a bejelentkezési bÅ‘vítményt."
 
     # Message when a player does not possess the required permission.

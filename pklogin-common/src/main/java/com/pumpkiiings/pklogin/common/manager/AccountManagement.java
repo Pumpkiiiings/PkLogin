@@ -147,6 +147,12 @@ public class AccountManagement {
         return Optional.empty();
     }
 
+    private java.util.function.Consumer<String> passwordChangeCallback;
+
+    public void setPasswordChangeCallback(java.util.function.Consumer<String> passwordChangeCallback) {
+        this.passwordChangeCallback = passwordChangeCallback;
+    }
+
     /**
      * Update the player's database column.
      *
@@ -191,6 +197,9 @@ public class AccountManagement {
                         current,
                         name.toLowerCase()
                 );
+                if (passwordChangeCallback != null) {
+                    passwordChangeCallback.accept(name);
+                }
             } else {
                 database.update(
                         "INSERT INTO `pklogin` (`name`, `realname`, `password`, `address`, `lastlogin`, `regdate`, `totp_secret`, `uuid_type`, `random_uuid`, `discord_id`, `email_address`) VALUES (?, ?, ?, ?, ?, ?, NULL, ?, ?, NULL, NULL)",

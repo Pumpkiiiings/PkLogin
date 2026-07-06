@@ -84,7 +84,7 @@ public class CommandManagement {
         CHANGE_PASSWORD("changepassword", ChangePasswordCommand.class),
         LOGIN("login", LoginCommand.class),
         REGISTER("register", RegisterCommand.class),
-        OPENLOGIN("pklogin", PkLoginCommand.class),
+        PKLOGIN("pklogin", PkLoginCommand.class),
         UNREGISTER("unregister", UnregisterCommand.class),
         PREMIUM("premium", PremiumCommand.class),
         OFFLINE("offline", OfflineCommand.class),

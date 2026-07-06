@@ -78,12 +78,7 @@ public class PkLoginBukkit extends JavaPlugin {
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
 
-        // detect nLogin
-        if (pm.getPlugin("nLogin") != null) {
-            sendMessage("nLogin was detected, turning off plugin...");
-            pm.disablePlugin(this);
-            return;
-        }
+
 
         Server server = getServer();
 
@@ -116,7 +111,7 @@ public class PkLoginBukkit extends JavaPlugin {
         sendMessage(a + "███       ██ ▀█▄ ████████ ▀███▀ ▀████ ██▄ ██ ██ ");
         sendMessage(a + "                                   ██  ");
         sendMessage(a + "                                 ▀▀▀  ");
-        sendMessage(dg + "A fork of OpenLogin but better");
+        sendMessage(dg + "A powerful open source login plugin");
         sendMessage(lg + "Support: " + aq + "https://discord.gg/MVQ5r7X4Qd");
         sendMessage(lg + "Database Type: " + aq
                 + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
@@ -134,6 +129,28 @@ public class PkLoginBukkit extends JavaPlugin {
 
         // setup login management
         loginManagement = new LoginManagement(accountManagement);
+
+        com.pumpkiiings.pklogin.common.PkLogin.setAccountManagement(accountManagement);
+        com.pumpkiiings.pklogin.common.PkLogin.setLoginManagement(loginManagement);
+        
+        loginManagement.setAuthCallback(playerName -> {
+            org.bukkit.entity.Player player = getServer().getPlayer(playerName);
+            if (player != null) {
+                getServer().getPluginManager().callEvent(new com.pumpkiiings.pklogin.api.event.bukkit.auth.PlayerAuthLoginEvent(player));
+            }
+        });
+        
+        accountManagement.setPasswordChangeCallback(playerName -> {
+            org.bukkit.entity.Player player = getServer().getPlayer(playerName);
+            if (player != null) {
+                getServer().getPluginManager().callEvent(new com.pumpkiiings.pklogin.api.event.bukkit.auth.PlayerPasswordChangeEvent(player));
+            }
+        });
+
+        com.pumpkiiings.pklogin.api.service.PkLoginProvider.registerAccountManager(new com.pumpkiiings.pklogin.common.api.CommonAccountManagerAPI());
+        com.pumpkiiings.pklogin.api.service.PkLoginProvider.registerSecurityAPI(new com.pumpkiiings.pklogin.common.api.CommonSecurityAPI());
+        com.pumpkiiings.pklogin.api.service.PkLoginProvider.registerSessionAPI(new com.pumpkiiings.pklogin.common.api.CommonSessionAPI());
+
 
         // setup commands
         commandManagement = new CommandManagement(this);

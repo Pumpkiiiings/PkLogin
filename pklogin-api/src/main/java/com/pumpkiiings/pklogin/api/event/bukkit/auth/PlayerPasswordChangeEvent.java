@@ -1,18 +1,18 @@
 package com.pumpkiiings.pklogin.api.event.bukkit.auth;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class PreLoginEvent extends Event {
+public class PlayerPasswordChangeEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
-    private final String username;
+    private final Player player;
 
-    public PreLoginEvent(String username) {
-        super(true); // Async
-        this.username = username;
+    public PlayerPasswordChangeEvent(Player player) {
+        this.player = player;
     }
 
-    public String getUsername() { return username; }
+    public Player getPlayer() { return player; }
     
     @Override
     public HandlerList getHandlers() { return HANDLERS; }

@@ -17,7 +17,8 @@ public class PkLoginPluginLoader implements PluginLoader {
         resolver.addDependency(new Dependency(new DefaultArtifact("net.dv8tion:JDA:5.0.0-beta.24"), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("com.sun.mail:javax.mail:1.6.2"), null));
         
-        resolver.addRepository(new RemoteRepository.Builder("paper-central", "default", "https://repo.papermc.io/repository/maven-central/").build());
+        resolver.addRepository(new RemoteRepository.Builder("central", "default", "https://repo.papermc.io/repository/maven-central/").build());
+        resolver.addRepository(new RemoteRepository.Builder("jda", "default", "https://m2.dv8tion.net/releases").build());
         
         classpathBuilder.addLibrary(resolver);
     }

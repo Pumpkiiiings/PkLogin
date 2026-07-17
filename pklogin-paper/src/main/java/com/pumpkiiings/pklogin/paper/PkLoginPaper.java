@@ -339,9 +339,20 @@ public class PkLoginPaper extends JavaPlugin {
     }
 
     public boolean setupSettings() {
-        File configFile = new File(getDataFolder(), "config.yml");
-        if (!configFile.exists() && !FileUtils.copyFromJar("com/Pumpkiiiings/PkLogin/config/config.yml", configFile)) {
-            sendMessage("§cFailed to create 'config.yml' file.");
+        try {
+            com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager configManager = new com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager(
+                new File(getDataFolder(), "config.yml"), 
+                getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/config.yml")
+            );
+            configManager.registerMigration(new com.pumpkiiings.pklogin.common.config.migrations.config.ConfigMigration_1_to_1_1());
+            dev.dejvokep.boostedyaml.YamlDocument configDoc = configManager.loadAndMigrate("1.1");
+
+            Settings.clear();
+            for (Settings setting : Settings.values()) {
+                Settings.define(setting, configDoc.get(setting.getKey()));
+            }
+        } catch (Exception e) {
+            sendMessage("§cFailed to load config.yml");
             return false;
         }
 
@@ -361,40 +372,46 @@ public class PkLoginPaper extends JavaPlugin {
             sendMessage("§cFailed to create 'email.yml' file.");
         }
 
-        Settings.clear();
-        for (Settings setting : Settings.values()) {
-            Settings.define(setting, getConfig().get(setting.getKey()));
-        }
-
         String lang = Settings.LANGUAGE_FILE.asString();
         File messagesFile = new File(getDataFolder() + "/lang", lang);
-        if (!messagesFile.exists()
-                && !FileUtils.copyFromJar("com/Pumpkiiiings/PkLogin/config/lang/" + lang, messagesFile)
-                && !FileUtils.copyFromJar("com/Pumpkiiiings/PkLogin/config/lang/messages_en.yml", messagesFile)) {
-            sendMessage("§cFailed to create '" + lang + "' language file.");
-            return false;
+        
+        java.io.InputStream defaultResource = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/" + lang);
+        if (defaultResource == null) {
+            defaultResource = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/messages_en.yml");
         }
 
-        YamlConfiguration messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
-        for (Messages message : Messages.values()) {
-            String path = message.getKey();
-            if (path.startsWith("Messages.Title")) {
-                String title = "", subtitle = "";
-                int start = 0, duration = 0, end = 0;
+        try {
+            com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager messagesManager = new com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager(
+                messagesFile, 
+                defaultResource
+            );
+            
+            dev.dejvokep.boostedyaml.YamlDocument messagesConfig = messagesManager.loadAndMigrate("1.0");
 
-                path = path + ".";
-                if (messagesConfig.isSet(path + "title") && messagesConfig.isSet(path + "subtitle")) {
-                    title = messagesConfig.getString(path + "title");
-                    subtitle = messagesConfig.getString(path + "subtitle");
-                    start = messagesConfig.getInt(path + "delays.start", 0);
-                    duration = messagesConfig.getInt(path + "delays.duration", 60);
-                    end = messagesConfig.getInt(path + "delays.end", 6);
-                    Messages.define(message, new Title(title, subtitle, start, duration, end));
+            for (Messages message : Messages.values()) {
+                String path = message.getKey();
+                if (path.startsWith("Messages.Title")) {
+                    path = path + ".";
+                    if (messagesConfig.get(path + "title") != null && messagesConfig.get(path + "subtitle") != null) {
+                        String title = messagesConfig.getString(path + "title");
+                        String subtitle = messagesConfig.getString(path + "subtitle");
+                        int start = messagesConfig.getInt(path + "delays.start", 0);
+                        int duration = messagesConfig.getInt(path + "delays.duration", 60);
+                        int end = messagesConfig.getInt(path + "delays.end", 6);
+                        Messages.define(message, new Title(title, subtitle, start, duration, end));
+                    }
+                } else if (messagesConfig.get(path) != null) {
+                    Object obj = messagesConfig.get(path);
+                    if (obj instanceof java.util.List) {
+                        Messages.define(message, obj);
+                    } else {
+                        Messages.define(message, String.valueOf(obj));
+                    }
                 }
-            } else if (messagesConfig.isSet(path)) {
-                Object obj = messagesConfig.get(path);
-                Messages.define(message, obj);
             }
+        } catch (Exception e) {
+            sendMessage("§cFailed to load messages file");
+            return false;
         }
         return true;
     }

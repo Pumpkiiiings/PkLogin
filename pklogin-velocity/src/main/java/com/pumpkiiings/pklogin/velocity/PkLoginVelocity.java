@@ -17,7 +17,8 @@ import com.pumpkiiings.pklogin.common.settings.Settings;
 import com.pumpkiiings.pklogin.velocity.listener.PluginMessageListener;
 import com.pumpkiiings.pklogin.velocity.listener.VelocityListeners;
 import com.pumpkiiings.pklogin.velocity.config.BackendConfig;
-import com.pumpkiiings.pklogin.velocity.config.YamlConfig;
+import com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager;
+import dev.dejvokep.boostedyaml.YamlDocument;
 
 @Plugin(id = "pklogin", name = "PkLogin", version = "2.0.0", authors = {"Pumpkiiiings"})
 public class PkLoginVelocity {
@@ -37,7 +38,7 @@ public class PkLoginVelocity {
 
     private static PkLoginVelocity instance;
     private BackendConfig backendConfig;
-    private YamlConfig yamlConfig;
+    private YamlDocument yamlConfig;
     private Database database;
     private AccountManagement accountManagement;
 
@@ -56,15 +57,24 @@ public class PkLoginVelocity {
             dataFolder.mkdirs();
         }
 
-        // Need to save default config.yml if it doesn't exist
-        saveDefaultConfig();
-        this.yamlConfig = new YamlConfig(new File(dataFolder, "config.yml"));
-        
-        for (Settings setting : Settings.values()) {
-            Object val = yamlConfig.get(setting.getKey());
-            if (val != null) {
-                Settings.define(setting, val);
+        // Load config.yml using ConfigurationVersionManager
+        try {
+            ConfigurationVersionManager configManager = new ConfigurationVersionManager(
+                new File(dataFolder, "config.yml"), 
+                getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/config.yml")
+            );
+            
+            configManager.registerMigration(new com.pumpkiiings.pklogin.common.config.migrations.config.ConfigMigration_1_to_1_1());
+            this.yamlConfig = configManager.loadAndMigrate("1.1");
+
+            for (Settings setting : Settings.values()) {
+                Object val = yamlConfig.get(setting.getKey());
+                if (val != null) {
+                    Settings.define(setting, val);
+                }
             }
+        } catch (Exception e) {
+            logger.error("Failed to load config.yml", e);
         }
 
         // Setup messages
@@ -179,24 +189,6 @@ public class PkLoginVelocity {
         new com.pumpkiiings.pklogin.velocity.command.VelocityCommandManager(this).registerCommands();
     }
 
-    private void saveDefaultConfig() {
-        File file = new File(dataDirectory.toFile(), "config.yml");
-        if (!file.exists()) {
-            try (java.io.InputStream in = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/config.yml")) {
-                if (in != null) {
-                    java.nio.file.Files.copy(in, file.toPath());
-                } else {
-                    file.createNewFile();
-                }
-            } catch (Exception e) {
-                logger.error("Failed to save default config.yml", e);
-            }
-        }
-        
-        // Re-load to get the values just saved
-        this.yamlConfig = new YamlConfig(file);
-    }
-
     private void setupMessages(File dataFolder) {
         String lang = Settings.LANGUAGE_FILE.asString();
         File langFolder = new File(dataFolder, "lang");
@@ -205,61 +197,65 @@ public class PkLoginVelocity {
         }
 
         File messagesFile = new File(langFolder, lang);
-        if (!messagesFile.exists()) {
-            try (java.io.InputStream in = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/" + lang)) {
-                if (in != null) {
-                    java.nio.file.Files.copy(in, messagesFile.toPath());
-                } else {
-                    // Try to copy English default
-                    try (java.io.InputStream fallback = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/messages_en.yml")) {
-                        if (fallback != null) {
-                            java.nio.file.Files.copy(fallback, messagesFile.toPath());
-                        } else {
-                            messagesFile.createNewFile();
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                logger.error("Failed to save default messages file", e);
-            }
+        
+        java.io.InputStream defaultResource = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/" + lang);
+        if (defaultResource == null) {
+            defaultResource = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/messages_en.yml");
         }
 
-        YamlConfig messagesConfig = new YamlConfig(messagesFile);
-        for (com.pumpkiiings.pklogin.common.settings.Messages message : com.pumpkiiings.pklogin.common.settings.Messages.values()) {
-            String path = message.getKey();
-            if (path.startsWith("Messages.Title")) {
-                String title = "", subtitle = "";
-                int start = 0, duration = 0, end = 0;
+        try {
+            ConfigurationVersionManager messagesManager = new ConfigurationVersionManager(
+                messagesFile, 
+                defaultResource
+            );
+            
+            YamlDocument messagesConfig = messagesManager.loadAndMigrate("1.0");
 
-                path = path + ".";
-                if (messagesConfig.get(path + "title") != null && messagesConfig.get(path + "subtitle") != null) {
-                    title = (String) messagesConfig.get(path + "title");
-                    subtitle = (String) messagesConfig.get(path + "subtitle");
-                    Object startObj = messagesConfig.get(path + "delays.start");
-                    Object durationObj = messagesConfig.get(path + "delays.duration");
-                    Object endObj = messagesConfig.get(path + "delays.end");
-
-                    start = startObj instanceof Integer ? (Integer) startObj : 0;
-                    duration = durationObj instanceof Integer ? (Integer) durationObj : 60;
-                    end = endObj instanceof Integer ? (Integer) endObj : 6;
-                    
-                    com.pumpkiiings.pklogin.common.settings.Messages.define(message, new com.pumpkiiings.pklogin.common.model.Title(title, subtitle, start, duration, end));
+            for (com.pumpkiiings.pklogin.common.settings.Messages message : com.pumpkiiings.pklogin.common.settings.Messages.values()) {
+                String path = message.getKey();
+                if (path.startsWith("Messages.Title")) {
+                    path = path + ".";
+                    if (messagesConfig.get(path + "title") != null && messagesConfig.get(path + "subtitle") != null) {
+                        String title = messagesConfig.getString(path + "title");
+                        String subtitle = messagesConfig.getString(path + "subtitle");
+                        int start = messagesConfig.getInt(path + "delays.start", 0);
+                        int duration = messagesConfig.getInt(path + "delays.duration", 60);
+                        int end = messagesConfig.getInt(path + "delays.end", 6);
+                        
+                        com.pumpkiiings.pklogin.common.settings.Messages.define(message, new com.pumpkiiings.pklogin.common.model.Title(title, subtitle, start, duration, end));
+                    }
+                } else if (messagesConfig.get(path) != null) {
+                    Object obj = messagesConfig.get(path);
+                    if (obj instanceof java.util.List) {
+                        com.pumpkiiings.pklogin.common.settings.Messages.define(message, obj);
+                    } else {
+                        com.pumpkiiings.pklogin.common.settings.Messages.define(message, String.valueOf(obj));
+                    }
                 }
-            } else if (messagesConfig.get(path) != null) {
-                Object obj = messagesConfig.get(path);
-                com.pumpkiiings.pklogin.common.settings.Messages.define(message, obj);
             }
+        } catch (Exception e) {
+            logger.error("Failed to load messages file", e);
         }
     }
 
     public void reloadConfig() {
         File dataFolder = dataDirectory.toFile();
-        this.yamlConfig = new YamlConfig(new File(dataFolder, "config.yml"));
-        for (Settings setting : Settings.values()) {
-            Object val = yamlConfig.get(setting.getKey());
-            if (val != null) {
-                Settings.define(setting, val);
+        try {
+            ConfigurationVersionManager configManager = new ConfigurationVersionManager(
+                new File(dataFolder, "config.yml"), 
+                getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/config.yml")
+            );
+            configManager.registerMigration(new com.pumpkiiings.pklogin.common.config.migrations.config.ConfigMigration_1_to_1_1());
+            this.yamlConfig = configManager.loadAndMigrate("1.1");
+            
+            for (Settings setting : Settings.values()) {
+                Object val = yamlConfig.get(setting.getKey());
+                if (val != null) {
+                    Settings.define(setting, val);
+                }
             }
+        } catch (Exception e) {
+            logger.error("Failed to reload config.yml", e);
         }
         setupMessages(dataFolder);
         try {

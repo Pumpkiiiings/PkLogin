@@ -19,6 +19,32 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
     }
 
     @Override
+    public java.util.concurrent.CompletableFuture<java.util.List<String>> suggestAsync(Invocation invocation) {
+        String[] args = invocation.arguments();
+        if (args.length <= 1) {
+            String prefix = args.length == 1 ? args[0].toLowerCase() : "";
+            java.util.List<String> subcommands = java.util.Arrays.asList(
+                "help", "forcelogin", "unregister", "delete", "changepass", "verify", "dupeip", "reload"
+            );
+            return java.util.concurrent.CompletableFuture.completedFuture(
+                subcommands.stream().filter(cmd -> cmd.startsWith(prefix)).collect(java.util.stream.Collectors.toList())
+            );
+        } else if (args.length == 2) {
+            String subcommand = args[0].toLowerCase();
+            String prefix = args[1].toLowerCase();
+            if (java.util.Arrays.asList("forcelogin", "unregister", "delete", "changepass", "verify", "dupeip").contains(subcommand)) {
+                return java.util.concurrent.CompletableFuture.completedFuture(
+                    plugin.getServer().getAllPlayers().stream()
+                        .map(Player::getUsername)
+                        .filter(name -> name.toLowerCase().startsWith(prefix))
+                        .collect(java.util.stream.Collectors.toList())
+                );
+            }
+        }
+        return java.util.concurrent.CompletableFuture.completedFuture(java.util.List.of());
+    }
+
+    @Override
     protected void performPlayer(Player player, String alias, String[] args) {
         performConsole(player, alias, args);
     }

@@ -17,6 +17,19 @@ public class TwoFactorCommand extends VelocityAbstractCommand {
     }
 
     @Override
+    public java.util.concurrent.CompletableFuture<java.util.List<String>> suggestAsync(Invocation invocation) {
+        String[] args = invocation.arguments();
+        if (args.length <= 1) {
+            String prefix = args.length == 1 ? args[0].toLowerCase() : "";
+            java.util.List<String> subcommands = java.util.Arrays.asList("discord");
+            return java.util.concurrent.CompletableFuture.completedFuture(
+                subcommands.stream().filter(cmd -> cmd.startsWith(prefix)).collect(java.util.stream.Collectors.toList())
+            );
+        }
+        return java.util.concurrent.CompletableFuture.completedFuture(java.util.List.of());
+    }
+
+    @Override
     protected void performPlayer(Player player, String alias, String[] args) {
         if (args.length < 1) {
             sendMessage(player, Messages.TWO_FACTOR_USAGE.asString());

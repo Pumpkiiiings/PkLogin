@@ -2,7 +2,13 @@ plugins {
     id 'java-library'
 }
 
+repositories {
+    maven { url = uri("https://repo.opencollab.dev/main/") }
+}
+
 dependencies {
+    compileOnly 'org.geysermc.geyser:api:2.10.0-SNAPSHOT'
+    compileOnly 'org.geysermc.floodgate:api:2.2.5-SNAPSHOT'
     compileOnly 'com.google.guava:guava:33.1.0-jre'
     compileOnly 'org.apache.logging.log4j:log4j-core:2.23.1'
 

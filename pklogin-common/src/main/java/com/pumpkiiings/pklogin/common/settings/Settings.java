@@ -129,6 +129,14 @@ public enum Settings {
             "premium.legacy.unique-id-type",
             "OFFLINE"
     ),
+    AUTOLOGIN_BEDROCK_ENABLE(
+            "autologin.bedrock.enable",
+            true
+    ),
+    AUTOLOGIN_BEDROCK_SKIP_REGISTER(
+            "autologin.bedrock.skip-register",
+            true
+    ),
     UI_TITLE_BAR(
             "ui.use-title-bar",
             true

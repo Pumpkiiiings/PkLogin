@@ -65,7 +65,7 @@ public class PlayerJoinListeners implements Listener {
             return;
         }
 
-        if (com.pumpkiiings.pklogin.common.hook.FloodgateHook.isBedrockPlayer(player.getUniqueId())) {
+        if (com.pumpkiiings.pklogin.common.settings.Settings.AUTOLOGIN_BEDROCK_ENABLE.asBoolean() && com.pumpkiiings.pklogin.common.hook.FloodgateHook.isBedrockPlayer(player.getUniqueId())) {
             plugin.getLoginManagement().setAuthenticated(name);
             player.sendMessage(Messages.PREMIUM_AUTO_LOGIN.asString().replace("Premium", "Bedrock"));
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {

@@ -1,4 +1,4 @@
-package com.pumpkiiings.pklogin.paper.skin;
+package com.pumpkiiings.pklogin.paper.manager;
 
 
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
@@ -9,7 +9,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;
 
-public class BukkitSkinApplier {
+public class SkinApplier {
 
     public static void applySkin(Player player, SkinFetcher.SkinData skinData, PkLoginPaper plugin) {
         if (skinData == null) return;

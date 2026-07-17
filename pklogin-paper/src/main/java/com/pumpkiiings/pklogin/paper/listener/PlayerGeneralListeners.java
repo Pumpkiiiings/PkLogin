@@ -55,7 +55,7 @@ public class PlayerGeneralListeners implements Listener {
         LoginManagement loginManagement = plugin.getLoginManagement();
         loginManagement.cleanup(name);
         LoginQueue.removeFromQueue(name);
-        com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.removeLimboState(plugin, player);
+        com.pumpkiiings.pklogin.paper.manager.LimboManager.removeLimboState(plugin, player);
         com.pumpkiiings.pklogin.paper.util.AdventureAPI.clearTitle(player);
     }
 

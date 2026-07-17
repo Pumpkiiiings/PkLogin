@@ -1,4 +1,4 @@
-package com.pumpkiiings.pklogin.paper.protocollib;
+package com.pumpkiiings.pklogin.paper.autologin.protocollib;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

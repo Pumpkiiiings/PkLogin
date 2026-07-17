@@ -1,4 +1,4 @@
-package com.pumpkiiings.pklogin.paper.lunar;
+package com.pumpkiiings.pklogin.paper.manager;
 
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
 import com.pumpkiiings.pklogin.common.lunar.LunarPayloads;
@@ -6,11 +6,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-public class BukkitLunarManager implements PluginMessageListener {
+public class LunarManager implements PluginMessageListener {
     
     private final PkLoginPaper plugin;
 
-    public BukkitLunarManager(PkLoginPaper plugin) {
+    public LunarManager(PkLoginPaper plugin) {
         this.plugin = plugin;
         Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, LunarPayloads.CHANNEL);
         Bukkit.getMessenger().registerIncomingPluginChannel(plugin, LunarPayloads.CHANNEL, this);

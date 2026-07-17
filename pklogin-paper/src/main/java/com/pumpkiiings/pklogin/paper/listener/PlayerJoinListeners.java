@@ -53,7 +53,7 @@ public class PlayerJoinListeners implements Listener {
         boolean registered = plugin.getAccountManagement().retrieveOrLoad(name).isPresent();
 
         String ip = player.getAddress().getAddress().getHostAddress();
-        com.pumpkiiings.pklogin.paper.protocollib.AutoLoginSession session = plugin.getVerifiedSessions().remove(ip);
+        com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession session = plugin.getVerifiedSessions().remove(ip);
 
         if (session != null && session.isVerified() && session.getUsername().equalsIgnoreCase(name)) {
             plugin.getLoginManagement().setAuthenticated(name);

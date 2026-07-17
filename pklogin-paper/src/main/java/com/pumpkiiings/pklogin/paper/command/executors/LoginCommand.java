@@ -113,8 +113,8 @@ public class LoginCommand extends BukkitAbstractCommand {
                 player.getScheduler().run(plugin, task -> {
                     player.setWalkSpeed(0.2F);
                     player.setFlySpeed(0.1F);
-                    com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.removeLimboState(plugin, player);
-                    com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.restoreLastLocation(player);
+                    com.pumpkiiings.pklogin.paper.manager.LimboManager.removeLimboState(plugin, player);
+                    com.pumpkiiings.pklogin.paper.manager.LimboManager.restoreLastLocation(player);
                 }, null);
 
                 new AsyncAuthenticateEvent(player).callEvt();

@@ -67,7 +67,7 @@ public class PkLoginPaper extends JavaPlugin {
     private Database database;
     private PluginSettings pluginSettings;
 
-    private final java.util.concurrent.ConcurrentHashMap<String, com.pumpkiiings.pklogin.paper.protocollib.AutoLoginSession> verifiedSessions = new java.util.concurrent.ConcurrentHashMap<>();
+    private final java.util.concurrent.ConcurrentHashMap<String, com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession> verifiedSessions = new java.util.concurrent.ConcurrentHashMap<>();
 
     private String latestVersion;
     private boolean updateAvailable;
@@ -171,10 +171,10 @@ public class PkLoginPaper extends JavaPlugin {
             sendMessage("Proxy mode is enabled. The backend will let the proxy handle Premium Auto-Login.");
         } else if (getServer().getPluginManager().getPlugin("packetevents") != null) {
             sendMessage("PacketEvents detected. Using PacketEvents for Premium Auto-Login.");
-            com.pumpkiiings.pklogin.paper.packetevents.PacketEventsHook.init(this);
+            com.pumpkiiings.pklogin.paper.autologin.packetevents.PacketEventsHook.init(this);
         } else if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
             sendMessage("ProtocolLib detected. Using ProtocolLib for Premium Auto-Login.");
-            com.pumpkiiings.pklogin.paper.protocollib.ProtocolLibHook.init(this);
+            com.pumpkiiings.pklogin.paper.autologin.protocollib.ProtocolLibHook.init(this);
         } else {
             sendMessage("Neither PacketEvents nor ProtocolLib detected. Premium Auto-Login is disabled.");
         }

@@ -124,8 +124,8 @@ public class RegisterCommand extends BukkitAbstractCommand {
             player.getScheduler().run(plugin, task -> {
                 player.setWalkSpeed(0.2F);
                 player.setFlySpeed(0.1F);
-                com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.removeLimboState(plugin, player);
-                com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.restoreLastLocation(player);
+                com.pumpkiiings.pklogin.paper.manager.LimboManager.removeLimboState(plugin, player);
+                com.pumpkiiings.pklogin.paper.manager.LimboManager.restoreLastLocation(player);
             }, null);
 
             new AsyncAuthenticateEvent(sender).callEvt();
@@ -190,8 +190,8 @@ public class RegisterCommand extends BukkitAbstractCommand {
                 playerIfOnline.getScheduler().run(plugin, task -> {
                     playerIfOnline.setWalkSpeed(0.2F);
                     playerIfOnline.setFlySpeed(0.1F);
-                    com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.removeLimboState(plugin, playerIfOnline);
-                    com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.restoreLastLocation(playerIfOnline);
+                    com.pumpkiiings.pklogin.paper.manager.LimboManager.removeLimboState(plugin, playerIfOnline);
+                    com.pumpkiiings.pklogin.paper.manager.LimboManager.restoreLastLocation(playerIfOnline);
                 }, null);
 
                 new AsyncAuthenticateEvent(playerIfOnline).callEvt();

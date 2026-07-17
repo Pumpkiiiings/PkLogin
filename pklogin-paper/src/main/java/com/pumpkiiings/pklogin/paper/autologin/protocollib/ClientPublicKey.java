@@ -1,4 +1,4 @@
-package com.pumpkiiings.pklogin.paper.protocollib;
+package com.pumpkiiings.pklogin.paper.autologin.protocollib;
 
 import java.security.PublicKey;
 import java.time.Instant;

@@ -1,4 +1,4 @@
-package com.pumpkiiings.pklogin.paper.packetevents;
+package com.pumpkiiings.pklogin.paper.autologin.packetevents;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.User;
@@ -6,8 +6,8 @@ import com.github.retrooper.packetevents.wrapper.login.client.WrapperLoginClient
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
-import com.pumpkiiings.pklogin.paper.protocollib.AutoLoginSession;
-import com.pumpkiiings.pklogin.paper.protocollib.EncryptionUtil;
+import com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession;
+import com.pumpkiiings.pklogin.paper.autologin.protocollib.EncryptionUtil;
 import javax.crypto.spec.IvParameterSpec;
 
 import javax.crypto.Cipher;

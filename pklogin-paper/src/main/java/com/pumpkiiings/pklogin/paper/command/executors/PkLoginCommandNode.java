@@ -234,6 +234,7 @@ public class PkLoginCommandNode {
                     });
                     return 1;
                 })
+            )
             .then(Commands.literal("help")
                 .requires(source -> source.getSender().hasPermission("pklogin.admin.help"))
                 .executes(context -> {

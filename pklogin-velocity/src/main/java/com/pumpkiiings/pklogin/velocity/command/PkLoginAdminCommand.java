@@ -177,28 +177,6 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
                 return;
             }
 
-            case "forcelogin": {
-                if (!sender.hasPermission("pklogin.admin.forcelogin")) {
-                    sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
-                    return;
-                }
-                if (args.length < 2) {
-                    sendMessage(sender, "§eUsage: /pklogin forcelogin <player>");
-                    return;
-                }
-                String targetName = args[1];
-                Optional<Player> targetPlayer = plugin.getServer().getPlayer(targetName);
-                if (targetPlayer.isPresent()) {
-                    plugin.getLoginManagement().setAuthenticated(targetName);
-                    targetPlayer.get().clearTitle();
-                    sendMessage(targetPlayer.get(), Messages.SUCCESSFUL_LOGIN.asString());
-                    sendMessage(sender, Messages.ADMIN_FORCELOGIN_SUCCESS.asString().replace("{0}", targetName));
-                } else {
-                    sendMessage(sender, "§cPlayer not found or not online.");
-                }
-                return;
-            }
-
             default: {
                 if (sender instanceof Player) {
                     // Forward unknown commands like forcelogin, setspawn, etc to the backend server

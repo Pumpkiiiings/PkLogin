@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class BukkitLimboManager {
+public class LimboManager {
 
     private static final Map<UUID, Location> lastLocations = new ConcurrentHashMap<>();
     private static final Map<UUID, ItemStack[]> savedInventories = new ConcurrentHashMap<>();
@@ -28,20 +28,20 @@ public class BukkitLimboManager {
         if (file.exists()) {
             org.bukkit.configuration.file.YamlConfiguration config = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(file);
             if (config.contains("spawn")) {
-                player.teleport((org.bukkit.Location) config.get("spawn"));
+                player.teleportAsync((org.bukkit.Location) config.get("spawn"));
                 return;
             }
         }
         
         // Fallback to world spawn if spawn.yml does not exist or has no 'spawn'
-        player.teleport(player.getWorld().getSpawnLocation());
+        player.teleportAsync(player.getWorld().getSpawnLocation());
     }
 
     public static void restoreLastLocation(Player player) {
         if (Settings.TELEPORT_LAST_LOCATION.asBoolean()) {
             Location loc = lastLocations.remove(player.getUniqueId());
             if (loc != null) {
-                player.teleport(loc);
+                player.teleportAsync(loc);
             }
         }
     }

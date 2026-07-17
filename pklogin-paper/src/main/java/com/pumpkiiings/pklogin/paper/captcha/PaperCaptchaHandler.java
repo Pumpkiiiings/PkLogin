@@ -142,14 +142,15 @@ public class PaperCaptchaHandler implements Listener {
     }
 
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent e) {
+    public void onPlayerChat(io.papermc.paper.event.player.AsyncChatEvent e) {
         Player player = e.getPlayer();
         if (CaptchaManager.getInstance().isPending(player.getName())) {
             e.setCancelled(true);
             String type = Settings.SECURITY_CAPTCHA_TYPE.asString().toUpperCase();
             if (type.equals("CHAT") || type.equals("MAP")) {
                 String expected = CaptchaManager.getInstance().getExpectedCode(player.getName());
-                if (e.getMessage().equalsIgnoreCase(expected)) {
+                String message = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(e.message());
+                if (message.equalsIgnoreCase(expected)) {
                     plugin.getServer().getScheduler().runTask(plugin, () -> completeCaptcha(player));
                 } else {
                     player.sendMessage(Messages.CAPTCHA_FAILED.asString());

@@ -112,7 +112,7 @@ public class PlayerGeneralListeners implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
+    public void onAsyncPlayerChat(io.papermc.paper.event.player.AsyncChatEvent e) {
         String name = e.getPlayer().getName();
         if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
     }

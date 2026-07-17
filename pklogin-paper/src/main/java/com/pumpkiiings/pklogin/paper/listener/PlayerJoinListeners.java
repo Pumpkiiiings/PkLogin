@@ -81,9 +81,9 @@ public class PlayerJoinListeners implements Listener {
         player.setFlySpeed(0F);
 
         if (com.pumpkiiings.pklogin.common.settings.Settings.TELEPORT_SAFE_LOCATION.asBoolean()) {
-            com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.teleportToSpawn(plugin, player);
+            com.pumpkiiings.pklogin.paper.manager.LimboManager.teleportToSpawn(plugin, player);
         }
-        com.pumpkiiings.pklogin.paper.manager.BukkitLimboManager.applyLimboState(plugin, player);
+        com.pumpkiiings.pklogin.paper.manager.LimboManager.applyLimboState(plugin, player);
 
         if (com.pumpkiiings.pklogin.common.settings.Settings.SECURITY_CAPTCHA_ENABLE.asBoolean()) {
             com.pumpkiiings.pklogin.common.manager.CaptchaManager.getInstance().addPending(name, "");

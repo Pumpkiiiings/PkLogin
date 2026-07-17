@@ -153,6 +153,21 @@ Messages:
     updates-available: "&e¡Hay una nueva versión de PkLogin disponible! ({0} -> {1})"
 
   admin:
+    help:
+      - "&8&m----------------------------------------"
+      - "&b&lPkLogin &8| &7Ayuda de Admin"
+      - ""
+      - "&b/pklogin help &8- &7Muestra este mensaje de ayuda"
+      - "&b/pklogin forcelogin <jugador> &8- &7Forzar el inicio de sesión de un jugador"
+      - "&b/pklogin unregister <jugador> &8- &7Eliminar el registro de un jugador"
+      - "&b/pklogin changepassword <jugador> <contraseña> &8- &7Cambiar contraseña"
+      - "&b/pklogin premium <jugador> &8- &7Establecer un jugador como premium"
+      - "&b/pklogin cracked <jugador> &8- &7Establecer un jugador como no-premium"
+      - "&b/pklogin update &8- &7Actualizar el plugin"
+      - "&b/pklogin setspawn &8- &7Establecer el punto de aparición"
+      - "&b/pklogin reload &8- &7Recargar la configuración"
+      - "&8&m----------------------------------------"
+    usage-command: "&eUso correcto: &b%command% %arg%"
     forcelogin-success: "&aEl jugador {0} ha sido autenticado a la fuerza."
     unregister-success: "&aEl jugador {0} ha sido desregistrado."
     changepass-success: "&aLa contraseña del jugador {0} ha sido cambiada."

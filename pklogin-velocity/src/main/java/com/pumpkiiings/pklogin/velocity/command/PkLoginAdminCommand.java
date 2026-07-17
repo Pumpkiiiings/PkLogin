@@ -40,7 +40,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
                     return;
                 }
                 if (args.length < 2) {
-                    sendMessage(sender, "§eUsage: /pklogin unregister <player>");
+                    sendMessage(sender, Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "unregister <player>"));
                     return;
                 }
                 String targetName = args[1];
@@ -53,13 +53,44 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
                 return;
             }
 
+            case "forcelogin": {
+                if (!sender.hasPermission("pklogin.admin.forcelogin")) {
+                    sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
+                    return;
+                }
+                if (args.length < 2) {
+                    sendMessage(sender, Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "forcelogin <player>"));
+                    return;
+                }
+                String targetName = args[1];
+                Optional<Player> targetPlayerOpt = plugin.getServer().getPlayer(targetName);
+                
+                if (targetPlayerOpt.isPresent()) {
+                    Player targetPlayer = targetPlayerOpt.get();
+                    plugin.getAuthenticatedPlayers().add(targetPlayer.getUniqueId());
+                    
+                    com.google.common.io.ByteArrayDataOutput out = com.google.common.io.ByteStreams.newDataOutput();
+                    out.writeUTF("PremiumAutoLogin");
+                    out.writeUTF(targetName);
+                    
+                    targetPlayer.getCurrentServer().ifPresent(serverConnection -> {
+                        serverConnection.sendPluginMessage(com.pumpkiiings.pklogin.velocity.listener.PluginMessageListener.IDENTIFIER, out.toByteArray());
+                    });
+                    
+                    sendMessage(sender, Messages.ADMIN_FORCELOGIN_SUCCESS.asString().replace("{0}", targetName));
+                } else {
+                    sendMessage(sender, "§cPlayer is not online on the proxy.");
+                }
+                return;
+            }
+
             case "delete": {
                 if (!sender.hasPermission("pklogin.admin.delete")) {
                     sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
                     return;
                 }
                 if (args.length < 2) {
-                    sendMessage(sender, "§eUsage: /pklogin delete <player>");
+                    sendMessage(sender, Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "delete <player>"));
                     return;
                 }
                 String targetName = args[1];
@@ -78,7 +109,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
                     return;
                 }
                 if (args.length < 2) {
-                    sendMessage(sender, "§eUsage: /pklogin verify <player>");
+                    sendMessage(sender, Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "verify <player>"));
                     return;
                 }
                 String targetName = args[1];
@@ -104,7 +135,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
                     return;
                 }
                 if (args.length < 3) {
-                    sendMessage(sender, "§eUsage: /pklogin changepass <player> <newpass>");
+                    sendMessage(sender, Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "changepass <player> <newpass>"));
                     return;
                 }
                 String targetName = args[1];
@@ -131,7 +162,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
                     return;
                 }
                 if (args.length < 2) {
-                    sendMessage(sender, "§eUsage: /pklogin dupeip <ip/player>");
+                    sendMessage(sender, Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "dupeip <ip/player>"));
                     return;
                 }
                 String target = args[1];
@@ -191,16 +222,8 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
     }
 
     private void sendHelp(CommandSource sender) {
-        sendMessage(sender, "");
-        sendMessage(sender, " §ePkLogin Velocity Admin Commands:");
-        sendMessage(sender, " §7/pklogin help §f- Show this help message");
-        sendMessage(sender, " §7/pklogin forcelogin <player> §f- Force a player to login");
-        sendMessage(sender, " §7/pklogin unregister <player> §f- Unregister a player's account");
-        sendMessage(sender, " §7/pklogin delete <player> §f- Delete a player's account data");
-        sendMessage(sender, " §7/pklogin changepass <player> <newpass> §f- Force change a password");
-        sendMessage(sender, " §7/pklogin verify <player> §f- Check player's account details");
-        sendMessage(sender, " §7/pklogin dupeip <player/ip> §f- Check accounts by IP");
-        sendMessage(sender, " §7/pklogin reload §f- Reload configuration");
-        sendMessage(sender, "");
+        for (String line : Messages.ADMIN_HELP.asList()) {
+            sendMessage(sender, line);
+        }
     }
 }

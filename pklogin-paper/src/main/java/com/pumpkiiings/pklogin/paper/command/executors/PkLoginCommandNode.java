@@ -45,6 +45,10 @@ public class PkLoginCommandNode {
             )
             .then(Commands.literal("forcelogin")
                 .requires(source -> source.getSender().hasPermission("pklogin.admin.forcelogin"))
+                .executes(context -> {
+                    context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "forcelogin <player>"));
+                    return 1;
+                })
                 .then(Commands.argument("player", StringArgumentType.word())
                     .executes(context -> {
                         CommandSender sender = context.getSource().getSender();
@@ -66,6 +70,10 @@ public class PkLoginCommandNode {
             )
             .then(Commands.literal("unregister")
                 .requires(source -> source.getSender().hasPermission("pklogin.admin.unregister"))
+                .executes(context -> {
+                    context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "unregister <player>"));
+                    return 1;
+                })
                 .then(Commands.argument("player", StringArgumentType.word())
                     .executes(context -> {
                         CommandSender sender = context.getSource().getSender();
@@ -84,6 +92,10 @@ public class PkLoginCommandNode {
             )
             .then(Commands.literal("delete")
                 .requires(source -> source.getSender().hasPermission("pklogin.admin.delete"))
+                .executes(context -> {
+                    context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "delete <player>"));
+                    return 1;
+                })
                 .then(Commands.argument("player", StringArgumentType.word())
                     .executes(context -> {
                         CommandSender sender = context.getSource().getSender();
@@ -102,6 +114,10 @@ public class PkLoginCommandNode {
             )
             .then(Commands.literal("verify")
                 .requires(source -> source.getSender().hasPermission("pklogin.admin.verify"))
+                .executes(context -> {
+                    context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "verify <player>"));
+                    return 1;
+                })
                 .then(Commands.argument("player", StringArgumentType.word())
                     .executes(context -> {
                         CommandSender sender = context.getSource().getSender();
@@ -147,7 +163,15 @@ public class PkLoginCommandNode {
             )
             .then(Commands.literal("changepass")
                 .requires(source -> source.getSender().hasPermission("pklogin.admin.changepass"))
+                .executes(context -> {
+                    context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "changepass <player> <newpass>"));
+                    return 1;
+                })
                 .then(Commands.argument("player", StringArgumentType.word())
+                    .executes(context -> {
+                        context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "changepass <player> <newpass>"));
+                        return 1;
+                    })
                     .then(Commands.argument("newpass", StringArgumentType.word())
                         .executes(context -> {
                             CommandSender sender = context.getSource().getSender();
@@ -174,6 +198,10 @@ public class PkLoginCommandNode {
             )
             .then(Commands.literal("dupeip")
                 .requires(source -> source.getSender().hasPermission("pklogin.admin.dupeip"))
+                .executes(context -> {
+                    context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "dupeip <target>"));
+                    return 1;
+                })
                 .then(Commands.argument("target", StringArgumentType.word())
                     .executes(context -> {
                         CommandSender sender = context.getSource().getSender();
@@ -255,20 +283,9 @@ public class PkLoginCommandNode {
     }
 
     private static void sendHelp(CommandSender sender) {
-        sender.sendMessage("");
-        sender.sendMessage(" §ePkLogin Paper Admin Commands:");
-        sender.sendMessage(" §7/pklogin help §f- Show this help message");
-        sender.sendMessage(" §7/pklogin authme-import §f- Import AuthMe database");
-        sender.sendMessage(" §7/pklogin forcelogin <player> §f- Force a player to login");
-        sender.sendMessage(" §7/pklogin unregister <player> §f- Unregister a player's account");
-        sender.sendMessage(" §7/pklogin delete <player> §f- Delete a player's account data");
-        sender.sendMessage(" §7/pklogin changepass <player> <newpass> §f- Force change a password");
-        sender.sendMessage(" §7/pklogin verify <player> §f- Check player's account details");
-        sender.sendMessage(" §7/pklogin dupeip <player/ip> §f- Check accounts by IP");
-        sender.sendMessage(" §7/pklogin setspawn §f- Set the authentication spawn point");
-        sender.sendMessage(" §7/pklogin reload §f- Reload configuration");
-        sender.sendMessage(" §7/pklogin update §f- Update plugin to the latest version");
-        sender.sendMessage("");
+        for (String line : Messages.ADMIN_HELP.asList()) {
+            sender.sendMessage(line);
+        }
     }
 
     private static void reloadLogic(PkLoginPaper plugin, CommandSender sender) {

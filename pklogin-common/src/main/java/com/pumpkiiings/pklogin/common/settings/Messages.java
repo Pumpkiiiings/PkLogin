@@ -84,6 +84,8 @@ public enum Messages {
     UPDATES_AVAILABLE("other-messages.updates-available"),
 
     // admin commands
+    ADMIN_HELP("admin.help"),
+    ADMIN_USAGE_COMMAND("admin.usage-command"),
     ADMIN_FORCELOGIN_SUCCESS("admin.forcelogin-success"),
     ADMIN_UNREGISTER_SUCCESS("admin.unregister-success"),
     ADMIN_CHANGEPASS_SUCCESS("admin.changepass-success"),

@@ -150,6 +150,21 @@ Messages:
     updates-available: "&eA new version of PkLogin is available! ({0} -> {1})"
 
   admin:
+    help:
+      - "&8&m----------------------------------------"
+      - "&b&lPkLogin &8| &7Admin Help"
+      - ""
+      - "&b/pklogin help &8- &7Show this help message"
+      - "&b/pklogin forcelogin <player> &8- &7Force login a player"
+      - "&b/pklogin unregister <player> &8- &7Unregister a player"
+      - "&b/pklogin changepassword <player> <password> &8- &7Change a player's password"
+      - "&b/pklogin premium <player> &8- &7Set a player as premium"
+      - "&b/pklogin cracked <player> &8- &7Set a player as cracked"
+      - "&b/pklogin update &8- &7Update the plugin"
+      - "&b/pklogin setspawn &8- &7Set the spawn location"
+      - "&b/pklogin reload &8- &7Reload the configuration"
+      - "&8&m----------------------------------------"
+    usage-command: "&eUso correcto: &b%command% %arg%"
     forcelogin-success: "&aPlayer {0} has been forcefully authenticated."
     unregister-success: "&aPlayer {0} has been unregistered."
     changepass-success: "&aPassword for player {0} has been successfully changed."

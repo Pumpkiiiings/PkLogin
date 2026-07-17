@@ -177,6 +177,28 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
                 return;
             }
 
+            case "forcelogin": {
+                if (!sender.hasPermission("pklogin.admin.forcelogin")) {
+                    sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
+                    return;
+                }
+                if (args.length < 2) {
+                    sendMessage(sender, "§eUsage: /pklogin forcelogin <player>");
+                    return;
+                }
+                String targetName = args[1];
+                Optional<Player> targetPlayer = plugin.getServer().getPlayer(targetName);
+                if (targetPlayer.isPresent()) {
+                    plugin.getLoginManagement().setAuthenticated(targetName);
+                    targetPlayer.get().clearTitle();
+                    sendMessage(targetPlayer.get(), Messages.SUCCESSFUL_LOGIN.asString());
+                    sendMessage(sender, Messages.ADMIN_FORCELOGIN_SUCCESS.asString().replace("{0}", targetName));
+                } else {
+                    sendMessage(sender, "§cPlayer not found or not online.");
+                }
+                return;
+            }
+
             default: {
                 if (sender instanceof Player) {
                     // Forward unknown commands like forcelogin, setspawn, etc to the backend server
@@ -192,10 +214,15 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
 
     private void sendHelp(CommandSource sender) {
         sendMessage(sender, "");
-        sendMessage(sender, " §eThis proxy is running §fPkLogin v2.0.0.");
-        sendMessage(sender, " §7Powered by §bwww.pumpkiiings.com§7.");
-        sendMessage(sender, "");
-        sendMessage(sender, " §7GitHub: §fhttps://github.com/Pumpkiiiings/PkLogin");
+        sendMessage(sender, " §ePkLogin Velocity Admin Commands:");
+        sendMessage(sender, " §7/pklogin help §f- Show this help message");
+        sendMessage(sender, " §7/pklogin forcelogin <player> §f- Force a player to login");
+        sendMessage(sender, " §7/pklogin unregister <player> §f- Unregister a player's account");
+        sendMessage(sender, " §7/pklogin delete <player> §f- Delete a player's account data");
+        sendMessage(sender, " §7/pklogin changepass <player> <newpass> §f- Force change a password");
+        sendMessage(sender, " §7/pklogin verify <player> §f- Check player's account details");
+        sendMessage(sender, " §7/pklogin dupeip <player/ip> §f- Check accounts by IP");
+        sendMessage(sender, " §7/pklogin reload §f- Reload configuration");
         sendMessage(sender, "");
     }
 }

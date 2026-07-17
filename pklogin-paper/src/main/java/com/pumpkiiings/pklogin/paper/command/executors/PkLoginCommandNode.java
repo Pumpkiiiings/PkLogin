@@ -234,6 +234,13 @@ public class PkLoginCommandNode {
                     });
                     return 1;
                 })
+            .then(Commands.literal("help")
+                .requires(source -> source.getSender().hasPermission("pklogin.admin.help"))
+                .executes(context -> {
+                    CommandSender sender = context.getSource().getSender();
+                    plugin.runAsync(() -> sendHelp(sender));
+                    return 1;
+                })
             ).build();
     }
 
@@ -243,6 +250,23 @@ public class PkLoginCommandNode {
         sender.sendMessage(" §7Powered by §bwww.pumpkiiings.com§7.");
         sender.sendMessage("");
         sender.sendMessage(" §7GitHub: §fhttps://github.com/Pumpkiiiings/PkLogin");
+        sender.sendMessage("");
+    }
+
+    private static void sendHelp(CommandSender sender) {
+        sender.sendMessage("");
+        sender.sendMessage(" §ePkLogin Paper Admin Commands:");
+        sender.sendMessage(" §7/pklogin help §f- Show this help message");
+        sender.sendMessage(" §7/pklogin authme-import §f- Import AuthMe database");
+        sender.sendMessage(" §7/pklogin forcelogin <player> §f- Force a player to login");
+        sender.sendMessage(" §7/pklogin unregister <player> §f- Unregister a player's account");
+        sender.sendMessage(" §7/pklogin delete <player> §f- Delete a player's account data");
+        sender.sendMessage(" §7/pklogin changepass <player> <newpass> §f- Force change a password");
+        sender.sendMessage(" §7/pklogin verify <player> §f- Check player's account details");
+        sender.sendMessage(" §7/pklogin dupeip <player/ip> §f- Check accounts by IP");
+        sender.sendMessage(" §7/pklogin setspawn §f- Set the authentication spawn point");
+        sender.sendMessage(" §7/pklogin reload §f- Reload configuration");
+        sender.sendMessage(" §7/pklogin update §f- Update plugin to the latest version");
         sender.sendMessage("");
     }
 

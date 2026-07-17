@@ -1,7 +1,7 @@
 package com.pumpkiiings.pkauth.listener;
 
 import com.pumpkiiings.pkauth.PkAuthAddon;
-import com.pumpkiiings.pklogin.api.PkLoginAPI;
+import com.pumpkiiings.pkauth.manager.ScoreboardAndTabManager;
 import com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent;
 import com.pumpkiiings.pklogin.common.PkLogin;
 import org.bukkit.Bukkit;
@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -26,29 +28,43 @@ public class AuthLobbyListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        
-        // Hide join message
+
         e.setJoinMessage(null);
 
-        // Teleport to the empty auth world
         if (plugin.getAuthWorld() != null) {
             org.bukkit.Location spawnLoc = new org.bukkit.Location(plugin.getAuthWorld(), 0.5, 100, 0.5, 0, 0);
             player.teleport(spawnLoc);
         }
 
-        // Hide all players from the joined player, and hide the joined player from all others
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            player.hidePlayer(plugin, online);
-            online.hidePlayer(plugin, player);
+        boolean hideUnauthenticated = plugin.getConfig().getBoolean("auth-world.hide-unauthenticated", true);
+
+        if (hideUnauthenticated) {
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                if (online.equals(player)) continue;
+                player.hidePlayer(plugin, online);
+                online.hidePlayer(plugin, player);
+            }
         }
 
-        // Give them flight so they don't fall into the void
         player.setAllowFlight(true);
         player.setFlying(true);
-        
-        // Make sure they are in survival/adventure mode so they can't break blocks
+
         if (player.getGameMode() != GameMode.ADVENTURE && player.getGameMode() != GameMode.SURVIVAL) {
             player.setGameMode(GameMode.ADVENTURE);
+        }
+
+        if (PkLogin.getApi().isAuthenticated(player.getName())) {
+            String rawMsg = plugin.getConfig().getString(
+                "messages.already-authenticated",
+                "<#FFD700><b>Ups!</b> <#AAAAAA>Aparentemente estas en el eterno vacio otra vez..."
+            );
+            String parsed = rawMsg.replace("%player%", player.getName());
+            for (String line : parsed.split("\n")) {
+                String trimmed = line.trim();
+                if (!trimmed.isEmpty()) {
+                    player.sendMessage(ScoreboardAndTabManager.colorize(trimmed));
+                }
+            }
         }
     }
 
@@ -58,10 +74,9 @@ public class AuthLobbyListener implements Listener {
 
         org.bukkit.Location from = e.getFrom();
         org.bukkit.Location to = e.getTo();
-        
+
         if (to == null) return;
 
-        // Cancel XYZ movement but allow Pitch/Yaw rotation
         if (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()) {
             org.bukkit.Location newLoc = from.clone();
             newLoc.setPitch(to.getPitch());
@@ -75,35 +90,67 @@ public class AuthLobbyListener implements Listener {
         e.setQuitMessage(null);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+        if (!plugin.getConfig().getBoolean("auth-world.cancel-pvp", true)) return;
+
+        boolean victimInAuth = (e.getEntity() instanceof Player)
+            && plugin.getAuthWorld() != null
+            && e.getEntity().getWorld().getName().equals(plugin.getAuthWorld().getName());
+
+        boolean attackerInAuth = (e.getDamager() instanceof Player)
+            && plugin.getAuthWorld() != null
+            && e.getDamager().getWorld().getName().equals(plugin.getAuthWorld().getName());
+
+        boolean attackerNotAuth = (e.getDamager() instanceof Player)
+            && !PkLogin.getApi().isAuthenticated(((Player) e.getDamager()).getName());
+
+        boolean victimNotAuth = (e.getEntity() instanceof Player)
+            && !PkLogin.getApi().isAuthenticated(((Player) e.getEntity()).getName());
+
+        if (victimInAuth || attackerInAuth || victimNotAuth || attackerNotAuth) {
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityDamage(EntityDamageEvent e) {
+        if (!(e.getEntity() instanceof Player player)) return;
+        if (plugin.getAuthWorld() == null) return;
+        if (!player.getWorld().getName().equals(plugin.getAuthWorld().getName())) return;
+        if (e.getCause() == EntityDamageEvent.DamageCause.SUICIDE) return;
+
+        e.setCancelled(true);
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent e) {
         Player player = e.getPlayer();
-        
-        // If not authenticated, cancel chat completely
+
         if (!PkLogin.getApi().isAuthenticated(player.getName())) {
             e.setCancelled(true);
             return;
         }
-        
-        // Remove recipients who are not authenticated
+
         e.getRecipients().removeIf(recipient -> !PkLogin.getApi().isAuthenticated(recipient.getName()));
     }
 
     @EventHandler
     public void onAuthenticate(AsyncAuthenticateEvent e) {
         Player player = e.getPlayer();
-        
+
         Bukkit.getScheduler().runTask(plugin, () -> {
-            // Player is authenticated, but they still shouldn't be able to move or lose fly.
-            // (Velocity handles the teleportation out of this server)
-            
             player.resetTitle();
 
-            // Show all authenticated players to this player, and show this player to all authenticated players
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                if (PkLogin.getApi().isAuthenticated(online.getName())) {
-                    player.showPlayer(plugin, online);
-                    online.showPlayer(plugin, player);
+            boolean hideUnauthenticated = plugin.getConfig().getBoolean("auth-world.hide-unauthenticated", true);
+
+            if (hideUnauthenticated) {
+                for (Player online : Bukkit.getOnlinePlayers()) {
+                    if (online.equals(player)) continue;
+                    if (PkLogin.getApi().isAuthenticated(online.getName())) {
+                        player.showPlayer(plugin, online);
+                        online.showPlayer(plugin, player);
+                    }
                 }
             }
         });

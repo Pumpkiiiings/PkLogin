@@ -8,9 +8,7 @@ targetCompatibility = 17
 
 dependencies {
     implementation project(path: ':pklogin-common')
-    implementation project(path: ':pklogin-bukkit', configuration: 'shadow')
     implementation project(path: ':pklogin-paper', configuration: 'shadow')
-
 }
 
 shadowJar {
@@ -24,8 +22,6 @@ shadowJar {
         exclude(dependency('net.java.dev.jna:.*'))
     }
 
-    dependsOn project(':pklogin-bukkit').tasks.named('shadowJar')
-    dependsOn project(':pklogin-bukkit').tasks.named('jar')
     dependsOn project(':pklogin-paper').tasks.named('shadowJar')
     dependsOn project(':pklogin-paper').tasks.named('jar')
 }

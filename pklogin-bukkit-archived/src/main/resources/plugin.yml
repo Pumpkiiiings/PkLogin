@@ -23,7 +23,7 @@ commands:
   pklogin:
     description: 'PkLogin management command'
     aliases:
-      - 'ologin'
+      - 'plogin'
   register:
     description: 'Register your account'
     aliases:

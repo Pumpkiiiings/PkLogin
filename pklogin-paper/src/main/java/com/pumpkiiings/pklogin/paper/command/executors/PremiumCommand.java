@@ -54,6 +54,7 @@ public class PremiumCommand extends BukkitAbstractCommand {
             accountManagement.updateUuidType(name, "REAL");
             accountManagement.invalidateCache(name);
             player.sendMessage(Messages.PREMIUM_SUCCESS.asString());
+            plugin.getServer().getScheduler().runTask(plugin, () -> player.kick(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize("§aHas cambiado a modo Premium.\n§ePor favor vuelve a conectarte al servidor.")));
         } else {
             if (currentType.equals("REAL")) {
                 player.sendMessage(Messages.PREMIUM_ALREADY.asString());

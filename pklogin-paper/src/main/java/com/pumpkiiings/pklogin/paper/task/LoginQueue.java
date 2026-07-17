@@ -54,7 +54,7 @@ public class LoginQueue {
                 Player player = server.getPlayer(name);
                 if (player == null || plugin.getLoginManagement().isAuthenticated(name)) {
                     pendingLogin.remove(name);
-                    return;
+                    continue;
                 }
 
                 PlayerLogin playerLogin = entry.getValue();
@@ -62,7 +62,7 @@ public class LoginQueue {
                 if (seconds >= Settings.TIME_TO_LOGIN.asInt()) {
                     player.getScheduler().run(plugin, t -> player.kick(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(playerLogin.registered ? Messages.DELAY_KICK_LOGIN.asString() : Messages.DELAY_KICK_REGISTER.asString())), null);
                     pendingLogin.remove(name);
-                    return;
+                    continue;
                 }
                 if (com.pumpkiiings.pklogin.common.settings.Settings.UI_ACTION_BAR.asBoolean()) {
                     int remaining = Settings.TIME_TO_LOGIN.asInt() - seconds;

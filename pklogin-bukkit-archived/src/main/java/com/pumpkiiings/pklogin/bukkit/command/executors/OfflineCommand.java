@@ -11,12 +11,12 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public class PremiumCommand extends BukkitAbstractCommand {
+public class OfflineCommand extends BukkitAbstractCommand {
 
     private final PkLoginBukkit plugin;
 
-    public PremiumCommand(PkLoginBukkit plugin) {
-        super(plugin, "premium");
+    public OfflineCommand(PkLoginBukkit plugin) {
+        super(plugin, "offline");
         this.plugin = plugin;
     }
 
@@ -33,7 +33,7 @@ public class PremiumCommand extends BukkitAbstractCommand {
         AccountManagement accountManagement = plugin.getAccountManagement();
 
         if (!loginManagement.isAuthenticated(name)) {
-            player.sendMessage(Messages.TWO_FACTOR_NOT_LOGGED_IN_SETUP.asString()); // Can reuse or better, but anyway
+            player.sendMessage(Messages.TWO_FACTOR_NOT_LOGGED_IN_SETUP.asString());
             return;
         }
 
@@ -46,22 +46,13 @@ public class PremiumCommand extends BukkitAbstractCommand {
         Account account = accountOpt.get();
         String currentType = account.getUuidType() != null ? account.getUuidType() : "REAL";
 
-        if (args.length == 1 && args[0].equalsIgnoreCase("confirm")) {
-            if (currentType.equals("REAL")) {
-                player.sendMessage(Messages.PREMIUM_ALREADY.asString());
-                return;
-            }
-            accountManagement.updateUuidType(name, "REAL");
-            accountManagement.invalidateCache(name);
-            player.sendMessage(Messages.PREMIUM_SUCCESS.asString());
+        if (currentType.equals("OFFLINE")) {
+            player.sendMessage(Messages.OFFLINE_ALREADY.asString());
         } else {
-            if (currentType.equals("REAL")) {
-                player.sendMessage(Messages.PREMIUM_ALREADY.asString());
-            } else {
-                for (String msg : Messages.PREMIUM_WARNING.asList()) {
-                    player.sendMessage(msg);
-                }
-            }
+            accountManagement.updateUuidType(name, "OFFLINE");
+            accountManagement.invalidateCache(name);
+            player.sendMessage(Messages.OFFLINE_SUCCESS.asString());
+            plugin.getFoliaLib().runAtEntity(player, task -> player.kickPlayer("§aHas cambiado a modo Offline.\n§ePor favor vuelve a conectarte al servidor."));
         }
     }
 }

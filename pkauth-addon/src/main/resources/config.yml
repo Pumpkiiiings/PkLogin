@@ -40,9 +40,20 @@ ui:
       - "<#AAAAAA>Discord: <#55FF55>discord.gg/tuserver"
       - ""
 
+auth-world:
+  # Si es true, cancela el daño y PvP entre jugadores en el mundo auth
+  cancel-pvp: true
+  # Si es true, los jugadores no autenticados no se ven entre sí ni en el tab
+  hide-unauthenticated: true
+
 messages:
   player_not_found: "<#FF5555>Jugador no encontrado."
   config_reloaded: "<#55FF55>Configuración de PkAuth recargada correctamente."
+  # Mensaje que se muestra en el chat cuando entras al auth ya estando logueado.
+  # Soporta MiniMessage. Placeholder: %player%
+  already-authenticated: |-
+    <#FFD700><b>¡Ups!</b> <#AAAAAA>Aparentemente estás en el eterno vacío otra vez... Bueno, al menos puedes jugar <#55FF55>Piedra Papel o Tijera <#AAAAAA>contra el servidor o un jugador con <#FFFF55>/rps jugador/bot
+    <#AAAAAA>o jugar el juego de la serpiente con <#FFFF55>/snake play
 
 snake:
   messages:

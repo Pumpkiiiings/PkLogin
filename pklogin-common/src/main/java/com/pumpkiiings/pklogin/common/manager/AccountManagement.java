@@ -41,7 +41,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountManagement {
 
-    private final Map<String, Account> accountCache = new HashMap<>();
+    private final Map<String, Account> accountCache = new java.util.concurrent.ConcurrentHashMap<>();
 
     private final Database database;
 
@@ -65,17 +65,16 @@ public class AccountManagement {
      * @return the player's {@link Account}. Failing, will return empty Optional.
      */
     public Optional<Account> retrieveOrLoad(@NonNull String name) {
-        synchronized (accountCache) {
-            Account account = accountCache.get(name.toLowerCase());
-            if (account == null) {
-                Optional<Account> accountOpt = search(name);
-                if (accountOpt.isPresent()) {
-                    account = accountOpt.get();
-                    accountCache.put(name.toLowerCase(), account);
-                }
-            }
-            return Optional.ofNullable(account);
+        String key = name.toLowerCase();
+        Account account = accountCache.get(key);
+        if (account != null) {
+            return Optional.of(account);
         }
+        Optional<Account> accountOpt = search(name);
+        if (accountOpt.isPresent()) {
+            accountCache.put(key, accountOpt.get());
+        }
+        return accountOpt;
     }
 
     /**
@@ -84,9 +83,7 @@ public class AccountManagement {
      * @param account the account to add
      */
     public void addToCache(@NonNull Account account) {
-        synchronized (accountCache) {
-            accountCache.put(account.getRealName().toLowerCase(), account);
-        }
+        accountCache.put(account.getRealName().toLowerCase(), account);
     }
 
     /**
@@ -95,9 +92,7 @@ public class AccountManagement {
      * @param key the key to invalidate
      */
     public void invalidateCache(@NonNull String key) {
-        synchronized (accountCache) {
-            accountCache.remove(key.toLowerCase());
-        }
+        accountCache.remove(key.toLowerCase());
     }
 
     /**

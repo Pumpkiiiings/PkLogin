@@ -59,7 +59,7 @@ public class AuthMeConverter {
 
     /** Runs the import asynchronously so it does not block the main thread. */
     public void run(CommandSender sender) {
-        plugin.getServer().getAsyncScheduler().runNow(plugin, task -> {
+        plugin.runAsync(() -> {
             try {
                 doImport(sender);
             } catch (Exception e) {

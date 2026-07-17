@@ -55,6 +55,7 @@ public class PlayerGeneralListeners implements Listener {
         LoginManagement loginManagement = plugin.getLoginManagement();
         loginManagement.cleanup(name);
         LoginQueue.removeFromQueue(name);
+        com.pumpkiiings.pklogin.bukkit.manager.BukkitLimboManager.removeLimboState(plugin, player);
         TitleAPI.getApi().reset(player);
     }
 

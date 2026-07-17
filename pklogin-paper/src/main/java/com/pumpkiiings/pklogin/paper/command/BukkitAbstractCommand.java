@@ -64,7 +64,7 @@ public abstract class BukkitAbstractCommand implements CommandExecutor {
         }
 
         if (loginManagement.isUnlocked(name)) {
-            plugin.getServer().getAsyncScheduler().runNow(plugin, task -> {
+            plugin.runAsync(() -> {
                 try {
                     perform(sender, lb, args);
                 } catch (Exception e) {

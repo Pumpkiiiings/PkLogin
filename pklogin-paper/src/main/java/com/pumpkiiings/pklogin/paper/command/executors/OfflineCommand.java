@@ -52,6 +52,7 @@ public class OfflineCommand extends BukkitAbstractCommand {
             accountManagement.updateUuidType(name, "OFFLINE");
             accountManagement.invalidateCache(name);
             player.sendMessage(Messages.OFFLINE_SUCCESS.asString());
+            plugin.getServer().getScheduler().runTask(plugin, () -> player.kick(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize("§aHas cambiado a modo Offline.\n§ePor favor vuelve a conectarte al servidor.")));
         }
     }
 }

@@ -12,6 +12,7 @@ import com.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import com.pumpkiiings.pkauth.games.snake.listener.protocol.PlayerMovementPacketListener;
 import com.pumpkiiings.pkauth.games.snake.listener.PlayerListener;
+import com.pumpkiiings.pkauth.listener.protocol.AuthEntityBlocker;
 
 public class PkAuthAddon extends JavaPlugin {
 
@@ -61,6 +62,7 @@ public class PkAuthAddon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(scoreboardManager, this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         PacketEvents.getAPI().getEventManager().registerListener(new PlayerMovementPacketListener());
+        PacketEvents.getAPI().getEventManager().registerListener(new AuthEntityBlocker());
 
         rpsManager = new com.pumpkiiings.pkauth.games.rps.RpsGameManager(this);
         getServer().getPluginManager().registerEvents(rpsManager, this);

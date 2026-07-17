@@ -134,7 +134,7 @@ public class PkLoginPaper extends JavaPlugin {
             org.bukkit.entity.Player player = getServer().getPlayer(playerName);
             if (player != null) {
                 if (getServer().isPrimaryThread()) {
-                    getServer().getAsyncScheduler().runNow(this, task -> getServer().getPluginManager().callEvent(new com.pumpkiiings.pklogin.api.event.bukkit.auth.PlayerAuthLoginEvent(player)));
+                    runAsync(() -> getServer().getPluginManager().callEvent(new com.pumpkiiings.pklogin.api.event.bukkit.auth.PlayerAuthLoginEvent(player)));
                 } else {
                     getServer().getPluginManager().callEvent(new com.pumpkiiings.pklogin.api.event.bukkit.auth.PlayerAuthLoginEvent(player));
                 }
@@ -191,7 +191,7 @@ public class PkLoginPaper extends JavaPlugin {
                 new com.pumpkiiings.pklogin.paper.listener.ProxyMessageListener(this));
 
         // updates
-        this.getServer().getAsyncScheduler().runNow(this, task -> this.detectUpdates());
+        runAsync(this::detectUpdates);
 
         com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().init();
 
@@ -207,6 +207,15 @@ public class PkLoginPaper extends JavaPlugin {
     @Override
     public void onDisable() {
         com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().shutdown();
+    }
+
+    public void runAsync(Runnable runnable) {
+        try {
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+            getServer().getAsyncScheduler().runNow(this, task -> runnable.run());
+        } catch (ClassNotFoundException e) {
+            getServer().getScheduler().runTaskAsynchronously(this, runnable);
+        }
     }
 
     public void sendMessage(String message) {

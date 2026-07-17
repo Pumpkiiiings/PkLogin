@@ -1,4 +1,4 @@
-#  ________  ___  __    ___       ________  ________  ___  ________     
+﻿#  ________  ___  __    ___       ________  ________  ___  ________     
 # |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
 # \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
 #  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
@@ -8,6 +8,8 @@
 
 # Official Website: https://www.pumpkiiings.com
 # Discord: https://www.pumpkiiings.com/discord
+
+version: "1.1"
 
 Messages:
   Title:
@@ -30,7 +32,7 @@ Messages:
     # Message sent after login
     after-login:
       title: ""
-      subtitle: "&aIniciou sessão com sucesso!"
+      subtitle: "&aIniciou sessÃ£o com sucesso!"
       delays:
         start: 0
         duration: 60
@@ -64,14 +66,14 @@ Messages:
     register-kick: "&cLevou imenso tempo a registar-se."
 
     # Message sent when a user takes a long time to log in
-    login-kick: "&cLevou imenso tempo a iniciar sessão."
+    login-kick: "&cLevou imenso tempo a iniciar sessÃ£o."
 
   successful-operations:
     # Message when a user exchanges their password
     password-changed: "&aA sua palavra-passe foi alterada com sucesso."
 
     # Message sent when a user successfully logs
-    successful-login: "&aIniciou sessão com sucesso."
+    successful-login: "&aIniciou sessÃ£o com sucesso."
 
     # Message sent when a user successfully registers
     successful-register: "&aRegistou-se com sucesso."
@@ -81,7 +83,7 @@ Messages:
 
   kick-messages:
     # Message when a player tries to log on to the server with a small difference in the nickname
-    nick-already-registered: "&cNão pode entrar com o nome {0}&r\n&r&cEste nome já foi registado como {1}&r\n&r\n&r&cPara entrar, deve usar o seu nome sem maiúsculas / minúsculas."
+    nick-already-registered: "&cNÃ£o pode entrar com o nome {0}&r\n&r&cEste nome jÃ¡ foi registado como {1}&r\n&r\n&r&cPara entrar, deve usar o seu nome sem maiÃºsculas / minÃºsculas."
 
     # Message sent when a user misses many times
     failed-many-times: "&cIntroduziu a palavra-passe incorrecta."
@@ -90,46 +92,46 @@ Messages:
     incorrect-password: "&cPalavra-passe incorrecta. Por favor, tente novamente."
 
     # Message sent when a player enters an invalid nickname.
-    invalid-nickname: "&cDesculpe, mas está a usar um nome inválido."
+    invalid-nickname: "&cDesculpe, mas estÃ¡ a usar um nome invÃ¡lido."
 
   error-messages:
     # Message sent when you are already logged in.
-    already-login: "&cJá tem sessão iniciada."
+    already-login: "&cJÃ¡ tem sessÃ£o iniciada."
 
     # Message sent when a nickname has already been registered.
-    already-registered: "&cEste nome já foi registado."
+    already-registered: "&cEste nome jÃ¡ foi registado."
 
     # Message sent when a nickname has not yet been registered.
-    not-registered: "&cEste nome ainda não foi registado."
+    not-registered: "&cEste nome ainda nÃ£o foi registado."
 
     # Message sent when the entered password is not equal to the second
-    passwords-dont-match: "&cAs palavras-passe não coincidem."
+    passwords-dont-match: "&cAs palavras-passe nÃ£o coincidem."
 
     # Message sent when a player tries to change password by entering the same password as the current
-    password-same-as-old: "&cA palavra-passe introduzida é a mesma que a atual."
+    password-same-as-old: "&cA palavra-passe introduzida Ã© a mesma que a atual."
 
     # Message sent when the password entered is too large
-    password-too-large: "&cA palavra-passe introduzida é demasiado grande."
+    password-too-large: "&cA palavra-passe introduzida Ã© demasiado grande."
 
     # Message sent when the password entered is too small
-    password-too-small: "&cA palavra-passe introduzida é demasiado pequena."
+    password-too-small: "&cA palavra-passe introduzida Ã© demasiado pequena."
     insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
     change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
 
     # Message when a player does not possess the required permission
-    insufficient-permissions: "&cNão tem permissão para operar este comando."
+    insufficient-permissions: "&cNÃ£o tem permissÃ£o para operar este comando."
 
     # Message to kick a player now online
-    already-online: "&cEste jogador já está disponível."
+    already-online: "&cEste jogador jÃ¡ estÃ¡ disponÃ­vel."
 
     # Message to show that the command cannot be executed via console
-    player-command-usage: "&cEste comando foi desactivado através do terminal."
+    player-command-usage: "&cEste comando foi desactivado atravÃ©s do terminal."
 
     # Message shown when the plugin is reloaded.
     plugin-reload-message: "&eO plugin foi recarregado com sucesso."
 
     # Message sent when a database operation has not been successfully performed
-    database-error: "&cLamentamos, mas não fomos capazes de concluir esta operação. Por favor, tente novamente. [FALHA NO SQL]"
+    database-error: "&cLamentamos, mas nÃ£o fomos capazes de concluir esta operaÃ§Ã£o. Por favor, tente novamente. [FALHA NO SQL]"
 
   other-messages:
     # Mensagem enviada para o uso do comando /logar

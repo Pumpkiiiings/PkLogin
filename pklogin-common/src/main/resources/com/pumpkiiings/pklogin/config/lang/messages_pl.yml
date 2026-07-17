@@ -1,4 +1,4 @@
-#  ________  ___  __    ___       ________  ________  ___  ________     
+﻿#  ________  ___  __    ___       ________  ________  ___  ________     
 # |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
 # \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
 #  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
@@ -12,12 +12,14 @@
 # Polish translation made by Gh77ost#8539 <3
 # Fixed by sus town#1347 :}
 
+version: "1.1"
+
 Messages:
   Title:
     # Message sent before login
     before-login:
       title: "&a&lWitaj!"
-      subtitle: "&7Wpisz: /login <hasÅ‚o>"
+      subtitle: "&7Wpisz: /login <hasÃ…â€šo>"
       delays:
         start: 0
         duration: 120
@@ -25,7 +27,7 @@ Messages:
     # Message sent before registration
     before-register:
       title: "&a&lWitaj!"
-      subtitle: "&7Wpisz: /register <hasÅ‚o> <hasÅ‚o>"
+      subtitle: "&7Wpisz: /register <hasÃ…â€šo> <hasÃ…â€šo>"
       delays:
         start: 0
         duration: 120
@@ -33,7 +35,7 @@ Messages:
     # Message sent after login
     after-login:
       title: "&a&lWeryfikacja!"
-      subtitle: "PomyÅ›lnie zalogowano!"
+      subtitle: "PomyÃ…â€ºlnie zalogowano!"
       delays:
         start: 0
         duration: 30
@@ -41,7 +43,7 @@ Messages:
     # Message sent after registration
     after-register:
       title: "&a&lWeryfikacja!"
-      subtitle: "PomyÅ›lnie zarejestrowano!"
+      subtitle: "PomyÃ…â€ºlnie zarejestrowano!"
       delays:
         start: 0
         duration: 30
@@ -64,82 +66,82 @@ Messages:
 
   delay-kick:
     # Message sent when a user takes a long time to register
-    register-kick: "&cMinÄ…Å‚ czas rejestracji."
+    register-kick: "&cMinÃ„â€¦Ã…â€š czas rejestracji."
 
     # Message sent when a user takes a long time to log in
-    login-kick: "&cMinÄ…Å‚ czas logowania."
+    login-kick: "&cMinÃ„â€¦Ã…â€š czas logowania."
 
   successful-operations:
     # Message when a user exchanges their password
-    password-changed: "&aTwoje hasÅ‚o zostaÅ‚o zmienione pomyÅ›lnie."
+    password-changed: "&aTwoje hasÃ…â€šo zostaÃ…â€šo zmienione pomyÃ…â€ºlnie."
 
     # Message sent when a user successfully logs
-    successful-login: "&aPomyÅ›lnie siÄ™ zalogowaÅ‚eÅ›."
+    successful-login: "&aPomyÃ…â€ºlnie siÃ„â„¢ zalogowaÃ…â€šeÃ…â€º."
 
     # Message sent when a user successfully registers
-    successful-register: "&aPomyÅ›lnie siÄ™ zarejestrowaÅ‚eÅ›."
+    successful-register: "&aPomyÃ…â€ºlnie siÃ„â„¢ zarejestrowaÃ…â€šeÃ…â€º."
 
     # Message sent when a player successfully disregisters
-    unregister-kick: "&cRejestr zostaÅ‚ pomyÅ›lnie usuniÄ™ty."
+    unregister-kick: "&cRejestr zostaÃ…â€š pomyÃ…â€ºlnie usuniÃ„â„¢ty."
 
   kick-messages:
     # Message when a player tries to log on to the server with a small difference in the nickname
-    nick-already-registered: "&cNie moÅ¼esz wejÅ›Ä‡ pod tym nickiem {0}\n&cTen uÅ¼ytkownik zostaÅ‚ zarejestrowany jako {1}\n\n&cBy wejÅ›Ä‡ na serwer musisz uÅ¼yÄ‡ starego nicku. ZwróÄ‡ uwagÄ™ na wielkie litery!"
+    nick-already-registered: "&cNie moÃ…Â¼esz wejÃ…â€ºÃ„â€¡ pod tym nickiem {0}\n&cTen uÃ…Â¼ytkownik zostaÃ…â€š zarejestrowany jako {1}\n\n&cBy wejÃ…â€ºÃ„â€¡ na serwer musisz uÃ…Â¼yÃ„â€¡ starego nicku. ZwrÃ³Ã„â€¡ uwagÃ„â„¢ na wielkie litery!"
 
     # Message sent when a user misses many times
-    failed-many-times: "&cZbyt wiele razy wpisaÅ‚eÅ› zÅ‚e hasÅ‚o."
+    failed-many-times: "&cZbyt wiele razy wpisaÃ…â€šeÃ…â€º zÃ…â€še hasÃ…â€šo."
 
     # Message sent when password entered is incorrect
-    incorrect-password: "&cNie wÅ‚aÅ›ciwe hasÅ‚o! Spróbuj ponownie."
+    incorrect-password: "&cNie wÃ…â€šaÃ…â€ºciwe hasÃ…â€šo! SprÃ³buj ponownie."
 
   error-messages:
     # Message sent when you are already logged in.
-    already-login: "&cJesteÅ› juÅ¼ zalogowany."
+    already-login: "&cJesteÃ…â€º juÃ…Â¼ zalogowany."
 
     # Message sent when a nickname has already been registered.
-    already-registered: "&cTen pseudonim zostaÅ‚ juÅ¼ zarejestrowany."
+    already-registered: "&cTen pseudonim zostaÃ…â€š juÃ…Â¼ zarejestrowany."
 
     # Message sent when a nickname has not yet been registered.
-    not-registered: "&cTen pseudonim nie zostaÅ‚ jeszcze zarejestrowany."
+    not-registered: "&cTen pseudonim nie zostaÃ…â€š jeszcze zarejestrowany."
 
     # Message sent when the entered password is not equal to the second
-    passwords-dont-match: "&cHasÅ‚a nie sÄ… takie same."
+    passwords-dont-match: "&cHasÃ…â€ša nie sÃ„â€¦ takie same."
 
     # Message sent when a player tries to change password by entering the same password as the current
-    password-same-as-old: "&cWprowadzone hasÅ‚o jest takie samo jak bieÅ¼Ä…ce."
+    password-same-as-old: "&cWprowadzone hasÃ…â€šo jest takie samo jak bieÃ…Â¼Ã„â€¦ce."
 
     # Message sent when the password entered is too large
-    password-too-large: "&cPodane hasÅ‚o jest za dÅ‚ugie."
+    password-too-large: "&cPodane hasÃ…â€šo jest za dÃ…â€šugie."
 
     # Message sent when the password entered is too small
-    password-too-small: "&cPodane hasÅ‚o jest za krótkie."
+    password-too-small: "&cPodane hasÃ…â€šo jest za krÃ³tkie."
     insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
     change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
 
     # Message when a player does not possess the required permission
-    insufficient-permissions: "&cNie masz uprawnieÅ„ by to zrobiÄ‡."
+    insufficient-permissions: "&cNie masz uprawnieÃ…â€ž by to zrobiÃ„â€¡."
 
     # Message to kick a player now online
     already-online: "&cTen gracz jest aktualnie online."
 
     # Message to show that the command cannot be executed via console
-    player-command-usage: "&cTo polecenie nie moÅ¼e zostaÄ‡ wykonane za pomocÄ… konsoli."
+    player-command-usage: "&cTo polecenie nie moÃ…Â¼e zostaÃ„â€¡ wykonane za pomocÃ„â€¦ konsoli."
 
     # Message shown when the plugin is reloaded
-    plugin-reload-message: "&ePomyÅ›lnie przeÅ‚adowano plugin."
+    plugin-reload-message: "&ePomyÃ…â€ºlnie przeÃ…â€šadowano plugin."
 
-    # Komunikat wysyÅ‚any, gdy operacja na bazie danych nie zostaÅ‚a pomyÅ›lnie wykonana
-    database-error: "&cPrzepraszamy, nie mogliÅ›my ukoÅ„czyÄ‡ tej operacji. ProszÄ™ spróbuj ponownie. [SQL FAIL]"
+    # Komunikat wysyÃ…â€šany, gdy operacja na bazie danych nie zostaÃ…â€ša pomyÃ…â€ºlnie wykonana
+    database-error: "&cPrzepraszamy, nie mogliÃ…â€ºmy ukoÃ…â€žczyÃ„â€¡ tej operacji. ProszÃ„â„¢ sprÃ³buj ponownie. [SQL FAIL]"
 
   other-messages:
     # Mensagem enviada para o uso do comando /logar
-    message-login: "&eUÅ¼yj polecenia &7/login <hasÅ‚o>&e."
+    message-login: "&eUÃ…Â¼yj polecenia &7/login <hasÃ…â€šo>&e."
 
     # Mensagem enviada para o uso do comando /register
-    message-register: "&eUÅ¼yj polecenia &7/register <hasÅ‚o> <hasÅ‚o>&e."
+    message-register: "&eUÃ…Â¼yj polecenia &7/register <hasÃ…â€šo> <hasÃ…â€šo>&e."
 
     # Mensagem enviada para o uso do comando /mudarsenha
-    message-changepassword: "&eUÅ¼yj polecenia &7/changepassword <stare HasÅ‚o> <nowe HasÅ‚o>&e."
+    message-changepassword: "&eUÃ…Â¼yj polecenia &7/changepassword <stare HasÃ…â€šo> <nowe HasÃ…â€šo>&e."
 
-    # WiadomoÅ›Ä‡ wysÅ‚ana w celu uÅ¼ycia polecenia /unregister
-    message-unregister: "&eUÅ¼yj polecenia &7/unregister <bieÅ¼Ä…ce hasÅ‚o>&e."
+    # WiadomoÃ…â€ºÃ„â€¡ wysÃ…â€šana w celu uÃ…Â¼ycia polecenia /unregister
+    message-unregister: "&eUÃ…Â¼yj polecenia &7/unregister <bieÃ…Â¼Ã„â€¦ce hasÃ…â€šo>&e."

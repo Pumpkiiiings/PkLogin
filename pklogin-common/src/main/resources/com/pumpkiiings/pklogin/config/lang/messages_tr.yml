@@ -1,4 +1,4 @@
-#  ________  ___  __    ___       ________  ________  ___  ________     
+﻿#  ________  ___  __    ___       ________  ________  ___  ________     
 # |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
 # \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
 #  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
@@ -13,127 +13,129 @@
 
 # Translation made by neon#9620
 
+version: "1.1"
+
 Messages:
   Title:
-    # Giriş yapmadan önce gönderilen mesaj.
+    # GiriÅŸ yapmadan Ã¶nce gÃ¶nderilen mesaj.
     before-login:
-      title: "&a&lHOŞGELDİN!"
-      subtitle: "&7Giriş yapmak için: /login <şifre>"
+      title: "&a&lHOÅžGELDÄ°N!"
+      subtitle: "&7GiriÅŸ yapmak iÃ§in: /login <ÅŸifre>"
       delays:
         start: 0
         duration: 9999
         end: 6
-    # Kayıt olmadan önce gönderilen mesaj.
+    # KayÄ±t olmadan Ã¶nce gÃ¶nderilen mesaj.
     before-register:
-      title: "&a&lHOŞGELDİN!"
-      subtitle: "&7Kayıt olmak için: /register <şifre> <tekrar şifre>"
+      title: "&a&lHOÅžGELDÄ°N!"
+      subtitle: "&7KayÄ±t olmak iÃ§in: /register <ÅŸifre> <tekrar ÅŸifre>"
       delays:
         start: 0
         duration: 9999
         end: 6
-    # Giriş yaptıktan sonra gönderilen mesaj.
+    # GiriÅŸ yaptÄ±ktan sonra gÃ¶nderilen mesaj.
     after-login:
       title: ""
-      subtitle: "&aBaşarıyla giriş yaptın!"
+      subtitle: "&aBaÅŸarÄ±yla giriÅŸ yaptÄ±n!"
       delays:
         start: 0
         duration: 60
         end: 6
-    # Kayıt olduktan sonra gönderilen mesaj.
+    # KayÄ±t olduktan sonra gÃ¶nderilen mesaj.
     after-register:
       title: ""
-      subtitle: "&aBaşarıyla kayıt oldun!"
+      subtitle: "&aBaÅŸarÄ±yla kayÄ±t oldun!"
       delays:
         start: 0
         duration: 60
         end: 6
-    # Yanlış bir şifre yazınca gönderilen mesaj.
+    # YanlÄ±ÅŸ bir ÅŸifre yazÄ±nca gÃ¶nderilen mesaj.
     incorrect-password:
       title: ""
-      subtitle: "&cYazdığın şifre yanlış!"
+      subtitle: "&cYazdÄ±ÄŸÄ±n ÅŸifre yanlÄ±ÅŸ!"
       delays:
         start: 0
         duration: 60
         end: 6
-    # Daha önce giriş yapıp giriş yapmayı deneyen kullanıcıya gönderilen mesaj.
+    # Daha Ã¶nce giriÅŸ yapÄ±p giriÅŸ yapmayÄ± deneyen kullanÄ±cÄ±ya gÃ¶nderilen mesaj.
     already-login:
       title: ""
-      subtitle: "&cDaha önce giriş yaptın!"
+      subtitle: "&cDaha Ã¶nce giriÅŸ yaptÄ±n!"
       delays:
         start: 0
         duration: 60
         end: 6
-    # Daha önce kayıt olup kayıt olmayı deneyen kullanıcıya gönderilen mesaj.
+    # Daha Ã¶nce kayÄ±t olup kayÄ±t olmayÄ± deneyen kullanÄ±cÄ±ya gÃ¶nderilen mesaj.
     already-registered:
       title: ""
-      subtitle: "&cDaha önce kayıt oldun!"
+      subtitle: "&cDaha Ã¶nce kayÄ±t oldun!"
       delays:
         start: 0
         duration: 60
         end: 6
-    # Şifreler aynı olmayınca gönderilen mesaj.
+    # Åžifreler aynÄ± olmayÄ±nca gÃ¶nderilen mesaj.
     passwords-dont-match:
       title: ""
-      subtitle: "&cŞifreler aynı değil!"
+      subtitle: "&cÅžifreler aynÄ± deÄŸil!"
       delays:
         start: 0
         duration: 60
         end: 6
-    # Giriş yapma süresi dolunca gönderilen mesaj.
+    # GiriÅŸ yapma sÃ¼resi dolunca gÃ¶nderilen mesaj.
     session-login:
       title: ""
-      subtitle: "&eGiriş yapma süren doldu."
+      subtitle: "&eGiriÅŸ yapma sÃ¼ren doldu."
       delays:
         start: 0
         duration: 60
         end: 6
-    # Premium (orjinal) hesap üzerinden sunucuya otomatik giriş yapınca gönderilen mesaj.
+    # Premium (orjinal) hesap Ã¼zerinden sunucuya otomatik giriÅŸ yapÄ±nca gÃ¶nderilen mesaj.
     premium-login:
       title: ""
-      subtitle: "&eHesabınız orjinal, otomatik giriş yapıldı."
+      subtitle: "&eHesabÄ±nÄ±z orjinal, otomatik giriÅŸ yapÄ±ldÄ±."
       delays:
         start: 0
         duration: 60
         end: 6
-    # Eklenti yeniden yüklenince gönderilen mesaj.
+    # Eklenti yeniden yÃ¼klenince gÃ¶nderilen mesaj.
     plugin-reload:
       title: ""
-      subtitle: "&aKonfigürasyon ve dil dosyaları yenilendi."
+      subtitle: "&aKonfigÃ¼rasyon ve dil dosyalarÄ± yenilendi."
       delays:
         start: 0
         duration: 60
         end: 6
-    # Yedekleme işlemi başarıyla bittiğinde gönderilen mesaj.
+    # Yedekleme iÅŸlemi baÅŸarÄ±yla bittiÄŸinde gÃ¶nderilen mesaj.
     backup:
       title: ""
-      subtitle: "&aYedekleme başarıyla gerçekleştirildi."
+      subtitle: "&aYedekleme baÅŸarÄ±yla gerÃ§ekleÅŸtirildi."
       delays:
         start: 0
         duration: 90
         end: 6
-    # Yedekleme işleminde hata olunca gönderilen mesaj.
+    # Yedekleme iÅŸleminde hata olunca gÃ¶nderilen mesaj.
     backup-error:
       title: ""
-      subtitle: "&cYedekleme yapılamıyor."
+      subtitle: "&cYedekleme yapÄ±lamÄ±yor."
       delays:
         start: 0
         duration: 90
         end: 6
-    # Güvenlik uyarısı sohbete gönderilince gönderilen mesaj.
+    # GÃ¼venlik uyarÄ±sÄ± sohbete gÃ¶nderilince gÃ¶nderilen mesaj.
     security-warning:
       title: ""
-      subtitle: "&cSohbette yeni bir güvenlik uyarısı gönderildi."
+      subtitle: "&cSohbette yeni bir gÃ¼venlik uyarÄ±sÄ± gÃ¶nderildi."
       delays:
         start: 0
         duration: 60
         end: 6
 
   action-bar:
-    # Giriş yapmadan önce oyunculara gönderilen mesaj (singular).
-    singular: "&c{Kayıt olmana/giriş yapmana} {0} saniye kaldı."
+    # GiriÅŸ yapmadan Ã¶nce oyunculara gÃ¶nderilen mesaj (singular).
+    singular: "&c{KayÄ±t olmana/giriÅŸ yapmana} {0} saniye kaldÄ±."
 
-    # Giriş yapmadan önce oyunculara gönderilen mesaj (plural).
-    plural: "&c{Kayıt olmana/giriş yapmana}{0} saniye kaldı."
+    # GiriÅŸ yapmadan Ã¶nce oyunculara gÃ¶nderilen mesaj (plural).
+    plural: "&c{KayÄ±t olmana/giriÅŸ yapmana}{0} saniye kaldÄ±."
 
         bedrock-auto-login:
         title: "&a&lWelcome!"
@@ -151,227 +153,227 @@ Messages:
           end: 6
 
   delay-kick:
-    # Oyuncu uzun süre kayıt olmayınca oyundan atıldığında yazan mesaj.
-    register-kick: "&cKayıt olmak için zamanın doldu."
+    # Oyuncu uzun sÃ¼re kayÄ±t olmayÄ±nca oyundan atÄ±ldÄ±ÄŸÄ±nda yazan mesaj.
+    register-kick: "&cKayÄ±t olmak iÃ§in zamanÄ±n doldu."
 
-    # Oyuncu uzun süre giriş yapmayınca oyundan atıldığında yazan mesaj.
-    login-kick: "&cGiriş yapman çok uzun sürdü."
+    # Oyuncu uzun sÃ¼re giriÅŸ yapmayÄ±nca oyundan atÄ±ldÄ±ÄŸÄ±nda yazan mesaj.
+    login-kick: "&cGiriÅŸ yapman Ã§ok uzun sÃ¼rdÃ¼."
 
   successful-operations:
-    # Oyuncu başarıyla şifresini değiştirdiğinde gönderilen mesaj.
-    password-changed: "&aŞifren başarıyla değiştirildi."
+    # Oyuncu baÅŸarÄ±yla ÅŸifresini deÄŸiÅŸtirdiÄŸinde gÃ¶nderilen mesaj.
+    password-changed: "&aÅžifren baÅŸarÄ±yla deÄŸiÅŸtirildi."
 
-    # Oyuncu başarıyla giriş yaptığında gönderilen mesaj.
-    successful-login: "&aBaşarıyla giriş yaptın."
+    # Oyuncu baÅŸarÄ±yla giriÅŸ yaptÄ±ÄŸÄ±nda gÃ¶nderilen mesaj.
+    successful-login: "&aBaÅŸarÄ±yla giriÅŸ yaptÄ±n."
 
-    # Premium (orjinal) hesap ile hesaba girince gönderilen mesaj.
-    successful-premium-login: "&aOrjinal bir hesap kullandığın için otomatik olarak giriş yaptın."
+    # Premium (orjinal) hesap ile hesaba girince gÃ¶nderilen mesaj.
+    successful-premium-login: "&aOrjinal bir hesap kullandÄ±ÄŸÄ±n iÃ§in otomatik olarak giriÅŸ yaptÄ±n."
 
-    # Aynı ip adresi üzerinden otomatik giriş yapılınca gönderilen mesaj
-    successful-session-login: "&aOtomatikman giriş yaptınız."
+    # AynÄ± ip adresi Ã¼zerinden otomatik giriÅŸ yapÄ±lÄ±nca gÃ¶nderilen mesaj
+    successful-session-login: "&aOtomatikman giriÅŸ yaptÄ±nÄ±z."
 
-    # Oyuncu başarıyla kayıt olduğunda gönderilen mesaj.
-    successful-register: "&aBaşarıyla kayıt oldun."
+    # Oyuncu baÅŸarÄ±yla kayÄ±t olduÄŸunda gÃ¶nderilen mesaj.
+    successful-register: "&aBaÅŸarÄ±yla kayÄ±t oldun."
 
-    # Oyuncu bir yetkili tarafından girişi yapılınca gönderilen mesaj.
-    forcelogin: "&e{0} isimli kişinin girişi tarafınızca yapıldı."
+    # Oyuncu bir yetkili tarafÄ±ndan giriÅŸi yapÄ±lÄ±nca gÃ¶nderilen mesaj.
+    forcelogin: "&e{0} isimli kiÅŸinin giriÅŸi tarafÄ±nÄ±zca yapÄ±ldÄ±."
 
-    # Oyuncu kaydını kendisi silince gönderilen mesaj.
-    unregister-kick: "&cKaydınızı başarıyla sildiniz."
+    # Oyuncu kaydÄ±nÄ± kendisi silince gÃ¶nderilen mesaj.
+    unregister-kick: "&cKaydÄ±nÄ±zÄ± baÅŸarÄ±yla sildiniz."
 
-    # Yapılandırma işlemi tamamlanınca gönderilen mesaj.
-    config-finished: "&aYapılandırma tamamlandı."
+    # YapÄ±landÄ±rma iÅŸlemi tamamlanÄ±nca gÃ¶nderilen mesaj.
+    config-finished: "&aYapÄ±landÄ±rma tamamlandÄ±."
 
-    # Yapılandırma işlemi iptal edilince gönderilen mesaj.
+    # YapÄ±landÄ±rma iÅŸlemi iptal edilince gÃ¶nderilen mesaj.
     config-cancelled: "&cEylem iptal edildi."
 
   kick-messages:
-    # Oyuncu belirli bir takma adı sahip başka bir oyuncunun ismine yakın bir isimle oyuna girince gönderilen mesaj.
-    nick-already-registered: "&cBu takma ad ile oyuna giremezsin {0}&r\n&r&cBu kullanıcı daha önce kayıt oldu {1}&r\n&r\n&r&cSunucuya girmek için kendi takma adını kullanman gerekiyor.Başkalarının isminde ki harfleri büyük ve küçük olarak değiştirerek giriş yapamazsınız."
+    # Oyuncu belirli bir takma adÄ± sahip baÅŸka bir oyuncunun ismine yakÄ±n bir isimle oyuna girince gÃ¶nderilen mesaj.
+    nick-already-registered: "&cBu takma ad ile oyuna giremezsin {0}&r\n&r&cBu kullanÄ±cÄ± daha Ã¶nce kayÄ±t oldu {1}&r\n&r\n&r&cSunucuya girmek iÃ§in kendi takma adÄ±nÄ± kullanman gerekiyor.BaÅŸkalarÄ±nÄ±n isminde ki harfleri bÃ¼yÃ¼k ve kÃ¼Ã§Ã¼k olarak deÄŸiÅŸtirerek giriÅŸ yapamazsÄ±nÄ±z."
 
-    # Oyuncu çok fazla yanlış şifre yazınca gönderilen mesaj.
-    failed-many-times: "&cÇok fazla yanlış şifre yazdın."
+    # Oyuncu Ã§ok fazla yanlÄ±ÅŸ ÅŸifre yazÄ±nca gÃ¶nderilen mesaj.
+    failed-many-times: "&cÃ‡ok fazla yanlÄ±ÅŸ ÅŸifre yazdÄ±n."
 
-    # Oyuncu yanlış şifre yazınca gönderilen mesaj.
-    incorrect-password: "&cYanlış şifre.Lütfen tekrar deneyin."
+    # Oyuncu yanlÄ±ÅŸ ÅŸifre yazÄ±nca gÃ¶nderilen mesaj.
+    incorrect-password: "&cYanlÄ±ÅŸ ÅŸifre.LÃ¼tfen tekrar deneyin."
 
-    # Oyuncu güvenlik sistemindeki soruya yanlış cevap verince gönderilen mesaj.
-    incorrect-answer: "&cYanlış cevap.Lütfen tekrar deneyin."
+    # Oyuncu gÃ¼venlik sistemindeki soruya yanlÄ±ÅŸ cevap verince gÃ¶nderilen mesaj.
+    incorrect-answer: "&cYanlÄ±ÅŸ cevap.LÃ¼tfen tekrar deneyin."
 
-    # Sunucu tam açılmamışken girmeye çalışan oyunculara gönderilen mesaj.
-    wait-server-start: "&cSunucu tamamen açılmadı.\n&cBağlanman için biraz bekleyeceksin."
+    # Sunucu tam aÃ§Ä±lmamÄ±ÅŸken girmeye Ã§alÄ±ÅŸan oyunculara gÃ¶nderilen mesaj.
+    wait-server-start: "&cSunucu tamamen aÃ§Ä±lmadÄ±.\n&cBaÄŸlanman iÃ§in biraz bekleyeceksin."
 
-    # Şüpheli eylemleri yüzünden IP adresi engellenen oyuncuya gönderilen mesaj.
-    account-blocked: "&cIP adresin şüpheli eylemler yüzünden engellendi.&r\n&r&cKalan ceza süren: {0}"
+    # ÅžÃ¼pheli eylemleri yÃ¼zÃ¼nden IP adresi engellenen oyuncuya gÃ¶nderilen mesaj.
+    account-blocked: "&cIP adresin ÅŸÃ¼pheli eylemler yÃ¼zÃ¼nden engellendi.&r\n&r&cKalan ceza sÃ¼ren: {0}"
 
-    # Oyuncu geçici şifresini yanlış yazınca gönderilen mesaj.
-    incorrect-temporary-password: "&cGeçiçi şifre yanlış yazıldı.Lütfen tekrar deneyin."
+    # Oyuncu geÃ§ici ÅŸifresini yanlÄ±ÅŸ yazÄ±nca gÃ¶nderilen mesaj.
+    incorrect-temporary-password: "&cGeÃ§iÃ§i ÅŸifre yanlÄ±ÅŸ yazÄ±ldÄ±.LÃ¼tfen tekrar deneyin."
 
-    # Oyuncu geçersiz bir takma adıyla giriş yapınca gönderilen mesaj.
-    invalid-nickname: "&cTakma adınız geçersiz.Boşlukları,sembolleri ve geçersiz karakterleri isminden silip sunucuya girmeyi dene."
+    # Oyuncu geÃ§ersiz bir takma adÄ±yla giriÅŸ yapÄ±nca gÃ¶nderilen mesaj.
+    invalid-nickname: "&cTakma adÄ±nÄ±z geÃ§ersiz.BoÅŸluklarÄ±,sembolleri ve geÃ§ersiz karakterleri isminden silip sunucuya girmeyi dene."
 
-    # Premium (orjinal) hesap ile kayıt edilen bir oyuncunun hesabına korsan hesap ile giriş yapmayı deneyen kişiye gönderilen mesaj.
-    premium-account: "&cÜzgünüm ama bu hesap bir orjinal hesap tarafından kayıt edildi.&r\n&r&cBu sunucuda oynamak için başka bir takma adı seç.&r\n&r\nEğer bu hesabın sahibi sizseniz Minecraftı kapatıp açın."
+    # Premium (orjinal) hesap ile kayÄ±t edilen bir oyuncunun hesabÄ±na korsan hesap ile giriÅŸ yapmayÄ± deneyen kiÅŸiye gÃ¶nderilen mesaj.
+    premium-account: "&cÃœzgÃ¼nÃ¼m ama bu hesap bir orjinal hesap tarafÄ±ndan kayÄ±t edildi.&r\n&r&cBu sunucuda oynamak iÃ§in baÅŸka bir takma adÄ± seÃ§.&r\n&r\nEÄŸer bu hesabÄ±n sahibi sizseniz MinecraftÄ± kapatÄ±p aÃ§Ä±n."
 
   security-messages:
-    # Bir oyuncu sezgisel sistem tarafından korunulduğunda gönderilen mesaj.
+    # Bir oyuncu sezgisel sistem tarafÄ±ndan korunulduÄŸunda gÃ¶nderilen mesaj.
     hacking-attack-warning:
       - ""
-      - " &c&lGÜVENLİK UYARISI"
-      - " &cGüvenlik sistemi hesabınıza olası bir saldırı olmasını engelledi."
-      - " &cÜç kez başarısız giriş yapıldı."
+      - " &c&lGÃœVENLÄ°K UYARISI"
+      - " &cGÃ¼venlik sistemi hesabÄ±nÄ±za olasÄ± bir saldÄ±rÄ± olmasÄ±nÄ± engelledi."
+      - " &cÃœÃ§ kez baÅŸarÄ±sÄ±z giriÅŸ yapÄ±ldÄ±."
       - ""
-      - " &e&lİPUCU: &eDiğer sunuculardan farklı şifreler kullan."
+      - " &e&lÄ°PUCU: &eDiÄŸer sunuculardan farklÄ± ÅŸifreler kullan."
       - ""
 
-    # Bir oyuncu sezgisel sistem tarafından birden fazla korunduğunda gönderilen mesaj.
+    # Bir oyuncu sezgisel sistem tarafÄ±ndan birden fazla korunduÄŸunda gÃ¶nderilen mesaj.
     hacking-attack-warning2:
       - ""
-      - " &c&lGÜVENLİK UYARISI"
-      - " &cGüvenlik sistemimiz hesabınıza olası {0} adet saldırı olmasını engelledi."
-      - " &cÜç kez başarısız giriş yapıldı."
+      - " &c&lGÃœVENLÄ°K UYARISI"
+      - " &cGÃ¼venlik sistemimiz hesabÄ±nÄ±za olasÄ± {0} adet saldÄ±rÄ± olmasÄ±nÄ± engelledi."
+      - " &cÃœÃ§ kez baÅŸarÄ±sÄ±z giriÅŸ yapÄ±ldÄ±."
       - ""
-      - " &e&lİPUCU: &eDiğer sunuculardan farklı şifreler kullan."
+      - " &e&lÄ°PUCU: &eDiÄŸer sunuculardan farklÄ± ÅŸifreler kullan."
       - ""
 
-    # Bir oyuncu zayıf bir şifreyle kayıt olduğunda gönderilen mesaj.
+    # Bir oyuncu zayÄ±f bir ÅŸifreyle kayÄ±t olduÄŸunda gÃ¶nderilen mesaj.
     weak-password:
       - ""
-      - " &cKayıt olduğunuz şifre çok zayıf."
-      - " &cHarfler, sayılar, ve semboller kullanarak güvenliğini yükseltmeni tavsiye ederiz."
-      - " &cÖrnek şifre: {0}"
+      - " &cKayÄ±t olduÄŸunuz ÅŸifre Ã§ok zayÄ±f."
+      - " &cHarfler, sayÄ±lar, ve semboller kullanarak gÃ¼venliÄŸini yÃ¼kseltmeni tavsiye ederiz."
+      - " &cÃ–rnek ÅŸifre: {0}"
       - ""
 
-    # Oyuncu güvenlik sorularını hesabına kayıt etmeyince gönderilen mesaj..
+    # Oyuncu gÃ¼venlik sorularÄ±nÄ± hesabÄ±na kayÄ±t etmeyince gÃ¶nderilen mesaj..
     security-question-warn-message:
       - ""
-      - " &c&lGÜVENLİK UYARISI"
-      - " &7Bu mesaja tıklayıp güvenlik sorularını"
-      - " &ckayıt edebilirsin&7.Hesabınızın çalınma"
-      - " &7ihtimalini düşürür"
+      - " &c&lGÃœVENLÄ°K UYARISI"
+      - " &7Bu mesaja tÄ±klayÄ±p gÃ¼venlik sorularÄ±nÄ±"
+      - " &ckayÄ±t edebilirsin&7.HesabÄ±nÄ±zÄ±n Ã§alÄ±nma"
+      - " &7ihtimalini dÃ¼ÅŸÃ¼rÃ¼r"
       - ""
 
-    # Oyuncu güvenlik sorusu ekleyince gönderilen mesaj.
+    # Oyuncu gÃ¼venlik sorusu ekleyince gÃ¶nderilen mesaj.
     security-question-add:
       - ""
       - " &e{0}"
       - ""
-      - " &7Eylemi iptal etmek için şu komutu kullan &f'cancel' &7."
-      - " &7Bu mesaja tıklayarak başka bir soru oluşturabilirsin."
+      - " &7Eylemi iptal etmek iÃ§in ÅŸu komutu kullan &f'cancel' &7."
+      - " &7Bu mesaja tÄ±klayarak baÅŸka bir soru oluÅŸturabilirsin."
       - ""
 
-    # Oyuncu güvenlik sorularını doğrularken gönderilen mesaj.
+    # Oyuncu gÃ¼venlik sorularÄ±nÄ± doÄŸrularken gÃ¶nderilen mesaj.
     security-question-check:
       - ""
-      - " &aDoğrulamadan önce bilgilerini kontrol et:"
+      - " &aDoÄŸrulamadan Ã¶nce bilgilerini kontrol et:"
       - ""
       - " &7{0}: &f'{1}'"
       - ""
-      - " &aEğer doğrulamaktan eminsen şu komutu kullan &f'confirm'&a."
-      - " &eEğer bir şeyi yanlış yazdıysan şu komutu kullan &f'repeat'&e."
-      - " &cEğer bu eylemi iptal istiyorsan şu komutu kullan &f'cancel'&c."
+      - " &aEÄŸer doÄŸrulamaktan eminsen ÅŸu komutu kullan &f'confirm'&a."
+      - " &eEÄŸer bir ÅŸeyi yanlÄ±ÅŸ yazdÄ±ysan ÅŸu komutu kullan &f'repeat'&e."
+      - " &cEÄŸer bu eylemi iptal istiyorsan ÅŸu komutu kullan &f'cancel'&c."
       - ""
 
-    # Oyuncudan güvenlik sorularını cevaplamasını isteyince gönderilen mesaj.
+    # Oyuncudan gÃ¼venlik sorularÄ±nÄ± cevaplamasÄ±nÄ± isteyince gÃ¶nderilen mesaj.
     security-question-request:
       - ""
-      - " &aÜzgünüm, ancak bir kimlik onayı gerekli."
-      - " &aSohbette aşağıdaki soruyu cevaplayın:"
+      - " &aÃœzgÃ¼nÃ¼m, ancak bir kimlik onayÄ± gerekli."
+      - " &aSohbette aÅŸaÄŸÄ±daki soruyu cevaplayÄ±n:"
       - ""
       - " &b{0}"
       - ""
 
-    # Oyuncudan güvenlik soruları ikinci kez istendiğinde gönderilen mesaj.
+    # Oyuncudan gÃ¼venlik sorularÄ± ikinci kez istendiÄŸinde gÃ¶nderilen mesaj.
     security-question-request2:
-      - "&aSıradaki soru..."
+      - "&aSÄ±radaki soru..."
       - ""
       - " &b{0}"
       - ""
 
   error-messages:
-    # Oyuncu giriş yapmasına rağmen tekrar giriş yapmayı deneyince gönderilen mesaj.
-    already-login: "&cDaha önce giriş yaptın."
+    # Oyuncu giriÅŸ yapmasÄ±na raÄŸmen tekrar giriÅŸ yapmayÄ± deneyince gÃ¶nderilen mesaj.
+    already-login: "&cDaha Ã¶nce giriÅŸ yaptÄ±n."
 
-    # Oyuncu giriş yapmasına rağmen bir yetkili oyuncunun hesabını komut ile giriş yapmasını sağlamaya çalıştığında gönderilen mesaj.
-    already-login2: "&cBu oyuncu zaten giriş yaptı."
+    # Oyuncu giriÅŸ yapmasÄ±na raÄŸmen bir yetkili oyuncunun hesabÄ±nÄ± komut ile giriÅŸ yapmasÄ±nÄ± saÄŸlamaya Ã§alÄ±ÅŸtÄ±ÄŸÄ±nda gÃ¶nderilen mesaj.
+    already-login2: "&cBu oyuncu zaten giriÅŸ yaptÄ±."
 
-    # Daha önce kayıt olmuş bir kişiye gönderilen mesaj.
-    already-registered: "&cBu kullanıcı adına sahip hesap zaten kayıt oldu."
+    # Daha Ã¶nce kayÄ±t olmuÅŸ bir kiÅŸiye gÃ¶nderilen mesaj.
+    already-registered: "&cBu kullanÄ±cÄ± adÄ±na sahip hesap zaten kayÄ±t oldu."
 
-    # Kayıt olmayan bir hesap giriş yapmayı deneyince gönderilen mesaj.
-    not-registered: "&cBu kullanıcı adına sahip hesap daha kayıt olmadı."
+    # KayÄ±t olmayan bir hesap giriÅŸ yapmayÄ± deneyince gÃ¶nderilen mesaj.
+    not-registered: "&cBu kullanÄ±cÄ± adÄ±na sahip hesap daha kayÄ±t olmadÄ±."
 
-    # Şifreler aynı olmayınca gönderilen mesaj.
-    passwords-dont-match: "&cŞifreler aynı değil."
+    # Åžifreler aynÄ± olmayÄ±nca gÃ¶nderilen mesaj.
+    passwords-dont-match: "&cÅžifreler aynÄ± deÄŸil."
 
-    # Oyuncu şifresini doğrulamayınca gönderilen mesaj.
-    need-password-confirmation: "&cŞifreni doğrulaman gerekiyor."
+    # Oyuncu ÅŸifresini doÄŸrulamayÄ±nca gÃ¶nderilen mesaj.
+    need-password-confirmation: "&cÅžifreni doÄŸrulaman gerekiyor."
 
-    # Oyuncu geçici bir şifre oluşturmayınca gönderilen mesaj.
-    no-temporary-password: "&cHenüz geçici bir şifre oluşturulmadı"
+    # Oyuncu geÃ§ici bir ÅŸifre oluÅŸturmayÄ±nca gÃ¶nderilen mesaj.
+    no-temporary-password: "&cHenÃ¼z geÃ§ici bir ÅŸifre oluÅŸturulmadÄ±"
 
-    # Oyuncu IP adresinin sınırını aşınca gönderilen mesaj.
-    address-limiter-warning: "&cIP adresinizin sınırlarını aştınız."
+    # Oyuncu IP adresinin sÄ±nÄ±rÄ±nÄ± aÅŸÄ±nca gÃ¶nderilen mesaj.
+    address-limiter-warning: "&cIP adresinizin sÄ±nÄ±rlarÄ±nÄ± aÅŸtÄ±nÄ±z."
 
     # Message sent when a player tries to change password by entering the same password as the current.
-    password-same-as-old: "&cŞuandaki şifrenle aynı şifreyi girdin."
+    password-same-as-old: "&cÅžuandaki ÅŸifrenle aynÄ± ÅŸifreyi girdin."
 
     # Message sent when the password entered is too large.
-    password-too-large: "&cGirdiğin şifre çok büyük."
+    password-too-large: "&cGirdiÄŸin ÅŸifre Ã§ok bÃ¼yÃ¼k."
 
     # Message sent when the password entered is too small.
-    password-too-small: "&cGirdiğin şifre çok küçük."
+    password-too-small: "&cGirdiÄŸin ÅŸifre Ã§ok kÃ¼Ã§Ã¼k."
     insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
     change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
 
-    # Bir oyuncu PlugMan / Sistem kullanarak PkLogin'i devre dışı bırakmaya çalıştığında gönderilen mesaj.
-    plugman-block: "&cBu sunucudaki giriş eklentisine dokunamazsın."
+    # Bir oyuncu PlugMan / Sistem kullanarak PkLogin'i devre dÄ±ÅŸÄ± bÄ±rakmaya Ã§alÄ±ÅŸtÄ±ÄŸÄ±nda gÃ¶nderilen mesaj.
+    plugman-block: "&cBu sunucudaki giriÅŸ eklentisine dokunamazsÄ±n."
 
     # Message when a player does not possess the required permission.
-    insufficient-permissions: "&cBu komutu kullanmak için gereken yetkiye sahip değilsin"
+    insufficient-permissions: "&cBu komutu kullanmak iÃ§in gereken yetkiye sahip deÄŸilsin"
 
-    # Komutun doğru kullanımını göstermeyi sağlayan mesaj.
-    command-usage: "&cKomutun doğru kullanımı {0}."
+    # Komutun doÄŸru kullanÄ±mÄ±nÄ± gÃ¶stermeyi saÄŸlayan mesaj.
+    command-usage: "&cKomutun doÄŸru kullanÄ±mÄ± {0}."
 
-    # Aktif olan kullanıcıyı atmaya çalışınca gönderilen mesaj.
-    already-online: "&Bu kullanıcı zaten aktif."
+    # Aktif olan kullanÄ±cÄ±yÄ± atmaya Ã§alÄ±ÅŸÄ±nca gÃ¶nderilen mesaj.
+    already-online: "&Bu kullanÄ±cÄ± zaten aktif."
 
-    # Oyuncu aktif olmadığında gönderilen hata mesajı.
-    offline-error: "&cBu kullanıcı aktif değil."
+    # Oyuncu aktif olmadÄ±ÄŸÄ±nda gÃ¶nderilen hata mesajÄ±.
+    offline-error: "&cBu kullanÄ±cÄ± aktif deÄŸil."
 
-    # Komutun konsol üzeriden kullanılamayacağını gösteren mesaj.
-    player-command-usage: "&cBu komut konsol üstünden kullanılamaz."
+    # Komutun konsol Ã¼zeriden kullanÄ±lamayacaÄŸÄ±nÄ± gÃ¶steren mesaj.
+    player-command-usage: "&cBu komut konsol Ã¼stÃ¼nden kullanÄ±lamaz."
 
-    # Komutun sadece konsol üzerinden kullanılabileceğini gösteren mesaj.
-    console-command-usage: "&cBu komut sadece konsoldan kullanılabilir."
+    # Komutun sadece konsol Ã¼zerinden kullanÄ±labileceÄŸini gÃ¶steren mesaj.
+    console-command-usage: "&cBu komut sadece konsoldan kullanÄ±labilir."
 
-    # Eklenti yeniden yüklendiğinde gönderilen mesaj.
-    plugin-reload-message: "&eEklenti başarıyla tekrar yüklendi."
+    # Eklenti yeniden yÃ¼klendiÄŸinde gÃ¶nderilen mesaj.
+    plugin-reload-message: "&eEklenti baÅŸarÄ±yla tekrar yÃ¼klendi."
 
-    # Komutun işlevi devre dışı bırakıldığında gönderilen mesaj.
-    command-function-disabled: "&eBu komutun işlevi devre dışı bırakıldı {0}."
+    # Komutun iÅŸlevi devre dÄ±ÅŸÄ± bÄ±rakÄ±ldÄ±ÄŸÄ±nda gÃ¶nderilen mesaj.
+    command-function-disabled: "&eBu komutun iÅŸlevi devre dÄ±ÅŸÄ± bÄ±rakÄ±ldÄ± {0}."
 
-    # Veritabanı işlemi başarıyla gerçekleştiremediğinde gönderilen mesaj.
-    database-error: "&cÜzgünüm, bu işlemi tamamlayamadık.Lütfen tekrar deneyin. [SQL HATASI]"
+    # VeritabanÄ± iÅŸlemi baÅŸarÄ±yla gerÃ§ekleÅŸtiremediÄŸinde gÃ¶nderilen mesaj.
+    database-error: "&cÃœzgÃ¼nÃ¼m, bu iÅŸlemi tamamlayamadÄ±k.LÃ¼tfen tekrar deneyin. [SQL HATASI]"
 
   other-messages:
-    # Hızlıca giriş yapmak için gösterilen mesaj: /login.
-    hover-message-login: "&7Hızlıca giriş yapmak için buraya tıkla."
+    # HÄ±zlÄ±ca giriÅŸ yapmak iÃ§in gÃ¶sterilen mesaj: /login.
+    hover-message-login: "&7HÄ±zlÄ±ca giriÅŸ yapmak iÃ§in buraya tÄ±kla."
 
-    # Hızlıca kayıt olmak için gösterilen mesaj: /register.
-    hover-message-register: "&Hızlıca kayıt olmak için buraya tıkla."
+    # HÄ±zlÄ±ca kayÄ±t olmak iÃ§in gÃ¶sterilen mesaj: /register.
+    hover-message-register: "&HÄ±zlÄ±ca kayÄ±t olmak iÃ§in buraya tÄ±kla."
 
-    # Komutun doğru kullanımını gösteren mesaj: /login
-    message-login: "&eGiriş yapmak için &7/login <şifre>&e."
+    # Komutun doÄŸru kullanÄ±mÄ±nÄ± gÃ¶steren mesaj: /login
+    message-login: "&eGiriÅŸ yapmak iÃ§in &7/login <ÅŸifre>&e."
 
-    # Komutun doğru kullanımını gösteren mesaj: /register
-    message-register: "&eKayıt olmak için &7/register <şifre> <tekrarşifre>&e."
+    # Komutun doÄŸru kullanÄ±mÄ±nÄ± gÃ¶steren mesaj: /register
+    message-register: "&eKayÄ±t olmak iÃ§in &7/register <ÅŸifre> <tekrarÅŸifre>&e."
 
-    # Komutun doğru kullanımını gösteren mesaj: /changepassword
-    message-changepassword: "&eŞifre değiştirmek için &7/changepassword <şifren> <yeni şifren>&e."
+    # Komutun doÄŸru kullanÄ±mÄ±nÄ± gÃ¶steren mesaj: /changepassword
+    message-changepassword: "&eÅžifre deÄŸiÅŸtirmek iÃ§in &7/changepassword <ÅŸifren> <yeni ÅŸifren>&e."
 
-    # Komutun doğru kullanımını gösteren mesaj: /checkprofile
-    message-verify: "&Oyuncunun profilini kontrol etmek için &7/checkprofile <isim>&e."
+    # Komutun doÄŸru kullanÄ±mÄ±nÄ± gÃ¶steren mesaj: /checkprofile
+    message-verify: "&Oyuncunun profilini kontrol etmek iÃ§in &7/checkprofile <isim>&e."
 
-    # Komutun doğru kullanımını gösteren mesaj: /unregister
-    message-unregister: "&eKaydını silmek için &7/unregister <şifren>&e."
+    # Komutun doÄŸru kullanÄ±mÄ±nÄ± gÃ¶steren mesaj: /unregister
+    message-unregister: "&eKaydÄ±nÄ± silmek iÃ§in &7/unregister <ÅŸifren>&e."

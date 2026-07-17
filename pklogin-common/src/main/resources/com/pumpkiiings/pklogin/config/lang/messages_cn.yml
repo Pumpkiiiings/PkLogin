@@ -1,4 +1,4 @@
-#  ________  ___  __    ___       ________  ________  ___  ________     
+﻿#  ________  ___  __    ___       ________  ________  ___  ________     
 # |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
 # \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
 #  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
@@ -12,20 +12,22 @@
 # Chinese version (with some small detail change!) translated by SnowCutieOwO
 # Contact in SpigotMC: https://www.spigotmc.org/members/snowcutieowo.849243/
 
+version: "1.1"
+
 Messages:
   Title:
     # Message sent before login
     before-login:
-      title: "&a&læ¬¢è¿Ž!"
-      subtitle: "&7è¾“å…¥ &a/login <å¯†ç > &7æ¥ç™»å½•!"
+      title: "&a&lÃ¦Â¬Â¢Ã¨Â¿Å½!"
+      subtitle: "&7Ã¨Â¾â€œÃ¥â€¦Â¥ &a/login <Ã¥Â¯â€ Ã§Â Â> &7Ã¦ÂÂ¥Ã§â„¢Â»Ã¥Â½â€¢!"
       delays:
         start: 0
         duration: 9999
         end: 6
     # Message sent before registration
     before-register:
-      title: "&a&læ¬¢è¿Ž!"
-      subtitle: "&7è¾“å…¥ &a/register <å¯†ç > <é‡å¤å¯†ç > &7æ¥æ³¨å†Œ!"
+      title: "&a&lÃ¦Â¬Â¢Ã¨Â¿Å½!"
+      subtitle: "&7Ã¨Â¾â€œÃ¥â€¦Â¥ &a/register <Ã¥Â¯â€ Ã§Â Â> <Ã©â€¡ÂÃ¥Â¤ÂÃ¥Â¯â€ Ã§Â Â> &7Ã¦ÂÂ¥Ã¦Â³Â¨Ã¥â€ Å’!"
       delays:
         start: 0
         duration: 9999
@@ -33,7 +35,7 @@ Messages:
     # Message sent after login
     after-login:
       title: ""
-      subtitle: "&aä½ å·²æˆåŠŸç™»å½•!"
+      subtitle: "&aÃ¤Â½Â Ã¥Â·Â²Ã¦Ë†ÂÃ¥Å Å¸Ã§â„¢Â»Ã¥Â½â€¢!"
       delays:
         start: 0
         duration: 60
@@ -41,7 +43,7 @@ Messages:
     # Message sent after register
     after-register:
       title: ""
-      subtitle: "&aä½ å·²æˆåŠŸæ³¨å†Œ!"
+      subtitle: "&aÃ¤Â½Â Ã¥Â·Â²Ã¦Ë†ÂÃ¥Å Å¸Ã¦Â³Â¨Ã¥â€ Å’!"
       delays:
         start: 0
         duration: 60
@@ -64,83 +66,83 @@ Messages:
 
   delay-kick:
     # Message sent when a user takes a long time to register
-    register-kick: "&cè¶…å‡ºæ³¨å†Œç­‰å¾…æ—¶é—´."
+    register-kick: "&cÃ¨Â¶â€¦Ã¥â€¡ÂºÃ¦Â³Â¨Ã¥â€ Å’Ã§Â­â€°Ã¥Â¾â€¦Ã¦â€”Â¶Ã©â€”Â´."
 
     # Message sent when a user takes a long time to log in
-    login-kick: "&cè¶…å‡ºç™»å½•ç­‰å¾…æ—¶é—´."
+    login-kick: "&cÃ¨Â¶â€¦Ã¥â€¡ÂºÃ§â„¢Â»Ã¥Â½â€¢Ã§Â­â€°Ã¥Â¾â€¦Ã¦â€”Â¶Ã©â€”Â´."
 
   successful-operations:
     # Message when a user exchanges their password
-    password-changed: "&aä½ çš„å¯†ç å·²æˆåŠŸæ›´æ¢."
+    password-changed: "&aÃ¤Â½Â Ã§Å¡â€žÃ¥Â¯â€ Ã§Â ÂÃ¥Â·Â²Ã¦Ë†ÂÃ¥Å Å¸Ã¦â€ºÂ´Ã¦ÂÂ¢."
 
     # Message sent when a user successfully logs
-    successful-login: "&aä½ å·²æˆåŠŸç™»å½•."
+    successful-login: "&aÃ¤Â½Â Ã¥Â·Â²Ã¦Ë†ÂÃ¥Å Å¸Ã§â„¢Â»Ã¥Â½â€¢."
 
     # Message sent when a user successfully registers
-    successful-register: "&aä½ å·²æˆåŠŸæ³¨å†Œ."
+    successful-register: "&aÃ¤Â½Â Ã¥Â·Â²Ã¦Ë†ÂÃ¥Å Å¸Ã¦Â³Â¨Ã¥â€ Å’."
 
     # Message sent when a player successfully disregisters
-    unregister-kick: "&cä½ å·²æˆåŠŸç™»å‡º."
+    unregister-kick: "&cÃ¤Â½Â Ã¥Â·Â²Ã¦Ë†ÂÃ¥Å Å¸Ã§â„¢Â»Ã¥â€¡Âº."
 
   kick-messages:
     # Message when a player tries to log on to the server with a small difference in the nickname
-    nick-already-registered: "&d[å¤§å°å†™éªŒè¯]&r\n&cä½ ä¸èƒ½ä½¿ç”¨åç§° &4{0} &cæ¥æ³¨å†Œ&r\n&r&cæ­¤ç”¨æˆ·åå·²è¢«åç§° &4{1} &cæ³¨å†Œ&r\n&r\n&r&cè¯·ä½¿ç”¨åŽè€…æåˆ°çš„ç”¨æˆ·åç™»å…¥æœåŠ¡å™¨&r\n&d[å¤§å°å†™éªŒè¯]"
+    nick-already-registered: "&d[Ã¥Â¤Â§Ã¥Â°ÂÃ¥â€ â„¢Ã©ÂªÅ’Ã¨Â¯Â]&r\n&cÃ¤Â½Â Ã¤Â¸ÂÃ¨Æ’Â½Ã¤Â½Â¿Ã§â€Â¨Ã¥ÂÂÃ§Â§Â° &4{0} &cÃ¦ÂÂ¥Ã¦Â³Â¨Ã¥â€ Å’&r\n&r&cÃ¦Â­Â¤Ã§â€Â¨Ã¦Ë†Â·Ã¥ÂÂÃ¥Â·Â²Ã¨Â¢Â«Ã¥ÂÂÃ§Â§Â° &4{1} &cÃ¦Â³Â¨Ã¥â€ Å’&r\n&r\n&r&cÃ¨Â¯Â·Ã¤Â½Â¿Ã§â€Â¨Ã¥ÂÅ½Ã¨â‚¬â€¦Ã¦ÂÂÃ¥Ë†Â°Ã§Å¡â€žÃ§â€Â¨Ã¦Ë†Â·Ã¥ÂÂÃ§â„¢Â»Ã¥â€¦Â¥Ã¦Å“ÂÃ¥Å Â¡Ã¥â„¢Â¨&r\n&d[Ã¥Â¤Â§Ã¥Â°ÂÃ¥â€ â„¢Ã©ÂªÅ’Ã¨Â¯Â]"
 
     # Message sent when a user misses many times
-    failed-many-times: "&cä½ è¾“å…¥äº†é”™è¯¯çš„å¯†ç ."
+    failed-many-times: "&cÃ¤Â½Â Ã¨Â¾â€œÃ¥â€¦Â¥Ã¤Âºâ€ Ã©â€â„¢Ã¨Â¯Â¯Ã§Å¡â€žÃ¥Â¯â€ Ã§Â Â."
 
     # Message sent when password entered is incorrect
-    incorrect-password: "&cé”™è¯¯çš„å¯†ç . &7è¯·è¾“å…¥æ­£ç¡®çš„å¯†ç ."
+    incorrect-password: "&cÃ©â€â„¢Ã¨Â¯Â¯Ã§Å¡â€žÃ¥Â¯â€ Ã§Â Â. &7Ã¨Â¯Â·Ã¨Â¾â€œÃ¥â€¦Â¥Ã¦Â­Â£Ã§Â¡Â®Ã§Å¡â€žÃ¥Â¯â€ Ã§Â Â."
 
   error-messages:
     # Message sent when you are already logged in.
-    already-login: "&cä½ å·²ç»ç™»å½•è¿‡äº†."
+    already-login: "&cÃ¤Â½Â Ã¥Â·Â²Ã§Â»ÂÃ§â„¢Â»Ã¥Â½â€¢Ã¨Â¿â€¡Ã¤Âºâ€ ."
 
     # Message sent when a nickname has already been registered.
-    already-registered: "&cæ­¤åç§°å·²è¢«æ³¨å†Œ."
+    already-registered: "&cÃ¦Â­Â¤Ã¥ÂÂÃ§Â§Â°Ã¥Â·Â²Ã¨Â¢Â«Ã¦Â³Â¨Ã¥â€ Å’."
 
     # Message sent when a nickname has not yet been registered.
-    not-registered: "&cæ­¤åç§°è¿˜æœªè¢«æ³¨å†Œ."
+    not-registered: "&cÃ¦Â­Â¤Ã¥ÂÂÃ§Â§Â°Ã¨Â¿ËœÃ¦Å“ÂªÃ¨Â¢Â«Ã¦Â³Â¨Ã¥â€ Å’."
 
     # Message sent when the entered password is not equal to the second
-    passwords-dont-match: "&cå‰åŽå¯†ç ä¸ä¸€è‡´."
+    passwords-dont-match: "&cÃ¥â€°ÂÃ¥ÂÅ½Ã¥Â¯â€ Ã§Â ÂÃ¤Â¸ÂÃ¤Â¸â‚¬Ã¨â€¡Â´."
 
     # Message sent when a player tries to change password by entering the same password as the current
-    password-same-as-old: "&cæ­¤å¯†ç ä¸Žæ—§å¯†ç ç›¸åŒ."
+    password-same-as-old: "&cÃ¦Â­Â¤Ã¥Â¯â€ Ã§Â ÂÃ¤Â¸Å½Ã¦â€”Â§Ã¥Â¯â€ Ã§Â ÂÃ§â€ºÂ¸Ã¥ÂÅ’."
 
     # Message sent when the password entered is too large
-    password-too-large: "&cå¯†ç é•¿åº¦è¿‡å¤§."
+    password-too-large: "&cÃ¥Â¯â€ Ã§Â ÂÃ©â€¢Â¿Ã¥ÂºÂ¦Ã¨Â¿â€¡Ã¥Â¤Â§."
 
     # Message sent when the password entered is too small
-    password-too-small: "&cå¯†ç é•¿åº¦è¿‡å°."
+    password-too-small: "&cÃ¥Â¯â€ Ã§Â ÂÃ©â€¢Â¿Ã¥ÂºÂ¦Ã¨Â¿â€¡Ã¥Â°Â."
     insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
     change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
 
     # Message when a player does not possess the required permission
-    insufficient-permissions: "&cä½ æ²¡æœ‰ä½¿ç”¨æ­¤å‘½ä»¤çš„æƒé™."
+    insufficient-permissions: "&cÃ¤Â½Â Ã¦Â²Â¡Ã¦Å“â€°Ã¤Â½Â¿Ã§â€Â¨Ã¦Â­Â¤Ã¥â€˜Â½Ã¤Â»Â¤Ã§Å¡â€žÃ¦ÂÆ’Ã©â„¢Â."
 
     # Message to kick a player now online
-    already-online: "&cæ­¤çŽ©å®¶å·²ç»åœ¨çº¿."
+    already-online: "&cÃ¦Â­Â¤Ã§Å½Â©Ã¥Â®Â¶Ã¥Â·Â²Ã§Â»ÂÃ¥Å“Â¨Ã§ÂºÂ¿."
 
     # Message to show that the command cannot be executed via console
-    player-command-usage: "&cæ­¤å‘½ä»¤åªèƒ½åœ¨æŽ§åˆ¶å°æ‰§è¡Œ."
+    player-command-usage: "&cÃ¦Â­Â¤Ã¥â€˜Â½Ã¤Â»Â¤Ã¥ÂÂªÃ¨Æ’Â½Ã¥Å“Â¨Ã¦Å½Â§Ã¥Ë†Â¶Ã¥ÂÂ°Ã¦â€°Â§Ã¨Â¡Å’."
 
     # Message shown when the plugin is reloaded.
-    plugin-reload-message: "&7æ’ä»¶å·²è¢«&aæˆåŠŸé‡è½½!"
+    plugin-reload-message: "&7Ã¦Ââ€™Ã¤Â»Â¶Ã¥Â·Â²Ã¨Â¢Â«&aÃ¦Ë†ÂÃ¥Å Å¸Ã©â€¡ÂÃ¨Â½Â½!"
 
     # Message sent when a database operation has not been successfully performed
-    database-error: "&cå‡ºé”™äº†! &7æ’ä»¶è¿è¡Œè¿‡ç¨‹ä¸­å‡ºçŽ°é—®é¢˜,è¯·æ›´æ”¹é…ç½®æ–‡ä»¶åŽé‡è¯•. &c(é”™è¯¯åŽŸå› : æ•°æ®åº“è¿žæŽ¥ä¸æˆåŠŸ)"
+    database-error: "&cÃ¥â€¡ÂºÃ©â€â„¢Ã¤Âºâ€ ! &7Ã¦Ââ€™Ã¤Â»Â¶Ã¨Â¿ÂÃ¨Â¡Å’Ã¨Â¿â€¡Ã§Â¨â€¹Ã¤Â¸Â­Ã¥â€¡ÂºÃ§Å½Â°Ã©â€”Â®Ã©Â¢Ëœ,Ã¨Â¯Â·Ã¦â€ºÂ´Ã¦â€Â¹Ã©â€¦ÂÃ§Â½Â®Ã¦â€“â€¡Ã¤Â»Â¶Ã¥ÂÅ½Ã©â€¡ÂÃ¨Â¯â€¢. &c(Ã©â€â„¢Ã¨Â¯Â¯Ã¥Å½Å¸Ã¥â€ºÂ : Ã¦â€¢Â°Ã¦ÂÂ®Ã¥Âºâ€œÃ¨Â¿Å¾Ã¦Å½Â¥Ã¤Â¸ÂÃ¦Ë†ÂÃ¥Å Å¸)"
 
   other-messages:
     # Mensagem enviada para o uso do comando /logar
-    message-login: "&eè¯·ä½¿ç”¨æŒ‡ä»¤ /login <å¯†ç > æ¥ç™»å½•"
+    message-login: "&eÃ¨Â¯Â·Ã¤Â½Â¿Ã§â€Â¨Ã¦Å’â€¡Ã¤Â»Â¤ /login <Ã¥Â¯â€ Ã§Â Â> Ã¦ÂÂ¥Ã§â„¢Â»Ã¥Â½â€¢"
 
     # Mensagem enviada para o uso do comando /register
-    message-register: "&eè¯·ä½¿ç”¨æŒ‡ä»¤ /register <å¯†ç > <é‡å¤å¯†ç > æ¥æ³¨å†Œ"
+    message-register: "&eÃ¨Â¯Â·Ã¤Â½Â¿Ã§â€Â¨Ã¦Å’â€¡Ã¤Â»Â¤ /register <Ã¥Â¯â€ Ã§Â Â> <Ã©â€¡ÂÃ¥Â¤ÂÃ¥Â¯â€ Ã§Â Â> Ã¦ÂÂ¥Ã¦Â³Â¨Ã¥â€ Å’"
 
     # Mensagem enviada para o uso do comando /mudarsenha
-    message-changepassword: "&eè¯·ä½¿ç”¨æŒ‡ä»¤ /changepassword <å½“å‰å¯†ç > <æ–°å¯†ç > æ¥æ›´æ¢å¯†ç "
+    message-changepassword: "&eÃ¨Â¯Â·Ã¤Â½Â¿Ã§â€Â¨Ã¦Å’â€¡Ã¤Â»Â¤ /changepassword <Ã¥Â½â€œÃ¥â€°ÂÃ¥Â¯â€ Ã§Â Â> <Ã¦â€“Â°Ã¥Â¯â€ Ã§Â Â> Ã¦ÂÂ¥Ã¦â€ºÂ´Ã¦ÂÂ¢Ã¥Â¯â€ Ã§Â Â"
 
     # Message sent to use the /unregister command
-    message-unregister: "&eè¯·ä½¿ç”¨æŒ‡ä»¤ /unregister <å½“å‰å¯†ç > æ¥ç™»å‡º"
+    message-unregister: "&eÃ¨Â¯Â·Ã¤Â½Â¿Ã§â€Â¨Ã¦Å’â€¡Ã¤Â»Â¤ /unregister <Ã¥Â½â€œÃ¥â€°ÂÃ¥Â¯â€ Ã§Â Â> Ã¦ÂÂ¥Ã§â„¢Â»Ã¥â€¡Âº"
 

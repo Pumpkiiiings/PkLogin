@@ -1,4 +1,4 @@
-﻿#  ________  ___  __    ___       ________  ________  ___  ________     
+#  ________  ___  __    ___       ________  ________  ___  ________     
 # |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
 # \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
 #  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
@@ -9,11 +9,9 @@
 # Official Website: https://www.pumpkiiings.com
 # Discord: https://www.pumpkiiings.com/discord
 
-# WARNING: This is a translation made to PkLogin. It will probably be compatible with all features of PkLogin.
+# WARNING: This is a translation made to nLogin. It will probably be compatible with all features of PkLogin.
 
 # Translation made by Tomac15er#1637
-
-version: "1.1"
 
 Messages:
   Title:
@@ -76,7 +74,7 @@ Messages:
     # Message sent when passwords are not equal.
     passwords-dont-match:
       title: ""
-      subtitle: "&cDie PasswÃ¶rter sind nicht gleich!"
+      subtitle: "&cDie Passwörter sind nicht gleich!"
       delays:
         start: 0
         duration: 60
@@ -108,7 +106,7 @@ Messages:
     # Message sent from backup system.
     backup:
       title: ""
-      subtitle: "&aBackup wurde erfolgreich ausgefÃ¼hrt."
+      subtitle: "&aBackup wurde erfolgreich ausgeführt."
       delays:
         start: 0
         duration: 90
@@ -116,7 +114,7 @@ Messages:
     # Message sent from backup system.
     backup-error:
       title: ""
-      subtitle: "&cBackup konnte nicht ausgefÃ¼hrt werden."
+      subtitle: "&cBackup konnte nicht ausgeführt werden."
       delays:
         start: 0
         duration: 90
@@ -132,10 +130,10 @@ Messages:
 
   action-bar:
     # Message sent on the player's actionbar before login (singular).
-    singular: "&cDu hast {0} Sekunde fÃ¼r's {login/register}."
+    singular: "&cDu hast {0} Sekunde für's {login/register}."
 
     # Message sent on the player's actionbar before login (plural).
-    plural: "&cDu hast {0} Sekunden fÃ¼r's {login/register}."
+    plural: "&cDu hast {0} Sekunden für's {login/register}."
 
         bedrock-auto-login:
         title: "&a&lWelcome!"
@@ -161,7 +159,7 @@ Messages:
 
   successful-operations:
     # Message when a user exchanges their password.
-    password-changed: "&aDein Passwort wurde erfolgreich geÃ¤ndert."
+    password-changed: "&aDein Passwort wurde erfolgreich geändert."
 
     # Message sent when a user successfully logs.
     successful-login: "&aDu hast dich erfolgreich eingeloggt."
@@ -176,7 +174,7 @@ Messages:
     successful-register: "&aDu hast dich erfolgreich registriert."
 
     # Message sent when you force a player's login.
-    forcelogin: "&eDu hast einen Zwangs-Login an {0} ausgefÃ¼hrt."
+    forcelogin: "&eDu hast einen Zwangs-Login an {0} ausgeführt."
 
     # Message sent when a player successfully unregister.
     unregister-kick: "&cDu hast dich erfolgreich entregistriert."
@@ -189,7 +187,7 @@ Messages:
 
   kick-messages:
     # Message when a player tries to log on to the server with a small difference in the nickname.
-    nick-already-registered: "&cDu kannst mit diesem Nicknamen nicht beitreten {0}&r\n&r&cDieser Nickname wurde bereits als {1} registriert&r\n&r\n&r&cUm beizutreten, musst du deinen Nicknamen in GroÃƒÅ¸- und Kleinbuchstaben schreiben."
+    nick-already-registered: "&cDu kannst mit diesem Nicknamen nicht beitreten {0}&r\n&r&cDieser Nickname wurde bereits als {1} registriert&r\n&r\n&r&cUm beizutreten, musst du deinen Nicknamen in GroÃŸ- und Kleinbuchstaben schreiben."
 
     # Message sent when a user misses many times.
     failed-many-times: "&cDu hast ein falsches Passwort eingegeben."
@@ -201,27 +199,27 @@ Messages:
     incorrect-answer: "&cFalsche Antwort. Bitte versuche es erneut."
 
     # Message sent when server is still starting.
-    wait-server-start: "&cDer Server wurde noch nicht vollstÃ¤ndig gestartet.\n&cWarte bis zu dich verbinden kannst."
+    wait-server-start: "&cDer Server wurde noch nicht vollständig gestartet.\n&cWarte bis zu dich verbinden kannst."
 
     # Message sent when an IP is blocked by suspected invasion.
-    account-blocked: "&cDeine Adresse wurde wegen verdÃ¤chtiger Invasion gesperrt.&r\n&r&cVerbleibende Zeit: {0}"
+    account-blocked: "&cDeine Adresse wurde wegen verdächtiger Invasion gesperrt.&r\n&r&cVerbleibende Zeit: {0}"
 
     # Message sent when two-factor system temporary password is incorrect.
     incorrect-temporary-password: "&cFalsches Passwort. Bitte versuche es erneut."
 
     # Message to kick a user with an invalid nickname.
-    invalid-nickname: "&cDein Nickname ist nicht gÃ¼ltig, entferne Leerzeichen, Symbole, und ungÃ¼ltige Zeichen von deinem Namen."
+    invalid-nickname: "&cDein Nickname ist nicht gültig, entferne Leerzeichen, Symbole, und ungültige Zeichen von deinem Namen."
 
     # Message sent when the player's account has already been registered as unique.
-    premium-account: "&cTut uns leid, aber ein Premium Spieler hat sich mit diesem Namen schon registriert.&r\n&r&cUm auf dem Server spieln zu kÃ¶nnen, musst du deinen Namen Ã¤ndern.&r\n&r\nFalls du der Besitzer von dem Account bist, versuche Minecraft neuzustarten."
+    premium-account: "&cTut uns leid, aber ein Premium Spieler hat sich mit diesem Namen schon registriert.&r\n&r&cUm auf dem Server spieln zu können, musst du deinen Namen ändern.&r\n&r\nFalls du der Besitzer von dem Account bist, versuche Minecraft neuzustarten."
 
   security-messages:
     # Message sent when a user was protected by the heuristic system.
     hacking-attack-warning:
       - ""
       - " &c&lSICHERHEITS ALARM"
-      - " &cDas Sicherheitssystem hat einen mÃ¶glichen Hacking Angriff auf deinen Account geblockt."
-      - " &cDrei fehlgeschlagene Login Versuche wurden ausgefÃ¼hrt."
+      - " &cDas Sicherheitssystem hat einen möglichen Hacking Angriff auf deinen Account geblockt."
+      - " &cDrei fehlgeschlagene Login Versuche wurden ausgeführt."
       - ""
       - " &e&lTipp: &eBenutze ein anderes Passwort als von anderen Servern."
       - ""
@@ -230,8 +228,8 @@ Messages:
     hacking-attack-warning2:
       - ""
       - " &c&lSICHERHEITS ALARM"
-      - " &cDas Sicherheitssystem hat {0} mÃ¶gliche Hacking Angriffe auf deinen Account geblockt."
-      - " &cDrei fehlgeschlagene Login Versuche wurden ausgefÃ¼hrt."
+      - " &cDas Sicherheitssystem hat {0} mögliche Hacking Angriffe auf deinen Account geblockt."
+      - " &cDrei fehlgeschlagene Login Versuche wurden ausgeführt."
       - ""
       - " &e&lTipp: &eBenutze ein anderes Passwort als von anderen Servern."
       - ""
@@ -271,13 +269,13 @@ Messages:
       - ""
       - " &aFalls du dir sicher bist, schreib &f'confirm'&a."
       - " &eFalls du etwas falsch eingegeben hast, schreib &f'repeat'&e."
-      - " &cFalls du die Aktion abbrechen mÃ¶chtest, schreib &f'cancel'&c."
+      - " &cFalls du die Aktion abbrechen möchtest, schreib &f'cancel'&c."
       - ""
 
     # Message sent when security questions are requested.
     security-question-request:
       - ""
-      - " &aTut uns leid, aber eine IdentitÃ¤ts BestÃ¤tigung ist erforderlich."
+      - " &aTut uns leid, aber eine Identitäts Bestätigung ist erforderlich."
       - " &aBeantworte die folgende Frage:"
       - ""
       - " &b{0}"
@@ -285,7 +283,7 @@ Messages:
 
     # Message sent when security questions are requested a second time.
     security-question-request2:
-      - "&aNÃ¤chste Frage..."
+      - "&aNächste Frage..."
       - ""
       - " &b{0}"
       - ""
@@ -304,13 +302,13 @@ Messages:
     not-registered: "&cDieser Nickname wurde noch nicht registriert."
 
     # Message sent when the entered password is not equal to the second.
-    passwords-dont-match: "&cDie PasswÃ¶rter sind nicht gleich."
+    passwords-dont-match: "&cDie Passwörter sind nicht gleich."
 
     # Message sent when a player does not confirm your password.
-    need-password-confirmation: "&cDu musst dein Passwort bestÃ¤tigen."
+    need-password-confirmation: "&cDu musst dein Passwort bestätigen."
 
     # Message sent when a user does not have a temporary password.
-    no-temporary-password: "&cEin temporÃ¤res Passwort wurde noch nicht generiert."
+    no-temporary-password: "&cEin temporäres Passwort wurde noch nicht generiert."
 
     # Message sent when IP limits per player pass the limit.
     address-limiter-warning: "&cDu hast die Grenzen von deiner IP-Adresse ausgelastet."
@@ -319,18 +317,18 @@ Messages:
     password-same-as-old: "&cDas eingegebene Passwort ist dein derzeitiges Passwort."
 
     # Message sent when the password entered is too large.
-    password-too-large: "&cDas eingegebene Passwort ist zu groÃƒÅ¸."
+    password-too-large: "&cDas eingegebene Passwort ist zu groÃŸ."
 
     # Message sent when the password entered is too small.
     password-too-small: "&cDas eingegebene Passwort ist zu klein."
     insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
     change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
 
-    # Message sent when a user attempts to disable PkLogin using PlugMan/System.
-    plugman-block: "&cDu kannst das Plugin damit nicht berÃ¼hren."
+    # Message sent when a user attempts to disable nLogin using PlugMan/System.
+    plugman-block: "&cDu kannst das Plugin damit nicht berühren."
 
     # Message when a player does not possess the required permission.
-    insufficient-permissions: "&cDu hast keine Rechte diesen Befehl auszufÃ¼hren."
+    insufficient-permissions: "&cDu hast keine Rechte diesen Befehl auszuführen."
 
     # Message to show the use of a command.
     command-usage: "&cDu musst {0} benutzen."
@@ -345,7 +343,7 @@ Messages:
     player-command-usage: "&cDieser Befehl wurde von der Konsole deaktiviert."
 
     # Message to show that a command can only be executed by the console.
-    console-command-usage: "&cDieser Befehl kann nur von der Konsole ausgefÃ¼hrt werden."
+    console-command-usage: "&cDieser Befehl kann nur von der Konsole ausgeführt werden."
 
     # Message shown when the plugin is reloaded.
     plugin-reload-message: "&eDas Plugin wurde erfolgreich neugeladen."
@@ -354,14 +352,14 @@ Messages:
     command-function-disabled: "&cDie Funktion von dem Befehl {0} wurde deaktiviert."
 
     # Message sent when a database operation has not been successfully performed.
-    database-error: "&cTut uns leid, wir konnten die Aktion nicht vervollstÃ¤ndigen. Bitte versuche es erneut. [SQL FEHLER]"
+    database-error: "&cTut uns leid, wir konnten die Aktion nicht vervollständigen. Bitte versuche es erneut. [SQL FEHLER]"
 
   other-messages:
     # Hover message: /login.
-    hover-message-login: "&7Klick hier um den Befehl zu vervollstÃ¤ndigen und dich schneller einzuloggen."
+    hover-message-login: "&7Klick hier um den Befehl zu vervollständigen und dich schneller einzuloggen."
 
     # Hover message: /register.
-    hover-message-register: "&7Klick hier um den Befehl zu vervollstÃ¤ndigen und dich schneller zu registrieren."
+    hover-message-register: "&7Klick hier um den Befehl zu vervollständigen und dich schneller zu registrieren."
 
     # Command usage: /login
     message-login: "&eBenutze &7/login <Passwort>&e."

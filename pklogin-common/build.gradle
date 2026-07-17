@@ -24,3 +24,8 @@ dependencies {
     compileOnly 'de.mkammerer:argon2-jvm:2.11'
     api project(':pklogin-api')
 }
+
+task updateLangs(type: JavaExec) {
+    mainClass = 'com.pumpkiiings.pklogin.common.LangUpdater'
+    classpath = sourceSets.test.runtimeClasspath
+}

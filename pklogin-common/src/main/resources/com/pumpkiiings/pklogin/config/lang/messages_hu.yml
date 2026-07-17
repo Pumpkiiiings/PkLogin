@@ -1,4 +1,4 @@
-﻿#  ________  ___  __    ___       ________  ________  ___  ________     
+#  ________  ___  __    ___       ________  ________  ___  ________     
 # |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
 # \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
 #  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
@@ -9,26 +9,24 @@
 # Official Website: https://www.pumpkiiings.com
 # Discord: https://www.pumpkiiings.com/discord
 
-# WARNING: This is a translation made to PkLogin. It will probably be compatible with all features of PkLogin.
+# WARNING: This is a translation made to nLogin. It will probably be compatible with all features of PkLogin.
 
 # Hungarian translation made by simon21 <3
-
-version: "1.1"
 
 Messages:
   Title:
     # Message sent before login.
     before-login:
-      title: "&a&lKÃ¶szÃ¶ntelek!"
-      subtitle: "&7HasznÃ¡lat: /login <Jelszavad>"
+      title: "&a&lKöszöntelek!"
+      subtitle: "&7Használat: /login <Jelszavad>"
       delays:
         start: 0
         duration: 9999
         end: 6
     # Message sent before registration.
     before-register:
-      title: "&a&lKÃ¶szÃ¶ntelek!"
-      subtitle: "&7HasznÃ¡lat: /register <Jelszavad> <Jelszavad>"
+      title: "&a&lKöszöntelek!"
+      subtitle: "&7Használat: /register <Jelszavad> <Jelszavad>"
       delays:
         start: 0
         duration: 9999
@@ -36,7 +34,7 @@ Messages:
     # Message sent after login.
     after-login:
       title: ""
-      subtitle: "&aSikeresen belÃ©ptÃ©l!"
+      subtitle: "&aSikeresen beléptél!"
       delays:
         start: 0
         duration: 60
@@ -44,7 +42,7 @@ Messages:
     # Message sent after registration.
     after-register:
       title: ""
-      subtitle: "&aSikeresen beregisztrÃ¡ltÃ¡l!"
+      subtitle: "&aSikeresen beregisztráltál!"
       delays:
         start: 0
         duration: 60
@@ -52,7 +50,7 @@ Messages:
     # Message sent when you miss a password.
     incorrect-password:
       title: ""
-      subtitle: "&cHibÃ¡s jelszÃ³!"
+      subtitle: "&cHibás jelszó!"
       delays:
         start: 0
         duration: 60
@@ -60,7 +58,7 @@ Messages:
     # Message sent when already logged in.
     already-login:
       title: ""
-      subtitle: "&cTe mÃ¡r be vagy lÃ©pve!"
+      subtitle: "&cTe már be vagy lépve!"
       delays:
         start: 0
         duration: 60
@@ -68,7 +66,7 @@ Messages:
     # Message sent when already registered.
     already-registered:
       title: ""
-      subtitle: "&cTe mÃ¡r be vagy regisztrÃ¡lva!"
+      subtitle: "&cTe már be vagy regisztrálva!"
       delays:
         start: 0
         duration: 60
@@ -84,7 +82,7 @@ Messages:
     # Message sent when session is continued.
     session-login:
       title: ""
-      subtitle: "&eBejelentkezÃ©sed folytatÃ³dik."
+      subtitle: "&eBejelentkezésed folytatódik."
       delays:
         start: 0
         duration: 60
@@ -92,7 +90,7 @@ Messages:
     # Message sent when you are an original player.
     premium-login:
       title: ""
-      subtitle: "&eFiÃ³kod eredetis, sikeresen belÃ©ptÃ©l!"
+      subtitle: "&eFiókod eredetis, sikeresen beléptél!"
       delays:
         start: 0
         duration: 60
@@ -100,7 +98,7 @@ Messages:
     # Message sent when a login session is continued.
     plugin-reload:
       title: ""
-      subtitle: "&aA fÃ¡jlok sikeresen Ãºjra lett tÃ¶ltve!"
+      subtitle: "&aA fájlok sikeresen újra lett töltve!"
       delays:
         start: 0
         duration: 60
@@ -108,7 +106,7 @@ Messages:
     # Message sent from backup system.
     backup:
       title: ""
-      subtitle: "&aSikeresen visszaÃ¡llitottÃ¡l egy mentÃ©st."
+      subtitle: "&aSikeresen visszaállitottál egy mentést."
       delays:
         start: 0
         duration: 90
@@ -116,7 +114,7 @@ Messages:
     # Message sent from backup system.
     backup-error:
       title: ""
-      subtitle: "&cNincs visszaÃ¡llitÃ¡si pont."
+      subtitle: "&cNincs visszaállitási pont."
       delays:
         start: 0
         duration: 90
@@ -124,7 +122,7 @@ Messages:
     # Message sent from security system.
     security-warning:
       title: ""
-      subtitle: "&cBiztonsÃ¡gi okokbÃ³l figyelmeztetÃ©st kÃ¼ldtek chatre!"
+      subtitle: "&cBiztonsági okokból figyelmeztetést küldtek chatre!"
       delays:
         start: 0
         duration: 60
@@ -132,10 +130,10 @@ Messages:
 
   action-bar:
     # Message sent on the player's actionbar before login (singular).
-    singular: "&cNeked {0} mÃ¡sodperc van a {login/register}."
+    singular: "&cNeked {0} másodperc van a {login/register}."
 
     # Message sent on the player's actionbar before login (plural).
-    plural: "&cNeked {0} mÃ¡sodperc van a {login/register}."
+    plural: "&cNeked {0} másodperc van a {login/register}."
 
         bedrock-auto-login:
         title: "&a&lWelcome!"
@@ -154,103 +152,103 @@ Messages:
 
   delay-kick:
     # Message sent when a user takes a long time to register.
-    register-kick: "&cNem sikerÃ¼lt beregisztrÃ¡lni megadott idÃ…â€˜n belÃ¼l!"
+    register-kick: "&cNem sikerült beregisztrálni megadott idÅ‘n belül!"
 
     # Message sent when a user takes a long time to log in.
-    login-kick: "&cNem sikerÃ¼lt belÃ©pni megadott idÃ…â€˜n belÃ¼l!"
+    login-kick: "&cNem sikerült belépni megadott idÅ‘n belül!"
 
   successful-operations:
     # Message when a user exchanges their password.
-    password-changed: "&aJelszavadat sikeresen megvÃ¡ltoztattuk!"
+    password-changed: "&aJelszavadat sikeresen megváltoztattuk!"
 
     # Message sent when a user successfully logs.
-    successful-login: "&aSikeresen belÃ©ptÃ©l!"
+    successful-login: "&aSikeresen beléptél!"
 
     # Message sent when a user logs in with an original account.
-    successful-premium-login: "&aAutomatikusan belÃ©ptettÃ¼nk tÃ©gedet!"
+    successful-premium-login: "&aAutomatikusan beléptettünk tégedet!"
 
     # Message sent when a user logs in using the same ip address.
-    successful-session-login: "&aA bejelentkezÃ©sedet folytattuk."
+    successful-session-login: "&aA bejelentkezésedet folytattuk."
 
     # Message sent when a user successfully registers.
-    successful-register: "&aSikeresen beregisztrÃ¡ltÃ¡l."
+    successful-register: "&aSikeresen beregisztráltál."
 
     # Message sent when you force a player's login.
-    forcelogin: "&eBelÃ©ptette: {0}"
+    forcelogin: "&eBeléptette: {0}"
 
     # Message sent when a player successfully unregister.
-    unregister-kick: "&cSikeresen tÃ¶rÃ¶lte a jelszavadat!"
+    unregister-kick: "&cSikeresen törölte a jelszavadat!"
 
     # Message sent when a configuration is finished
-    config-finished: "&aKonfigfÃ¡jlok sikeresen elkÃ©szÃ¼ltek!"
+    config-finished: "&aKonfigfájlok sikeresen elkészültek!"
 
     # Message sent when a configuration is cancelled
-    config-cancelled: "&cAkciÃ³ visszavonva!"
+    config-cancelled: "&cAkció visszavonva!"
 
   kick-messages:
     # Message when a player tries to log on to the server with a small difference in the nickname.
-    nick-already-registered: "&cEzt a nevet nem lehet megadni! {0}&r\n&r&cEzt a felhasznÃ¡lÃ³nÃ©vet mÃ¡r regisztrÃ¡ltuk {1}&r\n&r\n&r&cA belÃ©pÃ©shez a becenevedet nagybetÃ…Â± / kisbetÃ…Â± nÃ©lkÃ¼l kell hasznÃ¡lni!"
+    nick-already-registered: "&cEzt a nevet nem lehet megadni! {0}&r\n&r&cEzt a felhasználónévet már regisztráltuk {1}&r\n&r\n&r&cA belépéshez a becenevedet nagybetÅ± / kisbetÅ± nélkül kell használni!"
 
     # Message sent when a user misses many times.
-    failed-many-times: "&cHelytelenÃ¼l adtad meg a jelszavadat!"
+    failed-many-times: "&cHelytelenül adtad meg a jelszavadat!"
 
     # Message sent when password entered is incorrect.
-    incorrect-password: "&cHelytelen jelszÃ³. KÃ©rlek prÃ³bÃ¡ld Ãºjra!"
+    incorrect-password: "&cHelytelen jelszó. Kérlek próbáld újra!"
 
     # Message sent when the security questions answer is incorrect.
-    incorrect-answer: "&cHelytelen vÃ¡lasz. KÃ©rlek prÃ³bÃ¡ld Ãºjra!"
+    incorrect-answer: "&cHelytelen válasz. Kérlek próbáld újra!"
 
     # Message sent when server is still starting.
-    wait-server-start: "&cA szerver nem indult el mÃ©g teljesen.\n&cVÃ¡rj egy kicsit a csatlakozÃ¡shoz."
+    wait-server-start: "&cA szerver nem indult el még teljesen.\n&cVárj egy kicsit a csatlakozáshoz."
 
     # Message sent when an IP is blocked by suspected invasion.
-    account-blocked: "&cCÃ­medet blokkoltÃ¡k a szerveren!&r\n&r&cFentmaradt vÃ¡rakozÃ¡si idÃ…â€˜: {0}"
+    account-blocked: "&cCímedet blokkolták a szerveren!&r\n&r&cFentmaradt várakozási idÅ‘: {0}"
 
     # Message sent when two-factor system temporary password is incorrect.
-    incorrect-temporary-password: "&cRossz jelszÃ³. KÃ©rlek, prÃ³bÃ¡ld meg Ãºjra."
+    incorrect-temporary-password: "&cRossz jelszó. Kérlek, próbáld meg újra."
 
     # Message to kick a user with an invalid nickname.
-    invalid-nickname: "&cTe neved hibÃ¡s, ne tartalmazzon mÃ¡s szimbÃ³lumokat karaktereket!"
+    invalid-nickname: "&cTe neved hibás, ne tartalmazzon más szimbólumokat karaktereket!"
 
     # Message sent when the player's account has already been registered as unique.
-    premium-account: "&cSajnÃ¡ljuk, de egy prÃ©mium felhasznÃ¡lÃ³ mÃ¡r bejelentkezett erre a fiÃ³kra.&r\n&r&cA szerveren valÃ³ jÃ¡tÃ©khoz mÃ¡s becenevet kell hasznÃ¡lnia.&r\n&r\nHa Ã–n a fiÃ³k tulajdonosa, prÃ³bÃ¡lja meg ÃºjraindÃ­tani a Minecraft-ot."
+    premium-account: "&cSajnáljuk, de egy prémium felhasználó már bejelentkezett erre a fiókra.&r\n&r&cA szerveren való játékhoz más becenevet kell használnia.&r\n&r\nHa Ön a fiók tulajdonosa, próbálja meg újraindítani a Minecraft-ot."
 
   security-messages:
     # Message sent when a user was protected by the heuristic system.
     hacking-attack-warning:
       - ""
-      - " &c&lBIZTONSÃGI Ã‰RTESÃ­TÃ‰S"
-      - " &cA biztonsÃ¡gi rendszer blokkolta az esetleges feltÃ¶rÃ©si tÃ¡madÃ¡sokat a fiÃ³kjÃ¡ban."
-      - " &cHÃ¡rom sikertelen bejelentkezÃ©si kÃ­sÃ©rlet tÃ¶rtÃ©nt."
+      - " &c&lBIZTONSÁGI ÉRTESíTÉS"
+      - " &cA biztonsági rendszer blokkolta az esetleges feltörési támadásokat a fiókjában."
+      - " &cHárom sikertelen bejelentkezési kísérlet történt."
       - ""
-      - " &e&lTIP: &eÃ‰rdemes minden szerverre mÃ¡s jelszÃ³t hasznÃ¡lni!"
+      - " &e&lTIP: &eÉrdemes minden szerverre más jelszót használni!"
       - ""
 
     # Message sent when a user was protected more than once by the heuristic system.
     hacking-attack-warning2:
       - ""
-      - " &c&lBIZTONSÃGI Ã‰RTESÃ­TÃ‰S"
-      - " &cA biztonsÃ¡gi rendszer le van tiltva {0} esetleges hackelÃ©si tÃ¡madÃ¡sok a fiÃ³kjÃ¡ban."
-      - " &cHÃ¡rom sikertelen bejelentkezÃ©si kÃ­sÃ©rlet tÃ¶rtÃ©nt."
+      - " &c&lBIZTONSÁGI ÉRTESíTÉS"
+      - " &cA biztonsági rendszer le van tiltva {0} esetleges hackelési támadások a fiókjában."
+      - " &cHárom sikertelen bejelentkezési kísérlet történt."
       - ""
-      - " &e&lTIP: &eÃ‰rdemes minden szerverre mÃ¡s jelszÃ³t hasznÃ¡lni!"
+      - " &e&lTIP: &eÉrdemes minden szerverre más jelszót használni!"
       - ""
 
     # Message sent when a user uses a weak password.
     weak-password:
       - ""
-      - " &cA regisztrÃ¡lt jelszÃ³ nem biztonsÃ¡gos."
-      - " &cHasznÃ¡ljon betÃ…Â±ket, szÃ¡mokat Ã©s szimbÃ³lumokat a biztonsÃ¡g javÃ­tÃ¡sa Ã©rdekÃ©ben."
-      - " &cPÃ©lda jelszÃ³ra: {0}"
+      - " &cA regisztrált jelszó nem biztonságos."
+      - " &cHasználjon betÅ±ket, számokat és szimbólumokat a biztonság javítása érdekében."
+      - " &cPélda jelszóra: {0}"
       - ""
 
     # Message sent when a player has not yet registered the security questions.
     security-question-warn-message:
       - ""
-      - " &c&lBIZTONSÃGI KÃ‰RDÃ‰SEK"
-      - " &7Hajtsa vÃ©gre a &f/sq add &7parancsot a regisztrÃ¡ciÃ³hoz."
-      - " &cbiztonsÃ¡gi kÃ©rdÃ©seket Ã©s ezzel"
-      - " &7csÃ¶kkentse a feltÃ¶rÃ©s esÃ©lyÃ©t."
+      - " &c&lBIZTONSÁGI KÉRDÉSEK"
+      - " &7Hajtsa végre a &f/sq add &7parancsot a regisztrációhoz."
+      - " &cbiztonsági kérdéseket és ezzel"
+      - " &7csökkentse a feltörés esélyét."
       - ""
 
     # Message sent when a security question is being added.
@@ -258,160 +256,160 @@ Messages:
       - ""
       - " &e{0}"
       - ""
-      - " &7SegÃ­tsÃ©gÃ©rt &f'cancel' &7hogy tÃ¶rÃ¶lje a mÃ…Â±veletet."
-      - " &Kattintson erre az Ã¼zenetre egy Ãºjabb kÃ©rdÃ©st kapjon elÃ…â€˜Ã¡llÃ­tÃ¡sÃ¡hoz."
+      - " &7Segítségért &f'cancel' &7hogy törölje a mÅ±veletet."
+      - " &Kattintson erre az üzenetre egy újabb kérdést kapjon elÅ‘állításához."
       - ""
 
     # Message sent when a security question should be reviewed.
     security-question-check:
       - ""
-      - " &aA megerÃ…â€˜sÃ­tÃ©s elÃ…â€˜tt ellenÃ…â€˜rizze az informÃ¡ciÃ³kat:"
+      - " &aA megerÅ‘sítés elÅ‘tt ellenÅ‘rizze az információkat:"
       - ""
       - " &7{0}: &f'{1}'"
       - ""
-      - " &aHa biztos benne, Ã­rja be &f'confirm'&a."
-      - " &eHa valamit rosszul Ã­rt be, Ã­rja be &f'repeat'&e."
-      - " &cHa meg akarja szakÃ­tani ezt a mÃ…Â±veletet, Ã­rja be &f'cancel'&c."
+      - " &aHa biztos benne, írja be &f'confirm'&a."
+      - " &eHa valamit rosszul írt be, írja be &f'repeat'&e."
+      - " &cHa meg akarja szakítani ezt a mÅ±veletet, írja be &f'cancel'&c."
       - ""
 
     # Message sent when security questions are requested.
     security-question-request:
       - ""
-      - " &aSajnÃ¡ljuk, de szemÃ©lyazonossÃ¡g-megerÃ…â€˜sÃ­tÃ©s szÃ¼ksÃ©ges."
-      - " &aVÃ¡laszoljon az alÃ¡bbi kÃ©rdÃ©sre a csevegÃ©sben:"
+      - " &aSajnáljuk, de személyazonosság-megerÅ‘sítés szükséges."
+      - " &aVálaszoljon az alábbi kérdésre a csevegésben:"
       - ""
       - " &b{0}"
       - ""
 
     # Message sent when security questions are requested a second time.
     security-question-request2:
-      - "&aKÃ¶vetkezÃ…â€˜ kÃ©rdÃ©s..."
+      - "&aKövetkezÅ‘ kérdés..."
       - ""
       - " &b{0}"
       - ""
 
   error-messages:
     # Message sent when you are already logged in.
-    already-login: "&cTe mÃ¡r be vagy lÃ©pve."
+    already-login: "&cTe már be vagy lépve."
 
     # Message sent when a user is already logged in.
-    already-login2: "&cEz a felhasznÃ¡lÃ³ mÃ¡r be van jelentkezve."
+    already-login2: "&cEz a felhasználó már be van jelentkezve."
 
     # Message sent when a nickname has already been registered.
-    already-registered: "&cEzt a nevet mÃ¡r regisztrÃ¡ltÃ¡k."
+    already-registered: "&cEzt a nevet már regisztrálták."
 
     # Message sent when a nickname has not yet been registered.
-    not-registered: "&cEzt a nevet mÃ©g nem regisztrÃ¡ltÃ¡k."
+    not-registered: "&cEzt a nevet még nem regisztrálták."
 
     # Message sent when the entered password is not equal to the second.
     passwords-dont-match: "&cA jelszavak nem azonosak."
 
     # Message sent when a player does not confirm your password.
-    need-password-confirmation: "&cMeg kell erÃ…â€˜sÃ­tenie jelszavÃ¡t."
+    need-password-confirmation: "&cMeg kell erÅ‘sítenie jelszavát."
 
     # Message sent when IP limits per player pass the limit.
-    address-limiter-warning: "&cElÃ©rted a felhasznÃ¡lÃ³dnak az ip limitjÃ©t!"
+    address-limiter-warning: "&cElérted a felhasználódnak az ip limitjét!"
 
     # Message sent when a player tries to change password by entering the same password as the current.
-    password-same-as-old: "&cA megadott jelszÃ³ megegyezik a jelenlegi jelszÃ³val."
+    password-same-as-old: "&cA megadott jelszó megegyezik a jelenlegi jelszóval."
 
     # Message sent when the password entered is too large.
-    password-too-large: "&cA megadott jelszÃ³ tÃºl nagy."
+    password-too-large: "&cA megadott jelszó túl nagy."
 
     # Message sent when the password entered is too small.
-    password-too-small: "&cA megadott jelszÃ³ tÃºl kicsi."
+    password-too-small: "&cA megadott jelszó túl kicsi."
     insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
     change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
 
-    # Message sent when a user attempts to disable PkLogin using PlugMan/System.
-    plugman-block: "&cItt nem Ã©rheti meg a bejelentkezÃ©si bÃ…â€˜vÃ­tmÃ©nyt."
+    # Message sent when a user attempts to disable nLogin using PlugMan/System.
+    plugman-block: "&cItt nem érheti meg a bejelentkezési bÅ‘vítményt."
 
     # Message when a player does not possess the required permission.
     insufficient-permissions: "&cNincs jogod ehez!"
 
     # Message to show the use of a command.
-    command-usage: "&cHasznÃ¡lnia kell {0}."
+    command-usage: "&cHasználnia kell {0}."
 
     # Message to kick a player now online.
-    already-online: "&cEz a jÃ¡tÃ©kos mÃ¡r fent van."
+    already-online: "&cEz a játékos már fent van."
 
     # Message to display that a player is not online.
-    offline-error: "&cEz a jÃ¡tÃ©kos offline."
+    offline-error: "&cEz a játékos offline."
 
     # Message to show that the command cannot be executed via console.
-    player-command-usage: "&cEzt a parancsot a konzolon keresztÃ¼l letiltottÃ¡k."
+    player-command-usage: "&cEzt a parancsot a konzolon keresztül letiltották."
 
     # Message to show that a command can only be executed by the console.
-    console-command-usage: "&cEz a parancs csak a konzolon keresztÃ¼l hasznÃ¡lhatÃ³."
+    console-command-usage: "&cEz a parancs csak a konzolon keresztül használható."
 
     # Message shown when the plugin is reloaded.
-    plugin-reload-message: "&eFÃ¡jlok ÃºjratÃ¶ltve."
+    plugin-reload-message: "&eFájlok újratöltve."
 
     # Message shown when the function of a command is disabled.
-    command-function-disabled: "&cA {0} parancs funkciÃ³ja le van tiltva."
+    command-function-disabled: "&cA {0} parancs funkciója le van tiltva."
 
     # Message sent when a database operation has not been successfully performed.
-    database-error: "&cSajnos nem tudtuk befejezni ezt a mÃ…Â±veletet. KÃ©rlek prÃ³bÃ¡ld Ãºjra. [SQL FAIL]"
+    database-error: "&cSajnos nem tudtuk befejezni ezt a mÅ±veletet. Kérlek próbáld újra. [SQL FAIL]"
 
   twofactor:
     # Message sent when a user does not have a temporary password.
-    no-temporary-password: "&cIdeiglenes jelszÃ³ mÃ©g nem lett lÃ©trehozva."
+    no-temporary-password: "&cIdeiglenes jelszó még nem lett létrehozva."
 
     # Message sent when a user does not have a linked account.
-    no-twofactor-registered: "&cNincs {0} -fiÃ³kod."
+    no-twofactor-registered: "&cNincs {0} -fiókod."
 
     # Message sent when a user has already linked an account.
-    twofactor-already-registered: "&cMÃ¡r regisztrÃ¡lta a kÃ¶vetkezÃ…â€˜t: {0}."
+    twofactor-already-registered: "&cMár regisztrálta a következÅ‘t: {0}."
 
     # Message sent when a user removes their account from two factors.
-    twofactor-unregistered: "Â§eA(z) {0} szolgÃ¡ltatÃ¡st sikeresen levÃ¡lasztottuk"
+    twofactor-unregistered: "§eA(z) {0} szolgáltatást sikeresen leválasztottuk"
 
     # Message sent when a user confirms their two-factor account.
-    confirmed-account: "&a{0} -fiÃ³kjÃ¡t sikeresen regisztrÃ¡ltuk"
+    confirmed-account: "&a{0} -fiókját sikeresen regisztráltuk"
 
     # Message sent when a confirmation message is sent.
-    confirmation-message-sent: "&7MegerÃ…â€˜sÃ­tÃ…â€˜ kÃ³dot kÃ¼ldtÃ¼nk Ã–nnek {0} (Â§f{1}Â§7)."
+    confirmation-message-sent: "&7MegerÅ‘sítÅ‘ kódot küldtünk Önnek {0} (§f{1}§7)."
 
     switch:
       # Message sent when a user activates the two-factor.
-      enabled: "&aA kÃ©tfaktoros funkciÃ³ aktivÃ¡lÃ³dott."
+      enabled: "&aA kétfaktoros funkció aktiválódott."
 
       # Message sent when a user disables the two-factor.
-      disabled: "&cA kÃ©tfaktoros funkciÃ³ kikapcsolva."
+      disabled: "&cA kétfaktoros funkció kikapcsolva."
 
     recover:
       # Message sent when a user does not provide the same two-factor account registered.
-      twofactor-not-equal: "&cA megadott {0} nem ugyanaz, mint a regisztrÃ¡lt."
+      twofactor-not-equal: "&cA megadott {0} nem ugyanaz, mint a regisztrált."
 
       # Message sent when a user requests a recovery request in a short period of time.
-      message-sent: "&aHelyreÃ¡llÃ­tÃ¡si Ã¼zenetet kÃ¼ldtÃ¼nk a tÃ¡rsÃ­tott fiÃ³kjÃ¡ba."
+      message-sent: "&aHelyreállítási üzenetet küldtünk a társított fiókjába."
 
       # Message sent when a user recovers his account and his password is set automatically.
-      automatic-change: "&aJelszavÃ¡t automatikusan megvÃ¡ltoztatta &ferre '{0}'."
+      automatic-change: "&aJelszavát automatikusan megváltoztatta &ferre '{0}'."
 
     discord:
       # Message sent when a user links his Discord account.
-      account-linked: "&aA Discord konfigurÃ¡ciÃ³ja sikeresen frissÃ­tve. \N &aCsatlakoztak a&f {0} &aaccount fiÃ³khoz."
+      account-linked: "&aA Discord konfigurációja sikeresen frissítve. \N &aCsatlakoztak a&f {0} &aaccount fiókhoz."
 
   other-messages:
     # Hover message: /login.
-    hover-message-login: "&7Kattintson ide a parancs vÃ©grehajtÃ¡sÃ¡hoz Ã©s a gyors bejelentkezÃ©shez."
+    hover-message-login: "&7Kattintson ide a parancs végrehajtásához és a gyors bejelentkezéshez."
 
     # Hover message: /register.
-    hover-message-register: "&7Kattintson ide a parancs vÃ©grehajtÃ¡sÃ¡hoz Ã©s a gyors regisztrÃ¡ciÃ³hoz."
+    hover-message-register: "&7Kattintson ide a parancs végrehajtásához és a gyors regisztrációhoz."
 
     # Command usage: /login
-    message-login: "&eHasznÃ¡ld ezt a parancsot &7/login <jelszÃ³>&e."
+    message-login: "&eHasználd ezt a parancsot &7/login <jelszó>&e."
 
     # Command usage: /register
-    message-register: "&eHasznÃ¡ld ezt a parancsot &7/register <jelszÃ³> <jelszÃ³>&e."
+    message-register: "&eHasználd ezt a parancsot &7/register <jelszó> <jelszó>&e."
 
     # Command usage: /changepassword
-    message-changepassword: "&eHasznÃ¡ld ezt a parancsot &7/changepassword <rÃ©gi jelszÃ³> <Ãºj jelszÃ³>&e."
+    message-changepassword: "&eHasználd ezt a parancsot &7/changepassword <régi jelszó> <új jelszó>&e."
 
     # Command usage: /checkprofile
-    message-verify: "&eHasznÃ¡ld ezt a parancsot &7/checkprofile <player>&e."
+    message-verify: "&eHasználd ezt a parancsot &7/checkprofile <player>&e."
 
     # Command usage: /unregister
-    message-unregister: "&eHasznÃ¡ld ezt a parancsot &7/unregister <aktuÃ¡lis jelszÃ³>&e."
+    message-unregister: "&eHasználd ezt a parancsot &7/unregister <aktuális jelszó>&e."
 

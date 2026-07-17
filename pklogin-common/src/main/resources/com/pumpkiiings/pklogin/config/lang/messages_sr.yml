@@ -1,4 +1,4 @@
-﻿#  ________  ___  __    ___       ________  ________  ___  ________     
+#  ________  ___  __    ___       ________  ________  ___  ________     
 # |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
 # \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
 #  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
@@ -9,22 +9,20 @@
 # Official Website: https://www.pumpkiiings.com
 # Discord: https://www.pumpkiiings.com/discord
 
-version: "1.1"
-
 Messages:
   Title:
     # Message sent before login
     before-login:
-      title: "&a&lDobrodoÃ…Â¡li!"
-      subtitle: "&7Koristite: /login <vaÃ…Â¡a lozinka>"
+      title: "&a&lDobrodoÅ¡li!"
+      subtitle: "&7Koristite: /login <vaÅ¡a lozinka>"
       delays:
         start: 0
         duration: 9999
         end: 6
     # Message sent before registration
     before-register:
-      title: "&a&lDobrodoÃ…Â¡li!"
-      subtitle: "&7Koristite: /register <vaÃ…Â¡a lozinka> <vaÃ…Â¡a lozinka>"
+      title: "&a&lDobrodoÅ¡li!"
+      subtitle: "&7Koristite: /register <vaÅ¡a lozinka> <vaÅ¡a lozinka>"
       delays:
         start: 0
         duration: 9999
@@ -32,7 +30,7 @@ Messages:
     # Message sent after login
     after-login:
       title: ""
-      subtitle: "&aUspeÃ…Â¡no ste se prijavili!"
+      subtitle: "&aUspeÅ¡no ste se prijavili!"
       delays:
         start: 0
         duration: 60
@@ -40,7 +38,7 @@ Messages:
     # Message sent after register
     after-register:
       title: ""
-      subtitle: "&UspeÃ…Â¡no ste se registrovali!"
+      subtitle: "&UspeÅ¡no ste se registrovali!"
       delays:
         start: 0
         duration: 60
@@ -70,36 +68,36 @@ Messages:
 
   successful-operations:
     # Message when a user exchanges their password
-    password-changed: "&aVaÃ…Â¡a lozinka je uspeÃ…Â¡no promenjena."
+    password-changed: "&aVaÅ¡a lozinka je uspeÅ¡no promenjena."
 
     # Message sent when a user successfully logs
-    successful-login: "&aUspeÃ…Â¡no ste se prijavili."
+    successful-login: "&aUspeÅ¡no ste se prijavili."
 
     # Message sent when a user successfully registers
-    successful-register: "&aUspeÃ…Â¡no ste registrovani."
+    successful-register: "&aUspeÅ¡no ste registrovani."
 
     # Message sent when a player successfully disregisters
-    unregister-kick: "&cUspeÃ…Â¡no ste se odjavili."
+    unregister-kick: "&cUspeÅ¡no ste se odjavili."
 
   kick-messages:
     # Message when a player tries to log on to the server with a small difference in the nickname
-    nick-already-registered: "&cNe moÃ…Â¾ete da uÃ„â€˜ete sa imenom {0}&r\n&r&cThis korisniÃ„Âko ime je vecÃŒÂ registrovano kao {1}&r\n&r\n&r&cDa biste uÃ…Â¡li, morate koristiti svoje ime bez velikih / malih slova"
+    nick-already-registered: "&cNe moÅ¾ete da uÄ‘ete sa imenom {0}&r\n&r&cThis korisniÄko ime je vecÌ registrovano kao {1}&r\n&r\n&r&cDa biste uÅ¡li, morate koristiti svoje ime bez velikih / malih slova"
 
     # Message sent when a user misses many times
-    failed-many-times: "&cUneli ste netaÃ„Ânu lozinku."
+    failed-many-times: "&cUneli ste netaÄnu lozinku."
 
     # Message sent when password entered is incorrect
-    incorrect-password: "&cPogreÃ…Â¡na lozinka. Molim vas, pokuÃ…Â¡ajte ponovo."
+    incorrect-password: "&cPogreÅ¡na lozinka. Molim vas, pokuÅ¡ajte ponovo."
 
   error-messages:
     # Message sent when you are already logged in.
-    already-login: "&cVecÃŒÂ ste prijavljeni."
+    already-login: "&cVecÌ ste prijavljeni."
 
     # Message sent when a nickname has already been registered.
-    already-registered: "&cOvo ime je vecÃŒÂ registrovano."
+    already-registered: "&cOvo ime je vecÌ registrovano."
 
     # Message sent when a nickname has not yet been registered.
-    not-registered: "&cOvo ime joÃ…Â¡ uvek nije registrovano."
+    not-registered: "&cOvo ime joÅ¡ uvek nije registrovano."
 
     # Message sent when the entered password is not equal to the second
     passwords-dont-match: "&cLozinke nisu iste."
@@ -119,16 +117,16 @@ Messages:
     insufficient-permissions: "&cNemate dozvolu za pokretanje ove komande."
 
     # Message to kick a player now online
-    already-online: "&cOvaj igraÃ„Â je vecÃŒÂ na mreÃ…Â¾i."
+    already-online: "&cOvaj igraÄ je vecÌ na mreÅ¾i."
 
     # Message to show that the command cannot be executed via console
-    player-command-usage: "&cOva naredba je onemogucÃŒÂena putem konzole."
+    player-command-usage: "&cOva naredba je onemogucÌena putem konzole."
 
     # Message shown when the plugin is reloaded.
-    plugin-reload-message: "&eDodatna komponenta je uspeÃ…Â¡no ponovo uÃ„Âitana."
+    plugin-reload-message: "&eDodatna komponenta je uspeÅ¡no ponovo uÄitana."
 
     # Message sent when a database operation has not been successfully performed
-    database-error: "&cÃ…Â½ao nam je, nismo uspeli da dovrÃ…Â¡imo ovu operaciju. Molim vas, pokuÃ…Â¡ajte ponovo. [SQL FAIL]"
+    database-error: "&cÅ½ao nam je, nismo uspeli da dovrÅ¡imo ovu operaciju. Molim vas, pokuÅ¡ajte ponovo. [SQL FAIL]"
 
   other-messages:
     # Mensagem enviada para o uso do comando /logar

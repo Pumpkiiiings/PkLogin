@@ -1,4 +1,4 @@
-﻿#  ________  ___  __    ___       ________  ________  ___  ________     
+#  ________  ___  __    ___       ________  ________  ___  ________     
 # |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
 # \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
 #  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
@@ -9,18 +9,16 @@
 # Official Website: https://www.pumpkiiings.com
 # Discord: https://www.pumpkiiings.com/discord
 
-# WARNING: This is a translation made to PkLogin. It will probably be compatible with all features of PkLogin.
+# WARNING: This is a translation made to nLogin. It will probably be compatible with all features of PkLogin.
 
 # Lithuanian translation made by SkirmisLTU (Discord: SkirmisLTU#3310)
-
-version: "1.1"
 
 Messages:
   Title:
     # Message sent before login.
     before-login:
       title: "&a&lSveiki!"
-      subtitle: "&7Naudokite: /login <Tavo slaptaÃ…Â¾odis>"
+      subtitle: "&7Naudokite: /login <Tavo slaptaÅ¾odis>"
       delays:
         start: 0
         duration: 9999
@@ -28,7 +26,7 @@ Messages:
     # Message sent before registration.
     before-register:
       title: "&a&lSveiki!"
-      subtitle: "&7Naudokite: /register <SlaptaÃ…Â¾odis> <SlaptaÃ…Â¾odis>"
+      subtitle: "&7Naudokite: /register <SlaptaÅ¾odis> <SlaptaÅ¾odis>"
       delays:
         start: 0
         duration: 9999
@@ -36,7 +34,7 @@ Messages:
     # Message sent after login.
     after-login:
       title: ""
-      subtitle: "&aJÃ…Â«s sÃ„â€”kmingai prisijungÃ„â€”te!"
+      subtitle: "&aJÅ«s sÄ—kmingai prisijungÄ—te!"
       delays:
         start: 0
         duration: 60
@@ -44,7 +42,7 @@ Messages:
     # Message sent after registration.
     after-register:
       title: ""
-      subtitle: "&aJÃ…Â«s sÃ„â€”kmingai UÃ…Â¾siregistravote!"
+      subtitle: "&aJÅ«s sÄ—kmingai UÅ¾siregistravote!"
       delays:
         start: 0
         duration: 60
@@ -52,7 +50,7 @@ Messages:
     # Message sent when you miss a password.
     incorrect-password:
       title: ""
-      subtitle: "&cNeteisingas slaptaÃ…Â¾odis!"
+      subtitle: "&cNeteisingas slaptaÅ¾odis!"
       delays:
         start: 0
         duration: 60
@@ -60,7 +58,7 @@ Messages:
     # Message sent when already logged in.
     already-login:
       title: ""
-      subtitle: "&cJÃ…Â«s jau prisijungÃ„â„¢s!"
+      subtitle: "&cJÅ«s jau prisijungÄ™s!"
       delays:
         start: 0
         duration: 60
@@ -68,7 +66,7 @@ Messages:
     # Message sent when already registered.
     already-registered:
       title: ""
-      subtitle: "&cJÃ…Â«s jau prisiregistavÃ„â„¢s!"
+      subtitle: "&cJÅ«s jau prisiregistavÄ™s!"
       delays:
         start: 0
         duration: 60
@@ -76,7 +74,7 @@ Messages:
     # Message sent when passwords are not equal.
     passwords-dont-match:
       title: ""
-      subtitle: "&cSlaptaÃ…Â¾odÃ…Â¾iai nesutampa!"
+      subtitle: "&cSlaptaÅ¾odÅ¾iai nesutampa!"
       delays:
         start: 0
         duration: 60
@@ -84,7 +82,7 @@ Messages:
     # Message sent when session is continued.
     session-login:
       title: ""
-      subtitle: "&eJÃ…Â«sÃ…Â³ prisijungimo sesija yra tÃ„â„¢siama."
+      subtitle: "&eJÅ«sÅ³ prisijungimo sesija yra tÄ™siama."
       delays:
         start: 0
         duration: 60
@@ -92,7 +90,7 @@ Messages:
     # Message sent when you are an original player.
     premium-login:
       title: ""
-      subtitle: "&eJÃ…Â«sÃ…Â³ paskyra yra unikali, sÃ„â€”kmingai prisijungÃ„â€”te."
+      subtitle: "&eJÅ«sÅ³ paskyra yra unikali, sÄ—kmingai prisijungÄ—te."
       delays:
         start: 0
         duration: 60
@@ -100,7 +98,7 @@ Messages:
     # Message sent when a login session is continued.
     plugin-reload:
       title: ""
-      subtitle: "&aKonfigÃ…Â«racijos ir kalbos failai buvo perkrauti."
+      subtitle: "&aKonfigÅ«racijos ir kalbos failai buvo perkrauti."
       delays:
         start: 0
         duration: 60
@@ -108,7 +106,7 @@ Messages:
     # Message sent from backup system.
     backup:
       title: ""
-      subtitle: "&aAtsarginÃ„â€” kopija sukurta sÃ„â€”kmingai."
+      subtitle: "&aAtsarginÄ— kopija sukurta sÄ—kmingai."
       delays:
         start: 0
         duration: 90
@@ -116,7 +114,7 @@ Messages:
     # Message sent from backup system.
     backup-error:
       title: ""
-      subtitle: "&cNeiÃ…Â¡Ã„â€”jo sukurti atsarginÃ„â€”s kopijos."
+      subtitle: "&cNeiÅ¡Ä—jo sukurti atsarginÄ—s kopijos."
       delays:
         start: 0
         duration: 90
@@ -124,7 +122,7 @@ Messages:
     # Message sent from security system.
     security-warning:
       title: ""
-      subtitle: "&cChat'e iÃ…Â¡siustas naujas saugumo Ã„Â¯spÃ„â€”jimas"
+      subtitle: "&cChat'e iÅ¡siustas naujas saugumo Ä¯spÄ—jimas"
       delays:
         start: 0
         duration: 60
@@ -132,10 +130,10 @@ Messages:
 
   action-bar:
     # Message sent on the player's actionbar before login (singular).
-    singular: "&cJÃ…Â«s turite {0} sekundÃ„â„¢, kad {prisijunktumÃ„â€”te/UÃ…Â¾siregistruotumÃ„â€”te}."
+    singular: "&cJÅ«s turite {0} sekundÄ™, kad {prisijunktumÄ—te/UÅ¾siregistruotumÄ—te}."
 
     # Message sent on the player's actionbar before login (plural).
-    plural: "&cJÃ…Â«s turite {0} sekundes kad {lprisijunktumÃ„â€”te/UÃ…Â¾soregistruotumÃ„â€”te}."
+    plural: "&cJÅ«s turite {0} sekundes kad {lprisijunktumÄ—te/UÅ¾soregistruotumÄ—te}."
 
         bedrock-auto-login:
         title: "&a&lWelcome!"
@@ -154,83 +152,83 @@ Messages:
 
   delay-kick:
     # Message sent when a user takes a long time to register.
-    register-kick: "&cPer ilgai uÃ…Â¾trukote registruodamiesi."
+    register-kick: "&cPer ilgai uÅ¾trukote registruodamiesi."
 
     # Message sent when a user takes a long time to log in.
-    login-kick: "&cPer ilgai uÃ…Â¾trukote prisijunkdami."
+    login-kick: "&cPer ilgai uÅ¾trukote prisijunkdami."
 
   successful-operations:
     # Message when a user exchanges their password.
-    password-changed: "&aJÃ…Â«sÃ…Â³ slaptaÃ…Â¾odis buvo sÃ„â€”kmingai pakeistas."
+    password-changed: "&aJÅ«sÅ³ slaptaÅ¾odis buvo sÄ—kmingai pakeistas."
 
     # Message sent when a user successfully logs.
-    successful-login: "&aJÃ…Â«s sÃ„â€”kmingai prisijungÃ„â€”te."
+    successful-login: "&aJÅ«s sÄ—kmingai prisijungÄ—te."
 
     # Message sent when a user logs in with an original account.
-    successful-premium-login: "&aJÃ…Â«s esate automatiÃ…Â¡kai prisijungÃ„â„¢s, kai naudojate unikaliÃ„â€¦ paskyrÃ„â€¦."
+    successful-premium-login: "&aJÅ«s esate automatiÅ¡kai prisijungÄ™s, kai naudojate unikaliÄ… paskyrÄ…."
 
     # Message sent when a user logs in using the same ip address.
-    successful-session-login: "&aJÃ…Â«sÃ…Â³ prisijungimo sesija yra tÃ„â„¢siama."
+    successful-session-login: "&aJÅ«sÅ³ prisijungimo sesija yra tÄ™siama."
 
     # Message sent when a user successfully registers.
-    successful-register: "&aJÃ…Â«s sÃ„â€”kmingai uÃ…Â¾siregistravote."
+    successful-register: "&aJÅ«s sÄ—kmingai uÅ¾siregistravote."
 
     # Message sent when you force a player's login.
-    forcelogin: "&eJÃ…Â«s buvote prijunktas {0}"
+    forcelogin: "&eJÅ«s buvote prijunktas {0}"
 
     # Message sent when a player successfully unregister.
-    unregister-kick: "&cJÃ…Â«s sÃ„â€”kmingai iÃ…Â¡siregistravote."
+    unregister-kick: "&cJÅ«s sÄ—kmingai iÅ¡siregistravote."
 
     # Message sent when a configuration is finished
     config-finished: "&aConfiguracija baigta."
 
     # Message sent when a configuration is cancelled
-    config-cancelled: "&cVeiksmas atÃ…Â¡auktas."
+    config-cancelled: "&cVeiksmas atÅ¡auktas."
 
   kick-messages:
     # Message when a player tries to log on to the server with a small difference in the nickname.
-    nick-already-registered: "&cJÃ…Â«s negalite Ã„Â¯eiti su slapyvardziu {0}&r\n&r&cdÃ„â€”l to nes Ã…Â¡is slapyvardis jau uÃ…Â¾registruotas kaip {1}&r\n&r\n&r&cKad, Ã„Â¯eiti turite naudoti savo slapyvardÃ„Â¯ be didÃ…Â¾iÃ…Â³jÃ…Â³/maÃ…Â¾Ã…Â³jÃ…Â³ raidÃ…Â¾iÃ…Â³"
+    nick-already-registered: "&cJÅ«s negalite Ä¯eiti su slapyvardziu {0}&r\n&r&cdÄ—l to nes Å¡is slapyvardis jau uÅ¾registruotas kaip {1}&r\n&r\n&r&cKad, Ä¯eiti turite naudoti savo slapyvardÄ¯ be didÅ¾iÅ³jÅ³/maÅ¾Å³jÅ³ raidÅ¾iÅ³"
 
     # Message sent when a user misses many times.
-    failed-many-times: "&cÃ„Â®vedÃ„â€”te neteisingÃ„â€¦ slaptaÃ…Â¾odÃ„Â¯."
+    failed-many-times: "&cÄ®vedÄ—te neteisingÄ… slaptaÅ¾odÄ¯."
 
     # Message sent when password entered is incorrect.
-    incorrect-password: "&cNeteisingas slaptaÃ…Â¾odis. Bandykite dar kartÃ„â€¦."
+    incorrect-password: "&cNeteisingas slaptaÅ¾odis. Bandykite dar kartÄ…."
 
     # Message sent when the security questions answer is incorrect.
-    incorrect-answer: "&cNeteisingas atsakymas. Bandykite dar kartÃ„â€¦."
+    incorrect-answer: "&cNeteisingas atsakymas. Bandykite dar kartÄ…."
 
     # Message sent when server is still starting.
-    wait-server-start: "&cServeris dar nÃ„â€”ra visiÃ…Â¡kai paleistas.\n&cTruputi palaukite, kad prisijunkti."
+    wait-server-start: "&cServeris dar nÄ—ra visiÅ¡kai paleistas.\n&cTruputi palaukite, kad prisijunkti."
 
     # Message sent when an IP is blocked by suspected invasion.
-    account-blocked: "&cJÃ…Â«sÃ…Â³ adresas buvo uÃ…Â¾blokuotas dÃ„â€”l Ã„Â¯tariamos invazijos.&r\n&r&cLikÃ„â„¢s uÃ…Â¾blokavimo laikas: {0}"
+    account-blocked: "&cJÅ«sÅ³ adresas buvo uÅ¾blokuotas dÄ—l Ä¯tariamos invazijos.&r\n&r&cLikÄ™s uÅ¾blokavimo laikas: {0}"
 
     # Message sent when two-factor system temporary password is incorrect.
-    incorrect-temporary-password: "&cNeteisingas slaptaÃ…Â¾odis.Bandykite dar kartÃ„â€¦."
+    incorrect-temporary-password: "&cNeteisingas slaptaÅ¾odis.Bandykite dar kartÄ…."
 
     # Message to kick a user with an invalid nickname.
-    invalid-nickname: "&cJÃ…Â«sÃ…Â³ slapyvardis yra neteisingas, iÃ…Â¡ vardo paÃ…Â¡alinkite tarpus, simbolius ir netinkamus simbolius."
+    invalid-nickname: "&cJÅ«sÅ³ slapyvardis yra neteisingas, iÅ¡ vardo paÅ¡alinkite tarpus, simbolius ir netinkamus simbolius."
 
     # Message sent when the player's account has already been registered as unique.
-    premium-account: "&cAtsipraÃ…Â¡ome, bet premium vartotojas (nusipirkÃ„â„¢s minecraft) jau prisijungÃ„â€” prie Ã…Â¡ios paskyros.&r\n&r&cNorÃ„â€”dami Ã…Â¾aisti serveryje, turite naudoti kitÃ„â€¦ slapyvardÃ„Â¯.&r\n&r\nJei esate Ã…Â¡ios paskyros savininkas, pabandykite iÃ…Â¡ naujo paleisti Ã¢â‚¬Å¾MinecraftÃ¢â‚¬Å“."
+    premium-account: "&cAtsipraÅ¡ome, bet premium vartotojas (nusipirkÄ™s minecraft) jau prisijungÄ— prie Å¡ios paskyros.&r\n&r&cNorÄ—dami Å¾aisti serveryje, turite naudoti kitÄ… slapyvardÄ¯.&r\n&r\nJei esate Å¡ios paskyros savininkas, pabandykite iÅ¡ naujo paleisti â€žMinecraftâ€œ."
 
   security-messages:
     # Message sent when a user was protected by the heuristic system.
     hacking-attack-warning:
       - ""
-      - " &c&lSAUGUMO Ã„Â®SPÃ„â€“JIMAS"
-      - " &cSaugumo sistema uÃ…Â¾blokavo galimas Ã„Â¯silauÃ…Â¾imo atakas jÃ…Â«sÃ…Â³ paskyroje."
-      - " &cBuvo bandyta tris kartus nesÃ„â€”kmingai prisijungti."
+      - " &c&lSAUGUMO Ä®SPÄ–JIMAS"
+      - " &cSaugumo sistema uÅ¾blokavo galimas Ä¯silauÅ¾imo atakas jÅ«sÅ³ paskyroje."
+      - " &cBuvo bandyta tris kartus nesÄ—kmingai prisijungti."
       - ""
-      - " &e&lPATARIMAS: &eNAudokite skirtingus slaptaÃ…Â¾odÃ…Â¾ius skirtinguose serveriuose."
+      - " &e&lPATARIMAS: &eNAudokite skirtingus slaptaÅ¾odÅ¾ius skirtinguose serveriuose."
 
     # Message sent when a user was protected more than once by the heuristic system.
     hacking-attack-warning2:
       - ""
-      - " &c&lSAUGUMO Ã„Â®SPÃ„â€“JIMAS"
-      - " &cSaugumo sistema uÃ…Â¾blokavo {0} galimas Ã„Â¯silauÃ…Â¾imo atakas jÃ…Â«sÃ…Â³ paskyroje."
-      - " &cBuvo bandyta tris kartus nesÃ„â€”kmingai prisijungti."
+      - " &c&lSAUGUMO Ä®SPÄ–JIMAS"
+      - " &cSaugumo sistema uÅ¾blokavo {0} galimas Ä¯silauÅ¾imo atakas jÅ«sÅ³ paskyroje."
+      - " &cBuvo bandyta tris kartus nesÄ—kmingai prisijungti."
       - ""
       - " &e&Susisiekite su serverio administatoriais."
       - ""
@@ -238,18 +236,18 @@ Messages:
     # Message sent when a user uses a weak password.
     weak-password:
       - ""
-      - " &cUÃ…Â¾registruotas slaptaÃ…Â¾odis laikomas nesaugiu."
-      - " &cNorÃ„â€”dami pagerinti saugumÃ„â€¦, naudokite raides, skaiÃ„Âius ir simbolius."
-      - " &cSaugaus slaptaÃ…Â¾odÃ…Â¾io pavyzdys: {0}"
+      - " &cUÅ¾registruotas slaptaÅ¾odis laikomas nesaugiu."
+      - " &cNorÄ—dami pagerinti saugumÄ…, naudokite raides, skaiÄius ir simbolius."
+      - " &cSaugaus slaptaÅ¾odÅ¾io pavyzdys: {0}"
       - ""
 
     # Message sent when a player has not yet registered the security questions.
     security-question-warn-message:
       - ""
       - " &c&lAPSAUGOS KLAUSIMAI"
-      - " &7NorÃ„â€”dami uÃ…Â¾siregistruoti, spustelÃ„â€”kite Ã…Â¡Ã„Â¯ praneÃ…Â¡imÃ„â€¦"
+      - " &7NorÄ—dami uÅ¾siregistruoti, spustelÄ—kite Å¡Ä¯ praneÅ¡imÄ…"
       - " &cApsaugos klausimai&7. Tai darydami"
-      - " &7sumaÃ…Â¾insite Ã„Â¯silauÃ…Â¾imo tikimybÃ„â„¢."
+      - " &7sumaÅ¾insite Ä¯silauÅ¾imo tikimybÄ™."
       - ""
 
     # Message sent when a security question is being added.
@@ -257,27 +255,27 @@ Messages:
       - ""
       - " &e{0}"
       - ""
-      - " &7NorÃ„â€”dami atÃ…Â¡aukti operacijÃ„â€¦, Ã„Â¯veskite &f'cancel'."
-      - " &7SpustelÃ„â€”kite Ã…Â¡Ã„Â¯ praneÃ…Â¡imÃ„â€¦, kad sugeneruotumÃ„â€”te kitÃ„â€¦ klausimÃ„â€¦."
+      - " &7NorÄ—dami atÅ¡aukti operacijÄ…, Ä¯veskite &f'cancel'."
+      - " &7SpustelÄ—kite Å¡Ä¯ praneÅ¡imÄ…, kad sugeneruotumÄ—te kitÄ… klausimÄ…."
       - ""
 
     # Message sent when a security question should be reviewed.
     security-question-check:
       - ""
-      - " &aPrieÃ…Â¡ patvirtindami, patikrinkite informacijÃ„â€¦:"
+      - " &aPrieÅ¡ patvirtindami, patikrinkite informacijÄ…:"
       - ""
       - " &7{0}: &f'{1}'"
       - ""
-      - " &aJei esate tikras, Ã„Â¯veskite &f'confirm'&a."
-      - " &eJei Ã„Â¯vedÃ„â€”te kaÃ…Â¾kÃ„â€¦ ne taip, Ã„Â¯veskite &f'repeat'&e."
-      - " &cJei norite atÃ…Â¡aukti Ã…Â¡iÃ„â€¦ operacijÃ„â€¦, Ã„Â¯veskite &f'cancel'&c."
+      - " &aJei esate tikras, Ä¯veskite &f'confirm'&a."
+      - " &eJei Ä¯vedÄ—te kaÅ¾kÄ… ne taip, Ä¯veskite &f'repeat'&e."
+      - " &cJei norite atÅ¡aukti Å¡iÄ… operacijÄ…, Ä¯veskite &f'cancel'&c."
       - ""
 
     # Message sent when security questions are requested.
     security-question-request:
       - ""
-      - " &aAtsipraÃ…Â¡ome, bet reikalingas tapatybÃ„â€”s patvirtinimas."
-      - " &aAtsakykite Ã„Â¯ pateiktÃ„â€¦ klausimÃ„â€¦ chat'e:"
+      - " &aAtsipraÅ¡ome, bet reikalingas tapatybÄ—s patvirtinimas."
+      - " &aAtsakykite Ä¯ pateiktÄ… klausimÄ… chat'e:"
       - ""
       - " &b{0}"
       - ""
@@ -291,88 +289,88 @@ Messages:
 
   error-messages:
     # Message sent when you are already logged in.
-    already-login: "&cJÃ…Â«s jau esate prisijungÃ„â„¢s."
+    already-login: "&cJÅ«s jau esate prisijungÄ™s."
 
     # Message sent when a user is already logged in.
-    already-login2: "&cÃ…Â is Ã…Â¾aidÃ„â€”jau jau prisijungÃ„â„¢s."
+    already-login2: "&cÅ is Å¾aidÄ—jau jau prisijungÄ™s."
 
     # Message sent when a nickname has already been registered.
-    already-registered: "&cÃ…Â is slapyvardis jau buvo uÃ…Â¾registruotas."
+    already-registered: "&cÅ is slapyvardis jau buvo uÅ¾registruotas."
 
     # Message sent when a nickname has not yet been registered.
-    not-registered: "&cÃ…Â is slapyvardis dar nebuvo uÃ…Â¾registruotas."
+    not-registered: "&cÅ is slapyvardis dar nebuvo uÅ¾registruotas."
 
     # Message sent when the entered password is not equal to the second.
-    passwords-dont-match: "&cSlaptaÃ…Â¾odÃ…Â¾iai nÃ„â€”ra vienodi."
+    passwords-dont-match: "&cSlaptaÅ¾odÅ¾iai nÄ—ra vienodi."
 
     # Message sent when a player does not confirm your password.
-    need-password-confirmation: "&cTurite patvirtinti savo slaptaÃ…Â¾odÃ„Â¯."
+    need-password-confirmation: "&cTurite patvirtinti savo slaptaÅ¾odÄ¯."
 
     # Message sent when a user does not have a temporary password.
-    no-temporary-password: "&cLaikinas slaptaÃ…Â¾odis dar nesugeneruotas."
+    no-temporary-password: "&cLaikinas slaptaÅ¾odis dar nesugeneruotas."
 
     # Message sent when IP limits per player pass the limit.
-    address-limiter-warning: "&cJÃ…Â«s iÃ…Â¡naudojote Ã…Â¾aidÃ„â€”jÃ…Â³ limitÃ„â€¦ per IP adresÃ„â€¦."
+    address-limiter-warning: "&cJÅ«s iÅ¡naudojote Å¾aidÄ—jÅ³ limitÄ… per IP adresÄ…."
 
     # Message sent when a player tries to change password by entering the same password as the current.
-    password-same-as-old: "&cÃ„Â®vestas slaptaÃ…Â¾odis yra toks pats kaip dabartinis."
+    password-same-as-old: "&cÄ®vestas slaptaÅ¾odis yra toks pats kaip dabartinis."
 
     # Message sent when the password entered is too large.
-    password-too-large: "&cÃ„Â®vestas slaptaÃ…Â¾odis per ilgas."
+    password-too-large: "&cÄ®vestas slaptaÅ¾odis per ilgas."
 
     # Message sent when the password entered is too small.
-    password-too-small: "&cÃ„Â®vestas slaptaÃ…Â¾odis per trumpas."
+    password-too-small: "&cÄ®vestas slaptaÅ¾odis per trumpas."
     insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
     change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
 
-    # Message sent when a user attempts to disable PkLogin using PlugMan/System.
-    plugman-block: "&cJÃ…Â«s negalite liesti plugino (naudokite /PkLogin reload)."
+    # Message sent when a user attempts to disable nLogin using PlugMan/System.
+    plugman-block: "&cJÅ«s negalite liesti plugino (naudokite /nlogin reload)."
 
     # Message when a player does not possess the required permission.
-    insufficient-permissions: "&cJÃ…Â«s neturite leidimo vykdyti Ã…Â¡iÃ„â€¦ komandÃ„â€¦."
+    insufficient-permissions: "&cJÅ«s neturite leidimo vykdyti Å¡iÄ… komandÄ…."
 
     # Message to show the use of a command.
-    command-usage: "&cJÃ…Â«s turite naudoti {0}."
+    command-usage: "&cJÅ«s turite naudoti {0}."
 
     # Message to kick a player now online.
-    already-online: "&cÃ…Â is Ã…Â¾aidÃ„â€”jas jau prisijungÃ„â„¢s."
+    already-online: "&cÅ is Å¾aidÄ—jas jau prisijungÄ™s."
 
     # Message to display that a player is not online.
-    offline-error: "&cNorimas Ã…Â¾aidÃ„â€”jas neprisijungÃ„â„¢s."
+    offline-error: "&cNorimas Å¾aidÄ—jas neprisijungÄ™s."
 
     # Message to show that the command cannot be executed via console.
-    player-command-usage: "&cÃ…Â i komanda buvo iÃ…Â¡jungta per konsolÃ„â„¢."
+    player-command-usage: "&cÅ i komanda buvo iÅ¡jungta per konsolÄ™."
 
     # Message to show that a command can only be executed by the console.
-    console-command-usage: "&cÃ…Â iÃ„â€¦ komandÃ„â€¦ galima naudoti tik per konsolÃ„â„¢."
+    console-command-usage: "&cÅ iÄ… komandÄ… galima naudoti tik per konsolÄ™."
 
     # Message shown when the plugin is reloaded.
-    plugin-reload-message: "&ePapildinys sÃ„â€”kmingai perkrautas."
+    plugin-reload-message: "&ePapildinys sÄ—kmingai perkrautas."
 
     # Message shown when the function of a command is disabled.
-    command-function-disabled: "&cKomandos funkcija {0} yra iÃ…Â¡jungta."
+    command-function-disabled: "&cKomandos funkcija {0} yra iÅ¡jungta."
 
     # Message sent when a database operation has not been successfully performed.
-    database-error: "&cDeja, mums nepavyko uÃ…Â¾baigti Ã…Â¡ios operacijos. PraÃ…Â¡au, pabandykite dar kartÃ„â€¦. [SQL FAIL]"
+    database-error: "&cDeja, mums nepavyko uÅ¾baigti Å¡ios operacijos. PraÅ¡au, pabandykite dar kartÄ…. [SQL FAIL]"
 
   other-messages:
     # Hover message: /login.
-    hover-message-login: "&7SpustelÃ„â€”kite Ã„Âia, kad uÃ…Â¾baigtumÃ„â€”te komandÃ„â€¦ ir greitai prisijungtumÃ„â€”te."
+    hover-message-login: "&7SpustelÄ—kite Äia, kad uÅ¾baigtumÄ—te komandÄ… ir greitai prisijungtumÄ—te."
 
     # Hover message: /register.
-    hover-message-register: "&7SpustelÃ„â€”kite Ã„Âia, kad uÃ…Â¾baigtumÃ„â€”te komandÃ„â€¦ ir greitai uÃ…Â¾registruotumÃ„â€”te."
+    hover-message-register: "&7SpustelÄ—kite Äia, kad uÅ¾baigtumÄ—te komandÄ… ir greitai uÅ¾registruotumÄ—te."
 
     # Command usage: /login
-    message-login: "&eNaudokite komandÃ„â€¦ &7/login <slaptaÃ…Â¾odis>&e."
+    message-login: "&eNaudokite komandÄ… &7/login <slaptaÅ¾odis>&e."
 
     # Command usage: /register
-    message-register: "&eNaudokite komandÃ„â€¦ &7/register <slaptaÃ…Â¾odis> <slaptaÃ…Â¾odis>&e."
+    message-register: "&eNaudokite komandÄ… &7/register <slaptaÅ¾odis> <slaptaÅ¾odis>&e."
 
     # Command usage: /changepassword
-    message-changepassword: "&eNaudokite komandÃ„â€¦ &7/changepassword <dabartinis slaptaÃ…Â¾odis> <naujas slaptaÃ…Â¾odis>&e."
+    message-changepassword: "&eNaudokite komandÄ… &7/changepassword <dabartinis slaptaÅ¾odis> <naujas slaptaÅ¾odis>&e."
 
     # Command usage: /checkprofile
-    message-verify: "&eNaudokite komandÃ„â€¦ &7/checkprofile <Ã…Â¾aidÃ„â€”jas>&e."
+    message-verify: "&eNaudokite komandÄ… &7/checkprofile <Å¾aidÄ—jas>&e."
 
     # Command usage: /unregister
-    message-unregister: "&eNaudokite komandÃ„â€¦ &7/unregister <dabartinis slaptaÃ…Â¾odis>&e."
+    message-unregister: "&eNaudokite komandÄ… &7/unregister <dabartinis slaptaÅ¾odis>&e."

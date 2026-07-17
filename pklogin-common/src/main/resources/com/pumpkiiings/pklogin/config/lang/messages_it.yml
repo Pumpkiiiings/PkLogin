@@ -1,4 +1,4 @@
-﻿#  ________  ___  __    ___       ________  ________  ___  ________     
+#  ________  ___  __    ___       ________  ________  ___  ________     
 # |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
 # \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
 #  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
@@ -11,8 +11,6 @@
 
 # Tradotto in Italiano da Peppe73
 # Spigot: https://www.spigotmc.org/members/peppe73.693388/
-
-version: "1.1"
 
 Messages:
   Title:
@@ -73,7 +71,7 @@ Messages:
 
   successful-operations:
     # Messaggio quando un utente scambia la propria password
-    password-changed: "&aLa tua password Ã¨ stata cambiata con successo."
+    password-changed: "&aLa tua password è stata cambiata con successo."
 
     # Messaggio inviato quando un utente accede con successo
     successful-login: "&aHai effettuato l'accesso con successo."
@@ -86,38 +84,38 @@ Messages:
 
   kick-messages:
     # Messaggio quando un giocatore tenta di accedere al server con una piccola differenza nel nickname
-    nick-already-registered: "&cNon puoi entrare con questo nickname {0}&r\n&r&cQuesto nome utente Ã¨ giÃ  registrato come {1}&r\n&r\n&r&cPer entrare, devi usare il tuo nickname senza maiuscole/minuscole"
+    nick-already-registered: "&cNon puoi entrare con questo nickname {0}&r\n&r&cQuesto nome utente è già registrato come {1}&r\n&r\n&r&cPer entrare, devi usare il tuo nickname senza maiuscole/minuscole"
 
     # Messaggio inviato quando un utente perde molte volte
     failed-many-times: "&cPassword errata."
 
-    # Messaggio inviato quando la password inserita non Ã¨ corretta
+    # Messaggio inviato quando la password inserita non è corretta
     incorrect-password: "&cPassword errata. Per favore riprova."
 
     # Messaggio inviato quando un giocatore inserisce un nickname non valido.
     invalid-nickname: "&cSpiacente, stai usando un nickname non valido."
 
   error-messages:
-    # Messaggio inviato quando sei giÃ  loggato.
-    already-login: "&cSei giÃ  loggato."
+    # Messaggio inviato quando sei già loggato.
+    already-login: "&cSei già loggato."
 
-    # Messaggio inviato quando Ã¨ giÃ  stato registrato un nickname.
-    already-registered: "&cQuesto nickname Ã¨ giÃ  stato registrato."
+    # Messaggio inviato quando è già stato registrato un nickname.
+    already-registered: "&cQuesto nickname è già stato registrato."
 
-    # Messaggio inviato quando un nickname non Ã¨ stato ancora registrato.
-    not-registered: "&cQuesto nickname Ã¨ ancora libero."
+    # Messaggio inviato quando un nickname non è stato ancora registrato.
+    not-registered: "&cQuesto nickname è ancora libero."
 
-    # Messaggio inviato quando la password inserita non Ã¨ uguale alla seconda
+    # Messaggio inviato quando la password inserita non è uguale alla seconda
     passwords-dont-match: "&cLe password non sono le stesse."
 
     # Messaggio inviato quando un giocatore tenta di cambiare la password inserendo la stessa password di quella corrente
-    password-same-as-old: "&cLa password inserita Ã¨ la stessa di quella corrente."
+    password-same-as-old: "&cLa password inserita è la stessa di quella corrente."
 
-    # Messaggio inviato quando la password inserita Ã¨ troppo grande
-    password-too-large: "&cLa password inserita Ã¨ troppo lunga."
+    # Messaggio inviato quando la password inserita è troppo grande
+    password-too-large: "&cLa password inserita è troppo lunga."
 
-    # Messaggio inviato quando la password inserita Ã¨ troppo piccola
-    password-too-small: "&cLa password inserita Ã¨ troppo corta."
+    # Messaggio inviato quando la password inserita è troppo piccola
+    password-too-small: "&cLa password inserita è troppo corta."
     insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
     change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
 
@@ -125,16 +123,16 @@ Messages:
     insufficient-permissions: "&cNon sei autorizzato ad eseguire questo comando."
 
     # Messaggio per cacciare un giocatore ora online
-    already-online: "&cQuesto giocatore Ã¨ giÃ  online."
+    already-online: "&cQuesto giocatore è già online."
 
-    # Messaggio per mostrare che il comando non puÃ² essere eseguito tramite console
-    player-command-usage: "&cQuesto comando Ã¨ stato disattivato tramite console."
+    # Messaggio per mostrare che il comando non può essere eseguito tramite console
+    player-command-usage: "&cQuesto comando è stato disattivato tramite console."
 
     # Messaggio mostrato quando il plugin viene ricaricato.
     plugin-reload-message: "&ePlugin ricaricato con successo."
 
-    # Messaggio inviato quando un'operazione sul database non Ã¨ stata eseguita correttamente
-    database-error: "&cSpiacenti, non Ã¨ stato possibile completare questa operazione. Per favore riprova. [SQL FAIL]"
+    # Messaggio inviato quando un'operazione sul database non è stata eseguita correttamente
+    database-error: "&cSpiacenti, non è stato possibile completare questa operazione. Per favore riprova. [SQL FAIL]"
 
   other-messages:
     # Messaggio inviato per o utilizzando il comando /login

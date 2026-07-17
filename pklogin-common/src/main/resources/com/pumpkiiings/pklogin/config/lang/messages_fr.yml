@@ -1,4 +1,4 @@
-﻿#  ________  ___  __    ___       ________  ________  ___  ________     
+#  ________  ___  __    ___       ________  ________  ___  ________     
 # |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
 # \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
 #  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
@@ -10,8 +10,6 @@
 # Discord: https://www.pumpkiiings.com/discord
 
 # French translation by shuxx (https://github.com/shuxx)
-
-version: "1.1"
 
 Messages:
   Title:
@@ -34,7 +32,7 @@ Messages:
     # Message sent after login
     after-login:
       title: ""
-      subtitle: "&aTu es bien connectÃ©!"
+      subtitle: "&aTu es bien connecté!"
       delays:
         start: 0
         duration: 60
@@ -42,7 +40,7 @@ Messages:
     # Message sent after register
     after-register:
       title: ""
-      subtitle: "&aTu es bien enregistrÃ©!"
+      subtitle: "&aTu es bien enregistré!"
       delays:
         start: 0
         duration: 60
@@ -65,55 +63,55 @@ Messages:
 
   delay-kick:
     # Message sent when a user takes a long time to register
-    register-kick: "&cTu as mis trop de temps Ã  t'enregistrer."
+    register-kick: "&cTu as mis trop de temps à t'enregistrer."
 
     # Message sent when a user takes a long time to log in
-    login-kick: "&cTu as mis trop de temps Ã  te connecter"
+    login-kick: "&cTu as mis trop de temps à te connecter"
 
   successful-operations:
     # Message when a user exchanges their password
-    password-changed: "&aTon mot de passe Ã  bien Ã©tÃ© mis Ã  jours."
+    password-changed: "&aTon mot de passe à bien été mis à jours."
 
     # Message sent when a user successfully logs
-    successful-login: "&aTu es bien connectÃ©."
+    successful-login: "&aTu es bien connecté."
 
     # Message sent when a user successfully registers
-    successful-register: "&aTu es bien enregistrÃ©."
+    successful-register: "&aTu es bien enregistré."
 
     # Message sent when a player successfully disregisters
-    unregister-kick: "&cTu est bien dÃ©inscrit."
+    unregister-kick: "&cTu est bien déinscrit."
 
   kick-messages:
     # Message when a player tries to log on to the server with a small difference in the nickname
-    nick-already-registered: "&c Tu ne peux pas te connecter avec ce pseudo {0}&r\n&r&cCe pseudo Ã  dÃ©jÃ  Ã©tÃ© enregistrÃ© en temps que {1}&r\n&r\n&r&c Pour venir ton pseudo doit etre valide."
+    nick-already-registered: "&c Tu ne peux pas te connecter avec ce pseudo {0}&r\n&r&cCe pseudo à déjà été enregistré en temps que {1}&r\n&r\n&r&c Pour venir ton pseudo doit etre valide."
 
     # Message sent when a user misses many times
     failed-many-times: "&cMot de passe incorrect"
 
     # Message sent when password entered is incorrect
-    incorrect-password: "&cMot de passe incorrect, merci de rÃ©essayer."
+    incorrect-password: "&cMot de passe incorrect, merci de réessayer."
 
   error-messages:
     # Message sent when you are already logged in.
-    already-login: "&c Tu es dÃ©jÃ  connectÃ©."
+    already-login: "&c Tu es déjà connecté."
 
     # Message sent when a nickname has already been registered.
-    already-registered: "&c Ce pseudo est dÃ©jÃ  enregistrÃ©."
+    already-registered: "&c Ce pseudo est déjà enregistré."
 
     # Message sent when a nickname has not yet been registered.
-    not-registered: "&cCe pseudo n'as pas encore Ã©tÃ© enregistrÃ©."
+    not-registered: "&cCe pseudo n'as pas encore été enregistré."
 
     # Message sent when the entered password is not equal to the second
     passwords-dont-match: "&cLes mots de passe ne correspondent pas."
 
     # Message sent when a player tries to change password by entering the same password as the current
-    password-same-as-old: "&cLe mot de passe est identique Ã  l'ancien."
+    password-same-as-old: "&cLe mot de passe est identique à l'ancien."
 
     # Message sent when the password entered is too large
-    password-too-large: "&cLe mot de passe entrÃ© est trop long."
+    password-too-large: "&cLe mot de passe entré est trop long."
 
     # Message sent when the password entered is too small
-    password-too-small: "&cLe mot de passe entrÃ© est trop court"
+    password-too-small: "&cLe mot de passe entré est trop court"
     insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
     change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
 
@@ -121,16 +119,16 @@ Messages:
     insufficient-permissions: "&cTu n'as pas la permission d'utiliser cette commande."
 
     # Message to kick a player now online
-    already-online: "&cCe joueur est dÃ©jÃ  en ligne."
+    already-online: "&cCe joueur est déjà en ligne."
 
     # Message to show that the command cannot be executed via console
-    player-command-usage: "&cLa commande Ã  Ã©tÃ© dÃ©sactivÃ© via la console."
+    player-command-usage: "&cLa commande à été désactivé via la console."
 
     # Message shown when the plugin is reloaded.
-    plugin-reload-message: "&eLe plugin Ã  Ã©tÃ© rechargÃ©."
+    plugin-reload-message: "&eLe plugin à été rechargé."
 
     # Message sent when a database operation has not been successfully performed
-    database-error: "&cDÃ©solÃ© impossible d'effectuer l'action. Merci de rÃ©essayer."
+    database-error: "&cDésolé impossible d'effectuer l'action. Merci de réessayer."
 
   other-messages:
     # Mensagem enviada para o uso do comando /logar

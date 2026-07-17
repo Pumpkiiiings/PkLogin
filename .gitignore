@@ -29,3 +29,7 @@ fg_cache/
 # Compiled artifacts - keep the source, not the builds
 *.jar
 !gradlew.bat
+
+# Translator
+pklogin-translator/translator-config.yml
+pklogin-translator/cache.json

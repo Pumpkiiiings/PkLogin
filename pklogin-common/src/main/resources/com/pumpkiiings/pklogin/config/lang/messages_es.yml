@@ -1,4 +1,4 @@
-﻿#  ________  ___  __    ___       ________  ________  ___  ________     
+#  ________  ___  __    ___       ________  ________  ___  ________     
 # |\   __  \|\  \|\  \ |\  \     |\   __  \|\   ____\|\  \|\   ___  \  
 # \ \  \|\  \ \  \/  /|\ \  \    \ \  \|\  \ \  \___|\ \  \ \  \\ \  \ 
 #  \ \   ____\ \   ___  \ \  \    \ \  \\\  \ \  \  __\ \  \ \  \\ \  \ 
@@ -9,240 +9,237 @@
 # Site oficial: https://www.pumpkiiings.com
 # Discord: https://www.pumpkiiings.com/discord
 
-version: "1.1"
-
+version: '1.1'
 Messages:
   Title:
     # Mensagem enviada antes de logar
     before-login:
-      title: "&a&lÂ¡Bienvenido!"
-      subtitle: "&7Usa: /login <contraseÃ±a>."
+      title: '&a&l¡Bienvenido!'
+      subtitle: '&7Usa: /login <contraseña>.'
       delays:
         start: 0
         duration: 9999
         end: 6
     # Mensagem enviada antes de registrar
     before-register:
-      title: "&a&lÂ¡Bienvenido!"
-      subtitle: "&7Usa: /register <contraseÃ±a> <contraseÃ±a>."
+      title: '&a&l¡Bienvenido!'
+      subtitle: '&7Usa: /register <contraseña> <contraseña>.'
       delays:
         start: 0
         duration: 9999
         end: 6
-    # Mensagem enviada apÃ³s logar
+    # Mensagem enviada após logar
     after-login:
-      title: ""
-      subtitle: "&aÂ¡Has inicio sesiÃ³n con Ã©xito!"
+      title: ''
+      subtitle: '&a¡Has inicio sesión con éxito!'
       delays:
         start: 0
         duration: 30
         end: 6
-    # Mensagem enviada apÃ³s registrar
+    # Mensagem enviada após registrar
     after-register:
-      title: ""
-      subtitle: "&aÂ¡Te has registrado con Ã©xito!"
+      title: ''
+      subtitle: '&a¡Te has registrado con éxito!'
       delays:
         start: 0
         duration: 30
         end: 6
-    # Mensagem enviada tras iniciar sesiÃ³n automÃ¡ticamente con Bedrock
-    bedrock-auto-login:
-      title: "&a&lÂ¡Bienvenido!"
-      subtitle: "&7SesiÃ³n iniciada como &eBedrock&7."
-      delays:
-        start: 0
-        duration: 30
-        end: 6
-    # Mensagem enviada tras iniciar sesiÃ³n automÃ¡ticamente con Premium
-    premium-auto-login:
-      title: "&a&lÂ¡Bienvenido!"
-      subtitle: "&7SesiÃ³n iniciada como &6Premium&7."
-      delays:
-        start: 0
-        duration: 30
-        end: 6
-
+        
+        bedrock-auto-login: null
+        title: '&a&lWelcome!'
+        subtitle: '&7Logged in as &eBedrock&7.'
+        delays:
+          start: '0'
+          duration: '30'
+          end: '6'
+      premium-auto-login:
+        title: '&a&lWelcome!'
+        subtitle: '&7Logged in as &6Premium&7.'
+        delays:
+          start: '0'
+          duration: '30'
+          end: '6'
+  
   delay-kick:
-    # Mensagem enviada quando um usuÃ¡rio demora muito para se registrar
-    register-kick: "&cHas tardado mucho en registrarte."
-
-    # Mensagem enviada quando um usuÃ¡rio demora muito para se logar
-    login-kick: "&cHas tardado mucho en iniciar sesiÃ³n."
-
+    # Mensagem enviada quando um usuário demora muito para se registrar
+    register-kick: '&cHas tardado mucho en registrarte.'
+    
+    # Mensagem enviada quando um usuário demora muito para se logar
+    login-kick: '&cHas tardado mucho en iniciar sesión.'
+  
   successful-operations:
-    # Mensagem quando um usuÃ¡rio troca a sua senha
-    password-changed: "&aSu contraseÃ±a ha cambiado con Ã©xito."
-
-    # Mensagem enviada quando um usuÃ¡rio loga com sucesso
-    successful-login: "&aHas iniciado sesiÃ³n con Ã©xito."
-
-    # Mensagem enviada quando um usuÃ¡rio se registra com sucesso
-    successful-register: "&aTe has registrado con Ã©xito."
-
+    # Mensagem quando um usuário troca a sua senha
+    password-changed: '&aSu contraseña ha cambiado con éxito.'
+    
+    # Mensagem enviada quando um usuário loga com sucesso
+    successful-login: '&aHas iniciado sesión con éxito.'
+    
+    # Mensagem enviada quando um usuário se registra com sucesso
+    successful-register: '&aTe has registrado con éxito.'
+    
     # Mensagem enviada quando um jogador se desregistra com sucesso
-    unregister-kick: "&cRegistro cancelado con Ã©xito."
-
+    unregister-kick: '&cRegistro cancelado con éxito.'
+  
   kick-messages:
-    # Mensagem quando um jogador tenta se logar no servidor com uma pequena diferenÃ§a no nick
-    nick-already-registered: "&cNo podÃ©s entrar con el nick {0}&r\n&r&cEste nick ya ha sido registrado como {1}&r\n&r&r\n&r&cPara entrar, debes ingresar tu nick sin letras mayÃºsculas/minÃºsculas"
-
-    # Mensagem enviada quando um usuÃ¡rio erra muitas vezes
-    failed-many-times: "&cLa contraseÃ±a ingresada es incorrecta."
-
-    # Mensagem enviada quando a senha inserida Ã© incorreta
-    incorrect-password: "&cÂ¡ContraseÃ±a incorrecta! Vuelve a intentarlo."
-
+    # Mensagem quando um jogador tenta se logar no servidor com uma pequena diferença no nick
+    nick-already-registered: |-
+      &cNo podés entrar con el nick {0}&r
+      &r&cEste nick ya ha sido registrado como {1}&r
+      &r&r
+      &r&cPara entrar, debes ingresar tu nick sin letras mayúsculas/minúsculas
+    
+    # Mensagem enviada quando um usuário erra muitas vezes
+    failed-many-times: '&cLa contraseña ingresada es incorrecta.'
+    
+    # Mensagem enviada quando a senha inserida é incorreta
+    incorrect-password: '&c¡Contraseña incorrecta! Vuelve a intentarlo.'
+    
+    # Message sent when a player enters an invalid nickname.
+    invalid-nickname: '&cSorry, but you are using an invalid nickname.'
+  
   error-messages:
-    # Mensaje enviado cuando ya estÃ¡ conectado.
-    already-login: "&cYa has iniciado sesiÃ³n."
-
+    # Mensaje enviado cuando ya está conectado.
+    already-login: '&cYa has iniciado sesión.'
+    
     # Mensaje enviado cuando ya se ha registrado un apodo.
-    already-registered: "&cEste usuario ya ha sido registrado."
-
-    # Mensaje enviado cuando aÃºn no se ha registrado un apodo.
-    not-registered: "&cEste usuario aÃºn no se ha registrado."
-
-    # Mensagem enviada quando a senha inserida nÃ£o Ã© igual a segunda
-    passwords-dont-match: "&cLas contraseÃ±as no coinciden."
-
+    already-registered: '&cEste usuario ya ha sido registrado.'
+    
+    # Mensaje enviado cuando aún no se ha registrado un apodo.
+    not-registered: '&cEste usuario aún no se ha registrado.'
+    
+    # Mensagem enviada quando a senha inserida não é igual a segunda
+    passwords-dont-match: '&cLas contraseñas no coinciden.'
+    
     # Mensagem enviada quando um jogador tenta mudar senha inserindo a mesma senha que a atual
-    password-same-as-old: "&cLa contraseÃ±a introducida es la misma que la actual."
-
-    # Mensagem enviada quando a senha inserida Ã© muito grande
-    password-too-large: "&cSu contraseÃ±a es demasiado grande. MÃ¡ximo &e{0} &ccaracteres permitidos."
-
-    # Mensagem enviada quando a senha inserida Ã© muito pequena
-    password-too-small: "&cLa contraseÃ±a introducida es muy corta."
-
-    # Mensagem enviada caso a senha nÃ£o atenda aos requisitos de seguranÃ§a (regex)
-    insecure-password: "&cTu contraseÃ±a es muy dÃ©bil. Debe incluir nÃºmeros, letras mayÃºsculas, minÃºsculas y sÃ­mbolos."
-
-    # Mensagem enviada caso o jogador seja forÃ§ado a mudar a senha (enforce mode)
-    change-password-enforced: "&cPor razones de seguridad, debes actualizar tu contraseÃ±a ahora mismo usando &e/changepassword&c."
-
-    # Mensagem quando um jogador nÃ£o possuÃ­ a permissÃ£o necessÃ¡ria
-    insufficient-permissions: "&cNo tienes permiso para ejecutar este comando."
-
-    # Mensagem para kickar um jogador jÃ¡ online
-    already-online: "&cEste usuario ya estÃ¡ en lÃ­nea."
-
-    # Mensagem para mostrar que o comando nÃ£o pode ser executado via console
-    player-command-usage: "&cEste comando se ha inhabilitado a travÃ©s de la consola."
-
-    # Mensagem mostrada quando o plugin Ã© recarregado
-    plugin-reload-message: "&eEl plugin se ha recargado con Ã©xito."
-
-    # Mensaje enviado cuando una operaciÃ³n de base de datos no se ha realizado correctamente
-    database-error: "&cLo sentimos, no pudimos completar esta operaciÃ³n. IntÃ©ntalo de nuevo. [SQL FAIL]"
-    max-ips-reached: "&cHas alcanzado el lÃ­mite mÃ¡ximo de cuentas registradas en esta IP."
-
+    password-same-as-old: '&cLa contraseña introducida es la misma que la actual.'
+    
+    # Mensagem enviada quando a senha inserida é muito grande
+    password-too-large: '&cSu contraseña es demasiado grande. Máximo &e{0} &ccaracteres permitidos.'
+    
+    # Mensagem enviada quando a senha inserida é muito pequena
+    password-too-small: '&cLa contraseña introducida es muy corta.'
+    
+    # Mensagem enviada caso a senha não atenda aos requisitos de segurança (regex)
+    insecure-password: '&cTu contraseña es muy débil. Debe incluir números, letras mayúsculas, minúsculas y símbolos.'
+    
+    # Mensagem enviada caso o jogador seja forçado a mudar a senha (enforce mode)
+    change-password-enforced: '&cPor razones de seguridad, debes actualizar tu contraseña ahora mismo usando &e/changepassword&c.'
+    
+    # Mensagem quando um jogador não possuí a permissão necessária
+    insufficient-permissions: '&cNo tienes permiso para ejecutar este comando.'
+    
+    # Mensagem para kickar um jogador já online
+    already-online: '&cEste usuario ya está en línea.'
+    
+    # Mensagem para mostrar que o comando não pode ser executado via console
+    player-command-usage: '&cEste comando se ha inhabilitado a través de la consola.'
+    
+    # Mensagem mostrada quando o plugin é recarregado
+    plugin-reload-message: '&eEl plugin se ha recargado con éxito.'
+    
+    # Mensaje enviado cuando una operación de base de datos no se ha realizado correctamente
+    database-error: '&cLo sentimos, no pudimos completar esta operación. Inténtalo de nuevo. [SQL FAIL]'
+  
   other-messages:
     # Mensagem enviada para o uso do comando /logar
-    message-login: "&eUtilice el comando &7/login <contraseÃ±a>&e."
-
+    message-login: '&eUtilice el comando &7/login <contraseña>&e.'
+    
     # Mensagem enviada para o uso do comando /register
-    message-register: "&eUtilice el comando &7/register <contraseÃ±a> <contraseÃ±a>&e."
-
+    message-register: '&eUtilice el comando &7/register <contraseña> <contraseña>&e.'
+    
     # Mensagem enviada para o uso do comando /mudarsenha
-    message-changepassword: "&eUtilice el comando &7/changepassword <contraseÃ±a actual> <nueva contraseÃ±a>&e."
-
+    message-changepassword: '&eUtilice el comando &7/changepassword <contraseña actual> <nueva contraseña>&e.'
+    
     # Mensaje enviado para usar el comando /unregister
-    message-unregister: "&eUtilice el comando &7/unregister <contraseÃ±a actual>&e."
-
-    updates-failed: "&cNo se pudieron buscar nuevas actualizaciones."
-    updates-download-link: "&cDescarga la Ãºltima versiÃ³n en: https://github.com/Pumpkiiiings/PkLogin/releases"
-    updates-invalid-response: "&cNo se pudieron buscar nuevas actualizaciones: respuesta invÃ¡lida de GitHub."
-    updates-available: "&eÂ¡Hay una nueva versiÃ³n de PkLogin disponible! ({0} -> {1})"
-
+    message-unregister: '&eUtilice el comando &7/unregister <contraseña actual>&e.'
+    
+    updates-failed: '&cFailed to find new updates.'
+    updates-download-link: '&cDownload the latest version at: https://github.com/Pumpkiiiings/PkLogin/releases'
+    updates-invalid-response: '&cFailed to find new updates: invalid response.'
+    updates-available: '&eA new version of PkLogin is available! ({0} -> {1})'
+  
   admin:
-    help:
+    help: 
       - "&8&m----------------------------------------"
-      - "&b&lPkLogin &8| &7Ayuda de Admin"
+      - "&b&lPkLogin &8| &7Admin Help"
       - ""
-      - "&b/pklogin help &8- &7Muestra este mensaje de ayuda"
-      - "&b/pklogin forcelogin <jugador> &8- &7Forzar el inicio de sesiÃ³n de un jugador"
-      - "&b/pklogin unregister <jugador> &8- &7Eliminar el registro de un jugador"
-      - "&b/pklogin changepassword <jugador> <contraseÃ±a> &8- &7Cambiar contraseÃ±a"
-      - "&b/pklogin premium <jugador> &8- &7Establecer un jugador como premium"
-      - "&b/pklogin cracked <jugador> &8- &7Establecer un jugador como no-premium"
-      - "&b/pklogin update &8- &7Actualizar el plugin"
-      - "&b/pklogin setspawn &8- &7Establecer el punto de apariciÃ³n"
-      - "&b/pklogin reload &8- &7Recargar la configuraciÃ³n"
+      - "&b/pklogin help &8- &7Show this help message"
+      - "&b/pklogin forcelogin <player> &8- &7Force login a player"
+      - "&b/pklogin unregister <player> &8- &7Unregister a player"
+      - "&b/pklogin changepassword <player> <password> &8- &7Change a player's password"
+      - "&b/pklogin premium <player> &8- &7Set a player as premium"
+      - "&b/pklogin cracked <player> &8- &7Set a player as cracked"
+      - "&b/pklogin update &8- &7Update the plugin"
+      - "&b/pklogin setspawn &8- &7Set the spawn location"
+      - "&b/pklogin reload &8- &7Reload the configuration"
       - "&8&m----------------------------------------"
-    usage-command: "&eUso correcto: &b%command% %arg%"
-    forcelogin-success: "&aEl jugador {0} ha sido autenticado a la fuerza."
-    unregister-success: "&aEl jugador {0} ha sido desregistrado."
-    changepass-success: "&aLa contraseÃ±a del jugador {0} ha sido cambiada."
-    changepass-kick: "&cTu contraseÃ±a ha sido cambiada por un administrador."
-    dupeip-header: "&eCuentas para la IP/Jugador &a{0}&e:"
-    dupeip-format: "&7- &f{0} &8(&7{1}&8)"
-    dupeip-none: "&cNo se encontraron cuentas para esa IP/Jugador."
-    authme-import-start: "&7Iniciando importaciÃ³n de AuthMe..."
-    authme-import-not-found: "&cNo se encontrÃ³ la base de datos SQLite de AuthMe."
-    authme-import-found: "&7Base de datos de AuthMe encontrada en &f{0} &7con &f{1} &7cuentas."
-    authme-import-progress: "&7Progreso: &f{0} &7/ &f{1}"
-    authme-import-done: "&aÂ¡ImportaciÃ³n completa! &7Los jugadores serÃ¡n re-hasheados a &f{0} &7en su prÃ³ximo inicio de sesiÃ³n."
-    authme-import-fail: "&cError al leer la base de datos de AuthMe: {0}"
-    delete-success: "&aEl jugador {0} ha sido eliminado."
-    setspawn-success: "&aÂ¡Punto de apariciÃ³n establecido exitosamente!"
-    verify-format: 
-      - "&a[PkLogin] Info de {0}:"
-      - "&7IP Address: &f{1}"
-      - "&7Registrado: &f{2}"
-      - "&7Ãšltimo Login: &f{3}"
-      - "&7Premium: &f{4}"
-    account-not-found: "&cCuenta no encontrada."
-
+    usage-command: '&eUso correcto: &b%command% %arg%'
+    forcelogin-success: '&aEl jugador {0} ha sido autenticado a la fuerza.'
+    unregister-success: '&aEl jugador {0} ha sido desregistrado.'
+    changepass-success: '&aLa contraseña del jugador {0} ha sido cambiada.'
+    changepass-kick: '&cTu contraseña ha sido cambiada por un administrador.'
+    dupeip-header: '&eCuentas para la IP/Jugador &a{0}&e:'
+    dupeip-format: '&7- &f{0} &8(&7{1}&8)'
+    dupeip-none: '&cNo se encontraron cuentas para esa IP/Jugador.'
+    authme-import-start: '&7Iniciando importación de AuthMe...'
+    authme-import-not-found: '&cNo se encontró la base de datos SQLite de AuthMe.'
+    authme-import-found: '&7Base de datos de AuthMe encontrada en &f{0} &7con &f{1} &7cuentas.'
+    authme-import-progress: '&7Progreso: &f{0} &7/ &f{1}'
+    authme-import-done: '&a¡Importación completa! &7Los jugadores serán re-hasheados a &f{0} &7en su próximo inicio de sesión.'
+    authme-import-fail: '&cError al leer la base de datos de AuthMe: {0}'
+    delete-success: '&aPlayer {0} has been deleted.'
+    setspawn-success: '&aSpawn location set successfully!'
+    verify-format: '[&a[PkLogin] Info for {0}:, &7IP Address: &f{1}, &7Registered: &f{2}, &7Last Login: &f{3}, &7Premium: &f{4}]'
+    account-not-found: '&cAccount not found.'
+  
   two-factor:
-    usage: "&eUso: /2fa <setup|verify|disable|discord|verify2fa>"
-    not-registered: "&cDebes estar registrado para usar 2FA."
-    not-logged-in-setup: "&cDebes iniciar sesiÃ³n para configurar el 2FA."
-    already-setup: "&cEl 2FA ya estÃ¡ configurado en tu cuenta."
-    setup-header: "&e--- ConfiguraciÃ³n 2FA ---"
-    setup-secret: "&eClave secreta: &a{0}"
-    setup-instruction1: "&ePor favor ingresa este cÃ³digo en tu app de autenticaciÃ³n."
-    setup-instruction2: "&eLuego, verifÃ­calo usando: &a/2fa verify <cÃ³digo>"
-    setup-success: "&aÂ¡El 2FA ha sido configurado correctamente!"
-    invalid-code: "&cCÃ³digo 2FA invÃ¡lido. IntÃ©ntalo de nuevo."
-    not-awaiting: "&cNo estÃ¡s esperando verificaciÃ³n de 2FA."
-    not-logged-in-disable: "&cDebes iniciar sesiÃ³n para desactivar el 2FA."
-    not-setup: "&cNo tienes configurado el 2FA."
-    disable-usage: "&eUso: /2fa disable <cÃ³digo>"
-    disable-success: "&aÂ¡El 2FA ha sido desactivado con Ã©xito!"
-    discord-not-logged-in: "&cDebes estar logeado para vincular Discord."
-    discord-already-linked: "&cYa tienes una cuenta de Discord vinculada."
-    discord-link-header: "&e--- VinculaciÃ³n de Discord ---"
-    discord-link-code: "&eCÃ³digo: &a{0}"
-    discord-link-instruction1: "&ePor favor, envÃ­a un Mensaje Privado (DM) a nuestro Bot de Discord con este cÃ³digo."
-    discord-link-instruction2: "&eEl cÃ³digo expirarÃ¡ en 10 minutos."
-    login-success: "&aHas iniciado sesiÃ³n correctamente con 2FA."
-    login-message: "&eTe hemos enviado un cÃ³digo a Discord. Escribe /2fa verify2fa <cÃ³digo> para entrar."
-
+    usage: '&eUso: /2fa <setup|verify|disable|discord|verify2fa>'
+    not-registered: '&cDebes estar registrado para usar 2FA.'
+    not-logged-in-setup: '&cDebes iniciar sesión para configurar el 2FA.'
+    already-setup: '&cEl 2FA ya está configurado en tu cuenta.'
+    setup-header: '&e--- Configuración 2FA ---'
+    setup-secret: '&eClave secreta: &a{0}'
+    setup-instruction1: '&ePor favor ingresa este código en tu app de autenticación.'
+    setup-instruction2: '&eLuego, verifícalo usando: &a/2fa verify <código>'
+    setup-success: '&a¡El 2FA ha sido configurado correctamente!'
+    invalid-code: '&cCódigo 2FA inválido. Inténtalo de nuevo.'
+    not-awaiting: '&cNo estás esperando verificación de 2FA.'
+    not-logged-in-disable: '&cDebes iniciar sesión para desactivar el 2FA.'
+    not-setup: '&cNo tienes configurado el 2FA.'
+    disable-usage: '&eUso: /2fa disable <código>'
+    disable-success: '&a¡El 2FA ha sido desactivado con éxito!'
+    discord-not-logged-in: '&cDebes estar logeado para vincular Discord.'
+    discord-already-linked: '&cYa tienes una cuenta de Discord vinculada.'
+    discord-link-header: '&e--- Vinculación de Discord ---'
+    discord-link-code: '&eCódigo: &a{0}'
+    discord-link-instruction1: '&ePor favor, envía un Mensaje Privado (DM) a nuestro Bot de Discord con este código.'
+    discord-link-instruction2: '&eEl código expirará en 10 minutos.'
+    login-success: '&aHas iniciado sesión correctamente con 2FA.'
+    login-message: '&eTe hemos enviado un código a Discord. Escribe /2fa verify2fa <código> para entrar.'
+  
   offline:
-    already-offline: "&cTu cuenta ya es No-Premium (Cracked)."
-    success: "&aÂ¡Tu cuenta ahora es No-Premium (Cracked)! VolverÃ¡s a usar /login."
-
+    already-offline: '&cTu cuenta ya es No-Premium (Cracked).'
+    success: '&a¡Tu cuenta ahora es No-Premium (Cracked)! Volverás a usar /login.'
+  
   premium:
-    already-premium: "&cYa eres un usuario premium."
-    success: "&aÂ¡Tu cuenta ahora es Premium! Ya no necesitarÃ¡s usar /login."
-    current-mode: "&eTu cuenta estÃ¡ actualmente en modo {0}."
-    warning: 
-      - "&c&lÂ¡ADVERTENCIA CRÃTICA!"
-      - "&cAl activar el modo Premium, tu UUID cambiarÃ¡ a tu UUID oficial de Mojang."
-      - "&cEsto significa que &lPERDERÃS&c todo tu inventario, progreso, dinero e islas en modalidades que usen UUID."
-      - "&cSi estÃ¡s seguro y deseas continuar asumiendo este riesgo:"
-      - "&eUsa /premium confirm para confirmar."
-      - "&eEscribe &a/premium confirm &epara confirmar."
-    auto-login: "&aÂ¡Has iniciado sesiÃ³n automÃ¡ticamente vÃ­a Premium!"
-
+    already-premium: '&cYa eres un usuario premium.'
+    success: '&a¡Tu cuenta ahora es Premium! Ya no necesitarás usar /login.'
+    current-mode: '&eTu cuenta está actualmente en modo {0}.'
+    warning:
+    - '&c&l¡ADVERTENCIA CRÍTICA!'
+    - '&cAl activar el modo Premium, tu UUID cambiará a tu UUID oficial de Mojang.'
+    - '&cEsto significa que &lPERDERÁS&c todo tu inventario, progreso, dinero e islas en modalidades que usen UUID.'
+    - '&cSi estás seguro y deseas continuar asumiendo este riesgo:'
+    - '&eEscribe &a/premium confirm &epara confirmar.'
+    auto-login: '&a¡Has iniciado sesión automáticamente vía Premium!'
+  
   queue:
-    message: "&eTienes &b{0} &esegundos para tu &b{1} &eo serÃ¡s expulsado."
-
+    message: '&eTienes {0} segundos para {1}!'
   captcha:
-    required: "&cÂ¡Debes completar el captcha antes de autenticarte!"
-    success: "&aÂ¡Captcha completado con Ã©xito! Ya puedes iniciar sesiÃ³n/registrarte."
-    failed: "&cÂ¡Captcha incorrecto! IntÃ©ntalo de nuevo."
-    inventory-title: "Haz clic en la &aLana Verde"
-    inventory-item: "&aÂ¡Haz clic aquÃ­!"
-    chat-instruction: "&ePor favor escribe el siguiente cÃ³digo en el chat: &b{code}"
-    map-instruction: "&eÂ¡Mira el mapa en tu mano y escribe el cÃ³digo!"
+    required: '&cYou must complete the captcha before authenticating!'
+    success: '&aCaptcha completed successfully! You can now login/register.'
+    failed: '&cWrong captcha! Try again.'
+    inventory-title: Click the &aGreen Wool
+    inventory-item: '&aClick Me!'
+    chat-instruction: '&ePlease type the following code in chat: &b{code}'
+    map-instruction: '&eLook at the map in your hand and type the code!'

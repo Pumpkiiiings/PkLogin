@@ -197,16 +197,30 @@ public class PkLoginVelocity {
         }
 
         File messagesFile = new File(langFolder, lang);
-        
-        java.io.InputStream defaultResource = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/" + lang);
-        if (defaultResource == null) {
-            defaultResource = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/messages_en.yml");
+        java.io.InputStream specificLangResource = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/" + lang);
+        if (!messagesFile.exists() && specificLangResource != null) {
+            try {
+                java.nio.file.Files.copy(specificLangResource, messagesFile.toPath());
+            } catch (Exception e) {
+                logger.error("Failed to copy default language file", e);
+            }
+        } else if (!messagesFile.exists()) {
+            java.io.InputStream enResourceForCopy = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/messages_en.yml");
+            if (enResourceForCopy != null) {
+                try {
+                    java.nio.file.Files.copy(enResourceForCopy, messagesFile.toPath());
+                } catch (Exception e) {
+                    logger.error("Failed to copy english language file", e);
+                }
+            }
         }
+        
+        java.io.InputStream enBlueprint = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/messages_en.yml");
 
         try {
             ConfigurationVersionManager messagesManager = new ConfigurationVersionManager(
                 messagesFile, 
-                defaultResource
+                enBlueprint
             );
             
             YamlDocument messagesConfig = messagesManager.loadAndMigrate("1.0");

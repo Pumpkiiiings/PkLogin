@@ -2,7 +2,7 @@ package com.pumpkiiings.pklogin.bukkit.skin;
 
 
 import com.pumpkiiings.pklogin.bukkit.PkLoginBukkit;
-import com.pumpkiiings.pklogin.common.skin.SkinFetcher;
+import com.pumpkiiings.pklogin.common.manager.SkinFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;

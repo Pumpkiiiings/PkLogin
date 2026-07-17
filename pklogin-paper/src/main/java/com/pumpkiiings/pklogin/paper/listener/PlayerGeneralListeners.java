@@ -65,8 +65,10 @@ public class PlayerGeneralListeners implements Listener {
         String name = player.getName();
         String message = e.getMessage().toLowerCase();
         String command = message.split(" ")[0];
-        if (!plugin.getLoginManagement().isAuthenticated(name) && !plugin.getCommandManagement().isAllowedCommand(command)) {
-            e.setCancelled(true);
+        if (!plugin.getLoginManagement().isAuthenticated(name)) {
+            if (!command.equals("/login") && !command.equals("/register") && !command.equals("/2fa") && !command.equals("/changepassword")) {
+                e.setCancelled(true);
+            }
         }
     }
 

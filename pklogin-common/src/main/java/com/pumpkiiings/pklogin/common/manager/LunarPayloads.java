@@ -1,4 +1,4 @@
-package com.pumpkiiings.pklogin.common.lunar;
+package com.pumpkiiings.pklogin.common.manager;
 
 public class LunarPayloads {
     public static final String CHANNEL = "lunarclient:pm";

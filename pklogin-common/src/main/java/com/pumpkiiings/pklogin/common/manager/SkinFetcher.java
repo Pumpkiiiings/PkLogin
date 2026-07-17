@@ -1,4 +1,4 @@
-package com.pumpkiiings.pklogin.common.skin;
+package com.pumpkiiings.pklogin.common.manager;
 
 import com.pumpkiiings.pklogin.common.http.HttpClient;
 import lombok.AllArgsConstructor;

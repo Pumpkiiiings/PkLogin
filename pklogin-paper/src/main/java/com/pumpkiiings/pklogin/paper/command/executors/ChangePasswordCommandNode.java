@@ -1,64 +1,53 @@
-/*
- * The MIT License (MIT)
- *
- * Copyright © 2020 - 2026 - PkLogin Contributors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.pumpkiiings.pklogin.paper.command.executors;
 
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
-import com.pumpkiiings.pklogin.paper.command.BukkitAbstractCommand;
 import com.pumpkiiings.pklogin.common.manager.AccountManagement;
 import com.pumpkiiings.pklogin.common.model.Account;
 import com.pumpkiiings.pklogin.common.security.hashing.HashStrategyFactory;
 import com.pumpkiiings.pklogin.common.settings.Messages;
 import com.pumpkiiings.pklogin.common.settings.Settings;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
 import java.util.Optional;
 
-public class ChangePasswordCommand extends BukkitAbstractCommand {
+public class ChangePasswordCommandNode {
 
-    public ChangePasswordCommand(PkLoginPaper plugin) {
-        super(plugin, true, "changepassword");
+    public static LiteralCommandNode<CommandSourceStack> build(PkLoginPaper plugin) {
+        return Commands.literal("changepassword")
+            .executes(context -> {
+                context.getSource().getSender().sendMessage(Messages.MESSAGE_CHANGEPASSWORD.asString());
+                return 1;
+            })
+            .then(Commands.argument("arg1", StringArgumentType.string())
+                .executes(context -> {
+                    context.getSource().getSender().sendMessage(Messages.MESSAGE_CHANGEPASSWORD.asString());
+                    return 1;
+                })
+                .then(Commands.argument("arg2", StringArgumentType.string())
+                    .executes(context -> {
+                        CommandSender sender = context.getSource().getSender();
+                        String arg1 = context.getArgument("arg1", String.class);
+                        String arg2 = context.getArgument("arg2", String.class);
+                        plugin.runAsync(() -> {
+                            if (sender instanceof Player) {
+                                performPlayer((Player) sender, plugin, arg1, arg2);
+                            } else {
+                                performConsole(sender, plugin, arg1, arg2);
+                            }
+                        });
+                        return 1;
+                    })
+                )
+            ).build();
     }
 
-    protected void perform(CommandSender sender, String lb, String[] args) {
-        if (sender instanceof Player) {
-            performPlayer((Player) sender, lb, args);
-        } else {
-            performConsole(sender, lb, args);
-        }
-    }
-
-    private void performPlayer(Player sender, String lb, String[] args) {
-        if (args.length != 2) {
-            sender.sendMessage(Messages.MESSAGE_CHANGEPASSWORD.asString());
-            return;
-        }
-
-        String currentPassword = args[0];
-        String newPassword = args[1];
+    private static void performPlayer(Player sender, PkLoginPaper plugin, String currentPassword, String newPassword) {
         int passwordLength = newPassword.length();
 
         if (passwordLength <= Settings.PASSWORD_SMALL.asInt()) {
@@ -99,7 +88,7 @@ public class ChangePasswordCommand extends BukkitAbstractCommand {
 
         String hashedPassword = HashStrategyFactory.fromSettings().hash(newPassword);
         String address = Objects.requireNonNull(sender.getAddress()).getAddress().getHostAddress();
-        if (!accountManagement.update(name, hashedPassword, address)) {
+        if (!accountManagement.update(name, hashedPassword, address, true)) {
             sender.sendMessage(Messages.DATABASE_ERROR.asString());
             return;
         }
@@ -113,19 +102,12 @@ public class ChangePasswordCommand extends BukkitAbstractCommand {
         }
     }
 
-    private void performConsole(CommandSender sender, String lb, String[] args) {
+    private static void performConsole(CommandSender sender, PkLoginPaper plugin, String playerName, String newPassword) {
         if (!sender.hasPermission("pklogin.admin")) {
             sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
             return;
         }
 
-        if (args.length != 2) {
-            sender.sendMessage("§cUsage: /" + lb + " <player> <new password>");
-            return;
-        }
-
-        String playerName = args[0];
-        String newPassword = args[1];
         int passwordLength = newPassword.length();
 
         if (passwordLength <= Settings.PASSWORD_SMALL.asInt()) {
@@ -166,7 +148,7 @@ public class ChangePasswordCommand extends BukkitAbstractCommand {
         String hashedPassword = HashStrategyFactory.fromSettings().hash(newPassword);
         String address = playerIfOnline != null ?
                 Objects.requireNonNull(playerIfOnline.getAddress()).getAddress().getHostAddress() : null;
-        if (!accountManagement.update(playerName, hashedPassword, address)) {
+        if (!accountManagement.update(playerName, hashedPassword, address, true)) {
             sender.sendMessage(Messages.DATABASE_ERROR.asString());
             return;
         }
@@ -178,4 +160,3 @@ public class ChangePasswordCommand extends BukkitAbstractCommand {
         }
     }
 }
-

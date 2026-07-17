@@ -1,7 +1,7 @@
 package com.pumpkiiings.pklogin.paper.manager;
 
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
-import com.pumpkiiings.pklogin.common.lunar.LunarPayloads;
+import com.pumpkiiings.pklogin.common.manager.LunarPayloads;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;

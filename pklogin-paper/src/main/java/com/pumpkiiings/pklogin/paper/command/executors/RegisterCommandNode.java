@@ -1,68 +1,59 @@
-/*
- * The MIT License (MIT)
- *
- * Copyright © 2020 - 2026 - PkLogin Contributors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.pumpkiiings.pklogin.paper.command.executors;
 
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
 import com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent;
 import com.pumpkiiings.pklogin.api.event.bukkit.AsyncRegisterEvent;
-import com.pumpkiiings.pklogin.paper.command.BukkitAbstractCommand;
-
 import com.pumpkiiings.pklogin.common.manager.AccountManagement;
 import com.pumpkiiings.pklogin.common.manager.LoginManagement;
 import com.pumpkiiings.pklogin.common.security.hashing.HashStrategyFactory;
 import com.pumpkiiings.pklogin.common.settings.Messages;
 import com.pumpkiiings.pklogin.common.settings.Settings;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
-public class RegisterCommand extends BukkitAbstractCommand {
+public class RegisterCommandNode {
 
-    public RegisterCommand(PkLoginPaper plugin) {
-        super(plugin, "register");
+    public static LiteralCommandNode<CommandSourceStack> build(PkLoginPaper plugin) {
+        return Commands.literal("register")
+            .executes(context -> {
+                context.getSource().getSender().sendMessage(Messages.MESSAGE_REGISTER.asString());
+                return 1;
+            })
+            .then(Commands.argument("arg1", StringArgumentType.string())
+                .executes(context -> {
+                    context.getSource().getSender().sendMessage(Messages.MESSAGE_REGISTER.asString());
+                    return 1;
+                })
+                .then(Commands.argument("arg2", StringArgumentType.string())
+                    .executes(context -> {
+                        CommandSender sender = context.getSource().getSender();
+                        String arg1 = context.getArgument("arg1", String.class);
+                        String arg2 = context.getArgument("arg2", String.class);
+                        
+                        plugin.runAsync(() -> {
+                            if (sender instanceof Player) {
+                                performPlayer((Player) sender, plugin, arg1, arg2);
+                            } else {
+                                performConsole(sender, plugin, arg1, arg2);
+                            }
+                        });
+                        return 1;
+                    })
+                )
+            ).build();
     }
 
-    protected void perform(CommandSender sender, String lb, String[] args) {
-        if (sender instanceof Player) {
-            performPlayer((Player) sender, lb, args);
-        } else {
-            performConsole(sender, lb, args);
-        }
-    }
-
-    private void performPlayer(Player sender, String lb, String[] args) {
+    private static void performPlayer(Player sender, PkLoginPaper plugin, String password, String repeatPassword) {
         String name = sender.getName();
         LoginManagement loginManagement = plugin.getLoginManagement();
         if (loginManagement.isAuthenticated(name)) {
             sender.sendMessage(Messages.ALREADY_LOGIN.asString());
-            return;
-        }
-
-        if (args.length != 2) {
-            sender.sendMessage(Messages.MESSAGE_REGISTER.asString());
             return;
         }
 
@@ -75,7 +66,6 @@ public class RegisterCommand extends BukkitAbstractCommand {
             }
         }
 
-        String password = args[0];
         int passwordLength = password.length();
 
         if (passwordLength <= Settings.PASSWORD_SMALL.asInt()) {
@@ -88,7 +78,7 @@ public class RegisterCommand extends BukkitAbstractCommand {
             return;
         }
 
-        if (!password.equals(args[1])) {
+        if (!password.equals(repeatPassword)) {
             sender.sendMessage(Messages.PASSWORDS_DONT_MATCH.asString());
             return;
         }
@@ -120,31 +110,23 @@ public class RegisterCommand extends BukkitAbstractCommand {
 
             com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(sender, Messages.TITLE_AFTER_REGISTER.asTitle().title, Messages.TITLE_AFTER_REGISTER.asTitle().subtitle, Messages.TITLE_AFTER_REGISTER.asTitle().start, Messages.TITLE_AFTER_REGISTER.asTitle().duration, Messages.TITLE_AFTER_REGISTER.asTitle().end);
             sender.sendMessage(Messages.SUCCESSFUL_REGISTER.asString());
-            Player player = (Player) sender;
-            player.getScheduler().run(plugin, task -> {
-                player.setWalkSpeed(0.2F);
-                player.setFlySpeed(0.1F);
-                com.pumpkiiings.pklogin.paper.manager.LimboManager.removeLimboState(plugin, player);
-                com.pumpkiiings.pklogin.paper.manager.LimboManager.restoreLastLocation(player);
+            sender.getScheduler().run(plugin, task -> {
+                sender.setWalkSpeed(0.2F);
+                sender.setFlySpeed(0.1F);
+                com.pumpkiiings.pklogin.paper.manager.LimboManager.removeLimboState(plugin, sender);
+                com.pumpkiiings.pklogin.paper.manager.LimboManager.restoreLastLocation(sender);
             }, null);
 
             new AsyncAuthenticateEvent(sender).callEvt();
         }
     }
 
-    private void performConsole(CommandSender sender, String lb, String[] args) {
+    private static void performConsole(CommandSender sender, PkLoginPaper plugin, String playerName, String password) {
         if (!sender.hasPermission("pklogin.admin")) {
             sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
             return;
         }
 
-        if (args.length != 2) {
-            sender.sendMessage("§cUsage: /" + lb + " <player> <password>");
-            return;
-        }
-
-        String playerName = args[0];
-        String password = args[1];
         int passwordLength = password.length();
 
         if (passwordLength <= Settings.PASSWORD_SMALL.asInt()) {
@@ -199,4 +181,3 @@ public class RegisterCommand extends BukkitAbstractCommand {
         }
     }
 }
-

@@ -44,7 +44,7 @@ public class PlayerAuthenticateListener implements Listener {
         
         java.util.Optional<com.pumpkiiings.pklogin.common.model.Account> accountOpt = plugin.getAccountManagement().retrieveOrLoad(player.getName());
         if (accountOpt.isPresent() && accountOpt.get().getUuidType() != null && accountOpt.get().getUuidType().equals("REAL")) {
-            com.pumpkiiings.pklogin.common.skin.SkinFetcher.SkinData data = com.pumpkiiings.pklogin.common.skin.SkinFetcher.fetchSkin(player.getUniqueId());
+            com.pumpkiiings.pklogin.common.manager.SkinFetcher.SkinData data = com.pumpkiiings.pklogin.common.manager.SkinFetcher.fetchSkin(player.getUniqueId());
             if (data != null) {
                 com.pumpkiiings.pklogin.bukkit.skin.BukkitSkinApplier.applySkin(player, data, plugin);
             }

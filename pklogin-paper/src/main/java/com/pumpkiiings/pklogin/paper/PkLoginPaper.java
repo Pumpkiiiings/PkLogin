@@ -25,7 +25,6 @@
 package com.pumpkiiings.pklogin.paper;
 
 import com.pumpkiiings.pklogin.paper.api.OLBukkitAPI;
-import com.pumpkiiings.pklogin.paper.command.CommandManagement;
 import com.pumpkiiings.pklogin.paper.listener.PlayerAuthenticateListener;
 import com.pumpkiiings.pklogin.paper.listener.PlayerGeneralListeners;
 import com.pumpkiiings.pklogin.paper.listener.PlayerJoinListeners;
@@ -62,7 +61,6 @@ public class PkLoginPaper extends JavaPlugin {
 
     private LoginManagement loginManagement;
     private AccountManagement accountManagement;
-    private CommandManagement commandManagement;
 
     private Database database;
     private PluginSettings pluginSettings;
@@ -154,8 +152,9 @@ public class PkLoginPaper extends JavaPlugin {
 
 
         // setup commands
-        commandManagement = new CommandManagement(this);
-        commandManagement.register();
+        this.getLifecycleManager().registerEventHandler(io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents.COMMANDS, event -> {
+            com.pumpkiiings.pklogin.paper.command.CommandRegistrar.register(this, event.registrar());
+        });
 
         // setup logger filter
         LoggerFilterManager.setup(getLogger());

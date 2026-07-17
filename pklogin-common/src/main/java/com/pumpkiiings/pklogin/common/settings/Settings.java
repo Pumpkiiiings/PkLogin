@@ -94,39 +94,39 @@ public enum Settings {
             ""
     ),
     PREMIUM_PROXY_MODE(
-            "premium.proxy-mode",
+            "proxy-mode",
             false
     ),
     APPENDER_ENABLED(
-            "premium.username-appender.enabled",
+            "username-appender.enabled",
             false
     ),
     APPENDER_PREMIUM_APPENDIX(
-            "premium.username-appender.premium.username-appendix",
+            "username-appender.premium.username-appendix",
             ""
     ),
     APPENDER_PREMIUM_POSITION(
-            "premium.username-appender.premium.position",
+            "username-appender.premium.position",
             "suffix"
     ),
     APPENDER_PREMIUM_DOMAINS(
-            "premium.username-appender.premium.domains",
+            "username-appender.premium.domains",
             java.util.Collections.singletonList("premium.myserver.com")
     ),
     APPENDER_OFFLINE_APPENDIX(
-            "premium.username-appender.offline.username-appendix",
+            "username-appender.offline.username-appendix",
             "+"
     ),
     APPENDER_OFFLINE_POSITION(
-            "premium.username-appender.offline.position",
+            "username-appender.offline.position",
             "suffix"
     ),
     APPENDER_OFFLINE_DOMAINS(
-            "premium.username-appender.offline.domains",
+            "username-appender.offline.domains",
             java.util.Collections.singletonList("myserver.com")
     ),
     LEGACY_UNIQUE_ID_TYPE(
-            "premium.legacy.unique-id-type",
+            "legacy.unique-id-type",
             "OFFLINE"
     ),
     AUTOLOGIN_BEDROCK_ENABLE(

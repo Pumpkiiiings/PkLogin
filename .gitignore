@@ -33,3 +33,10 @@ fg_cache/
 # Translator
 pklogin-translator/translator-config.yml
 pklogin-translator/cache.json
+
+# Compiled classes checked in by mistake
+*.class
+
+# Whole-source dump produced by analyzer.py; it duplicates the tree and makes
+# grepping the repo return every hit twice.
+all_code.txt

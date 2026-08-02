@@ -9,7 +9,7 @@
 # Official Website: https://www.pumpkiiings.com
 # Discord: https://www.pumpkiiings.com/discord
 
-version: "1.1"
+version-messages: 2
 
 Messages:
   Title:
@@ -45,21 +45,22 @@ Messages:
         start: 0
         duration: 60
         end: 6
-
-        bedrock-auto-login:
-        title: "&a&lWelcome!"
-        subtitle: "&7Logged in as &eBedrock&7."
-        delays:
-          start: 0
-          duration: 30
-          end: 6
-      premium-auto-login:
-        title: "&a&lWelcome!"
-        subtitle: "&7Logged in as &6Premium&7."
-        delays:
-          start: 0
-          duration: 30
-          end: 6
+    # Message sent when a Bedrock player is logged in automatically
+    bedrock-auto-login:
+      title: "&a&lWelcome!"
+      subtitle: "&7Logged in as &eBedrock&7."
+      delays:
+        start: 0
+        duration: 30
+        end: 6
+    # Message sent when a premium player is logged in automatically
+    premium-auto-login:
+      title: "&a&lWelcome!"
+      subtitle: "&7Logged in as &6Premium&7."
+      delays:
+        start: 0
+        duration: 30
+        end: 6
 
   delay-kick:
     # Message sent when a user takes a long time to register
@@ -133,6 +134,14 @@ Messages:
     # Message sent when a database operation has not been successfully performed
     database-error: "&cSorry, we were unable to complete this operation. Please try again. [SQL FAIL]"
 
+    # Message sent when an IP has reached the configured account limit
+    max-ips-reached: "&cYou have reached the maximum number of accounts allowed per IP."
+
+    # Shown after a wrong password. {0} is the number of tries left before a kick.
+    attempts-left: "&cAttempts left: &e{0}"
+
+    player-not-online: "&cThat player is not online."
+
   other-messages:
     # Message sent to use the /login command
     message-login: "&eUse the command /login <password>"
@@ -150,6 +159,7 @@ Messages:
     updates-download-link: "&cDownload the latest version at: https://github.com/Pumpkiiiings/PkLogin/releases"
     updates-invalid-response: "&cFailed to find new updates: invalid response."
     updates-available: "&eA new version of PkLogin is available! ({0} -> {1})"
+    updates-use-command: "&7Use &f/pklogin update &7to download the new version."
 
   admin:
     help:
@@ -214,14 +224,32 @@ Messages:
     discord-link-instruction2: "&eThe code will expire in 10 minutes."
     login-success: "&aYou have successfully logged in with 2FA."
     login-message: "&eWe have sent a code to your Discord. Type /2fa verify2fa <code> to enter."
+    send-failed: "&cWe could not deliver your 2FA code. Please contact an administrator."
+    too-many-attempts: "&cToo many invalid 2FA codes. Please log in again."
+    verify-usage: "&eUsage: /2fa verify2fa <code>"
+
+  # Replies the Discord bot sends over DM. Colour codes are not used here.
+  discord-bot:
+    link-success: "Your Minecraft account **{0}** has been linked to Discord successfully!"
+    link-error: "Something went wrong while linking your account in the database."
+    invalid-code: "That code is not valid or has expired."
+    help: "Hi! To link your account, send me the {0}-digit code the Minecraft server gave you with /2fa discord."
+    verification-code: "Your PkLogin verification code is: **{0}**"
+
+  # 2FA e-mail. {0} is the player name, {1} is the code.
+  email:
+    subject: "PkLogin - Verification Code"
+    body: "Hello {0},\n\nYour PkLogin verification code is: {1}"
 
   offline:
     already-offline: "&cYour account is already offline (cracked)."
     success: "&aYour account is now offline! You will need to use /login."
+    switch-kick: "&aYou have switched to Offline mode.\n&ePlease reconnect to the server."
 
   premium:
     already-premium: "&cYour account is already premium."
     success: "&aYour account is now Premium! You won't need to use /login."
+    switch-kick: "&aYou have switched to Premium mode.\n&ePlease reconnect to the server."
     current-mode: "&eYour account is currently in {0} mode."
     warning: 
       - "&cWARNING!"

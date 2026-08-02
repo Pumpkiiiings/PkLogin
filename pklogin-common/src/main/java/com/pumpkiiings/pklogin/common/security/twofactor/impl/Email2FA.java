@@ -20,34 +20,25 @@ public class Email2FA implements TwoFactorProvider {
     }
 
     @Override
-    public void init() {
+    public void init(java.io.File dataFolder) {
         try {
-            java.io.File file = new java.io.File("config/pklogin/2fa/email.yml");
-            if (!file.exists()) file = new java.io.File("plugins/PkLogin/2fa/email.yml");
+            java.io.File file = new java.io.File(dataFolder, "2fa/email.yml");
             if (!file.exists()) return;
 
-            // Simple yaml parsing
-            boolean isEnabled = false;
-            String host = "";
-            int port = 587;
-            String user = "";
-            String pass = "";
-            String authEmail = "";
-            String encryption = "auto";
-            
-            for (String line : java.nio.file.Files.readAllLines(file.toPath())) {
-                String t = line.trim();
-                if (t.startsWith("enable:")) isEnabled = Boolean.parseBoolean(t.split(":", 2)[1].trim());
-                else if (t.startsWith("host:")) host = t.split(":", 2)[1].trim().replace("\"", "").replace("'", "");
-                else if (t.startsWith("port:")) port = Integer.parseInt(t.split(":", 2)[1].trim());
-                else if (t.startsWith("user:")) user = t.split(":", 2)[1].trim().replace("\"", "").replace("'", "");
-                else if (t.startsWith("password:")) pass = t.split(":", 2)[1].trim().replace("\"", "").replace("'", "");
-                else if (t.startsWith("email:")) authEmail = t.split(":", 2)[1].trim().replace("\"", "").replace("'", "");
-                else if (t.startsWith("encryption:")) encryption = t.split(":", 2)[1].trim().replace("\"", "").replace("'", "");
-            }
+            // Read the file as YAML rather than scanning lines: "enable" appears
+            // both at the root and under options.link-required, and a line-based
+            // parser picks up whichever comes last, so the setting never applied.
+            dev.dejvokep.boostedyaml.YamlDocument config = dev.dejvokep.boostedyaml.YamlDocument.create(file);
 
-            this.enabled = isEnabled;
+            this.enabled = config.getBoolean("enable", false);
             if (!this.enabled) return;
+
+            String host = config.getString("authentication.host", "");
+            int port = config.getInt("authentication.port", 587);
+            String user = config.getString("authentication.user", "");
+            String pass = config.getString("authentication.password", "");
+            String authEmail = config.getString("authentication.email", "");
+            String encryption = config.getString("authentication.encryption", "auto").toLowerCase();
 
             this.fromEmail = authEmail;
 
@@ -93,8 +84,12 @@ public class Email2FA implements TwoFactorProvider {
                     javax.mail.Message.RecipientType.TO,
                     javax.mail.internet.InternetAddress.parse(account.getEmailAddress())
             );
-            message.setSubject("PkLogin - Código de Verificación");
-            message.setText("Hola " + account.getRealName() + ",\n\nTu código de verificación de PkLogin es: " + code);
+            message.setSubject(com.pumpkiiings.pklogin.common.settings.Messages.EMAIL_SUBJECT
+                    .asString("PkLogin - Verification Code"));
+            message.setText(com.pumpkiiings.pklogin.common.settings.Messages.EMAIL_BODY
+                    .asString("Hello {0},\n\nYour PkLogin verification code is: {1}")
+                    .replace("{0}", account.getRealName())
+                    .replace("{1}", code));
 
             javax.mail.Transport.send(message);
             return true;

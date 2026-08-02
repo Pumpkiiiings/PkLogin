@@ -29,3 +29,58 @@ task updateLangs(type: JavaExec) {
     mainClass = 'com.pumpkiiings.pklogin.common.LangUpdater'
     classpath = sourceSets.test.runtimeClasspath
 }
+
+// Repairs language files whose encoding was mangled at some point.
+task fixMojibake(type: JavaExec) {
+    group = 'build'
+    description = 'Repairs mojibaked language files in place.'
+    mainClass = 'com.pumpkiiings.pklogin.common.MojibakeFixer'
+    classpath = sourceSets.test.runtimeClasspath
+    workingDir = rootProject.projectDir
+}
+
+// Fills translated language files with any key they are missing, in English.
+task mergeLangs(type: JavaExec) {
+    group = 'build'
+    description = 'Copies missing message keys from messages_en.yml into every translation.'
+    mainClass = 'com.pumpkiiings.pklogin.common.LangMerger'
+    classpath = sourceSets.test.runtimeClasspath
+    workingDir = rootProject.projectDir
+}
+
+// Verifies every bundled language file parses and defines every Messages key.
+task checkLangs(type: JavaExec) {
+    group = 'verification'
+    description = 'Checks that all bundled language files define every message key.'
+    mainClass = 'com.pumpkiiings.pklogin.common.LanguageFilesTest'
+    classpath = sourceSets.test.runtimeClasspath
+    workingDir = rootProject.projectDir
+}
+
+// Verifies the bundled config.yml and the Settings enum stay in sync.
+task checkConfig(type: JavaExec) {
+    group = 'verification'
+    description = 'Checks that every Settings key exists in config.yml and vice versa.'
+    mainClass = 'com.pumpkiiings.pklogin.common.ConfigKeysTest'
+    classpath = sourceSets.test.runtimeClasspath
+    workingDir = rootProject.projectDir
+}
+
+// Proves proxy and backend derive the same signing key from shared inputs.
+task checkProxySecret(type: JavaExec) {
+    group = 'verification'
+    description = 'Runs the proxy signing key resolution test.'
+    mainClass = 'com.pumpkiiings.pklogin.common.ProxySecretTest'
+    classpath = sourceSets.test.runtimeClasspath
+    workingDir = rootProject.projectDir
+}
+
+tasks.named('check') { dependsOn 'checkLangs', 'checkConfig', 'checkMigrations', 'checkProxySecret' }
+// Proves the migration system never loses customised configuration.
+task checkMigrations(type: JavaExec) {
+    group = 'verification'
+    description = 'Runs the configuration migration guarantees test.'
+    mainClass = 'com.pumpkiiings.pklogin.common.MigrationTest'
+    classpath = sourceSets.test.runtimeClasspath
+    workingDir = rootProject.projectDir
+}

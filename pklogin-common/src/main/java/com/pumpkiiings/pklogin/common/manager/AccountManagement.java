@@ -41,7 +41,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountManagement {
 
-    private final Map<String, Account> accountCache = new java.util.concurrent.ConcurrentHashMap<>();
+    /**
+     * Lookup cache.
+     *
+     * <p>Absences are cached as well as hits: the join listener runs on the server
+     * thread and asks whether the player is registered, and only caching hits meant
+     * every unregistered player triggered a blocking query there. The asynchronous
+     * pre-login listener now fills this in either direction beforehand.</p>
+     */
+    private final Map<String, Optional<Account>> accountCache = new java.util.concurrent.ConcurrentHashMap<>();
 
     private final Database database;
 
@@ -59,6 +67,45 @@ public class AccountManagement {
     }
 
     /**
+     * Upgrades a stored password hash to the currently configured algorithm.
+     *
+     * <p>Call this right after a password has been verified successfully — it is
+     * the only moment the plain-text value is available. A hash stored under an
+     * older algorithm, or under the same algorithm with a weaker cost factor, is
+     * silently replaced; anything already up to date is left alone.</p>
+     *
+     * @param account       the account whose hash was just verified
+     * @param plainPassword the password the player supplied, known to be correct
+     * @return true if the stored hash was upgraded
+     */
+    public boolean rehashIfNeeded(@NonNull Account account, @NonNull String plainPassword) {
+        String storedHash = account.getHashedPassword();
+        if (storedHash == null || storedHash.isEmpty()) return false;
+
+        HashStrategy configured = HashStrategyFactory.fromSettings();
+        if (!configured.needsRehash(storedHash)) return false;
+
+        String upgraded = configured.hash(plainPassword);
+        return updatePasswordHash(account.getRealName(), upgraded);
+    }
+
+    /**
+     * Replaces only the stored password hash.
+     *
+     * <p>Unlike {@link #update(String, String, String)} this touches neither
+     * {@code lastlogin} nor {@code address}, and does not fire the password
+     * change callback — it exists for transparent re-hashing, which is not a
+     * password change from the player's point of view.</p>
+     *
+     * @param name           the name of the player
+     * @param hashedPassword the new hash
+     * @return true on success
+     */
+    public boolean updatePasswordHash(@NonNull String name, @NonNull String hashedPassword) {
+        return write(name, "UPDATE `pklogin` SET `password` = ? WHERE `name` = ?", hashedPassword);
+    }
+
+    /**
      * Retrieve or load an account.
      *
      * @param name the name of the player
@@ -66,15 +113,23 @@ public class AccountManagement {
      */
     public Optional<Account> retrieveOrLoad(@NonNull String name) {
         String key = name.toLowerCase();
-        Account account = accountCache.get(key);
-        if (account != null) {
-            return Optional.of(account);
+        Optional<Account> cached = accountCache.get(key);
+        if (cached != null) {
+            return cached;
         }
         Optional<Account> accountOpt = search(name);
-        if (accountOpt.isPresent()) {
-            accountCache.put(key, accountOpt.get());
-        }
+        accountCache.put(key, accountOpt);
         return accountOpt;
+    }
+
+    /**
+     * Returns the cached result for a name without touching the database.
+     *
+     * @param name the name of the player
+     * @return the cached lookup, or empty if nothing has been cached for that name
+     */
+    public Optional<Optional<Account>> getCached(@NonNull String name) {
+        return Optional.ofNullable(accountCache.get(name.toLowerCase()));
     }
 
     /**
@@ -83,7 +138,7 @@ public class AccountManagement {
      * @param account the account to add
      */
     public void addToCache(@NonNull Account account) {
-        accountCache.put(account.getRealName().toLowerCase(), account);
+        accountCache.put(account.getRealName().toLowerCase(), Optional.of(account));
     }
 
     /**
@@ -93,6 +148,16 @@ public class AccountManagement {
      */
     public void invalidateCache(@NonNull String key) {
         accountCache.remove(key.toLowerCase());
+    }
+
+    /**
+     * Drops every cached lookup.
+     *
+     * <p>Needed after bulk writes that go straight to the database (the AuthMe
+     * import), which this cache cannot observe.</p>
+     */
+    public void clearCache() {
+        accountCache.clear();
     }
 
     /**
@@ -188,7 +253,7 @@ public class AccountManagement {
                 database.update(
                         "UPDATE `pklogin` SET `password` = ?, `address` = ?, `lastlogin` = ? WHERE `name` = ?",
                         hashedPassword,
-                        address == null ? "127.0.0.1" : address,
+                        address == null ? com.pumpkiiings.pklogin.common.PluginConstants.FALLBACK_ADDRESS : address,
                         current,
                         name.toLowerCase()
                 );
@@ -201,13 +266,38 @@ public class AccountManagement {
                         name.toLowerCase(),
                         name,
                         hashedPassword,
-                        address == null ? "127.0.0.1" : address,
+                        address == null ? com.pumpkiiings.pklogin.common.PluginConstants.FALLBACK_ADDRESS : address,
                         current,
                         current,
                         com.pumpkiiings.pklogin.common.settings.Settings.LEGACY_UNIQUE_ID_TYPE.asString(),
                         null
                 );
             }
+            invalidateCache(name);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Runs a single-row write for a player and drops their cache entry.
+     *
+     * <p>Every mutation has to invalidate, otherwise a cached lookup — including a
+     * cached absence — keeps answering with pre-write data.</p>
+     *
+     * @param name the player the write targets
+     * @param sql  the statement, whose last parameter is the lowercase name
+     * @param args the parameters preceding the name
+     * @return true on success
+     */
+    private boolean write(@NonNull String name, String sql, Object... args) {
+        Object[] params = java.util.Arrays.copyOf(args, args.length + 1);
+        params[args.length] = name.toLowerCase();
+        try {
+            database.update(sql, params);
+            invalidateCache(name);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -222,18 +312,10 @@ public class AccountManagement {
      * @return true on success
      */
     public boolean delete(@NonNull String name) {
-        boolean exists = search(name).isPresent();
-        if (!exists) {
+        if (!search(name).isPresent()) {
             return false;
         }
-
-        try {
-            database.update("DELETE FROM `pklogin` WHERE `name` = ?", name.toLowerCase());
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return write(name, "DELETE FROM `pklogin` WHERE `name` = ?");
     }
 
     /**
@@ -243,18 +325,10 @@ public class AccountManagement {
      * @return true on success
      */
     public boolean removePassword(@NonNull String name) {
-        boolean exists = search(name).isPresent();
-        if (!exists) {
+        if (!search(name).isPresent()) {
             return false;
         }
-
-        try {
-            database.update("UPDATE `pklogin` SET `password` = '' WHERE `name` = ?", name.toLowerCase());
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return write(name, "UPDATE `pklogin` SET `password` = '' WHERE `name` = ?");
     }
 
     /**
@@ -265,13 +339,7 @@ public class AccountManagement {
      * @return true on success
      */
     public boolean updateTotpSecret(@NonNull String name, @Nullable String totpSecret) {
-        try {
-            database.update("UPDATE `pklogin` SET `totp_secret` = ? WHERE `name` = ?", totpSecret, name.toLowerCase());
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return write(name, "UPDATE `pklogin` SET `totp_secret` = ? WHERE `name` = ?", totpSecret);
     }
 
     /**
@@ -282,13 +350,7 @@ public class AccountManagement {
      * @return true on success
      */
     public boolean updateUuidType(@NonNull String name, @NonNull String uuidType) {
-        try {
-            database.update("UPDATE `pklogin` SET `uuid_type` = ? WHERE `name` = ?", uuidType, name.toLowerCase());
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return write(name, "UPDATE `pklogin` SET `uuid_type` = ? WHERE `name` = ?", uuidType);
     }
 
     /**
@@ -299,39 +361,21 @@ public class AccountManagement {
      * @return true on success
      */
     public boolean updateRandomUuid(@NonNull String name, @NonNull String randomUuid) {
-        try {
-            database.update("UPDATE `pklogin` SET `random_uuid` = ? WHERE `name` = ?", randomUuid, name.toLowerCase());
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return write(name, "UPDATE `pklogin` SET `random_uuid` = ? WHERE `name` = ?", randomUuid);
     }
 
     /**
      * Update the Discord ID for the player.
      */
     public boolean updateDiscordId(@NonNull String name, @Nullable String discordId) {
-        try {
-            database.update("UPDATE `pklogin` SET `discord_id` = ? WHERE `name` = ?", discordId, name.toLowerCase());
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return write(name, "UPDATE `pklogin` SET `discord_id` = ? WHERE `name` = ?", discordId);
     }
 
     /**
      * Update the Email Address for the player.
      */
     public boolean updateEmailAddress(@NonNull String name, @Nullable String emailAddress) {
-        try {
-            database.update("UPDATE `pklogin` SET `email_address` = ? WHERE `name` = ?", emailAddress, name.toLowerCase());
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return write(name, "UPDATE `pklogin` SET `email_address` = ? WHERE `name` = ?", emailAddress);
     }
 
     /**

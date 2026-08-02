@@ -38,13 +38,14 @@
 | **SHA-256** | Salted — compatibility mode |
 | **AuthMe SHA256** | Read-only — auto-migrates on first login |
 
-> **Zero-downtime migration**: Change `hash-algorithm` in config at any time. Existing hashes are auto-detected and silently re-hashed to the new algorithm on the player's next successful login.
+> **Zero-downtime migration**: Change `Security.hash-algorithm` in config at any time. Existing hashes are auto-detected and silently re-hashed to the new algorithm on the player's next successful login.
 
 ### 🔒 Two-Factor Authentication (2FA)
 - **Discord 2FA**: Link your Minecraft account to Discord via DM bot — receive a login code on every session
-- **Email 2FA**: SMTP-based verification codes on login
-- **TOTP** (Forge): Google Authenticator / Authy compatible (`/2fa setup`)
-- Flexible linking flow: `/2fa discord` → get a 5-digit code → DM the bot to link
+- Linking flow: `/2fa discord` → get a 6-digit code → DM the bot to link
+- Codes are single-use, expire after 5 minutes and allow 5 attempts
+
+> **Email 2FA** ships with the plugin but is not yet wired into the login flow, and TOTP requires the Forge module, which is not part of this repository. Both are tracked as future work.
 
 ### 🗄️ Database Support
 | Engine | Notes |
@@ -85,20 +86,24 @@ Configure per-account UUID generation:
 | `/offline` | Change your account to OFFLINE mode |
 | `/2fa discord` | Generate a code to link your Discord |
 | `/2fa verify2fa <code>` | Enter the 2FA code sent to you |
-| `/2fa setup` | *(Forge)* Set up TOTP (Google Authenticator) |
-| `/2fa verify <code>` | *(Forge)* Verify TOTP code |
-| `/2fa disable <code>` | *(Forge)* Disable TOTP |
 
 ### Admin Commands
+
+Each subcommand has its own permission, so access can be granted individually.
+
 | Command | Permission | Description |
 |---------|------------|-------------|
-| `/pklogin reload` | `pklogin.admin` | Reload config and messages |
-| `/pklogin authme-import` | `pklogin.admin` | Import accounts from AuthMe (async) |
-| `/pklogin forcelogin <user>` | `pklogin.admin` | Force log in a player |
-| `/pklogin unregister <user>` | `pklogin.admin` | Permanently delete a player account |
-| `/pklogin changepass <user> <pass>` | `pklogin.admin` | Force-change a player's password |
-| `/pklogin dupeip <ip/user>` | `pklogin.admin` | List accounts sharing the same IP |
-| `/pklogin update` | `pklogin.admin` | Download latest PkLogin version |
+| `/pklogin help` | `pklogin.admin.help` | Show the admin help |
+| `/pklogin reload` | `pklogin.admin.reload` | Reload config and messages |
+| `/pklogin authme-import` | `pklogin.admin.authme-import` | Import accounts from AuthMe (async) |
+| `/pklogin forcelogin <user>` | `pklogin.admin.forcelogin` | Force log in a player |
+| `/pklogin unregister <user>` | `pklogin.admin.unregister` | Clear a player's password |
+| `/pklogin delete <user>` | `pklogin.admin.delete` | Permanently delete a player account |
+| `/pklogin changepass <user> <pass>` | `pklogin.admin.changepass` | Force-change a player's password |
+| `/pklogin verify <user>` | `pklogin.admin.verify` | Show an account's details |
+| `/pklogin dupeip <ip/user>` | `pklogin.admin.dupeip` | List accounts sharing the same IP |
+| `/pklogin setspawn` | `pklogin.admin.setspawn` | Set the pre-login spawn location |
+| `/pklogin update` | `pklogin.admin.update` | Download latest PkLogin version |
 
 ---
 
@@ -110,8 +115,8 @@ Security:
   hash-algorithm: BCRYPT     # BCRYPT | ARGON2 | PBKDF2 | SHA512 | SHA256
 
   password:
-    small: 5                 # Min password length
-    large: 15                # Max password length
+    small: 5                 # Min password length (inclusive)
+    large: 15                # Max password length (inclusive)
 
 passwords:
   bruteforce:
@@ -129,26 +134,43 @@ teleport:
 limbo:
   blindness-effect: false    # Apply blindness before login
 
-premium:
-  username-appender:
-    enabled: false           # Prevent name collisions premium vs cracked
+username-appender:
+  enabled: false             # Prevent name collisions premium vs cracked
+
+proxy-mode: true             # Let the proxy handle premium auto-login
+proxy-secret: ""             # REQUIRED for proxy auto-login — see below
 ```
+
+### Proxy setup
+
+When PkLogin runs on a proxy, the proxy tells each backend when a premium player
+has been authenticated. The game client can send messages on that same channel
+and the server cannot tell the two apart, so those messages are signed.
+
+**With Velocity modern forwarding there is nothing to configure.** PkLogin derives
+its signing key from the forwarding secret the proxy and backends already share
+(`forwarding.secret` on the proxy, `proxies.velocity.secret` in the backend's
+`config/paper-global.yml`). The forwarding secret itself is never reused directly
+— a separate key is derived from it, so the two never share key material.
+
+The console states which source was used on startup:
+
+```
+[PkLogin] Proxy messages authenticated using the Velocity modern forwarding secret.
+```
+
+`proxy-secret` in `config.yml` is only needed where no such secret exists — in
+practice, BungeeCord. Set the same value on the proxy and every backend.
+
+> BungeeCord's legacy forwarding is unauthenticated by design. If your backend
+> ports are reachable from the internet, anyone can connect to them directly and
+> claim any identity, whatever PkLogin does. Firewall them.
 
 ### 2FA — `plugins/PkLogin/2fa/discord.yml`
 ```yaml
-enabled: false
-bot-token: "YOUR_BOT_TOKEN_HERE"
-```
-
-### 2FA — `plugins/PkLogin/2fa/email.yml`
-```yaml
-enabled: false
-smtp:
-  host: "smtp.gmail.com"
-  port: 587
-  user: "your@email.com"
-  password: "your_password"
-  encryption: TLS
+enable: false
+authentication:
+  token: "YOUR_BOT_TOKEN_HERE"
 ```
 
 ---

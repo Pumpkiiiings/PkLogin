@@ -59,7 +59,10 @@ public class PremiumCommandNode {
             accountManagement.updateUuidType(name, "REAL");
             accountManagement.invalidateCache(name);
             player.sendMessage(Messages.PREMIUM_SUCCESS.asString());
-            plugin.getServer().getScheduler().runTask(plugin, () -> player.kick(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize("§aHas cambiado a modo Premium.\n§ePor favor vuelve a conectarte al servidor.")));
+            player.getScheduler().run(plugin, task -> player.kick(
+                    net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                            .deserialize(Messages.PREMIUM_SWITCH_KICK.asString(
+                                    "§aYou have switched to Premium mode.\n§ePlease reconnect to the server."))), null);
         } else {
             if (currentType.equals("REAL")) {
                 player.sendMessage(Messages.PREMIUM_ALREADY.asString());

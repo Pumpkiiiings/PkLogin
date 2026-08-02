@@ -16,130 +16,248 @@ Messages:
   Title:
     # Message sent before login
     before-login:
-      title: "&a&lWitaj!"
-      subtitle: "&7Wpisz: /login <hasÅ‚o>"
+      title: '&a&lWitaj!'
+      subtitle: '&7Wpisz: /login <hasło>'
       delays:
         start: 0
         duration: 120
         end: 6
     # Message sent before registration
     before-register:
-      title: "&a&lWitaj!"
-      subtitle: "&7Wpisz: /register <hasÅ‚o> <hasÅ‚o>"
+      title: '&a&lWitaj!'
+      subtitle: '&7Wpisz: /register <hasło> <hasło>'
       delays:
         start: 0
         duration: 120
         end: 6
     # Message sent after login
     after-login:
-      title: "&a&lWeryfikacja!"
-      subtitle: "PomyÅ›lnie zalogowano!"
+      title: '&a&lWeryfikacja!'
+      subtitle: Pomyślnie zalogowano!
       delays:
         start: 0
         duration: 30
         end: 6
     # Message sent after registration
     after-register:
-      title: "&a&lWeryfikacja!"
-      subtitle: "PomyÅ›lnie zarejestrowano!"
+      title: '&a&lWeryfikacja!'
+      subtitle: Pomyślnie zarejestrowano!
       delays:
         start: 0
         duration: 30
         end: 6
-
-        bedrock-auto-login:
-        title: "&a&lWelcome!"
-        subtitle: "&7Logged in as &eBedrock&7."
-        delays:
-          start: 0
-          duration: 30
-          end: 6
-      premium-auto-login:
-        title: "&a&lWelcome!"
-        subtitle: "&7Logged in as &6Premium&7."
-        delays:
-          start: 0
-          duration: 30
-          end: 6
-
+    premium-auto-login:
+      title: '&a&lWelcome!'
+      subtitle: '&7Logged in as &6Premium&7.'
+      delays:
+        start: 0
+        duration: 30
+        end: 6
+    bedrock-auto-login:
+      title: '&a&lWelcome!'
+      subtitle: '&7Logged in as &eBedrock&7.'
+      delays:
+        start: 0
+        duration: 30
+        end: 6
+  
   delay-kick:
     # Message sent when a user takes a long time to register
-    register-kick: "&cMinÄ…Å‚ czas rejestracji."
-
+    register-kick: '&cMinął czas rejestracji.'
+    
     # Message sent when a user takes a long time to log in
-    login-kick: "&cMinÄ…Å‚ czas logowania."
-
+    login-kick: '&cMinął czas logowania.'
+  
   successful-operations:
     # Message when a user exchanges their password
-    password-changed: "&aTwoje hasÅ‚o zostaÅ‚o zmienione pomyÅ›lnie."
-
+    password-changed: '&aTwoje hasło zostało zmienione pomyślnie.'
+    
     # Message sent when a user successfully logs
-    successful-login: "&aPomyÅ›lnie siÄ™ zalogowaÅ‚eÅ›."
-
+    successful-login: '&aPomyślnie się zalogowałeś.'
+    
     # Message sent when a user successfully registers
-    successful-register: "&aPomyÅ›lnie siÄ™ zarejestrowaÅ‚eÅ›."
-
+    successful-register: '&aPomyślnie się zarejestrowałeś.'
+    
     # Message sent when a player successfully disregisters
-    unregister-kick: "&cRejestr zostaÅ‚ pomyÅ›lnie usuniÄ™ty."
-
+    unregister-kick: '&cRejestr został pomyślnie usunięty.'
+  
   kick-messages:
     # Message when a player tries to log on to the server with a small difference in the nickname
-    nick-already-registered: "&cNie moÅ¼esz wejÅ›Ä‡ pod tym nickiem {0}\n&cTen uÅ¼ytkownik zostaÅ‚ zarejestrowany jako {1}\n\n&cBy wejÅ›Ä‡ na serwer musisz uÅ¼yÄ‡ starego nicku. ZwróÄ‡ uwagÄ™ na wielkie litery!"
+    nick-already-registered: |-
+      &cNie możesz wejść pod tym nickiem {0}
+      &cTen użytkownik został zarejestrowany jako {1}
 
-    # Message sent when a user misses many times
-    failed-many-times: "&cZbyt wiele razy wpisaÅ‚eÅ› zÅ‚e hasÅ‚o."
-
+      &cBy wejść na serwer musisz użyć starego nicku. Zwróć uwagę na wielkie litery!
+# Message sent when a user misses many times
+    failed-many-times: '&cZbyt wiele razy wpisałeś złe hasło.'
+    
     # Message sent when password entered is incorrect
-    incorrect-password: "&cNie wÅ‚aÅ›ciwe hasÅ‚o! Spróbuj ponownie."
-
+    incorrect-password: '&cNie właściwe hasło! Spróbuj ponownie.'
+    invalid-nickname: '&cSorry, but you are using an invalid nickname.'
+  
   error-messages:
     # Message sent when you are already logged in.
-    already-login: "&cJesteÅ› juÅ¼ zalogowany."
-
+    already-login: '&cJesteś już zalogowany.'
+    
     # Message sent when a nickname has already been registered.
-    already-registered: "&cTen pseudonim zostaÅ‚ juÅ¼ zarejestrowany."
-
+    already-registered: '&cTen pseudonim został już zarejestrowany.'
+    
     # Message sent when a nickname has not yet been registered.
-    not-registered: "&cTen pseudonim nie zostaÅ‚ jeszcze zarejestrowany."
-
+    not-registered: '&cTen pseudonim nie został jeszcze zarejestrowany.'
+    
     # Message sent when the entered password is not equal to the second
-    passwords-dont-match: "&cHasÅ‚a nie sÄ… takie same."
-
+    passwords-dont-match: '&cHasła nie są takie same.'
+    
     # Message sent when a player tries to change password by entering the same password as the current
-    password-same-as-old: "&cWprowadzone hasÅ‚o jest takie samo jak bieÅ¼Ä…ce."
-
+    password-same-as-old: '&cWprowadzone hasło jest takie samo jak bieżące.'
+    
     # Message sent when the password entered is too large
-    password-too-large: "&cPodane hasÅ‚o jest za dÅ‚ugie."
-
+    password-too-large: '&cPodane hasło jest za długie.'
+    
     # Message sent when the password entered is too small
-    password-too-small: "&cPodane hasÅ‚o jest za krótkie."
-    insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
-    change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
-
+    password-too-small: '&cPodane hasło jest za krótkie.'
+    insecure-password: '&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols.'
+    change-password-enforced: '&cFor security reasons, you must update your password right now using &e/changepassword&c.'
+    
     # Message when a player does not possess the required permission
-    insufficient-permissions: "&cNie masz uprawnieÅ„ by to zrobiÄ‡."
-
+    insufficient-permissions: '&cNie masz uprawnień by to zrobić.'
+    
     # Message to kick a player now online
-    already-online: "&cTen gracz jest aktualnie online."
-
+    already-online: '&cTen gracz jest aktualnie online.'
+    
     # Message to show that the command cannot be executed via console
-    player-command-usage: "&cTo polecenie nie moÅ¼e zostaÄ‡ wykonane za pomocÄ… konsoli."
-
+    player-command-usage: '&cTo polecenie nie może zostać wykonane za pomocą konsoli.'
+    
     # Message shown when the plugin is reloaded
-    plugin-reload-message: "&ePomyÅ›lnie przeÅ‚adowano plugin."
-
-    # Komunikat wysyÅ‚any, gdy operacja na bazie danych nie zostaÅ‚a pomyÅ›lnie wykonana
-    database-error: "&cPrzepraszamy, nie mogliÅ›my ukoÅ„czyÄ‡ tej operacji. ProszÄ™ spróbuj ponownie. [SQL FAIL]"
-
+    plugin-reload-message: '&ePomyślnie przeładowano plugin.'
+    
+    # Komunikat wysyłany, gdy operacja na bazie danych nie została pomyślnie wykonana
+    database-error: '&cPrzepraszamy, nie mogliśmy ukończyć tej operacji. Proszę spróbuj ponownie. [SQL FAIL]'
+    attempts-left: '&cAttempts left: &e{0}'
+    player-not-online: '&cThat player is not online.'
+    max-ips-reached: '&cYou have reached the maximum number of accounts allowed per IP.'
+  
   other-messages:
     # Mensagem enviada para o uso do comando /logar
-    message-login: "&eUÅ¼yj polecenia &7/login <hasÅ‚o>&e."
-
+    message-login: '&eUżyj polecenia &7/login <hasło>&e.'
+    
     # Mensagem enviada para o uso do comando /register
-    message-register: "&eUÅ¼yj polecenia &7/register <hasÅ‚o> <hasÅ‚o>&e."
-
+    message-register: '&eUżyj polecenia &7/register <hasło> <hasło>&e.'
+    
     # Mensagem enviada para o uso do comando /mudarsenha
-    message-changepassword: "&eUÅ¼yj polecenia &7/changepassword <stare HasÅ‚o> <nowe HasÅ‚o>&e."
+    message-changepassword: '&eUżyj polecenia &7/changepassword <stare Hasło> <nowe Hasło>&e.'
+    
+    # Wiadomość wysłana w celu użycia polecenia /unregister
+    message-unregister: '&eUżyj polecenia &7/unregister <bieżące hasło>&e.'
+    updates-failed: '&cFailed to find new updates.'
+    updates-download-link: '&cDownload the latest version at: https://github.com/Pumpkiiiings/PkLogin/releases'
+    updates-invalid-response: '&cFailed to find new updates: invalid response.'
+    updates-available: '&eA new version of PkLogin is available! ({0} -> {1})'
+    updates-use-command: '&7Use &f/pklogin update &7to download the new version.'
+  admin:
+    help:
+    - '&8&m----------------------------------------'
+    - '&b&lPkLogin &8| &7Admin Help'
+    - ''
+    - '&b/pklogin help &8- &7Show this help message'
+    - '&b/pklogin forcelogin <player> &8- &7Force login a player'
+    - '&b/pklogin unregister <player> &8- &7Unregister a player'
+    - '&b/pklogin changepassword <player> <password> &8- &7Change a player''s password'
+    - '&b/pklogin premium <player> &8- &7Set a player as premium'
+    - '&b/pklogin cracked <player> &8- &7Set a player as cracked'
+    - '&b/pklogin update &8- &7Update the plugin'
+    - '&b/pklogin setspawn &8- &7Set the spawn location'
+    - '&b/pklogin reload &8- &7Reload the configuration'
+    - '&8&m----------------------------------------'
+    usage-command: '&eUso correcto: &b%command% %arg%'
+    forcelogin-success: '&aPlayer {0} has been forcefully authenticated.'
+    unregister-success: '&aPlayer {0} has been unregistered.'
+    changepass-success: '&aPassword for player {0} has been successfully changed.'
+    changepass-kick: '&cYour password was changed by an administrator.'
+    dupeip-header: '&eAccounts for IP/Player &a{0}&e:'
+    dupeip-format: '&7- &f{0} &8(&7{1}&8)'
+    dupeip-none: '&cNo accounts found for that IP/Player.'
+    authme-import-start: '&7Starting AuthMe import...'
+    authme-import-not-found: '&cAuthMe SQLite database not found.'
+    authme-import-found: '&7Found AuthMe database at &f{0} &7with &f{1} &7accounts.'
+    authme-import-progress: '&7Progress: &f{0} &7/ &f{1}'
+    authme-import-done: '&aImport complete! &7Players will be re-hashed to &f{0} &7on next login.'
+    authme-import-fail: '&cFailed to read AuthMe database: {0}'
+    delete-success: '&aPlayer {0} has been deleted.'
+    setspawn-success: '&aSpawn location set successfully!'
+    verify-format:
+    - '&a[PkLogin] Info for {0}:'
+    - '&7IP Address: &f{1}'
+    - '&7Registered: &f{2}'
+    - '&7Last Login: &f{3}'
+    - '&7Premium: &f{4}'
+    account-not-found: '&cAccount not found.'
+  two-factor:
+    usage: '&eUsage: /2fa <setup|verify|disable|discord|verify2fa>'
+    not-registered: '&cYou must be registered to use 2FA.'
+    not-logged-in-setup: '&cYou must be logged in to set up 2FA.'
+    already-setup: '&c2FA is already set up on your account.'
+    setup-header: '&e--- 2FA Setup ---'
+    setup-secret: '&eSecret Key: &a{0}'
+    setup-instruction1: '&ePlease enter this secret into your authenticator app.'
+    setup-instruction2: '&eThen, verify it using: &a/2fa verify <code>'
+    setup-success: '&a2FA has been successfully set up!'
+    invalid-code: '&cInvalid 2FA code. Please try again.'
+    not-awaiting: '&cYou are not awaiting 2FA verification.'
+    not-logged-in-disable: '&cYou must be logged in to disable 2FA.'
+    not-setup: '&cYou do not have 2FA set up.'
+    disable-usage: '&eUsage: /2fa disable <code>'
+    disable-success: '&a2FA has been successfully disabled!'
+    discord-not-logged-in: '&cYou must be logged in to link Discord.'
+    discord-already-linked: '&cYou already have a Discord account linked.'
+    discord-link-header: '&e--- Discord Linking ---'
+    discord-link-code: '&eCode: &a{0}'
+    discord-link-instruction1: '&ePlease send a Private Message (DM) to our Discord Bot with this code.'
+    discord-link-instruction2: '&eThe code will expire in 10 minutes.'
+    login-success: '&aYou have successfully logged in with 2FA.'
+    login-message: '&eWe have sent a code to your Discord. Type /2fa verify2fa <code> to enter.'
+    send-failed: '&cWe could not deliver your 2FA code. Please contact an administrator.'
+    too-many-attempts: '&cToo many invalid 2FA codes. Please log in again.'
+    verify-usage: '&eUsage: /2fa verify2fa <code>'
+  discord-bot:
+    link-success: Your Minecraft account **{0}** has been linked to Discord successfully!
+    link-error: Something went wrong while linking your account in the database.
+    invalid-code: That code is not valid or has expired.
+    help: Hi! To link your account, send me the {0}-digit code the Minecraft server gave you with /2fa discord.
+    verification-code: 'Your PkLogin verification code is: **{0}**'
+  email:
+    subject: PkLogin - Verification Code
+    body: |-
+      Hello {0},
 
-    # WiadomoÅ›Ä‡ wysÅ‚ana w celu uÅ¼ycia polecenia /unregister
-    message-unregister: "&eUÅ¼yj polecenia &7/unregister <bieÅ¼Ä…ce hasÅ‚o>&e."
+      Your PkLogin verification code is: {1}
+  offline:
+    already-offline: '&cYour account is already offline (cracked).'
+    success: '&aYour account is now offline! You will need to use /login.'
+    switch-kick: |-
+      &aYou have switched to Offline mode.
+      &ePlease reconnect to the server.
+  premium:
+    already-premium: '&cYour account is already premium.'
+    success: '&aYour account is now Premium! You won''t need to use /login.'
+    switch-kick: |-
+      &aYou have switched to Premium mode.
+      &ePlease reconnect to the server.
+    current-mode: '&eYour account is currently in {0} mode.'
+    warning:
+    - '&cWARNING!'
+    - '&eIf you enable premium mode, you will enter without /login.'
+    - '&4If you are NOT premium, you will lose your account forever!'
+    - '&eUse /premium confirm to confirm.'
+    auto-login: '&aYou have been automatically logged in via Premium!'
+  queue:
+    message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
+  captcha:
+    required: '&cYou must complete the captcha before authenticating!'
+    success: '&aCaptcha completed successfully! You can now login/register.'
+    failed: '&cWrong captcha! Try again.'
+    inventory-title: Click the &aGreen Wool
+    inventory-item: '&aClick Me!'
+    chat-instruction: '&ePlease type the following code in chat: &b{code}'
+    map-instruction: '&eLook at the map in your hand and type the code!'
+version-messages: 2

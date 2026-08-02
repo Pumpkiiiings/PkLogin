@@ -22,4 +22,14 @@ public class MariaDB extends AbstractDatabase {
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
     }
+
+    @Override
+    public String indexedColumn(String column, int prefixLength) {
+        return "`" + column + "`(" + prefixLength + ")";
+    }
+
+    @Override
+    public boolean supportsIfNotExistsOnIndex() {
+        return false;
+    }
 }

@@ -1,5 +1,6 @@
 package com.pumpkiiings.pklogin.common.database;
 
+import com.pumpkiiings.pklogin.common.settings.Settings;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -20,12 +21,15 @@ public abstract class AbstractDatabase implements Database {
         }
         
         HikariConfig config = new HikariConfig();
+
+        // Pool defaults first, so an engine that has a hard requirement (SQLite
+        // needs a single connection) can override them in configure().
+        config.setConnectionTimeout(Settings.DATABASE_POOL_CONNECTION_TIMEOUT.asInt());
+        config.setMaxLifetime(Settings.DATABASE_POOL_MAX_LIFETIME.asInt());
+        config.setMaximumPoolSize(Settings.DATABASE_POOL_MAX_SIZE.asInt());
+
         configure(config);
-        
-        // Common Hikari properties
-        config.setConnectionTimeout(10000);
-        config.setMaxLifetime(1800000);
-        
+
         dataSource = new HikariDataSource(config);
     }
 

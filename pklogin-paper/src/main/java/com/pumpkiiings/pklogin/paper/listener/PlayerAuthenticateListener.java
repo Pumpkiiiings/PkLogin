@@ -24,6 +24,8 @@
 
 package com.pumpkiiings.pklogin.paper.listener;
 
+import com.pumpkiiings.pklogin.common.Permissions;
+
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
 import com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent;
 
@@ -54,19 +56,22 @@ public class PlayerAuthenticateListener implements Listener {
         try {
             java.io.ByteArrayOutputStream b = new java.io.ByteArrayOutputStream();
             java.io.DataOutputStream out = new java.io.DataOutputStream(b);
-            out.writeUTF("Authenticated");
-            player.sendPluginMessage(plugin, "pklogin:main", b.toByteArray());
+            out.writeUTF(com.pumpkiiings.pklogin.common.PluginConstants.SUBCHANNEL_AUTHENTICATED);
+            player.sendPluginMessage(plugin, com.pumpkiiings.pklogin.common.PluginConstants.CHANNEL_MAIN, b.toByteArray());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        if (player.hasPermission("pklogin.admin")) {
-            if (plugin.isUpdateAvailable()) {
-                player.sendMessage("");
-                player.sendMessage(" §7A new version of §aPkLogin §7is available §a(v" + plugin.getDescription().getVersion() + " -> " + plugin.getLatestVersion() + ")§7.");
-                player.sendMessage(" §7Use the command §f'/pklogin update' §7to download new version.");
-                player.sendMessage("");
-            }
+        if (com.pumpkiiings.pklogin.common.settings.Settings.UPDATES_NOTIFY_ADMINS.asBoolean()
+                && plugin.isUpdateAvailable()
+                && player.hasPermission(Permissions.ADMIN_UPDATE)) {
+            player.sendMessage("");
+            player.sendMessage(com.pumpkiiings.pklogin.common.settings.Messages.UPDATES_AVAILABLE.asString()
+                    .replace("{0}", "v" + plugin.getDescription().getVersion())
+                    .replace("{1}", plugin.getLatestVersion()));
+            player.sendMessage(com.pumpkiiings.pklogin.common.settings.Messages.UPDATES_USE_COMMAND
+                    .asString("&7Use &f/pklogin update &7to download the new version."));
+            player.sendMessage("");
         }
     }
 }

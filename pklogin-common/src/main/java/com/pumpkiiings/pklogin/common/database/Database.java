@@ -65,6 +65,26 @@ public interface Database {
      */
     Query query(String command, Object... args) throws SQLException;
 
+    /**
+     * Renders a column reference for use inside an index definition.
+     *
+     * <p>MySQL and MariaDB refuse to index a variable-length text column without a
+     * prefix length, while SQLite and H2 reject that syntax — hence the per-engine
+     * hook.</p>
+     *
+     * @param column       the column name
+     * @param prefixLength the prefix length to use where the engine needs one
+     * @return the quoted column expression
+     */
+    default String indexedColumn(String column, int prefixLength) {
+        return "`" + column + "`";
+    }
+
+    /** @return true if the engine accepts {@code CREATE INDEX IF NOT EXISTS} */
+    default boolean supportsIfNotExistsOnIndex() {
+        return true;
+    }
+
     // Query class
     class Query implements Closeable {
 

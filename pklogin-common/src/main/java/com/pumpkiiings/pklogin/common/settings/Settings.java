@@ -37,10 +37,6 @@ public enum Settings {
             "languageFile",
             "messages_en.yml"
     ),
-    ALLOW_ADVERTISING(
-            "allow-advertising",
-            true
-    ),
     TIME_TO_LOGIN(
             "Security.time-to-login",
             45
@@ -96,6 +92,10 @@ public enum Settings {
     PREMIUM_PROXY_MODE(
             "proxy-mode",
             false
+    ),
+    PROXY_SECRET(
+            "proxy-secret",
+            ""
     ),
     APPENDER_ENABLED(
             "username-appender.enabled",
@@ -193,9 +193,121 @@ public enum Settings {
             "security.bypass-online-check-with-same-address",
             true
     ),
+    // Lives under the capitalised "Security" block in config.yml, next to the
+    // other password settings — not the lowercase "security" block below it.
     HASH_ALGORITHM(
-            "security.hash-algorithm",
+            "Security.hash-algorithm",
             "BCRYPT"
+    ),
+
+    // Cost parameters for each algorithm. Raising them makes both hashing and
+    // brute-forcing slower, so the right value depends on the server's CPU.
+    HASH_BCRYPT_COST(
+            "Security.hashing.bcrypt.cost",
+            12
+    ),
+    HASH_PBKDF2_ITERATIONS(
+            "Security.hashing.pbkdf2.iterations",
+            600000
+    ),
+    HASH_ARGON2_ITERATIONS(
+            "Security.hashing.argon2.iterations",
+            2
+    ),
+    HASH_ARGON2_MEMORY_KB(
+            "Security.hashing.argon2.memory-kb",
+            65536
+    ),
+    HASH_ARGON2_PARALLELISM(
+            "Security.hashing.argon2.parallelism",
+            1
+    ),
+    COMMAND_COOLDOWN(
+            "Security.command-cooldown",
+            750
+    ),
+    VALID_NAME_REGEX(
+            "Security.valid-name-regex",
+            "([a-zA-Z0-9_]{3,16})|(\\*[a-zA-Z0-9_]{3,17})"
+    ),
+
+    TWO_FACTOR_CODE_LENGTH(
+            "two-factor.code-length",
+            6
+    ),
+    TWO_FACTOR_LOGIN_CODE_EXPIRATION(
+            "two-factor.login-code-expiration",
+            300
+    ),
+    TWO_FACTOR_LINK_CODE_EXPIRATION(
+            "two-factor.link-code-expiration",
+            600
+    ),
+    TWO_FACTOR_MAX_VERIFY_ATTEMPTS(
+            "two-factor.max-verify-attempts",
+            5
+    ),
+    TWO_FACTOR_DISCORD_MAX_LINK_ATTEMPTS(
+            "two-factor.discord.max-link-attempts",
+            10
+    ),
+    TWO_FACTOR_DISCORD_LINK_WINDOW(
+            "two-factor.discord.link-attempt-window",
+            600
+    ),
+
+    LIMBO_RESTORE_WALK_SPEED(
+            "limbo.restore.walk-speed",
+            0.2D
+    ),
+    LIMBO_RESTORE_FLY_SPEED(
+            "limbo.restore.fly-speed",
+            0.1D
+    ),
+
+    DATABASE_POOL_MAX_SIZE(
+            "Database.pool.maximum-pool-size",
+            10
+    ),
+    DATABASE_POOL_CONNECTION_TIMEOUT(
+            "Database.pool.connection-timeout",
+            10000
+    ),
+    DATABASE_POOL_MAX_LIFETIME(
+            "Database.pool.max-lifetime",
+            1800000
+    ),
+
+    SECURITY_CAPTCHA_CODE_LENGTH(
+            "security.captcha.code-length",
+            5
+    ),
+    SECURITY_CAPTCHA_BLOCK_COMMANDS(
+            "security.captcha.blocked-commands",
+            true
+    ),
+
+    UPDATES_CHECK(
+            "updates.check",
+            true
+    ),
+    UPDATES_NOTIFY_ADMINS(
+            "updates.notify-admins",
+            true
+    ),
+
+    AUTOLOGIN_PREMIUM_SESSION_TIMEOUT(
+            "autologin.premium.session-timeout",
+            60
+    ),
+    AUTOLOGIN_PREMIUM_MOJANG_TIMEOUT(
+            "autologin.premium.mojang-timeout",
+            5000
+    ),
+
+    AUTHME_DATABASE_PATH(
+            "authme-import.database-path",
+            ""
     );
 
     static final HashMap<String, Object> SETTINGS = new HashMap<>();
@@ -231,8 +343,36 @@ public enum Settings {
         return val == null ? fallback : val;
     }
 
+    /**
+     * Reads the value as an int.
+     *
+     * <p>Goes through {@link Number} rather than a strict {@code Integer} cast:
+     * the YAML parser hands back a Long for large literals and a Double for
+     * anything written with a decimal point, and neither should blow up here.</p>
+     */
     public int asInt() {
-        return get(Integer.class);
+        return (int) asNumber().longValue();
+    }
+
+    /** Reads the value as a double; see {@link #asInt()} for why this is lenient. */
+    public double asDouble() {
+        return asNumber().doubleValue();
+    }
+
+    /** Reads the value as a float, for the Bukkit speed setters. */
+    public float asFloat() {
+        return asNumber().floatValue();
+    }
+
+    private Number asNumber() {
+        Object obj = SETTINGS.get(key);
+        if (obj instanceof Number) {
+            return (Number) obj;
+        }
+        if (def instanceof Number) {
+            return (Number) def;
+        }
+        throw new ClassCastException("Setting " + key + " is not numeric!");
     }
 
     public boolean asBoolean() {

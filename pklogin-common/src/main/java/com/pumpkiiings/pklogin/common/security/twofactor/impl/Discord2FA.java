@@ -19,36 +19,41 @@ public class Discord2FA implements TwoFactorProvider {
     }
 
     @Override
-    public void init() {
+    public void init(java.io.File dataFolder) {
         try {
-            java.io.File file = new java.io.File("config/pklogin/2fa/discord.yml");
-            if (!file.exists()) file = new java.io.File("plugins/PkLogin/2fa/discord.yml");
+            java.io.File file = new java.io.File(dataFolder, "2fa/discord.yml");
             if (!file.exists()) return;
 
-            // Simple yaml parsing
-            String token = "";
-            boolean isEnabled = false;
-            for (String line : java.nio.file.Files.readAllLines(file.toPath())) {
-                if (line.trim().startsWith("enable:")) {
-                    isEnabled = Boolean.parseBoolean(line.split(":", 2)[1].trim());
-                } else if (line.trim().startsWith("token:")) {
-                    token = line.split(":", 2)[1].trim().replace("\"", "").replace("'", "");
-                }
-            }
+            // Read the file as YAML rather than scanning lines: "enable" appears
+            // both at the root and under options.link-required, and a line-based
+            // parser picks up whichever comes last, so the setting never applied.
+            dev.dejvokep.boostedyaml.YamlDocument config = dev.dejvokep.boostedyaml.YamlDocument.create(file);
 
-            this.enabled = isEnabled;
+            this.enabled = config.getBoolean("enable", false);
             if (!this.enabled) return;
-            if (token == null || token.isEmpty()) {
-                System.err.println("[PkLogin] Discord 2FA is enabled but token is missing!");
+
+            String token = config.getString("authentication.token", "");
+            if (token == null || token.trim().isEmpty()) {
+                System.err.println("[PkLogin] Discord 2FA is enabled but 'authentication.token' is missing!");
+                this.enabled = false;
                 return;
             }
 
             jda = net.dv8tion.jda.api.JDABuilder.createLight(token)
                     .addEventListeners(new DiscordListener())
                     .build();
-            
-            jda.awaitReady();
-            System.out.println("[PkLogin] Discord Bot initialized successfully!");
+
+            // Connecting can take several seconds; blocking here would stall
+            // server startup, so readiness is awaited off the calling thread.
+            new Thread(() -> {
+                try {
+                    jda.awaitReady();
+                    System.out.println("[PkLogin] Discord Bot initialized successfully!");
+                } catch (Exception e) {
+                    System.err.println("[PkLogin] Discord Bot failed to become ready: " + e.getMessage());
+                    this.enabled = false;
+                }
+            }, "PkLogin-Discord-Init").start();
         } catch (Throwable t) {
             System.err.println("[PkLogin] Failed to initialize Discord Bot: " + t.getMessage());
             this.enabled = false;
@@ -67,7 +72,9 @@ public class Discord2FA implements TwoFactorProvider {
             net.dv8tion.jda.api.entities.User user = jda.retrieveUserById(account.getDiscordId()).complete();
             if (user != null) {
                 user.openPrivateChannel().queue(channel -> {
-                    channel.sendMessage("Tu código de verificación de PkLogin es: **" + code + "**").queue();
+                    channel.sendMessage(com.pumpkiiings.pklogin.common.settings.Messages.DISCORD_BOT_VERIFICATION_CODE
+                            .asString("Your PkLogin verification code is: **{0}**")
+                            .replace("{0}", code)).queue();
                 });
                 return true;
             }

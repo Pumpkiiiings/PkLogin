@@ -40,11 +40,11 @@ public class PacketEventsListener extends PacketListenerAbstract {
     }
 
     public void addVerifiedSession(String ip, AutoLoginSession session) {
-        plugin.getVerifiedSessions().put(ip, session);
+        plugin.storeVerifiedSession(ip, session);
     }
 
-    public AutoLoginSession getVerifiedSession(String ip) {
-        return plugin.getVerifiedSessions().remove(ip);
+    public AutoLoginSession getVerifiedSession(String ip, String username) {
+        return plugin.consumeVerifiedSession(ip, username);
     }
 
     @Override
@@ -83,8 +83,7 @@ public class PacketEventsListener extends PacketListenerAbstract {
             
             ClientPublicKey clientPublicKey = null;
 
-            AutoLoginSession verified = plugin.getVerifiedSessions().get(ip);
-            if (verified != null && verified.getUsername().equalsIgnoreCase(username)) {
+            if (plugin.hasVerifiedSession(ip, username)) {
                 return;
             }
 

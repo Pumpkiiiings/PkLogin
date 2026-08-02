@@ -6,140 +6,258 @@
 #    \ \__\    \ \__\\ \__\ \_______\ \_______\ \_______\ \__\ \__\\ \__\
 #     \|__|     \|__| \|__|\|_______|\|_______|\|_______|\|__|\|__| \|__|
 
-# ÐžÑ„Ð¸Ñ†Ð¸Ð°Ð»ÑŒÐ½Ñ‹Ð¹ ÑÐ°Ð¹Ñ‚: https://www.pumpkiiings.com
+# Официальный сайт: https://www.pumpkiiings.com
 # Discord: https://www.pumpkiiings.com/discord
 
 # Russian translation made by Vadimus#3081 and github.com/Quantum-0 <3
 
 Messages:
   Title:
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ Ð¿ÐµÑ€ÐµÐ´ Ð²Ñ…Ð¾Ð´Ð¾Ð¼ Ð² ÑÐ¸ÑÑ‚ÐµÐ¼Ñƒ
+    # Сообщение отправляется перед входом в систему
     before-login:
-      title: "&a&lÐ”Ð¾Ð±Ñ€Ð¾ Ð¿Ð¾Ð¶Ð°Ð»Ð¾Ð²Ð°Ñ‚ÑŒ!"
-      subtitle: "&7Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ðµ: /login <Ð¿Ð°Ñ€Ð¾Ð»ÑŒ>"
+      title: '&a&lДобро пожаловать!'
+      subtitle: '&7Использование: /login <пароль>'
       delays:
         start: 0
         duration: 9999
         end: 6
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ Ð¿ÐµÑ€ÐµÐ´ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸ÐµÐ¹
+    # Сообщение отправляется перед регистрацией
     before-register:
-      title: "&a&lÐ”Ð¾Ð±Ñ€Ð¾ Ð¿Ð¾Ð¶Ð°Ð»Ð¾Ð²Ð°Ñ‚ÑŒ!"
-      subtitle: "&7Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ðµ: /register <Ð¿Ð°Ñ€Ð¾Ð»ÑŒ> <Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€ Ð¿Ð°Ñ€Ð¾Ð»Ñ>"
+      title: '&a&lДобро пожаловать!'
+      subtitle: '&7Использование: /register <пароль> <повтор пароля>'
       delays:
         start: 0
         duration: 9999
         end: 6
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ Ð¿Ð¾ÑÐ»Ðµ ÑƒÑÐ¿ÐµÑˆÐ½Ð¾Ð³Ð¾ Ð²Ñ…Ð¾Ð´Ð° Ð² ÑÐ¸ÑÑ‚ÐµÐ¼Ñƒ
+    # Сообщение отправляется после успешного входа в систему
     after-login:
-      title: ""
-      subtitle: "&aÐ’Ñ‹ ÑƒÑÐ¿ÐµÑˆÐ½Ð¾ Ð²Ð¾ÑˆÐ»Ð¸!"
+      title: ''
+      subtitle: '&aВы успешно вошли!'
       delays:
         start: 0
         duration: 60
         end: 6
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ Ð¿Ð¾ÑÐ»Ðµ ÑƒÑÐ¿ÐµÑˆÐ½Ð¾Ð¹ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ð¸
+    # Сообщение отправляется после успешной регистрации
     after-register:
-      title: ""
-      subtitle: "&aÐ’Ñ‹ ÑƒÑÐ¿ÐµÑˆÐ½Ð¾ Ð·Ð°Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ð»Ð¸ÑÑŒ!"
+      title: ''
+      subtitle: '&aВы успешно зарегистрировались!'
       delays:
         start: 0
         duration: 60
         end: 6
-
-        bedrock-auto-login:
-        title: "&a&lWelcome!"
-        subtitle: "&7Logged in as &eBedrock&7."
-        delays:
-          start: 0
-          duration: 30
-          end: 6
-      premium-auto-login:
-        title: "&a&lWelcome!"
-        subtitle: "&7Logged in as &6Premium&7."
-        delays:
-          start: 0
-          duration: 30
-          end: 6
-
+    premium-auto-login:
+      title: '&a&lWelcome!'
+      subtitle: '&7Logged in as &6Premium&7.'
+      delays:
+        start: 0
+        duration: 30
+        end: 6
+    bedrock-auto-login:
+      title: '&a&lWelcome!'
+      subtitle: '&7Logged in as &eBedrock&7.'
+      delays:
+        start: 0
+        duration: 30
+        end: 6
+  
   delay-kick:
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾Ðº ÑÐ»Ð¸ÑˆÐºÐ¾Ð¼ Ð´Ð¾Ð»Ð³Ð¾ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¸Ñ€ÑƒÐµÑ‚ÑÑ
-    register-kick: "&cÐ’Ñ€ÐµÐ¼Ñ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ð¸ Ð¸ÑÑ‚ÐµÐºÐ»Ð¾."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾Ðº ÑÐ»Ð¸ÑˆÐºÐ¾Ð¼ Ð´Ð¾Ð»Ð³Ð¾ Ð²Ñ…Ð¾Ð´Ð¸Ñ‚ Ð² Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚
-    login-kick: "&cÐ’Ñ‹ ÑÐ»Ð¸ÑˆÐºÐ¾Ð¼ Ð´Ð¾Ð»Ð³Ð¾ Ð²Ñ…Ð¾Ð´Ð¸Ð»Ð¸ Ð² Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚."
-
+    # Сообщение отправляется, когда игрок слишком долго регистрируется
+    register-kick: '&cВремя регистрации истекло.'
+    
+    # Сообщение отправляется, когда игрок слишком долго входит в аккаунт
+    login-kick: '&cВы слишком долго входили в аккаунт.'
+  
   successful-operations:
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾Ðº Ð¼ÐµÐ½ÑÐµÑ‚ ÑÐ²Ð¾Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ
-    password-changed: "&aÐ’Ð°Ñˆ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ Ð±Ñ‹Ð» ÑƒÑÐ¿ÐµÑˆÐ½Ð¾ Ð¸Ð·Ð¼ÐµÐ½Ñ‘Ð½."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾Ðº ÑƒÑÐ¿ÐµÑˆÐ½Ð¾ Ð²Ñ…Ð¾Ð´Ð¸Ñ‚ Ð² Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚
-    successful-login: "&aÐ’Ñ‹ ÑƒÑÐ¿ÐµÑˆÐ½Ð¾ Ð²Ð¾ÑˆÐ»Ð¸ Ð² Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾Ðº ÑƒÑÐ¿ÐµÑˆÐ½Ð¾ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¸Ñ€ÑƒÐµÑ‚ÑÑ
-    successful-register: "&aÐ’Ñ‹ ÑƒÑÐ¿ÐµÑˆÐ½Ð¾ Ð·Ð°Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ð»Ð¸ÑÑŒ."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾Ðº ÑƒÐ´Ð°Ð»ÑÐµÑ‚ ÑÐ²Ð¾Ð¹ Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚
-    unregister-kick: "&cÐ ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ñ Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚Ð° ÑƒÑÐ¿ÐµÑˆÐ½Ð¾ Ð¾Ñ‚Ð¾Ð·Ð²Ð°Ð½Ð°."
-
+    # Сообщение отправляется, когда игрок меняет свой пароль
+    password-changed: '&aВаш пароль был успешно изменён.'
+    
+    # Сообщение отправляется, когда игрок успешно входит в аккаунт
+    successful-login: '&aВы успешно вошли в аккаунт.'
+    
+    # Сообщение отправляется, когда игрок успешно регистрируется
+    successful-register: '&aВы успешно зарегистрировались.'
+    
+    # Сообщение отправляется, когда игрок удаляет свой аккаунт
+    unregister-kick: '&cРегистрация аккаунта успешно отозвана.'
+  
   kick-messages:
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾Ðº Ð¿Ñ‹Ñ‚Ð°ÐµÑ‚ÑÑ Ð·Ð°Ð¹Ñ‚Ð¸ Ð½Ð° ÑÐµÑ€Ð²ÐµÑ€ Ñ Ð¼Ð°Ð»ÐµÐ½ÑŒÐºÐ¾Ð¹ Ñ€Ð°Ð·Ð½Ð¸Ñ†ÐµÐ¹ Ð² Ð½Ð¸ÐºÐµ
-    nick-already-registered: "&cÐ’Ñ‹ Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚Ðµ Ð²Ð¾Ð¹Ñ‚Ð¸ Ñ Ð½Ð¸ÐºÐ¾Ð¼ {0}&r\n&r&cÐ­Ñ‚Ð¾ Ð¸Ð¼Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ ÑƒÐ¶Ðµ Ð·Ð°Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¾ ÐºÐ°Ðº {1}&r\n&r\n&r&cÐ”Ð»Ñ Ð²Ñ…Ð¾Ð´Ð° Ð²Ñ‹ Ð´Ð¾Ð»Ð¶Ð½Ñ‹ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ ÑÐ²Ð¾Ð¹ Ð½Ð¸ÐºÐ½ÐµÐ¹Ð¼ Ð±ÐµÐ· Ð¿Ñ€Ð¾Ð¿Ð¸ÑÑ‹Ñ…/ÑÑ‚Ñ€Ð¾Ñ‡Ð½Ñ‹Ñ… Ð±ÑƒÐºÐ²"
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾Ðº ÑÐ»Ð¸ÑˆÐºÐ¾Ð¼ Ð¼Ð½Ð¾Ð³Ð¾ Ñ€Ð°Ð· Ð²Ð²Ð¾Ð´Ð¸Ñ‚ Ð½ÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ñ‹Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ
-    failed-many-times: "&cÐ’Ñ‹ ÑÐ»Ð¸ÑˆÐºÐ¾Ð¼ Ð¼Ð½Ð¾Ð³Ð¾ Ñ€Ð°Ð· Ð²Ð²ÐµÐ»Ð¸ Ð½ÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ñ‹Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾Ðº Ð²Ð²Ð¾Ð´Ð¸Ñ‚ Ð½ÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ñ‹Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ
-    incorrect-password: "&cÐÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ñ‹Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ! ÐŸÐ¾Ð¿Ñ‹Ñ‚Ð°Ð¹Ñ‚ÐµÑÑŒ ÑÐ½Ð¾Ð²Ð°."
-
+    # Сообщение отправляется, когда игрок пытается зайти на сервер с маленькой разницей в нике
+    nick-already-registered: |-
+      &cВы не можете войти с ником {0}&r
+      &r&cЭто имя пользователя уже зарегистрировано как {1}&r
+      &r
+      &r&cДля входа вы должны использовать свой никнейм без прописых/строчных букв
+# Сообщение отправляется, когда игрок слишком много раз вводит неправильный пароль
+    failed-many-times: '&cВы слишком много раз ввели неправильный пароль.'
+    
+    # Сообщение отправляется, когда игрок вводит неправильный пароль
+    incorrect-password: '&cНеправильный пароль! Попытайтесь снова.'
+    invalid-nickname: '&cSorry, but you are using an invalid nickname.'
+  
   error-messages:
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¾, ÐºÐ¾Ð³Ð´Ð° Ð²Ñ‹ ÑƒÐ¶Ðµ Ð²Ð¾ÑˆÐ»Ð¸ Ð² ÑÐ¸ÑÑ‚ÐµÐ¼Ñƒ.
-    already-login: "&cÐ’Ñ‹ ÑƒÐ¶Ðµ Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð¾Ð²Ð°Ð½Ñ‹."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð½Ð¸Ðº ÑƒÐ¶Ðµ Ð·Ð°Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ð½.
-    already-registered: "&cÐ”Ð°Ð½Ð½Ð¾Ðµ Ð¸Ð¼Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ ÑƒÐ¶Ðµ Ð·Ð°Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¾."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð½Ð¸Ðº ÐµÑ‰Ðµ Ð½Ðµ Ð·Ð°Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ð½.
-    not-registered: "&cÐ­Ñ‚Ð¾Ñ‚ Ð½Ð¸Ðº ÐµÑ‰Ðµ Ð½Ðµ Ð·Ð°Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ð½."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¿ÐµÑ€Ð²Ñ‹Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ Ð½Ðµ ÑÐ¾Ð¾Ñ‚Ð²ÐµÑ‚ÑÑ‚Ð²ÑƒÐµÑ‚ Ð²Ñ‚Ð¾Ñ€Ð¾Ð¼Ñƒ Ð¿Ð°Ñ€Ð¾Ð»ÑŽ
-    passwords-dont-match: "&cÐŸÐ°Ñ€Ð¾Ð»Ð¸ Ð½Ðµ ÑÐ¾Ð²Ð¿Ð°Ð´Ð°ÑŽÑ‚."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾Ðº Ð¿Ñ‹Ñ‚Ð°ÐµÑ‚ÑÑ ÑÐ¼ÐµÐ½Ð¸Ñ‚ÑŒ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ, Ð²Ð²Ð¾Ð´Ñ Ñ‚Ð¾Ñ‚ Ð¶Ðµ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ, Ñ‡Ñ‚Ð¾ Ð¸ Ñ‚ÐµÐºÑƒÑ‰Ð¸Ð¹
-    password-same-as-old: "&cÐ’Ð²ÐµÐ´Ñ‘Ð½Ð½Ñ‹Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ ÑÐ¾Ð²Ð¿Ð°Ð´Ð°ÐµÑ‚ Ñ Ñ‚ÐµÐºÑƒÑ‰Ð¸Ð¼."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾Ðº Ð²Ð²Ð¾Ð´Ð¸Ñ‚ ÑÐ»Ð¸ÑˆÐºÐ¾Ð¼ Ð´Ð»Ð¸Ð½Ð½Ñ‹Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ
-    password-too-large: "&cÐ’Ñ‹ Ð²Ð²ÐµÐ»Ð¸ ÑÐ»Ð¸ÑˆÐºÐ¾Ð¼ Ð´Ð»Ð¸Ð½Ð½Ñ‹Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾Ðº Ð²Ð²Ð¾Ð´Ð¸Ñ‚ ÑÐ»Ð¸ÑˆÐºÐ¾Ð¼ ÐºÐ¾Ñ€Ð¾Ñ‚ÐºÐ¸Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ
-    password-too-small: "&cÐ’Ñ‹ Ð²Ð²ÐµÐ»Ð¸ ÑÐ»Ð¸ÑˆÐºÐ¾Ð¼ ÐºÐ¾Ñ€Ð¾Ñ‚ÐºÐ¸Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ."
-    insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
-    change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ñƒ Ð¸Ð³Ñ€Ð¾ÐºÐ° Ð½ÐµÐ´Ð¾ÑÑ‚Ð°Ñ‚Ð¾Ñ‡Ð½Ð¾ Ð¿Ñ€Ð°Ð² Ð´Ð»Ñ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ñ ÐºÐ°ÐºÐ¾Ð¹-Ð»Ð¸Ð±Ð¾ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹
-    insufficient-permissions: "&cÐ£ Ð²Ð°Ñ Ð½ÐµÑ‚ Ð¿Ñ€Ð°Ð² Ð´Ð»Ñ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ñ ÑÑ‚Ð¾Ð¹ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ñ‚ÑÑ, ÐºÐ¾Ð³Ð´Ð° Ð¸Ð³Ñ€Ð¾ÐºÐ° ÐºÐ¸ÐºÐ°ÐµÑ‚ Ð¸Ð·-Ð·Ð° Ñ‚Ð¾Ð³Ð¾, Ñ‡Ñ‚Ð¾ Ð¾Ð½ ÑƒÐ¶Ðµ Ð·Ð°ÑˆÑ‘Ð» Ð½Ð° ÑÐµÑ€Ð²ÐµÑ€
-    already-online: "&cÐ­Ñ‚Ð¾Ñ‚ Ð¸Ð³Ñ€Ð¾Ðº ÑƒÐ¶Ðµ Ð·Ð°ÑˆÑ‘Ð» Ð½Ð° ÑÐµÑ€Ð²ÐµÑ€."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐµÑÐ»Ð¸ ÑÑ‚Ñƒ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñƒ Ð½ÐµÐ»ÑŒÐ·Ñ Ð²Ñ‹Ð¿Ð¾Ð»Ð½Ð¸Ñ‚ÑŒ Ð² ÐºÐ¾Ð½ÑÐ¾Ð»Ð¸
-    player-command-usage: "&cÐ­Ñ‚Ñƒ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñƒ Ð½ÐµÐ»ÑŒÐ·Ñ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ð² ÐºÐ¾Ð½ÑÐ¾Ð»Ð¸."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ Ð¿Ð¾ÑÐ»Ðµ Ð¿ÐµÑ€ÐµÐ·Ð°Ð³Ñ€ÑƒÐ·ÐºÐ¸ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð°
-    plugin-reload-message: "&ePkLogin ÑƒÑÐ¿ÐµÑˆÐ½Ð¾ Ð¿ÐµÑ€ÐµÐ·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ÑÑ, ÐµÑÐ»Ð¸ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ñ Ñ Ð±Ð°Ð·Ð¾Ð¹ Ð´Ð°Ð½Ð½Ñ‹Ñ… Ð½Ðµ Ð±Ñ‹Ð»Ð° ÑƒÑÐ¿ÐµÑˆÐ½Ð¾ Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½Ð°
-    database-error: "&cÐš ÑÐ¾Ð¶Ð°Ð»ÐµÐ½Ð¸ÑŽ, Ð½Ð°Ð¼ Ð½Ðµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ Ð²Ñ‹Ð¿Ð¾Ð»Ð½Ð¸Ñ‚ÑŒ ÑÑ‚Ñƒ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸ÑŽ. ÐŸÐ¾Ð¶Ð°Ð»ÑƒÐ¹ÑÑ‚Ð°, Ð¿Ð¾Ð¿Ñ€Ð¾Ð±ÑƒÐ¹Ñ‚Ðµ ÐµÑ‰Ðµ Ñ€Ð°Ð·. [SQL FAIL]"
-
+    # Сообщение отправлено, когда вы уже вошли в систему.
+    already-login: '&cВы уже авторизованы.'
+    
+    # Сообщение отправляется, когда ник уже зарегистрирован.
+    already-registered: '&cДанное имя пользователя уже зарегистрировано.'
+    
+    # Сообщение отправляется, когда ник еще не зарегистрирован.
+    not-registered: '&cЭтот ник еще не зарегистрирован.'
+    
+    # Сообщение отправляется, когда первый пароль не соответствует второму паролю
+    passwords-dont-match: '&cПароли не совпадают.'
+    
+    # Сообщение отправляется, когда игрок пытается сменить пароль, вводя тот же пароль, что и текущий
+    password-same-as-old: '&cВведённый пароль совпадает с текущим.'
+    
+    # Сообщение отправляется, когда игрок вводит слишком длинный пароль
+    password-too-large: '&cВы ввели слишком длинный пароль.'
+    
+    # Сообщение отправляется, когда игрок вводит слишком короткий пароль
+    password-too-small: '&cВы ввели слишком короткий пароль.'
+    insecure-password: '&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols.'
+    change-password-enforced: '&cFor security reasons, you must update your password right now using &e/changepassword&c.'
+    
+    # Сообщение отправляется, когда у игрока недостаточно прав для использования какой-либо команды
+    insufficient-permissions: '&cУ вас нет прав для использования этой команды.'
+    
+    # Сообщение выводится, когда игрока кикает из-за того, что он уже зашёл на сервер
+    already-online: '&cЭтот игрок уже зашёл на сервер.'
+    
+    # Сообщение отправляется, если эту команду нельзя выполнить в консоли
+    player-command-usage: '&cЭту команду нельзя использовать в консоли.'
+    
+    # Сообщение отправляется после перезагрузки плагина
+    plugin-reload-message: '&ePkLogin успешно перезагружен.'
+    
+    # Сообщение отправляется, если операция с базой данных не была успешно выполнена
+    database-error: '&cК сожалению, нам не удалось выполнить эту операцию. Пожалуйста, попробуйте еще раз. [SQL FAIL]'
+    attempts-left: '&cAttempts left: &e{0}'
+    player-not-online: '&cThat player is not online.'
+    max-ips-reached: '&cYou have reached the maximum number of accounts allowed per IP.'
+  
   other-messages:
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð´Ð»Ñ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ñ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹ /login
-    message-login: "&eÐ’Ð²ÐµÐ´Ð¸Ñ‚Ðµ: &7/login <Ð¿Ð°Ñ€Ð¾Ð»ÑŒ>&e."
+    # Сообщение для использования команды /login
+    message-login: '&eВведите: &7/login <пароль>&e.'
+    
+    # Сообщения для использования команды /register
+    message-register: '&eВведите: &7/register <пароль> <повтор пароля>&e.'
+    
+    # Сообщение для команды смены пароля /changepassword
+    message-changepassword: '&eВведите: &7/changepassword <текущий пароль> <новый пароль>&e.'
+    
+    # Сообщение отправлено для использования команды /unregister
+    message-unregister: '&eИспользуйте команду &7/unregister <текущий пароль>&e.'
+    updates-failed: '&cFailed to find new updates.'
+    updates-download-link: '&cDownload the latest version at: https://github.com/Pumpkiiiings/PkLogin/releases'
+    updates-invalid-response: '&cFailed to find new updates: invalid response.'
+    updates-available: '&eA new version of PkLogin is available! ({0} -> {1})'
+    updates-use-command: '&7Use &f/pklogin update &7to download the new version.'
+  admin:
+    help:
+    - '&8&m----------------------------------------'
+    - '&b&lPkLogin &8| &7Admin Help'
+    - ''
+    - '&b/pklogin help &8- &7Show this help message'
+    - '&b/pklogin forcelogin <player> &8- &7Force login a player'
+    - '&b/pklogin unregister <player> &8- &7Unregister a player'
+    - '&b/pklogin changepassword <player> <password> &8- &7Change a player''s password'
+    - '&b/pklogin premium <player> &8- &7Set a player as premium'
+    - '&b/pklogin cracked <player> &8- &7Set a player as cracked'
+    - '&b/pklogin update &8- &7Update the plugin'
+    - '&b/pklogin setspawn &8- &7Set the spawn location'
+    - '&b/pklogin reload &8- &7Reload the configuration'
+    - '&8&m----------------------------------------'
+    usage-command: '&eUso correcto: &b%command% %arg%'
+    forcelogin-success: '&aPlayer {0} has been forcefully authenticated.'
+    unregister-success: '&aPlayer {0} has been unregistered.'
+    changepass-success: '&aPassword for player {0} has been successfully changed.'
+    changepass-kick: '&cYour password was changed by an administrator.'
+    dupeip-header: '&eAccounts for IP/Player &a{0}&e:'
+    dupeip-format: '&7- &f{0} &8(&7{1}&8)'
+    dupeip-none: '&cNo accounts found for that IP/Player.'
+    authme-import-start: '&7Starting AuthMe import...'
+    authme-import-not-found: '&cAuthMe SQLite database not found.'
+    authme-import-found: '&7Found AuthMe database at &f{0} &7with &f{1} &7accounts.'
+    authme-import-progress: '&7Progress: &f{0} &7/ &f{1}'
+    authme-import-done: '&aImport complete! &7Players will be re-hashed to &f{0} &7on next login.'
+    authme-import-fail: '&cFailed to read AuthMe database: {0}'
+    delete-success: '&aPlayer {0} has been deleted.'
+    setspawn-success: '&aSpawn location set successfully!'
+    verify-format:
+    - '&a[PkLogin] Info for {0}:'
+    - '&7IP Address: &f{1}'
+    - '&7Registered: &f{2}'
+    - '&7Last Login: &f{3}'
+    - '&7Premium: &f{4}'
+    account-not-found: '&cAccount not found.'
+  two-factor:
+    usage: '&eUsage: /2fa <setup|verify|disable|discord|verify2fa>'
+    not-registered: '&cYou must be registered to use 2FA.'
+    not-logged-in-setup: '&cYou must be logged in to set up 2FA.'
+    already-setup: '&c2FA is already set up on your account.'
+    setup-header: '&e--- 2FA Setup ---'
+    setup-secret: '&eSecret Key: &a{0}'
+    setup-instruction1: '&ePlease enter this secret into your authenticator app.'
+    setup-instruction2: '&eThen, verify it using: &a/2fa verify <code>'
+    setup-success: '&a2FA has been successfully set up!'
+    invalid-code: '&cInvalid 2FA code. Please try again.'
+    not-awaiting: '&cYou are not awaiting 2FA verification.'
+    not-logged-in-disable: '&cYou must be logged in to disable 2FA.'
+    not-setup: '&cYou do not have 2FA set up.'
+    disable-usage: '&eUsage: /2fa disable <code>'
+    disable-success: '&a2FA has been successfully disabled!'
+    discord-not-logged-in: '&cYou must be logged in to link Discord.'
+    discord-already-linked: '&cYou already have a Discord account linked.'
+    discord-link-header: '&e--- Discord Linking ---'
+    discord-link-code: '&eCode: &a{0}'
+    discord-link-instruction1: '&ePlease send a Private Message (DM) to our Discord Bot with this code.'
+    discord-link-instruction2: '&eThe code will expire in 10 minutes.'
+    login-success: '&aYou have successfully logged in with 2FA.'
+    login-message: '&eWe have sent a code to your Discord. Type /2fa verify2fa <code> to enter.'
+    send-failed: '&cWe could not deliver your 2FA code. Please contact an administrator.'
+    too-many-attempts: '&cToo many invalid 2FA codes. Please log in again.'
+    verify-usage: '&eUsage: /2fa verify2fa <code>'
+  discord-bot:
+    link-success: Your Minecraft account **{0}** has been linked to Discord successfully!
+    link-error: Something went wrong while linking your account in the database.
+    invalid-code: That code is not valid or has expired.
+    help: Hi! To link your account, send me the {0}-digit code the Minecraft server gave you with /2fa discord.
+    verification-code: 'Your PkLogin verification code is: **{0}**'
+  email:
+    subject: PkLogin - Verification Code
+    body: |-
+      Hello {0},
 
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ Ð´Ð»Ñ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ñ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹ /register
-    message-register: "&eÐ’Ð²ÐµÐ´Ð¸Ñ‚Ðµ: &7/register <Ð¿Ð°Ñ€Ð¾Ð»ÑŒ> <Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€ Ð¿Ð°Ñ€Ð¾Ð»Ñ>&e."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð´Ð»Ñ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹ ÑÐ¼ÐµÐ½Ñ‹ Ð¿Ð°Ñ€Ð¾Ð»Ñ /changepassword
-    message-changepassword: "&eÐ’Ð²ÐµÐ´Ð¸Ñ‚Ðµ: &7/changepassword <Ñ‚ÐµÐºÑƒÑ‰Ð¸Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ> <Ð½Ð¾Ð²Ñ‹Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ>&e."
-
-    # Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¾ Ð´Ð»Ñ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ñ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹ /unregister
-    message-unregister: "&eÐ˜ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐ¹Ñ‚Ðµ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñƒ &7/unregister <Ñ‚ÐµÐºÑƒÑ‰Ð¸Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ>&e."
+      Your PkLogin verification code is: {1}
+  offline:
+    already-offline: '&cYour account is already offline (cracked).'
+    success: '&aYour account is now offline! You will need to use /login.'
+    switch-kick: |-
+      &aYou have switched to Offline mode.
+      &ePlease reconnect to the server.
+  premium:
+    already-premium: '&cYour account is already premium.'
+    success: '&aYour account is now Premium! You won''t need to use /login.'
+    switch-kick: |-
+      &aYou have switched to Premium mode.
+      &ePlease reconnect to the server.
+    current-mode: '&eYour account is currently in {0} mode.'
+    warning:
+    - '&cWARNING!'
+    - '&eIf you enable premium mode, you will enter without /login.'
+    - '&4If you are NOT premium, you will lose your account forever!'
+    - '&eUse /premium confirm to confirm.'
+    auto-login: '&aYou have been automatically logged in via Premium!'
+  queue:
+    message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
+  captcha:
+    required: '&cYou must complete the captcha before authenticating!'
+    success: '&aCaptcha completed successfully! You can now login/register.'
+    failed: '&cWrong captcha! Try again.'
+    inventory-title: Click the &aGreen Wool
+    inventory-item: '&aClick Me!'
+    chat-instruction: '&ePlease type the following code in chat: &b{code}'
+    map-instruction: '&eLook at the map in your hand and type the code!'
+version-messages: 2
 

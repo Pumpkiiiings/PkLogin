@@ -35,13 +35,15 @@ public class Argon2Strategy implements HashStrategy {
 
     private final Argon2 argon2 = Argon2Factory.createAdvanced(Argon2Factory.Argon2Types.ARGON2id);
 
-    private static final int ITERATIONS  = 2;
-    private static final int MEMORY_KB   = 65536; // 64 MB
-    private static final int PARALLELISM = 1;
-
     @Override
     public String hash(String plainPassword) {
-        return argon2.hash(ITERATIONS, MEMORY_KB, PARALLELISM, plainPassword.toCharArray());
+        // Argon2 encodes its parameters into the hash, so raising these only
+        // affects newly created passwords.
+        return argon2.hash(
+                com.pumpkiiings.pklogin.common.settings.Settings.HASH_ARGON2_ITERATIONS.asInt(),
+                com.pumpkiiings.pklogin.common.settings.Settings.HASH_ARGON2_MEMORY_KB.asInt(),
+                com.pumpkiiings.pklogin.common.settings.Settings.HASH_ARGON2_PARALLELISM.asInt(),
+                plainPassword.toCharArray());
     }
 
     @Override

@@ -9,8 +9,10 @@
 # Official website: https://www.pumpkiiings.com
 # Discord: https://www.pumpkiiings.com/discord
 
-# Do not change this setting
-version: "1.1"
+# Schema version of this file. PkLogin maintains it — do not edit it by hand.
+# On startup an older file is upgraded in place: new options are added, and
+# anything you have changed is kept exactly as you set it.
+version-config: 3
 
 # Language of the plugin.
 # For more information: https://github.com/Pumpkiiiings/PkLogin/blob/master/docs/lang.md
@@ -30,6 +32,33 @@ Security:
   # IMPORTANT: Changing this only affects NEW passwords. Existing hashes
   # are auto-detected and silently re-hashed on the player's next login.
   hash-algorithm: BCRYPT
+
+  # Cost parameters for each algorithm. Higher values slow down both legitimate
+  # logins and brute-force attempts, so tune them to your CPU: aim for roughly
+  # 250ms per hash. Raising a value re-hashes each password on its next login;
+  # lowering one never weakens hashes that already exist.
+  hashing:
+    bcrypt:
+      # Work factor. Each +1 doubles the time taken.
+      cost: 12
+    pbkdf2:
+      # OWASP 2024 recommendation for PBKDF2-HMAC-SHA256.
+      iterations: 600000
+    argon2:
+      iterations: 2
+      # Memory per hash in kibibytes. 65536 = 64 MB.
+      memory-kb: 65536
+      parallelism: 1
+
+  # Minimum delay between two authentication commands from the same player,
+  # in milliseconds. Stops a client from spamming attempts faster than the
+  # bruteforce counter can react.
+  command-cooldown: 750
+
+  # Names that do not match this are rejected before they reach the login step.
+  # If you enable username-appender, the check runs on the name the player typed,
+  # before any suffix is added.
+  valid-name-regex: '([a-zA-Z0-9_]{3,16})|(\*[a-zA-Z0-9_]{3,17})'
 
   password:
     # Small password size.
@@ -62,9 +91,89 @@ Database:
   username: root
   password: ""
 
+  # Connection pool tuning. The defaults suit most servers.
+  pool:
+    # Ignored for SQLite, which is always limited to a single connection.
+    maximum-pool-size: 10
+    # How long to wait for a free connection, in milliseconds.
+    connection-timeout: 10000
+    # How long a connection may live before being replaced, in milliseconds.
+    # Keep this below your MySQL/MariaDB wait_timeout.
+    max-lifetime: 1800000
+
 # Enable this if you have PkLogin installed on your proxy (BungeeCord/Velocity).
 # If true, the backend server will not perform premium checks and will let the proxy handle it.
 proxy-mode: true
+
+# Shared secret used to authenticate the messages the proxy sends to the backend
+# servers (premium auto-login).
+#
+# LEAVE THIS EMPTY if you use Velocity modern forwarding. PkLogin derives its own
+# key from the forwarding secret the proxy and backends already share, so there is
+# nothing to configure and nothing to keep in sync.
+#
+# Set it only when there is no forwarding secret to derive from, which in practice
+# means BungeeCord. In that case:
+#   - Use the SAME value on the proxy and on every backend server.
+#   - Use a long random string. Treat it like a password: anyone who knows it can
+#     log in as any player.
+#
+# Note that BungeeCord's legacy forwarding is unauthenticated by design: if your
+# backend ports are reachable from the internet, anyone can connect to them
+# directly and claim any identity, whatever this setting says. Firewall them.
+proxy-secret: ""
+
+# Automatic login for players that do not use a regular Java premium account.
+autologin:
+  bedrock:
+    # Log Bedrock players in automatically once Floodgate has authenticated them.
+    enable: true
+
+    # Skip the registration step for Bedrock players.
+    skip-register: true
+
+  premium:
+    # How long a completed Mojang handshake stays valid, in seconds. It only has
+    # to cover the gap between the login packets and the player actually joining.
+    session-timeout: 60
+
+    # Timeout for the calls to Mojang's session server, in milliseconds.
+    mojang-timeout: 5000
+
+# Two-factor authentication shared settings.
+# Provider credentials live in the 2fa/ folder.
+two-factor:
+  # Digits per code. Clamped to 4-9.
+  code-length: 6
+
+  # How long a login code stays valid, in seconds.
+  login-code-expiration: 300
+
+  # How long an account-linking code stays valid, in seconds.
+  link-code-expiration: 600
+
+  # Wrong codes allowed before the pending code is discarded and the player has
+  # to log in again.
+  max-verify-attempts: 5
+
+  discord:
+    # Link codes a single Discord user may try per window, so nobody can walk
+    # the whole code space by messaging the bot.
+    max-link-attempts: 10
+    # Length of that window, in seconds.
+    link-attempt-window: 600
+
+# Update checker.
+updates:
+  # Contact GitHub on startup to look for a newer release.
+  check: true
+  # Tell admins with pklogin.admin.update when they log in.
+  notify-admins: true
+
+# AuthMe import (/pklogin authme-import).
+authme-import:
+  # Absolute path to authme.db. Leave empty to use plugins/AuthMe/authme.db.
+  database-path: ""
 
 username-appender:
   enabled: false
@@ -120,6 +229,13 @@ limbo:
     # Sets whether items should be hidden before logging in.
     hide-inventory: true
 
+  # Speeds restored once the player authenticates. These are the vanilla values;
+  # change them only if another plugin on your server uses different ones.
+  # Only applied when block-player-walk is enabled.
+  restore:
+    walk-speed: 0.2
+    fly-speed: 0.1
+
 passwords:
   bruteforce:
     # Sets the maximum number of incorrect attempts a player can make.
@@ -132,7 +248,10 @@ security:
     enable: false
     # Type of captcha: INVENTORY, CHAT, MAP
     type: INVENTORY
-    # Commands blocked before completing captcha (login, register are always blocked)
+    # Characters in the code, for the CHAT and MAP types.
+    code-length: 5
+    # Block every command until the captcha is solved.
+    # /login and /register stay blocked either way.
     blocked-commands: true
     
   ip-limit:

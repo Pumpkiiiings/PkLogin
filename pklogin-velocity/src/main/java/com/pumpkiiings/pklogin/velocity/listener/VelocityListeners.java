@@ -1,6 +1,7 @@
 package com.pumpkiiings.pklogin.velocity.listener;
 
 import com.pumpkiiings.pklogin.common.model.Account;
+import com.pumpkiiings.pklogin.common.security.ProxyMessageSecurity;
 import com.pumpkiiings.pklogin.velocity.PkLoginVelocity;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PreLoginEvent;
@@ -21,6 +22,13 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
 public class VelocityListeners {
+
+    /**
+     * Grace period before announcing an auto-login to the backend, so the player
+     * is fully connected there first. Not configurable: it tracks how the backend
+     * sets a connection up, not anything a server owner would tune.
+     */
+    private static final long AUTO_LOGIN_DELAY_MILLIS = 500L;
 
     private final PkLoginVelocity plugin;
     private final Random random = new Random();
@@ -94,16 +102,14 @@ public class VelocityListeners {
 
         Optional<Account> accountOpt = plugin.getAccountManagement().search(username);
         if (isBedrock || (accountOpt.isPresent() && ("REAL".equalsIgnoreCase(accountOpt.get().getUuidType()) || "PREMIUM".equalsIgnoreCase(accountOpt.get().getUuidType())))) {
+            // Give the backend a moment to finish setting the player up before
+            // telling it they are already authenticated.
             plugin.getServer().getScheduler()
-                .buildTask(plugin, () -> {
-                    ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                    out.writeUTF("PremiumAutoLogin");
-                    out.writeUTF(username);
-                    event.getServer().sendPluginMessage(PluginMessageListener.IDENTIFIER, out.toByteArray());
-                })
-                .delay(500, java.util.concurrent.TimeUnit.MILLISECONDS)
+                .buildTask(plugin, () -> com.pumpkiiings.pklogin.velocity.ProxyAuthMessages
+                        .sendPremiumAutoLogin(plugin, player))
+                .delay(AUTO_LOGIN_DELAY_MILLIS, java.util.concurrent.TimeUnit.MILLISECONDS)
                 .schedule();
-            
+
             plugin.getAuthenticatedPlayers().add(player.getUniqueId());
         }
     }

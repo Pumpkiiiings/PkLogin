@@ -26,11 +26,13 @@ package com.pumpkiiings.pklogin.common.security.hashing;
 
 public class BCryptStrategy implements HashStrategy {
 
-    private static final int ROUNDS = 12;
+    private static int rounds() {
+        return com.pumpkiiings.pklogin.common.settings.Settings.HASH_BCRYPT_COST.asInt();
+    }
 
     @Override
     public String hash(String plainPassword) {
-        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(ROUNDS));
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(rounds()));
     }
 
     @Override
@@ -48,7 +50,9 @@ public class BCryptStrategy implements HashStrategy {
         try {
             String[] parts = storedHash.split("\\$");
             int cost = Integer.parseInt(parts[2]);
-            return cost < ROUNDS;
+            // Only upgrade: a hash stronger than the configured cost is left alone
+            // so that lowering the setting does not weaken existing passwords.
+            return cost < rounds();
         } catch (Exception ignored) {
             return true;
         }

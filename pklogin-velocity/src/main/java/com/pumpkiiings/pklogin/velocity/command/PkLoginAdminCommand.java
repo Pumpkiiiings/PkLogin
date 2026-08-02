@@ -1,5 +1,7 @@
 package com.pumpkiiings.pklogin.velocity.command;
 
+import com.pumpkiiings.pklogin.common.Permissions;
+
 import com.pumpkiiings.pklogin.common.manager.AccountManagement;
 import com.pumpkiiings.pklogin.common.model.Account;
 import com.pumpkiiings.pklogin.common.security.hashing.HashStrategyFactory;
@@ -15,7 +17,7 @@ import java.util.Optional;
 public class PkLoginAdminCommand extends VelocityAbstractCommand {
 
     public PkLoginAdminCommand(PkLoginVelocity plugin) {
-        super(plugin, false, "pklogin.admin");
+        super(plugin, false, Permissions.ADMIN);
     }
 
     @Override
@@ -61,7 +63,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
 
         switch (subcommand) {
             case "unregister": {
-                if (!sender.hasPermission("pklogin.admin.unregister")) {
+                if (!sender.hasPermission(Permissions.ADMIN_UNREGISTER)) {
                     sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
                     return;
                 }
@@ -80,7 +82,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
             }
 
             case "forcelogin": {
-                if (!sender.hasPermission("pklogin.admin.forcelogin")) {
+                if (!sender.hasPermission(Permissions.ADMIN_FORCELOGIN)) {
                     sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
                     return;
                 }
@@ -94,24 +96,21 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
                 if (targetPlayerOpt.isPresent()) {
                     Player targetPlayer = targetPlayerOpt.get();
                     plugin.getAuthenticatedPlayers().add(targetPlayer.getUniqueId());
-                    
-                    com.google.common.io.ByteArrayDataOutput out = com.google.common.io.ByteStreams.newDataOutput();
-                    out.writeUTF("PremiumAutoLogin");
-                    out.writeUTF(targetName);
-                    
-                    targetPlayer.getCurrentServer().ifPresent(serverConnection -> {
-                        serverConnection.sendPluginMessage(com.pumpkiiings.pklogin.velocity.listener.PluginMessageListener.IDENTIFIER, out.toByteArray());
-                    });
-                    
+
+                    // Goes through the shared builder so the payload is signed the
+                    // same way the backend verifies it.
+                    com.pumpkiiings.pklogin.velocity.ProxyAuthMessages
+                            .sendPremiumAutoLogin(plugin, targetPlayer);
+
                     sendMessage(sender, Messages.ADMIN_FORCELOGIN_SUCCESS.asString().replace("{0}", targetName));
                 } else {
-                    sendMessage(sender, "§cPlayer is not online on the proxy.");
+                    sendMessage(sender, Messages.PLAYER_NOT_ONLINE.asString("§cThat player is not online."));
                 }
                 return;
             }
 
             case "delete": {
-                if (!sender.hasPermission("pklogin.admin.delete")) {
+                if (!sender.hasPermission(Permissions.ADMIN_DELETE)) {
                     sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
                     return;
                 }
@@ -130,7 +129,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
             }
 
             case "verify": {
-                if (!sender.hasPermission("pklogin.admin.verify")) {
+                if (!sender.hasPermission(Permissions.ADMIN_VERIFY)) {
                     sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
                     return;
                 }
@@ -156,7 +155,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
             }
 
             case "changepass": {
-                if (!sender.hasPermission("pklogin.admin.changepass")) {
+                if (!sender.hasPermission(Permissions.ADMIN_CHANGEPASS)) {
                     sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
                     return;
                 }
@@ -183,7 +182,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
             }
 
             case "dupeip": {
-                if (!sender.hasPermission("pklogin.admin.dupeip")) {
+                if (!sender.hasPermission(Permissions.ADMIN_DUPEIP)) {
                     sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
                     return;
                 }
@@ -216,7 +215,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
             }
 
             case "reload": {
-                if (!sender.hasPermission("pklogin.admin.reload")) {
+                if (!sender.hasPermission(Permissions.ADMIN_RELOAD)) {
                     sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
                     return;
                 }
@@ -226,7 +225,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
             }
 
             case "help": {
-                if (!sender.hasPermission("pklogin.admin.help")) {
+                if (!sender.hasPermission(Permissions.ADMIN_HELP)) {
                     sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
                     return;
                 }

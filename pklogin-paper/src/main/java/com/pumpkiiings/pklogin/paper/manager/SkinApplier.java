@@ -46,24 +46,27 @@ public class SkinApplier {
                 Method putMethod = propertyMap.getClass().getMethod("put", Object.class, Object.class);
                 putMethod.invoke(propertyMap, "textures", newProperty);
 
-                // Reload player in main thread
-                Bukkit.getScheduler().runTask(plugin, () -> {
-                    for (Player online : Bukkit.getOnlinePlayers()) {
-                        if (!online.equals(player) && online.canSee(player)) {
+                // Re-send the player to everyone who can see them. Each viewer is
+                // scheduled on its own entity scheduler so this also works on Folia,
+                // where there is no single main thread to post to.
+                for (Player online : Bukkit.getOnlinePlayers()) {
+                    if (online.equals(player)) continue;
+
+                    online.getScheduler().run(plugin, task -> {
+                        if (!online.canSee(player)) return;
+                        try {
+                            // Try modern method
+                            online.getClass().getMethod("hidePlayer", Plugin.class, Player.class).invoke(online, plugin, player);
+                            online.getClass().getMethod("showPlayer", Plugin.class, Player.class).invoke(online, plugin, player);
+                        } catch (Exception ignored) {
+                            // Fallback to legacy method for 1.8
                             try {
-                                // Try modern method
-                                online.getClass().getMethod("hidePlayer", Plugin.class, Player.class).invoke(online, plugin, player);
-                                online.getClass().getMethod("showPlayer", Plugin.class, Player.class).invoke(online, plugin, player);
-                            } catch (Exception ignored) {
-                                // Fallback to legacy method for 1.8
-                                try {
-                                    online.getClass().getMethod("hidePlayer", Player.class).invoke(online, player);
-                                    online.getClass().getMethod("showPlayer", Player.class).invoke(online, player);
-                                } catch (Exception ignored2) {}
-                            }
+                                online.getClass().getMethod("hidePlayer", Player.class).invoke(online, player);
+                                online.getClass().getMethod("showPlayer", Player.class).invoke(online, player);
+                            } catch (Exception ignored2) {}
                         }
-                    }
-                });
+                    }, null);
+                }
             }
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to apply native skin via reflection.");

@@ -1,5 +1,7 @@
 package com.pumpkiiings.pklogin.paper.command.executors;
 
+import com.pumpkiiings.pklogin.common.Permissions;
+
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
 import com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent;
 import com.pumpkiiings.pklogin.api.event.bukkit.AsyncRegisterEvent;
@@ -68,12 +70,14 @@ public class RegisterCommandNode {
 
         int passwordLength = password.length();
 
-        if (passwordLength <= Settings.PASSWORD_SMALL.asInt()) {
+        // 'small' and 'large' are documented as the minimum and maximum, so both
+        // bounds are inclusive.
+        if (passwordLength < Settings.PASSWORD_SMALL.asInt()) {
             sender.sendMessage(Messages.PASSWORD_TOO_SMALL.asString());
             return;
         }
 
-        if (passwordLength >= Settings.PASSWORD_LARGE.asInt()) {
+        if (passwordLength > Settings.PASSWORD_LARGE.asInt()) {
             sender.sendMessage(Messages.PASSWORD_TOO_LARGE.asString());
             return;
         }
@@ -110,31 +114,29 @@ public class RegisterCommandNode {
 
             com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(sender, Messages.TITLE_AFTER_REGISTER.asTitle().title, Messages.TITLE_AFTER_REGISTER.asTitle().subtitle, Messages.TITLE_AFTER_REGISTER.asTitle().start, Messages.TITLE_AFTER_REGISTER.asTitle().duration, Messages.TITLE_AFTER_REGISTER.asTitle().end);
             sender.sendMessage(Messages.SUCCESSFUL_REGISTER.asString());
-            sender.getScheduler().run(plugin, task -> {
-                sender.setWalkSpeed(0.2F);
-                sender.setFlySpeed(0.1F);
-                com.pumpkiiings.pklogin.paper.manager.LimboManager.removeLimboState(plugin, sender);
-                com.pumpkiiings.pklogin.paper.manager.LimboManager.restoreLastLocation(sender);
-            }, null);
+            sender.getScheduler().run(plugin, task ->
+                    com.pumpkiiings.pklogin.paper.manager.LimboManager.leaveLimbo(plugin, sender), null);
 
             new AsyncAuthenticateEvent(sender).callEvt();
         }
     }
 
     private static void performConsole(CommandSender sender, PkLoginPaper plugin, String playerName, String password) {
-        if (!sender.hasPermission("pklogin.admin")) {
+        if (!sender.hasPermission(Permissions.ADMIN)) {
             sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
             return;
         }
 
         int passwordLength = password.length();
 
-        if (passwordLength <= Settings.PASSWORD_SMALL.asInt()) {
+        // 'small' and 'large' are documented as the minimum and maximum, so both
+        // bounds are inclusive.
+        if (passwordLength < Settings.PASSWORD_SMALL.asInt()) {
             sender.sendMessage(Messages.PASSWORD_TOO_SMALL.asString());
             return;
         }
 
-        if (passwordLength >= Settings.PASSWORD_LARGE.asInt()) {
+        if (passwordLength > Settings.PASSWORD_LARGE.asInt()) {
             sender.sendMessage(Messages.PASSWORD_TOO_LARGE.asString());
             return;
         }
@@ -169,12 +171,8 @@ public class RegisterCommandNode {
                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(playerIfOnline, Messages.TITLE_AFTER_REGISTER.asTitle().title, Messages.TITLE_AFTER_REGISTER.asTitle().subtitle, Messages.TITLE_AFTER_REGISTER.asTitle().start, Messages.TITLE_AFTER_REGISTER.asTitle().duration, Messages.TITLE_AFTER_REGISTER.asTitle().end);
                 playerIfOnline.sendMessage(Messages.SUCCESSFUL_REGISTER.asString());
 
-                playerIfOnline.getScheduler().run(plugin, task -> {
-                    playerIfOnline.setWalkSpeed(0.2F);
-                    playerIfOnline.setFlySpeed(0.1F);
-                    com.pumpkiiings.pklogin.paper.manager.LimboManager.removeLimboState(plugin, playerIfOnline);
-                    com.pumpkiiings.pklogin.paper.manager.LimboManager.restoreLastLocation(playerIfOnline);
-                }, null);
+                playerIfOnline.getScheduler().run(plugin, task ->
+                        com.pumpkiiings.pklogin.paper.manager.LimboManager.leaveLimbo(plugin, playerIfOnline), null);
 
                 new AsyncAuthenticateEvent(playerIfOnline).callEvt();
             }

@@ -40,26 +40,32 @@ public class PaperCaptchaHandler implements Listener {
         
         if (type.equals("INVENTORY")) {
             CaptchaManager.getInstance().addPending(player.getName(), "");
-            plugin.getServer().getScheduler().runTask(plugin, () -> openInventoryCaptcha(player));
+            player.getScheduler().run(plugin, task -> openInventoryCaptcha(player), null);
         } else if (type.equals("CHAT")) {
-            String code = generateRandomCode(5);
+            String code = generateRandomCode(Settings.SECURITY_CAPTCHA_CODE_LENGTH.asInt());
             CaptchaManager.getInstance().addPending(player.getName(), code);
             player.sendMessage(Messages.CAPTCHA_CHAT_INSTRUCTION.asString().replace("{code}", code));
         } else if (type.equals("MAP")) {
-            String code = generateRandomCode(5);
+            String code = generateRandomCode(Settings.SECURITY_CAPTCHA_CODE_LENGTH.asInt());
             CaptchaManager.getInstance().addPending(player.getName(), code);
-            plugin.getServer().getScheduler().runTask(plugin, () -> sendMapCaptcha(player, code));
+            player.getScheduler().run(plugin, task -> sendMapCaptcha(player, code), null);
         } else {
             CaptchaManager.getInstance().addPending(player.getName(), "");
-            plugin.getServer().getScheduler().runTask(plugin, () -> openInventoryCaptcha(player));
+            player.getScheduler().run(plugin, task -> openInventoryCaptcha(player), null);
         }
     }
 
+    /** A double chest row layout; also the inventory title length limit. */
+    private static final int CAPTCHA_INVENTORY_SLOTS = 27;
+    private static final int INVENTORY_TITLE_MAX_LENGTH = 32;
+
     private static void openInventoryCaptcha(Player player) {
         String title = Messages.CAPTCHA_INVENTORY_TITLE.asString();
-        if (title.length() > 32) title = title.substring(0, 32);
-        
-        Inventory inv = Bukkit.createInventory(null, 27, title);
+        if (title.length() > INVENTORY_TITLE_MAX_LENGTH) {
+            title = title.substring(0, INVENTORY_TITLE_MAX_LENGTH);
+        }
+
+        Inventory inv = Bukkit.createInventory(null, CAPTCHA_INVENTORY_SLOTS, title);
         
         ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         if (filler.getType() == Material.AIR) filler = new ItemStack(Material.GLASS);
@@ -69,11 +75,11 @@ public class PaperCaptchaHandler implements Listener {
             filler.setItemMeta(meta);
         }
 
-        for (int i = 0; i < 27; i++) {
+        for (int i = 0; i < CAPTCHA_INVENTORY_SLOTS; i++) {
             inv.setItem(i, filler);
         }
 
-        int randomSlot = RANDOM.nextInt(27);
+        int randomSlot = RANDOM.nextInt(CAPTCHA_INVENTORY_SLOTS);
         ItemStack correctItem = new ItemStack(Material.GREEN_WOOL);
         if (correctItem.getType() == Material.AIR) correctItem = new ItemStack(Material.valueOf("WOOL"), 1, (short) 5);
         
@@ -151,7 +157,7 @@ public class PaperCaptchaHandler implements Listener {
                 String expected = CaptchaManager.getInstance().getExpectedCode(player.getName());
                 String message = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(e.message());
                 if (message.equalsIgnoreCase(expected)) {
-                    plugin.getServer().getScheduler().runTask(plugin, () -> completeCaptcha(player));
+                    player.getScheduler().run(plugin, task -> completeCaptcha(player), null);
                 } else {
                     player.sendMessage(Messages.CAPTCHA_FAILED.asString());
                 }
@@ -159,12 +165,26 @@ public class PaperCaptchaHandler implements Listener {
         }
     }
 
+    /**
+     * Blocked while a captcha is pending regardless of the blocked-commands
+     * setting: letting these through would defeat the captcha entirely.
+     */
+    private static final java.util.Set<String> ALWAYS_BLOCKED_COMMANDS =
+            new java.util.HashSet<>(java.util.Arrays.asList("/login", "/register"));
+
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
-        if (CaptchaManager.getInstance().isPending(e.getPlayer().getName())) {
-            e.setCancelled(true);
-            e.getPlayer().sendMessage(Messages.CAPTCHA_REQUIRED.asString());
+        if (!CaptchaManager.getInstance().isPending(e.getPlayer().getName())) return;
+
+        String command = e.getMessage().toLowerCase().split(" ")[0];
+        boolean blockEverything = Settings.SECURITY_CAPTCHA_BLOCK_COMMANDS.asBoolean();
+
+        if (!blockEverything && !ALWAYS_BLOCKED_COMMANDS.contains(command)) {
+            return;
         }
+
+        e.setCancelled(true);
+        e.getPlayer().sendMessage(Messages.CAPTCHA_REQUIRED.asString());
     }
 
     private void completeCaptcha(Player player) {

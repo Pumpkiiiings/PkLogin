@@ -88,10 +88,13 @@ public class PacketEventsVerifyTask implements Runnable {
 
     private UUID fetchMojangProfile(String username, String serverId, String ip) {
         try {
-            URL url = new URL("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=" + username + "&serverId=" + serverId);
+            URL url = new URL(com.pumpkiiings.pklogin.common.PluginConstants.MOJANG_HAS_JOINED
+                    + "?username=" + username + "&serverId=" + serverId);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(5000);
+            int timeout = com.pumpkiiings.pklogin.common.settings.Settings
+                    .AUTOLOGIN_PREMIUM_MOJANG_TIMEOUT.asInt();
+            conn.setConnectTimeout(timeout);
+            conn.setReadTimeout(timeout);
 
             if (conn.getResponseCode() == 200) {
                 JsonObject json = new JsonParser().parse(new InputStreamReader(conn.getInputStream())).getAsJsonObject();

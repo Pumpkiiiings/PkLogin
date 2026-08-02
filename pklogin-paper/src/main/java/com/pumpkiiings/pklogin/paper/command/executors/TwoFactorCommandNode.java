@@ -32,7 +32,8 @@ public class TwoFactorCommandNode {
             )
             .then(Commands.literal("verify2fa")
                 .executes(context -> {
-                    context.getSource().getSender().sendMessage("§eUso: /2fa verify2fa <código>");
+                    context.getSource().getSender().sendMessage(
+                            Messages.TWO_FACTOR_VERIFY_USAGE.asString("§eUsage: /2fa verify2fa <code>"));
                     return 1;
                 })
                 .then(Commands.argument("code", StringArgumentType.word())
@@ -90,19 +91,37 @@ public class TwoFactorCommandNode {
             return;
         }
 
-        if (com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().verifyLoginCode(name, code)) {
-            loginManagement.removeAwaiting2FA(name);
-            loginManagement.setAuthenticated(name);
-            player.sendMessage(Messages.TWO_FACTOR_LOGIN_SUCCESS.asString());
-            player.getScheduler().run(plugin, task -> {
-                player.setWalkSpeed(0.2F);
-                player.setFlySpeed(0.1F);
-                com.pumpkiiings.pklogin.paper.manager.LimboManager.removeLimboState(plugin, player);
-                com.pumpkiiings.pklogin.paper.manager.LimboManager.restoreLastLocation(player);
-            }, null);
-            new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt();
-        } else {
-            player.sendMessage(Messages.TWO_FACTOR_INVALID_CODE.asString());
+        com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.VerificationResult result =
+                com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance()
+                        .verifyLoginCode(name, code);
+
+        switch (result) {
+            case SUCCESS:
+                loginManagement.removeAwaiting2FA(name);
+                loginManagement.setAuthenticated(name);
+                player.sendMessage(Messages.TWO_FACTOR_LOGIN_SUCCESS.asString());
+                player.getScheduler().run(plugin, task ->
+                        com.pumpkiiings.pklogin.paper.manager.LimboManager.leaveLimbo(plugin, player), null);
+                new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt();
+                break;
+
+            case TOO_MANY_ATTEMPTS:
+                // The code is gone; drop them back to the login step rather than
+                // leaving them stuck waiting for a code that no longer exists.
+                loginManagement.removeAwaiting2FA(name);
+                player.sendMessage(Messages.TWO_FACTOR_TOO_MANY_ATTEMPTS
+                        .asString("§cToo many invalid 2FA codes. Please log in again."));
+                break;
+
+            case NO_PENDING_CODE:
+                loginManagement.removeAwaiting2FA(name);
+                player.sendMessage(Messages.TWO_FACTOR_NOT_AWAITING.asString());
+                break;
+
+            case INVALID_CODE:
+            default:
+                player.sendMessage(Messages.TWO_FACTOR_INVALID_CODE.asString());
+                break;
         }
     }
 }

@@ -15,7 +15,8 @@ import java.util.Random;
 
 public class PluginMessageListener {
 
-    public static final MinecraftChannelIdentifier IDENTIFIER = MinecraftChannelIdentifier.from("pklogin:main");
+    public static final MinecraftChannelIdentifier IDENTIFIER =
+            MinecraftChannelIdentifier.from(com.pumpkiiings.pklogin.common.PluginConstants.CHANNEL_MAIN);
 
     private final PkLoginVelocity plugin;
     private final Random random = new Random();
@@ -40,7 +41,7 @@ public class PluginMessageListener {
         ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
         String subChannel = in.readUTF();
 
-        if ("Authenticated".equals(subChannel)) {
+        if (com.pumpkiiings.pklogin.common.PluginConstants.SUBCHANNEL_AUTHENTICATED.equals(subChannel)) {
             // Player has successfully logged in or registered on the auth server
             plugin.getAuthenticatedPlayers().add(player.getUniqueId());
             

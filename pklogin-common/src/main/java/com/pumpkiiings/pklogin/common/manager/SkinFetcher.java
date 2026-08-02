@@ -26,7 +26,8 @@ public class SkinFetcher {
         }
 
         try {
-            String url = "https://sessionserver.mojang.com/session/minecraft/profile/" + realUuid.toString().replace("-", "") + "?unsigned=false";
+            String url = com.pumpkiiings.pklogin.common.PluginConstants.MOJANG_PROFILE
+                    + realUuid.toString().replace("-", "") + "?unsigned=false";
             String response = HttpClient.DEFAULT.get(url);
             
             if (response != null && response.contains("\"name\" : \"textures\"") || response.contains("\"name\":\"textures\"")) {

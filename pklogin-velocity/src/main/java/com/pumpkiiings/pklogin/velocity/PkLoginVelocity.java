@@ -18,6 +18,7 @@ import com.pumpkiiings.pklogin.velocity.listener.PluginMessageListener;
 import com.pumpkiiings.pklogin.velocity.listener.VelocityListeners;
 import com.pumpkiiings.pklogin.velocity.config.BackendConfig;
 import com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager;
+import com.pumpkiiings.pklogin.common.util.PluginResources;
 import dev.dejvokep.boostedyaml.YamlDocument;
 
 @Plugin(id = "pklogin", name = "PkLogin", version = "2.0.0", authors = {"Pumpkiiiings"})
@@ -44,6 +45,47 @@ public class PkLoginVelocity {
 
     private final java.util.Set<java.util.UUID> authenticatedPlayers = java.util.concurrent.ConcurrentHashMap.newKeySet();
 
+    /** Key for signing messages to the backends; resolved once, refreshed on reload. */
+    private volatile String proxySecret;
+
+    /** @return the signing key, or null when none is configured or detectable */
+    public String getProxySecret() {
+        return proxySecret;
+    }
+
+    /**
+     * Works out the signing key and reports where it came from.
+     *
+     * <p>With Velocity modern forwarding the proxy and its backends already share
+     * a secret, so nothing needs configuring; {@code proxy-secret} covers the
+     * setups that have none.</p>
+     */
+    public void resolveProxySecret() {
+        String forwardingSecret = VelocityProxyConfig.readForwardingSecret(dataDirectory);
+        com.pumpkiiings.pklogin.common.security.ProxySecretResolver.Resolution resolution =
+                com.pumpkiiings.pklogin.common.security.ProxySecretResolver.resolve(forwardingSecret);
+
+        this.proxySecret = resolution.getKey();
+
+        if (resolution.isPresent()) {
+            logger.info("Backend messages will be authenticated using {}.", resolution.getSource());
+            return;
+        }
+
+        logger.error("=========================================================");
+        logger.error("Premium auto-login is DISABLED: there is no key to sign backend messages with.");
+        if (!VelocityProxyConfig.isModernForwarding(dataDirectory)) {
+            logger.error("This proxy is not using modern player info forwarding, so there is no");
+            logger.error("shared secret to derive one from. Either switch velocity.toml to");
+            logger.error("player-info-forwarding-mode = \"modern\", or set 'proxy-secret' in PkLogin's config.yml");
+            logger.error("to the same value on the proxy and on every backend server.");
+        } else {
+            logger.error("Modern forwarding is on but its secret could not be read. Check that");
+            logger.error("the file named by 'forwarding-secret-file' in velocity.toml exists and is readable.");
+        }
+        logger.error("=========================================================");
+    }
+
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         instance = this;
@@ -59,13 +101,7 @@ public class PkLoginVelocity {
 
         // Load config.yml using ConfigurationVersionManager
         try {
-            ConfigurationVersionManager configManager = new ConfigurationVersionManager(
-                new File(dataFolder, "config.yml"), 
-                getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/config.yml")
-            );
-            
-            configManager.registerMigration(new com.pumpkiiings.pklogin.common.config.migrations.config.ConfigMigration_1_to_1_1());
-            this.yamlConfig = configManager.loadAndMigrate("1.1");
+            this.yamlConfig = newConfigManager(dataFolder).load();
 
             for (Settings setting : Settings.values()) {
                 Object val = yamlConfig.get(setting.getKey());
@@ -76,6 +112,8 @@ public class PkLoginVelocity {
         } catch (Exception e) {
             logger.error("Failed to load config.yml", e);
         }
+
+        resolveProxySecret();
 
         // Setup messages
         setupMessages(dataFolder);
@@ -111,36 +149,7 @@ public class PkLoginVelocity {
                 database = new com.pumpkiiings.pklogin.common.database.SQLite(databaseFile);
             }
             database.openConnection();
-            database.update(
-                    "CREATE TABLE IF NOT EXISTS `pklogin` (`name` TEXT, `realname` TEXT, `password` TEXT, `address` TEXT, `lastlogin` BIGINT, `regdate` BIGINT, `totp_secret` TEXT, `uuid_type` TEXT DEFAULT 'REAL', `random_uuid` TEXT, `discord_id` TEXT, `email_address` TEXT)");
-            database.update("CREATE TABLE IF NOT EXISTS `settings` (`key` TEXT, `value` TEXT)");
-
-            try {
-                database.update("ALTER TABLE `pklogin` MODIFY COLUMN `lastlogin` BIGINT");
-                database.update("ALTER TABLE `pklogin` MODIFY COLUMN `regdate` BIGINT");
-            } catch (Exception ignored) {
-            }
-
-            try {
-                database.update("ALTER TABLE `pklogin` ADD COLUMN `totp_secret` TEXT");
-            } catch (Exception ignored) {
-            }
-            try {
-                database.update("ALTER TABLE `pklogin` ADD COLUMN `uuid_type` TEXT DEFAULT 'REAL'");
-            } catch (Exception ignored) {
-            }
-            try {
-                database.update("ALTER TABLE `pklogin` ADD COLUMN `random_uuid` TEXT");
-            } catch (Exception ignored) {
-            }
-            try {
-                database.update("ALTER TABLE `pklogin` ADD COLUMN `discord_id` TEXT");
-            } catch (Exception ignored) {
-            }
-            try {
-                database.update("ALTER TABLE `pklogin` ADD COLUMN `email_address` TEXT");
-            } catch (Exception ignored) {
-            }
+            com.pumpkiiings.pklogin.common.database.DatabaseSchema.apply(database, logger::warn);
 
             this.accountManagement = new AccountManagement(this.database);
             this.accountManagement.setPasswordChangeCallback(playerName -> {
@@ -170,10 +179,10 @@ public class PkLoginVelocity {
         sendMessage(a + "                                   ██  ");
         sendMessage(a + "                                 ▀▀▀  ");
         sendMessage(dg + "A powerful open source login plugin");
-        sendMessage(lg + "Support: " + aq + "https://discord.gg/MVQ5r7X4Qd");
+        sendMessage(lg + "Support: " + aq + com.pumpkiiings.pklogin.common.PluginConstants.DISCORD_INVITE);
         sendMessage(lg + "Database Type: " + aq + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
         sendMessage(lg + "Version: " + aq + "2.0.0");
-        sendMessage(lg + "Source: " + aq + "github.com/Pumpkiiiings/PkLogin");
+        sendMessage(lg + "Source: " + aq + com.pumpkiiings.pklogin.common.PluginConstants.GITHUB);
         sendMessage("");
         sendMessage("§e" + "Thanks for use my plugin!");
         sendMessage("");
@@ -197,33 +206,25 @@ public class PkLoginVelocity {
         }
 
         File messagesFile = new File(langFolder, lang);
-        java.io.InputStream specificLangResource = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/" + lang);
-        if (!messagesFile.exists() && specificLangResource != null) {
-            try {
-                java.nio.file.Files.copy(specificLangResource, messagesFile.toPath());
+        if (!messagesFile.exists()) {
+            try (java.io.InputStream langResource = PluginResources.openLanguage(lang)) {
+                if (langResource != null) {
+                    java.nio.file.Files.copy(langResource, messagesFile.toPath());
+                }
             } catch (Exception e) {
                 logger.error("Failed to copy default language file", e);
             }
-        } else if (!messagesFile.exists()) {
-            java.io.InputStream enResourceForCopy = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/messages_en.yml");
-            if (enResourceForCopy != null) {
-                try {
-                    java.nio.file.Files.copy(enResourceForCopy, messagesFile.toPath());
-                } catch (Exception e) {
-                    logger.error("Failed to copy english language file", e);
-                }
-            }
         }
-        
-        java.io.InputStream enBlueprint = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/messages_en.yml");
 
         try {
-            ConfigurationVersionManager messagesManager = new ConfigurationVersionManager(
-                messagesFile, 
-                enBlueprint
-            );
-            
-            YamlDocument messagesConfig = messagesManager.loadAndMigrate("1.0");
+            YamlDocument messagesConfig = com.pumpkiiings.pklogin.common.config.migrations.MessagesMigrations
+                    .applyTo(new ConfigurationVersionManager(
+                            messagesFile,
+                            PluginResources.openLanguage(lang),
+                            ConfigurationVersionManager.VERSION_KEY_MESSAGES,
+                            com.pumpkiiings.pklogin.common.config.migrations.MessagesMigrations.CURRENT_VERSION,
+                            migrationLogger()))
+                    .load();
 
             for (com.pumpkiiings.pklogin.common.settings.Messages message : com.pumpkiiings.pklogin.common.settings.Messages.values()) {
                 String path = message.getKey();
@@ -255,12 +256,7 @@ public class PkLoginVelocity {
     public void reloadConfig() {
         File dataFolder = dataDirectory.toFile();
         try {
-            ConfigurationVersionManager configManager = new ConfigurationVersionManager(
-                new File(dataFolder, "config.yml"), 
-                getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/config.yml")
-            );
-            configManager.registerMigration(new com.pumpkiiings.pklogin.common.config.migrations.config.ConfigMigration_1_to_1_1());
-            this.yamlConfig = configManager.loadAndMigrate("1.1");
+            this.yamlConfig = newConfigManager(dataFolder).load();
             
             for (Settings setting : Settings.values()) {
                 Object val = yamlConfig.get(setting.getKey());
@@ -271,12 +267,44 @@ public class PkLoginVelocity {
         } catch (Exception e) {
             logger.error("Failed to reload config.yml", e);
         }
+        resolveProxySecret();
         setupMessages(dataFolder);
         try {
             this.backendConfig.load();
         } catch (Exception e) {
             logger.error("Failed to load backend.yml", e);
         }
+    }
+
+    /** Bridges the migration system's log output onto Velocity's SLF4J logger. */
+    private com.pumpkiiings.pklogin.common.config.MigrationLogger migrationLogger() {
+        return new com.pumpkiiings.pklogin.common.config.MigrationLogger() {
+            @Override
+            public void info(String message) {
+                logger.info(message);
+            }
+
+            @Override
+            public void warn(String message) {
+                logger.warn(message);
+            }
+
+            @Override
+            public void error(String message, Throwable cause) {
+                logger.error(message, cause);
+            }
+        };
+    }
+
+    /** The config.yml manager, shared by startup and {@code /pklogin reload}. */
+    private ConfigurationVersionManager newConfigManager(File dataFolder) {
+        return com.pumpkiiings.pklogin.common.config.migrations.ConfigMigrations.applyTo(
+                new ConfigurationVersionManager(
+                        new File(dataFolder, "config.yml"),
+                        PluginResources.openConfig(),
+                        ConfigurationVersionManager.VERSION_KEY_CONFIG,
+                        com.pumpkiiings.pklogin.common.config.migrations.ConfigMigrations.CURRENT_VERSION,
+                        migrationLogger()));
     }
 
     public static PkLoginVelocity getInstance() {

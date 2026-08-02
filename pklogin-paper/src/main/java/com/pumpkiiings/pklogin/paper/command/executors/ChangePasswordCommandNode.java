@@ -1,5 +1,7 @@
 package com.pumpkiiings.pklogin.paper.command.executors;
 
+import com.pumpkiiings.pklogin.common.Permissions;
+
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
 import com.pumpkiiings.pklogin.common.manager.AccountManagement;
 import com.pumpkiiings.pklogin.common.model.Account;
@@ -48,14 +50,20 @@ public class ChangePasswordCommandNode {
     }
 
     private static void performPlayer(Player sender, PkLoginPaper plugin, String currentPassword, String newPassword) {
+        // Same short throttle /login uses, so the command cannot be spammed faster
+        // than the attempt counter can react.
+        if (!plugin.getLoginManagement().isUnlocked(sender.getName())) return;
+
         int passwordLength = newPassword.length();
 
-        if (passwordLength <= Settings.PASSWORD_SMALL.asInt()) {
+        // 'small' and 'large' are documented as the minimum and maximum, so both
+        // bounds are inclusive.
+        if (passwordLength < Settings.PASSWORD_SMALL.asInt()) {
             sender.sendMessage(Messages.PASSWORD_TOO_SMALL.asString());
             return;
         }
 
-        if (passwordLength >= Settings.PASSWORD_LARGE.asInt()) {
+        if (passwordLength > Settings.PASSWORD_LARGE.asInt()) {
             sender.sendMessage(Messages.PASSWORD_TOO_LARGE.asString());
             return;
         }
@@ -81,10 +89,29 @@ public class ChangePasswordCommandNode {
         }
 
         Account account = accountOpt.get();
+        com.pumpkiiings.pklogin.common.manager.LoginManagement loginManagement = plugin.getLoginManagement();
+
         if (!accountManagement.comparePassword(account, currentPassword)) {
-            sender.sendMessage(Messages.PASSWORDS_DONT_MATCH.asString());
+            // This command checks the current password while the player may still be
+            // unauthenticated, so it is a second way to guess credentials. It has to
+            // share the same attempt budget as /login or the limit means nothing.
+            int tries = loginManagement.incrementFailedAttempts(name);
+            int maxTries = Settings.BRUTEFORCE_MAX_LOGIN_TRIES.asInt();
+            if (tries >= maxTries) {
+                sender.getScheduler().run(plugin, task -> sender.kick(
+                        net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                                .deserialize(Messages.FAILED_MANY_TIMES
+                                        .asString("§cExceeded maximum login attempts."))), null);
+            } else {
+                sender.sendMessage(Messages.PASSWORDS_DONT_MATCH.asString());
+                sender.sendMessage(Messages.ATTEMPTS_LEFT
+                        .asString("§cAttempts left: §e{0}")
+                        .replace("{0}", String.valueOf(maxTries - tries)));
+            }
             return;
         }
+
+        loginManagement.resetFailedAttempts(name);
 
         String hashedPassword = HashStrategyFactory.fromSettings().hash(newPassword);
         String address = Objects.requireNonNull(sender.getAddress()).getAddress().getHostAddress();
@@ -95,7 +122,6 @@ public class ChangePasswordCommandNode {
 
         sender.sendMessage(Messages.PASSWORD_CHANGED.asString());
 
-        com.pumpkiiings.pklogin.common.manager.LoginManagement loginManagement = plugin.getLoginManagement();
         if (loginManagement.mustChangePassword(name)) {
             loginManagement.removeMustChangePassword(name);
             loginManagement.setAuthenticated(name);
@@ -103,19 +129,21 @@ public class ChangePasswordCommandNode {
     }
 
     private static void performConsole(CommandSender sender, PkLoginPaper plugin, String playerName, String newPassword) {
-        if (!sender.hasPermission("pklogin.admin")) {
+        if (!sender.hasPermission(Permissions.ADMIN)) {
             sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
             return;
         }
 
         int passwordLength = newPassword.length();
 
-        if (passwordLength <= Settings.PASSWORD_SMALL.asInt()) {
+        // 'small' and 'large' are documented as the minimum and maximum, so both
+        // bounds are inclusive.
+        if (passwordLength < Settings.PASSWORD_SMALL.asInt()) {
             sender.sendMessage(Messages.PASSWORD_TOO_SMALL.asString());
             return;
         }
 
-        if (passwordLength >= Settings.PASSWORD_LARGE.asInt()) {
+        if (passwordLength > Settings.PASSWORD_LARGE.asInt()) {
             sender.sendMessage(Messages.PASSWORD_TOO_LARGE.asString());
             return;
         }

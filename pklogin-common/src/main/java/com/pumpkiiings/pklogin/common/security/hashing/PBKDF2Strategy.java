@@ -33,16 +33,23 @@ import java.util.Base64;
 
 public class PBKDF2Strategy implements HashStrategy {
 
-    private static final int ITERATIONS = 600_000;
+    /** Fixed by the stored hash format; changing it would invalidate every hash. */
     private static final int KEY_LENGTH = 256;
     private static final SecureRandom RNG = new SecureRandom();
 
+    private static int iterations() {
+        return com.pumpkiiings.pklogin.common.settings.Settings.HASH_PBKDF2_ITERATIONS.asInt();
+    }
+
     @Override
     public String hash(String plainPassword) {
+        // The iteration count is embedded in the hash, so existing passwords keep
+        // verifying with the count they were created under.
+        int iterations = iterations();
         byte[] salt = new byte[16];
         RNG.nextBytes(salt);
-        byte[] hash = derive(plainPassword.toCharArray(), salt, ITERATIONS);
-        return "$pbkdf2$" + ITERATIONS + "$"
+        byte[] hash = derive(plainPassword.toCharArray(), salt, iterations);
+        return "$pbkdf2$" + iterations + "$"
                 + Base64.getEncoder().encodeToString(salt) + "$"
                 + Base64.getEncoder().encodeToString(hash);
     }
@@ -68,7 +75,8 @@ public class PBKDF2Strategy implements HashStrategy {
         if (!storedHash.startsWith("$pbkdf2$")) return true;
         try {
             String[] parts = storedHash.split("\\$", 5);
-            return Integer.parseInt(parts[2]) < ITERATIONS;
+            // Only upgrade; never re-hash down to a weaker iteration count.
+            return Integer.parseInt(parts[2]) < iterations();
         } catch (Exception e) {
             return true;
         }

@@ -49,7 +49,11 @@ public class SHA256Strategy implements HashStrategy {
         if (parts.length < 4) return false;
         String salt = parts[2];
         String expected = parts[3];
-        return expected.equals(sha256(salt + plainPassword));
+        // Constant-time: String.equals bails at the first differing character and
+        // leaks how much of the digest an attacker has guessed.
+        return MessageDigest.isEqual(
+                expected.getBytes(StandardCharsets.UTF_8),
+                sha256(salt + plainPassword).getBytes(StandardCharsets.UTF_8));
     }
 
     @Override

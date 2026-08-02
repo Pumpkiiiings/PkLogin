@@ -15,6 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class LimboManager {
 
+    /** Speed that immobilises a player; not configurable, anything else lets them move. */
+    private static final float FROZEN_SPEED = 0.0f;
+
     private static final Map<UUID, Location> lastLocations = new ConcurrentHashMap<>();
     private static final Map<UUID, ItemStack[]> savedInventories = new ConcurrentHashMap<>();
     private static final Map<UUID, ItemStack[]> savedArmor = new ConcurrentHashMap<>();
@@ -46,14 +49,36 @@ public class LimboManager {
         }
     }
 
+    /**
+     * Takes a player out of limbo after a successful authentication.
+     *
+     * <p>Callers must use this instead of calling {@link #removeLimboState} and
+     * {@link #restoreLastLocation} themselves: the stored location has to be read
+     * before the limbo state is torn down, and getting that order wrong silently
+     * drops the player wherever the safe-spawn teleport left them.</p>
+     */
+    public static void leaveLimbo(JavaPlugin plugin, Player player) {
+        restoreLastLocation(player);
+        removeLimboState(plugin, player);
+    }
+
+    /**
+     * Drops any state held for a player who left without authenticating.
+     * Inventory contents are handed back first so nothing is lost on disconnect.
+     */
+    public static void discard(JavaPlugin plugin, Player player) {
+        removeLimboState(plugin, player);
+        lastLocations.remove(player.getUniqueId());
+    }
+
     public static void applyLimboState(JavaPlugin plugin, Player player) {
         if (Settings.LIMBO_BLINDNESS_EFFECT.asBoolean()) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 0, false, false));
         }
 
         if (Settings.LIMBO_BLOCK_WALK.asBoolean()) {
-            player.setWalkSpeed(0.0f);
-            player.setFlySpeed(0.0f);
+            player.setWalkSpeed(FROZEN_SPEED);
+            player.setFlySpeed(FROZEN_SPEED);
         }
 
         if (Settings.LIMBO_HIDE_INVENTORY.asBoolean()) {
@@ -73,11 +98,10 @@ public class LimboManager {
 
     public static void removeLimboState(JavaPlugin plugin, Player player) {
         player.removePotionEffect(PotionEffectType.BLINDNESS);
-        lastLocations.remove(player.getUniqueId());
 
         if (Settings.LIMBO_BLOCK_WALK.asBoolean()) {
-            player.setWalkSpeed(0.2f);
-            player.setFlySpeed(0.1f);
+            player.setWalkSpeed(Settings.LIMBO_RESTORE_WALK_SPEED.asFloat());
+            player.setFlySpeed(Settings.LIMBO_RESTORE_FLY_SPEED.asFloat());
         }
 
         if (Settings.LIMBO_HIDE_INVENTORY.asBoolean()) {

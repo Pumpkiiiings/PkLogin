@@ -43,14 +43,42 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class PlayerKickListeners implements Listener {
 
-    private static final Pattern VALID_NICK = Pattern.compile("([a-zA-Z0-9_]{3,16})|(\\*[a-zA-Z0-9_]{3,17})");
-
     private final PkLoginPaper plugin;
+
+    /** Compiled from config and cached, since the pattern only changes on reload. */
+    private static volatile String cachedRegex;
+    private static volatile Pattern cachedPattern;
+
+    private static Pattern validNamePattern() {
+        String regex = com.pumpkiiings.pklogin.common.settings.Settings.VALID_NAME_REGEX.asString();
+        Pattern pattern = cachedPattern;
+        if (pattern == null || !regex.equals(cachedRegex)) {
+            try {
+                pattern = Pattern.compile(regex);
+            } catch (java.util.regex.PatternSyntaxException e) {
+                // A broken pattern must not lock every player out of the server.
+                pattern = Pattern.compile((String) com.pumpkiiings.pklogin.common.settings.Settings
+                        .VALID_NAME_REGEX.getDef());
+            }
+            cachedRegex = regex;
+            cachedPattern = pattern;
+        }
+        return pattern;
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(AsyncPlayerPreLoginEvent e) {
         String name = e.getName();
-        
+
+        // Validate what the player actually typed. The appender may add characters
+        // (the default offline suffix is "+") that the name pattern does not allow, which
+        // would otherwise kick every offline player the moment it is enabled.
+        if (!validNamePattern().matcher(name).matches()) {
+            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
+                    Messages.INVALID_NICKNAME.asString("§cSorry, but you are using an invalid nickname."));
+            return;
+        }
+
         if (com.pumpkiiings.pklogin.common.settings.Settings.APPENDER_ENABLED.asBoolean()) {
             Optional<Account> accountOpt = plugin.getAccountManagement().search(name);
             boolean isPremium = false;
@@ -94,17 +122,12 @@ public class PlayerKickListeners implements Listener {
                 String existingIp = player.getAddress().getAddress().getHostAddress();
                 String newIp = e.getAddress().getHostAddress();
                 if (existingIp.equals(newIp)) {
-                    Bukkit.getScheduler().runTask(plugin, () -> player.kickPlayer("Reconnecting..."));
+                    player.getScheduler().run(plugin, task -> player.kick(
+                            net.kyori.adventure.text.Component.text("Reconnecting...")), null);
                     return;
                 }
             }
             e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Messages.ALREADY_ONLINE.asString());
-            return;
-        }
-
-        // prevent invalid nicknames
-        if (!VALID_NICK.matcher(name).matches()) {
-            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Messages.INVALID_NICKNAME.asString("§cSorry, but you are using an invalid nickname."));
             return;
         }
 
@@ -141,10 +164,9 @@ public class PlayerKickListeners implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerKick(PlayerKickEvent e) {
-        String reason = e.getReason();
-
-        // prevent kick online players
-        if (reason.contains("You logged in from another location")) {
+        // Matching the kick text only worked on English servers, and broke as soon
+        // as the message was translated or reworded. The cause is locale-independent.
+        if (e.getCause() == PlayerKickEvent.Cause.DUPLICATE_LOGIN) {
             e.setCancelled(true);
         }
     }

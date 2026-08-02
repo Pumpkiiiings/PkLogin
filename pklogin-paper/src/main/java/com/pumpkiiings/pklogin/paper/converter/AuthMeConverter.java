@@ -51,6 +51,9 @@ public class AuthMeConverter {
 
     private static final String FALLBACK_IP = "0.0.0.0";
 
+    /** How often progress is echoed to the sender during a bulk import. */
+    private static final int PROGRESS_REPORT_INTERVAL = 100;
+
     private final PkLoginPaper plugin;
 
     public AuthMeConverter(PkLoginPaper plugin) {
@@ -110,7 +113,7 @@ public class AuthMeConverter {
             }
 
             int processed = imported + skipped + failed;
-            if (processed % 100 == 0) {
+            if (processed % PROGRESS_REPORT_INTERVAL == 0) {
                 sender.sendMessage(Messages.ADMIN_AUTHME_IMPORT_PROGRESS.asString().replace("{0}", String.valueOf(processed)).replace("{1}", String.valueOf(rows.size())));
             }
         }
@@ -120,6 +123,9 @@ public class AuthMeConverter {
                 + "  §fSkipped (already existed): §e" + skipped
                 + "  §fFailed: §c" + failed);
         if (imported > 0) {
+            // These rows were inserted straight through the Database, so the
+            // account cache still holds pre-import answers for those names.
+            plugin.getAccountManagement().clearCache();
             sender.sendMessage(Messages.ADMIN_AUTHME_IMPORT_DONE.asString().replace("{0}", com.pumpkiiings.pklogin.common.settings.Settings.HASH_ALGORITHM.asString("BCRYPT")));
         }
     }
@@ -159,9 +165,13 @@ public class AuthMeConverter {
         try {
             db.update(
                 "INSERT INTO `pklogin` " +
-                "(`name`, `realname`, `password`, `address`, `lastlogin`, `regdate`) " +
-                "VALUES (?, ?, ?, ?, ?, ?)",
-                row.name.toLowerCase(), row.name, row.password, ip, ts, ts
+                "(`name`, `realname`, `password`, `address`, `lastlogin`, `regdate`, `uuid_type`) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                row.name.toLowerCase(), row.name, row.password, ip, ts, ts,
+                // Without this the column stays NULL and every imported account is
+                // read back as REAL, i.e. premium — which would force online mode on
+                // the cracked accounts this import exists to bring over.
+                com.pumpkiiings.pklogin.common.settings.Settings.LEGACY_UNIQUE_ID_TYPE.asString("OFFLINE")
             );
             return true;
         } catch (SQLException e) {
@@ -170,9 +180,17 @@ public class AuthMeConverter {
         }
     }
 
+    /** Where AuthMe keeps its SQLite file by default, relative to the plugins folder. */
+    private static final String DEFAULT_AUTHME_DB = "AuthMe/authme.db";
+
     private File locateAuthMeDb() {
-        File pluginsDir = plugin.getDataFolder().getParentFile();
-        File candidate  = new File(pluginsDir, "AuthMe/authme.db");
+        String configured = com.pumpkiiings.pklogin.common.settings.Settings
+                .AUTHME_DATABASE_PATH.asString("");
+
+        File candidate = configured.trim().isEmpty()
+                ? new File(plugin.getDataFolder().getParentFile(), DEFAULT_AUTHME_DB)
+                : new File(configured);
+
         return candidate.exists() ? candidate : null;
     }
 

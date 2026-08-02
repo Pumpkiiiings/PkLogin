@@ -53,9 +53,10 @@ public class PlayerJoinListeners implements Listener {
         boolean registered = plugin.getAccountManagement().retrieveOrLoad(name).isPresent();
 
         String ip = player.getAddress().getAddress().getHostAddress();
-        com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession session = plugin.getVerifiedSessions().remove(ip);
+        com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession session =
+                plugin.consumeVerifiedSession(ip, name);
 
-        if (session != null && session.isVerified() && session.getUsername().equalsIgnoreCase(name)) {
+        if (session != null && session.isVerified()) {
             plugin.getLoginManagement().setAuthenticated(name);
             player.sendMessage(Messages.PREMIUM_AUTO_LOGIN.asString());
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
@@ -77,9 +78,8 @@ public class PlayerJoinListeners implements Listener {
 
         LoginQueue.addToQueue(name, registered);
 
-        player.setWalkSpeed(0F);
-        player.setFlySpeed(0F);
-
+        // Freezing the player is applyLimboState's job, and doing it here as well
+        // ignored the block-player-walk setting.
         if (com.pumpkiiings.pklogin.common.settings.Settings.TELEPORT_SAFE_LOCATION.asBoolean()) {
             com.pumpkiiings.pklogin.paper.manager.LimboManager.teleportToSpawn(plugin, player);
         }

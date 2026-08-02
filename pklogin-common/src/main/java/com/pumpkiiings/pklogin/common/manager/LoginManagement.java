@@ -141,10 +141,11 @@ public class LoginManagement {
      */
     public boolean isUnlocked(@NonNull String name) {
         String toLower = name.toLowerCase();
+        long cooldown = com.pumpkiiings.pklogin.common.settings.Settings.COMMAND_COOLDOWN.asInt();
         synchronized (lock) {
             Long millis = lock.get(toLower);
             if (millis == null || millis - System.currentTimeMillis() < 0) {
-                lock.put(name.toLowerCase(), System.currentTimeMillis() + 750L);
+                lock.put(toLower, System.currentTimeMillis() + cooldown);
                 return true;
             }
             return false;

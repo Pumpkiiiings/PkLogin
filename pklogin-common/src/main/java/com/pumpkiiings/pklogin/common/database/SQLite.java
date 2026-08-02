@@ -20,6 +20,8 @@ public class SQLite extends AbstractDatabase {
         }
         config.setJdbcUrl("jdbc:sqlite:" + file.toString());
         config.setDriverClassName("org.sqlite.JDBC");
-        config.setMaximumPoolSize(1); // SQLite doesn't handle concurrency well
+        // Not configurable: SQLite serialises writers, and more than one pooled
+        // connection produces "database is locked" errors rather than throughput.
+        config.setMaximumPoolSize(1);
     }
 }

@@ -15,9 +15,11 @@ public interface TwoFactorProvider {
     boolean isEnabled();
 
     /**
-     * Inicializa el proveedor (ej. conecta el bot, prepara sesión SMTP)
+     * Inicializa el proveedor (ej. conecta el bot, prepara sesión SMTP).
+     *
+     * @param dataFolder carpeta de datos del plugin, donde vive la subcarpeta {@code 2fa}
      */
-    void init();
+    void init(java.io.File dataFolder);
 
     /**
      * @param account Cuenta a verificar

@@ -17,360 +17,482 @@ Messages:
   Title:
     # Message sent before login.
     before-login:
-      title: "&a&lSveiki!"
-      subtitle: "&7Naudokite: /login <Tavo slaptaÅ¾odis>"
+      title: '&a&lSveiki!'
+      subtitle: '&7Naudokite: /login <Tavo slaptažodis>'
       delays:
         start: 0
         duration: 9999
         end: 6
     # Message sent before registration.
     before-register:
-      title: "&a&lSveiki!"
-      subtitle: "&7Naudokite: /register <SlaptaÅ¾odis> <SlaptaÅ¾odis>"
+      title: '&a&lSveiki!'
+      subtitle: '&7Naudokite: /register <Slaptažodis> <Slaptažodis>'
       delays:
         start: 0
         duration: 9999
         end: 6
     # Message sent after login.
     after-login:
-      title: ""
-      subtitle: "&aJÅ«s sÄ—kmingai prisijungÄ—te!"
+      title: ''
+      subtitle: '&aJūs sėkmingai prisijungėte!'
       delays:
         start: 0
         duration: 60
         end: 6
     # Message sent after registration.
     after-register:
-      title: ""
-      subtitle: "&aJÅ«s sÄ—kmingai UÅ¾siregistravote!"
+      title: ''
+      subtitle: '&aJūs sėkmingai Užsiregistravote!'
       delays:
         start: 0
         duration: 60
         end: 6
     # Message sent when you miss a password.
     incorrect-password:
-      title: ""
-      subtitle: "&cNeteisingas slaptaÅ¾odis!"
+      title: ''
+      subtitle: '&cNeteisingas slaptažodis!'
       delays:
         start: 0
         duration: 60
         end: 6
     # Message sent when already logged in.
     already-login:
-      title: ""
-      subtitle: "&cJÅ«s jau prisijungÄ™s!"
+      title: ''
+      subtitle: '&cJūs jau prisijungęs!'
       delays:
         start: 0
         duration: 60
         end: 6
     # Message sent when already registered.
     already-registered:
-      title: ""
-      subtitle: "&cJÅ«s jau prisiregistavÄ™s!"
+      title: ''
+      subtitle: '&cJūs jau prisiregistavęs!'
       delays:
         start: 0
         duration: 60
         end: 6
     # Message sent when passwords are not equal.
     passwords-dont-match:
-      title: ""
-      subtitle: "&cSlaptaÅ¾odÅ¾iai nesutampa!"
+      title: ''
+      subtitle: '&cSlaptažodžiai nesutampa!'
       delays:
         start: 0
         duration: 60
         end: 6
     # Message sent when session is continued.
     session-login:
-      title: ""
-      subtitle: "&eJÅ«sÅ³ prisijungimo sesija yra tÄ™siama."
+      title: ''
+      subtitle: '&eJūsų prisijungimo sesija yra tęsiama.'
       delays:
         start: 0
         duration: 60
         end: 6
     # Message sent when you are an original player.
     premium-login:
-      title: ""
-      subtitle: "&eJÅ«sÅ³ paskyra yra unikali, sÄ—kmingai prisijungÄ—te."
+      title: ''
+      subtitle: '&eJūsų paskyra yra unikali, sėkmingai prisijungėte.'
       delays:
         start: 0
         duration: 60
         end: 6
     # Message sent when a login session is continued.
     plugin-reload:
-      title: ""
-      subtitle: "&aKonfigÅ«racijos ir kalbos failai buvo perkrauti."
+      title: ''
+      subtitle: '&aKonfigūracijos ir kalbos failai buvo perkrauti.'
       delays:
         start: 0
         duration: 60
         end: 6
     # Message sent from backup system.
     backup:
-      title: ""
-      subtitle: "&aAtsarginÄ— kopija sukurta sÄ—kmingai."
+      title: ''
+      subtitle: '&aAtsarginė kopija sukurta sėkmingai.'
       delays:
         start: 0
         duration: 90
         end: 6
     # Message sent from backup system.
     backup-error:
-      title: ""
-      subtitle: "&cNeiÅ¡Ä—jo sukurti atsarginÄ—s kopijos."
+      title: ''
+      subtitle: '&cNeišėjo sukurti atsarginės kopijos.'
       delays:
         start: 0
         duration: 90
         end: 6
     # Message sent from security system.
     security-warning:
-      title: ""
-      subtitle: "&cChat'e iÅ¡siustas naujas saugumo Ä¯spÄ—jimas"
+      title: ''
+      subtitle: '&cChat''e išsiustas naujas saugumo įspėjimas'
       delays:
         start: 0
         duration: 60
         end: 6
-
+    premium-auto-login:
+      title: '&a&lWelcome!'
+      subtitle: '&7Logged in as &6Premium&7.'
+      delays:
+        start: 0
+        duration: 30
+        end: 6
+    bedrock-auto-login:
+      title: '&a&lWelcome!'
+      subtitle: '&7Logged in as &eBedrock&7.'
+      delays:
+        start: 0
+        duration: 30
+        end: 6
+  
   action-bar:
     # Message sent on the player's actionbar before login (singular).
-    singular: "&cJÅ«s turite {0} sekundÄ™, kad {prisijunktumÄ—te/UÅ¾siregistruotumÄ—te}."
-
+    singular: '&cJūs turite {0} sekundę, kad {prisijunktumėte/Užsiregistruotumėte}.'
+    
     # Message sent on the player's actionbar before login (plural).
-    plural: "&cJÅ«s turite {0} sekundes kad {lprisijunktumÄ—te/UÅ¾soregistruotumÄ—te}."
-
-        bedrock-auto-login:
-        title: "&a&lWelcome!"
-        subtitle: "&7Logged in as &eBedrock&7."
-        delays:
-          start: 0
-          duration: 30
-          end: 6
-      premium-auto-login:
-        title: "&a&lWelcome!"
-        subtitle: "&7Logged in as &6Premium&7."
-        delays:
-          start: 0
-          duration: 30
-          end: 6
-
+    plural: '&cJūs turite {0} sekundes kad {lprisijunktumėte/Užsoregistruotumėte}.'
+  
   delay-kick:
     # Message sent when a user takes a long time to register.
-    register-kick: "&cPer ilgai uÅ¾trukote registruodamiesi."
-
+    register-kick: '&cPer ilgai užtrukote registruodamiesi.'
+    
     # Message sent when a user takes a long time to log in.
-    login-kick: "&cPer ilgai uÅ¾trukote prisijunkdami."
-
+    login-kick: '&cPer ilgai užtrukote prisijunkdami.'
+  
   successful-operations:
     # Message when a user exchanges their password.
-    password-changed: "&aJÅ«sÅ³ slaptaÅ¾odis buvo sÄ—kmingai pakeistas."
-
+    password-changed: '&aJūsų slaptažodis buvo sėkmingai pakeistas.'
+    
     # Message sent when a user successfully logs.
-    successful-login: "&aJÅ«s sÄ—kmingai prisijungÄ—te."
-
+    successful-login: '&aJūs sėkmingai prisijungėte.'
+    
     # Message sent when a user logs in with an original account.
-    successful-premium-login: "&aJÅ«s esate automatiÅ¡kai prisijungÄ™s, kai naudojate unikaliÄ… paskyrÄ…."
-
+    successful-premium-login: '&aJūs esate automatiškai prisijungęs, kai naudojate unikalią paskyrą.'
+    
     # Message sent when a user logs in using the same ip address.
-    successful-session-login: "&aJÅ«sÅ³ prisijungimo sesija yra tÄ™siama."
-
+    successful-session-login: '&aJūsų prisijungimo sesija yra tęsiama.'
+    
     # Message sent when a user successfully registers.
-    successful-register: "&aJÅ«s sÄ—kmingai uÅ¾siregistravote."
-
+    successful-register: '&aJūs sėkmingai užsiregistravote.'
+    
     # Message sent when you force a player's login.
-    forcelogin: "&eJÅ«s buvote prijunktas {0}"
-
+    forcelogin: '&eJūs buvote prijunktas {0}'
+    
     # Message sent when a player successfully unregister.
-    unregister-kick: "&cJÅ«s sÄ—kmingai iÅ¡siregistravote."
-
+    unregister-kick: '&cJūs sėkmingai išsiregistravote.'
+    
     # Message sent when a configuration is finished
-    config-finished: "&aConfiguracija baigta."
-
+    config-finished: '&aConfiguracija baigta.'
+    
     # Message sent when a configuration is cancelled
-    config-cancelled: "&cVeiksmas atÅ¡auktas."
-
+    config-cancelled: '&cVeiksmas atšauktas.'
+  
   kick-messages:
     # Message when a player tries to log on to the server with a small difference in the nickname.
-    nick-already-registered: "&cJÅ«s negalite Ä¯eiti su slapyvardziu {0}&r\n&r&cdÄ—l to nes Å¡is slapyvardis jau uÅ¾registruotas kaip {1}&r\n&r\n&r&cKad, Ä¯eiti turite naudoti savo slapyvardÄ¯ be didÅ¾iÅ³jÅ³/maÅ¾Å³jÅ³ raidÅ¾iÅ³"
-
-    # Message sent when a user misses many times.
-    failed-many-times: "&cÄ®vedÄ—te neteisingÄ… slaptaÅ¾odÄ¯."
-
+    nick-already-registered: |-
+      &cJūs negalite įeiti su slapyvardziu {0}&r
+      &r&cdėl to nes šis slapyvardis jau užregistruotas kaip {1}&r
+      &r
+      &r&cKad, įeiti turite naudoti savo slapyvardį be didžiųjų/mažųjų raidžių
+# Message sent when a user misses many times.
+    failed-many-times: '&cĮvedėte neteisingą slaptažodį.'
+    
     # Message sent when password entered is incorrect.
-    incorrect-password: "&cNeteisingas slaptaÅ¾odis. Bandykite dar kartÄ…."
-
+    incorrect-password: '&cNeteisingas slaptažodis. Bandykite dar kartą.'
+    
     # Message sent when the security questions answer is incorrect.
-    incorrect-answer: "&cNeteisingas atsakymas. Bandykite dar kartÄ…."
-
+    incorrect-answer: '&cNeteisingas atsakymas. Bandykite dar kartą.'
+    
     # Message sent when server is still starting.
-    wait-server-start: "&cServeris dar nÄ—ra visiÅ¡kai paleistas.\n&cTruputi palaukite, kad prisijunkti."
-
-    # Message sent when an IP is blocked by suspected invasion.
-    account-blocked: "&cJÅ«sÅ³ adresas buvo uÅ¾blokuotas dÄ—l Ä¯tariamos invazijos.&r\n&r&cLikÄ™s uÅ¾blokavimo laikas: {0}"
-
-    # Message sent when two-factor system temporary password is incorrect.
-    incorrect-temporary-password: "&cNeteisingas slaptaÅ¾odis.Bandykite dar kartÄ…."
-
+    wait-server-start: |-
+      &cServeris dar nėra visiškai paleistas.
+      &cTruputi palaukite, kad prisijunkti.
+# Message sent when an IP is blocked by suspected invasion.
+    account-blocked: |-
+      &cJūsų adresas buvo užblokuotas dėl įtariamos invazijos.&r
+      &r&cLikęs užblokavimo laikas: {0}
+# Message sent when two-factor system temporary password is incorrect.
+    incorrect-temporary-password: '&cNeteisingas slaptažodis.Bandykite dar kartą.'
+    
     # Message to kick a user with an invalid nickname.
-    invalid-nickname: "&cJÅ«sÅ³ slapyvardis yra neteisingas, iÅ¡ vardo paÅ¡alinkite tarpus, simbolius ir netinkamus simbolius."
-
+    invalid-nickname: '&cJūsų slapyvardis yra neteisingas, iš vardo pašalinkite tarpus, simbolius ir netinkamus simbolius.'
+    
     # Message sent when the player's account has already been registered as unique.
-    premium-account: "&cAtsipraÅ¡ome, bet premium vartotojas (nusipirkÄ™s minecraft) jau prisijungÄ— prie Å¡ios paskyros.&r\n&r&cNorÄ—dami Å¾aisti serveryje, turite naudoti kitÄ… slapyvardÄ¯.&r\n&r\nJei esate Å¡ios paskyros savininkas, pabandykite iÅ¡ naujo paleisti â€žMinecraftâ€œ."
-
+    premium-account: |-
+      &cAtsiprašome, bet premium vartotojas (nusipirkęs minecraft) jau prisijungė prie šios paskyros.&r
+      &r&cNorėdami žaisti serveryje, turite naudoti kitą slapyvardį.&r
+      &r
+      Jei esate šios paskyros savininkas, pabandykite iš naujo paleisti „Minecraft“.
   security-messages:
     # Message sent when a user was protected by the heuristic system.
     hacking-attack-warning:
-      - ""
-      - " &c&lSAUGUMO Ä®SPÄ–JIMAS"
-      - " &cSaugumo sistema uÅ¾blokavo galimas Ä¯silauÅ¾imo atakas jÅ«sÅ³ paskyroje."
-      - " &cBuvo bandyta tris kartus nesÄ—kmingai prisijungti."
-      - ""
-      - " &e&lPATARIMAS: &eNAudokite skirtingus slaptaÅ¾odÅ¾ius skirtinguose serveriuose."
-
+    - ''
+    - ' &c&lSAUGUMO ĮSPĖJIMAS'
+    - ' &cSaugumo sistema užblokavo galimas įsilaužimo atakas jūsų paskyroje.'
+    - ' &cBuvo bandyta tris kartus nesėkmingai prisijungti.'
+    - ''
+    - ' &e&lPATARIMAS: &eNAudokite skirtingus slaptažodžius skirtinguose serveriuose.'
+    
     # Message sent when a user was protected more than once by the heuristic system.
     hacking-attack-warning2:
-      - ""
-      - " &c&lSAUGUMO Ä®SPÄ–JIMAS"
-      - " &cSaugumo sistema uÅ¾blokavo {0} galimas Ä¯silauÅ¾imo atakas jÅ«sÅ³ paskyroje."
-      - " &cBuvo bandyta tris kartus nesÄ—kmingai prisijungti."
-      - ""
-      - " &e&Susisiekite su serverio administatoriais."
-      - ""
-
+    - ''
+    - ' &c&lSAUGUMO ĮSPĖJIMAS'
+    - ' &cSaugumo sistema užblokavo {0} galimas įsilaužimo atakas jūsų paskyroje.'
+    - ' &cBuvo bandyta tris kartus nesėkmingai prisijungti.'
+    - ''
+    - ' &e&Susisiekite su serverio administatoriais.'
+    - ''
+    
     # Message sent when a user uses a weak password.
     weak-password:
-      - ""
-      - " &cUÅ¾registruotas slaptaÅ¾odis laikomas nesaugiu."
-      - " &cNorÄ—dami pagerinti saugumÄ…, naudokite raides, skaiÄius ir simbolius."
-      - " &cSaugaus slaptaÅ¾odÅ¾io pavyzdys: {0}"
-      - ""
-
+    - ''
+    - ' &cUžregistruotas slaptažodis laikomas nesaugiu.'
+    - ' &cNorėdami pagerinti saugumą, naudokite raides, skaičius ir simbolius.'
+    - ' &cSaugaus slaptažodžio pavyzdys: {0}'
+    - ''
+    
     # Message sent when a player has not yet registered the security questions.
     security-question-warn-message:
-      - ""
-      - " &c&lAPSAUGOS KLAUSIMAI"
-      - " &7NorÄ—dami uÅ¾siregistruoti, spustelÄ—kite Å¡Ä¯ praneÅ¡imÄ…"
-      - " &cApsaugos klausimai&7. Tai darydami"
-      - " &7sumaÅ¾insite Ä¯silauÅ¾imo tikimybÄ™."
-      - ""
-
+    - ''
+    - ' &c&lAPSAUGOS KLAUSIMAI'
+    - ' &7Norėdami užsiregistruoti, spustelėkite šį pranešimą'
+    - ' &cApsaugos klausimai&7. Tai darydami'
+    - ' &7sumažinsite įsilaužimo tikimybę.'
+    - ''
+    
     # Message sent when a security question is being added.
     security-question-add:
-      - ""
-      - " &e{0}"
-      - ""
-      - " &7NorÄ—dami atÅ¡aukti operacijÄ…, Ä¯veskite &f'cancel'."
-      - " &7SpustelÄ—kite Å¡Ä¯ praneÅ¡imÄ…, kad sugeneruotumÄ—te kitÄ… klausimÄ…."
-      - ""
-
+    - ''
+    - ' &e{0}'
+    - ''
+    - ' &7Norėdami atšaukti operaciją, įveskite &f''cancel''.'
+    - ' &7Spustelėkite šį pranešimą, kad sugeneruotumėte kitą klausimą.'
+    - ''
+    
     # Message sent when a security question should be reviewed.
     security-question-check:
-      - ""
-      - " &aPrieÅ¡ patvirtindami, patikrinkite informacijÄ…:"
-      - ""
-      - " &7{0}: &f'{1}'"
-      - ""
-      - " &aJei esate tikras, Ä¯veskite &f'confirm'&a."
-      - " &eJei Ä¯vedÄ—te kaÅ¾kÄ… ne taip, Ä¯veskite &f'repeat'&e."
-      - " &cJei norite atÅ¡aukti Å¡iÄ… operacijÄ…, Ä¯veskite &f'cancel'&c."
-      - ""
-
+    - ''
+    - ' &aPrieš patvirtindami, patikrinkite informaciją:'
+    - ''
+    - ' &7{0}: &f''{1}'''
+    - ''
+    - ' &aJei esate tikras, įveskite &f''confirm''&a.'
+    - ' &eJei įvedėte kažką ne taip, įveskite &f''repeat''&e.'
+    - ' &cJei norite atšaukti šią operaciją, įveskite &f''cancel''&c.'
+    - ''
+    
     # Message sent when security questions are requested.
     security-question-request:
-      - ""
-      - " &aAtsipraÅ¡ome, bet reikalingas tapatybÄ—s patvirtinimas."
-      - " &aAtsakykite Ä¯ pateiktÄ… klausimÄ… chat'e:"
-      - ""
-      - " &b{0}"
-      - ""
-
+    - ''
+    - ' &aAtsiprašome, bet reikalingas tapatybės patvirtinimas.'
+    - ' &aAtsakykite į pateiktą klausimą chat''e:'
+    - ''
+    - ' &b{0}'
+    - ''
+    
     # Message sent when security questions are requested a second time.
     security-question-request2:
-      - "&aKitas klausimas..."
-      - ""
-      - " &b{0}"
-      - ""
-
+    - '&aKitas klausimas...'
+    - ''
+    - ' &b{0}'
+    - ''
+  
   error-messages:
     # Message sent when you are already logged in.
-    already-login: "&cJÅ«s jau esate prisijungÄ™s."
-
+    already-login: '&cJūs jau esate prisijungęs.'
+    
     # Message sent when a user is already logged in.
-    already-login2: "&cÅ is Å¾aidÄ—jau jau prisijungÄ™s."
-
+    already-login2: '&cŠis žaidėjau jau prisijungęs.'
+    
     # Message sent when a nickname has already been registered.
-    already-registered: "&cÅ is slapyvardis jau buvo uÅ¾registruotas."
-
+    already-registered: '&cŠis slapyvardis jau buvo užregistruotas.'
+    
     # Message sent when a nickname has not yet been registered.
-    not-registered: "&cÅ is slapyvardis dar nebuvo uÅ¾registruotas."
-
+    not-registered: '&cŠis slapyvardis dar nebuvo užregistruotas.'
+    
     # Message sent when the entered password is not equal to the second.
-    passwords-dont-match: "&cSlaptaÅ¾odÅ¾iai nÄ—ra vienodi."
-
+    passwords-dont-match: '&cSlaptažodžiai nėra vienodi.'
+    
     # Message sent when a player does not confirm your password.
-    need-password-confirmation: "&cTurite patvirtinti savo slaptaÅ¾odÄ¯."
-
+    need-password-confirmation: '&cTurite patvirtinti savo slaptažodį.'
+    
     # Message sent when a user does not have a temporary password.
-    no-temporary-password: "&cLaikinas slaptaÅ¾odis dar nesugeneruotas."
-
+    no-temporary-password: '&cLaikinas slaptažodis dar nesugeneruotas.'
+    
     # Message sent when IP limits per player pass the limit.
-    address-limiter-warning: "&cJÅ«s iÅ¡naudojote Å¾aidÄ—jÅ³ limitÄ… per IP adresÄ…."
-
+    address-limiter-warning: '&cJūs išnaudojote žaidėjų limitą per IP adresą.'
+    
     # Message sent when a player tries to change password by entering the same password as the current.
-    password-same-as-old: "&cÄ®vestas slaptaÅ¾odis yra toks pats kaip dabartinis."
-
+    password-same-as-old: '&cĮvestas slaptažodis yra toks pats kaip dabartinis.'
+    
     # Message sent when the password entered is too large.
-    password-too-large: "&cÄ®vestas slaptaÅ¾odis per ilgas."
-
+    password-too-large: '&cĮvestas slaptažodis per ilgas.'
+    
     # Message sent when the password entered is too small.
-    password-too-small: "&cÄ®vestas slaptaÅ¾odis per trumpas."
-    insecure-password: "&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols."
-    change-password-enforced: "&cFor security reasons, you must update your password right now using &e/changepassword&c."
-
+    password-too-small: '&cĮvestas slaptažodis per trumpas.'
+    insecure-password: '&cYour password is too weak. It must include numbers, uppercase, lowercase, and symbols.'
+    change-password-enforced: '&cFor security reasons, you must update your password right now using &e/changepassword&c.'
+    
     # Message sent when a user attempts to disable nLogin using PlugMan/System.
-    plugman-block: "&cJÅ«s negalite liesti plugino (naudokite /nlogin reload)."
-
+    plugman-block: '&cJūs negalite liesti plugino (naudokite /nlogin reload).'
+    
     # Message when a player does not possess the required permission.
-    insufficient-permissions: "&cJÅ«s neturite leidimo vykdyti Å¡iÄ… komandÄ…."
-
+    insufficient-permissions: '&cJūs neturite leidimo vykdyti šią komandą.'
+    
     # Message to show the use of a command.
-    command-usage: "&cJÅ«s turite naudoti {0}."
-
+    command-usage: '&cJūs turite naudoti {0}.'
+    
     # Message to kick a player now online.
-    already-online: "&cÅ is Å¾aidÄ—jas jau prisijungÄ™s."
-
+    already-online: '&cŠis žaidėjas jau prisijungęs.'
+    
     # Message to display that a player is not online.
-    offline-error: "&cNorimas Å¾aidÄ—jas neprisijungÄ™s."
-
+    offline-error: '&cNorimas žaidėjas neprisijungęs.'
+    
     # Message to show that the command cannot be executed via console.
-    player-command-usage: "&cÅ i komanda buvo iÅ¡jungta per konsolÄ™."
-
+    player-command-usage: '&cŠi komanda buvo išjungta per konsolę.'
+    
     # Message to show that a command can only be executed by the console.
-    console-command-usage: "&cÅ iÄ… komandÄ… galima naudoti tik per konsolÄ™."
-
+    console-command-usage: '&cŠią komandą galima naudoti tik per konsolę.'
+    
     # Message shown when the plugin is reloaded.
-    plugin-reload-message: "&ePapildinys sÄ—kmingai perkrautas."
-
+    plugin-reload-message: '&ePapildinys sėkmingai perkrautas.'
+    
     # Message shown when the function of a command is disabled.
-    command-function-disabled: "&cKomandos funkcija {0} yra iÅ¡jungta."
-
+    command-function-disabled: '&cKomandos funkcija {0} yra išjungta.'
+    
     # Message sent when a database operation has not been successfully performed.
-    database-error: "&cDeja, mums nepavyko uÅ¾baigti Å¡ios operacijos. PraÅ¡au, pabandykite dar kartÄ…. [SQL FAIL]"
-
+    database-error: '&cDeja, mums nepavyko užbaigti šios operacijos. Prašau, pabandykite dar kartą. [SQL FAIL]'
+    attempts-left: '&cAttempts left: &e{0}'
+    player-not-online: '&cThat player is not online.'
+    max-ips-reached: '&cYou have reached the maximum number of accounts allowed per IP.'
+  
   other-messages:
     # Hover message: /login.
-    hover-message-login: "&7SpustelÄ—kite Äia, kad uÅ¾baigtumÄ—te komandÄ… ir greitai prisijungtumÄ—te."
-
+    hover-message-login: '&7Spustelėkite čia, kad užbaigtumėte komandą ir greitai prisijungtumėte.'
+    
     # Hover message: /register.
-    hover-message-register: "&7SpustelÄ—kite Äia, kad uÅ¾baigtumÄ—te komandÄ… ir greitai uÅ¾registruotumÄ—te."
-
+    hover-message-register: '&7Spustelėkite čia, kad užbaigtumėte komandą ir greitai užregistruotumėte.'
+    
     # Command usage: /login
-    message-login: "&eNaudokite komandÄ… &7/login <slaptaÅ¾odis>&e."
-
+    message-login: '&eNaudokite komandą &7/login <slaptažodis>&e.'
+    
     # Command usage: /register
-    message-register: "&eNaudokite komandÄ… &7/register <slaptaÅ¾odis> <slaptaÅ¾odis>&e."
-
+    message-register: '&eNaudokite komandą &7/register <slaptažodis> <slaptažodis>&e.'
+    
     # Command usage: /changepassword
-    message-changepassword: "&eNaudokite komandÄ… &7/changepassword <dabartinis slaptaÅ¾odis> <naujas slaptaÅ¾odis>&e."
-
+    message-changepassword: '&eNaudokite komandą &7/changepassword <dabartinis slaptažodis> <naujas slaptažodis>&e.'
+    
     # Command usage: /checkprofile
-    message-verify: "&eNaudokite komandÄ… &7/checkprofile <Å¾aidÄ—jas>&e."
-
+    message-verify: '&eNaudokite komandą &7/checkprofile <žaidėjas>&e.'
+    
     # Command usage: /unregister
-    message-unregister: "&eNaudokite komandÄ… &7/unregister <dabartinis slaptaÅ¾odis>&e."
+    message-unregister: '&eNaudokite komandą &7/unregister <dabartinis slaptažodis>&e.'
+    updates-failed: '&cFailed to find new updates.'
+    updates-download-link: '&cDownload the latest version at: https://github.com/Pumpkiiiings/PkLogin/releases'
+    updates-invalid-response: '&cFailed to find new updates: invalid response.'
+    updates-available: '&eA new version of PkLogin is available! ({0} -> {1})'
+    updates-use-command: '&7Use &f/pklogin update &7to download the new version.'
+  admin:
+    help:
+    - '&8&m----------------------------------------'
+    - '&b&lPkLogin &8| &7Admin Help'
+    - ''
+    - '&b/pklogin help &8- &7Show this help message'
+    - '&b/pklogin forcelogin <player> &8- &7Force login a player'
+    - '&b/pklogin unregister <player> &8- &7Unregister a player'
+    - '&b/pklogin changepassword <player> <password> &8- &7Change a player''s password'
+    - '&b/pklogin premium <player> &8- &7Set a player as premium'
+    - '&b/pklogin cracked <player> &8- &7Set a player as cracked'
+    - '&b/pklogin update &8- &7Update the plugin'
+    - '&b/pklogin setspawn &8- &7Set the spawn location'
+    - '&b/pklogin reload &8- &7Reload the configuration'
+    - '&8&m----------------------------------------'
+    usage-command: '&eUso correcto: &b%command% %arg%'
+    forcelogin-success: '&aPlayer {0} has been forcefully authenticated.'
+    unregister-success: '&aPlayer {0} has been unregistered.'
+    changepass-success: '&aPassword for player {0} has been successfully changed.'
+    changepass-kick: '&cYour password was changed by an administrator.'
+    dupeip-header: '&eAccounts for IP/Player &a{0}&e:'
+    dupeip-format: '&7- &f{0} &8(&7{1}&8)'
+    dupeip-none: '&cNo accounts found for that IP/Player.'
+    authme-import-start: '&7Starting AuthMe import...'
+    authme-import-not-found: '&cAuthMe SQLite database not found.'
+    authme-import-found: '&7Found AuthMe database at &f{0} &7with &f{1} &7accounts.'
+    authme-import-progress: '&7Progress: &f{0} &7/ &f{1}'
+    authme-import-done: '&aImport complete! &7Players will be re-hashed to &f{0} &7on next login.'
+    authme-import-fail: '&cFailed to read AuthMe database: {0}'
+    delete-success: '&aPlayer {0} has been deleted.'
+    setspawn-success: '&aSpawn location set successfully!'
+    verify-format:
+    - '&a[PkLogin] Info for {0}:'
+    - '&7IP Address: &f{1}'
+    - '&7Registered: &f{2}'
+    - '&7Last Login: &f{3}'
+    - '&7Premium: &f{4}'
+    account-not-found: '&cAccount not found.'
+  two-factor:
+    usage: '&eUsage: /2fa <setup|verify|disable|discord|verify2fa>'
+    not-registered: '&cYou must be registered to use 2FA.'
+    not-logged-in-setup: '&cYou must be logged in to set up 2FA.'
+    already-setup: '&c2FA is already set up on your account.'
+    setup-header: '&e--- 2FA Setup ---'
+    setup-secret: '&eSecret Key: &a{0}'
+    setup-instruction1: '&ePlease enter this secret into your authenticator app.'
+    setup-instruction2: '&eThen, verify it using: &a/2fa verify <code>'
+    setup-success: '&a2FA has been successfully set up!'
+    invalid-code: '&cInvalid 2FA code. Please try again.'
+    not-awaiting: '&cYou are not awaiting 2FA verification.'
+    not-logged-in-disable: '&cYou must be logged in to disable 2FA.'
+    not-setup: '&cYou do not have 2FA set up.'
+    disable-usage: '&eUsage: /2fa disable <code>'
+    disable-success: '&a2FA has been successfully disabled!'
+    discord-not-logged-in: '&cYou must be logged in to link Discord.'
+    discord-already-linked: '&cYou already have a Discord account linked.'
+    discord-link-header: '&e--- Discord Linking ---'
+    discord-link-code: '&eCode: &a{0}'
+    discord-link-instruction1: '&ePlease send a Private Message (DM) to our Discord Bot with this code.'
+    discord-link-instruction2: '&eThe code will expire in 10 minutes.'
+    login-success: '&aYou have successfully logged in with 2FA.'
+    login-message: '&eWe have sent a code to your Discord. Type /2fa verify2fa <code> to enter.'
+    send-failed: '&cWe could not deliver your 2FA code. Please contact an administrator.'
+    too-many-attempts: '&cToo many invalid 2FA codes. Please log in again.'
+    verify-usage: '&eUsage: /2fa verify2fa <code>'
+  discord-bot:
+    link-success: Your Minecraft account **{0}** has been linked to Discord successfully!
+    link-error: Something went wrong while linking your account in the database.
+    invalid-code: That code is not valid or has expired.
+    help: Hi! To link your account, send me the {0}-digit code the Minecraft server gave you with /2fa discord.
+    verification-code: 'Your PkLogin verification code is: **{0}**'
+  email:
+    subject: PkLogin - Verification Code
+    body: |-
+      Hello {0},
+
+      Your PkLogin verification code is: {1}
+  offline:
+    already-offline: '&cYour account is already offline (cracked).'
+    success: '&aYour account is now offline! You will need to use /login.'
+    switch-kick: |-
+      &aYou have switched to Offline mode.
+      &ePlease reconnect to the server.
+  premium:
+    already-premium: '&cYour account is already premium.'
+    success: '&aYour account is now Premium! You won''t need to use /login.'
+    switch-kick: |-
+      &aYou have switched to Premium mode.
+      &ePlease reconnect to the server.
+    current-mode: '&eYour account is currently in {0} mode.'
+    warning:
+    - '&cWARNING!'
+    - '&eIf you enable premium mode, you will enter without /login.'
+    - '&4If you are NOT premium, you will lose your account forever!'
+    - '&eUse /premium confirm to confirm.'
+    auto-login: '&aYou have been automatically logged in via Premium!'
+  queue:
+    message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
+  captcha:
+    required: '&cYou must complete the captcha before authenticating!'
+    success: '&aCaptcha completed successfully! You can now login/register.'
+    failed: '&cWrong captcha! Try again.'
+    inventory-title: Click the &aGreen Wool
+    inventory-item: '&aClick Me!'
+    chat-instruction: '&ePlease type the following code in chat: &b{code}'
+    map-instruction: '&eLook at the map in your hand and type the code!'
+version-messages: 2

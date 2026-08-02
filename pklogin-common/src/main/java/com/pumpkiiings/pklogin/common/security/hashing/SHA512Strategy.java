@@ -46,7 +46,11 @@ public class SHA512Strategy implements HashStrategy {
         if (!storedHash.startsWith("$sha512$")) return false;
         String[] parts = storedHash.split("\\$", 4);
         if (parts.length < 4) return false;
-        return parts[3].equals(sha512(parts[2] + plainPassword));
+        // Constant-time: String.equals bails at the first differing character and
+        // leaks how much of the digest an attacker has guessed.
+        return MessageDigest.isEqual(
+                parts[3].getBytes(StandardCharsets.UTF_8),
+                sha512(parts[2] + plainPassword).getBytes(StandardCharsets.UTF_8));
     }
 
     @Override

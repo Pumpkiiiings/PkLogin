@@ -2,9 +2,10 @@ package com.pumpkiiings.pklogin.paper.command.executors;
 
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
 import com.pumpkiiings.pklogin.paper.converter.AuthMeConverter;
+import com.pumpkiiings.pklogin.common.Permissions;
+import com.pumpkiiings.pklogin.common.PluginConstants;
 import com.pumpkiiings.pklogin.common.http.HttpClient;
 import com.pumpkiiings.pklogin.common.model.Account;
-import com.pumpkiiings.pklogin.common.security.hashing.BCryptStrategy;
 import com.pumpkiiings.pklogin.common.settings.Messages;
 import com.pumpkiiings.pklogin.common.util.FileUtils;
 import io.papermc.paper.command.brigadier.Commands;
@@ -33,7 +34,7 @@ public class PkLoginCommandNode {
                 return 1;
             })
             .then(Commands.literal("authme-import")
-                .requires(source -> source.getSender().hasPermission("pklogin.admin.authme-import"))
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_AUTHME_IMPORT))
                 .executes(context -> {
                     CommandSender sender = context.getSource().getSender();
                     plugin.runAsync(() -> {
@@ -44,7 +45,7 @@ public class PkLoginCommandNode {
                 })
             )
             .then(Commands.literal("forcelogin")
-                .requires(source -> source.getSender().hasPermission("pklogin.admin.forcelogin"))
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_FORCELOGIN))
                 .executes(context -> {
                     context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "forcelogin <player>"));
                     return 1;
@@ -61,7 +62,7 @@ public class PkLoginCommandNode {
                                 target.getScheduler().run(plugin, task -> target.sendMessage(Messages.SUCCESSFUL_LOGIN.asString()), null);
                                 sender.sendMessage(Messages.ADMIN_FORCELOGIN_SUCCESS.asString().replace("{0}", target.getName()));
                             } else {
-                                sender.sendMessage("§cPlayer not found or not online.");
+                                sender.sendMessage(Messages.PLAYER_NOT_ONLINE.asString("§cThat player is not online."));
                             }
                         });
                         return 1;
@@ -69,7 +70,7 @@ public class PkLoginCommandNode {
                 )
             )
             .then(Commands.literal("unregister")
-                .requires(source -> source.getSender().hasPermission("pklogin.admin.unregister"))
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_UNREGISTER))
                 .executes(context -> {
                     context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "unregister <player>"));
                     return 1;
@@ -91,7 +92,7 @@ public class PkLoginCommandNode {
                 )
             )
             .then(Commands.literal("delete")
-                .requires(source -> source.getSender().hasPermission("pklogin.admin.delete"))
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_DELETE))
                 .executes(context -> {
                     context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "delete <player>"));
                     return 1;
@@ -113,7 +114,7 @@ public class PkLoginCommandNode {
                 )
             )
             .then(Commands.literal("verify")
-                .requires(source -> source.getSender().hasPermission("pklogin.admin.verify"))
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_VERIFY))
                 .executes(context -> {
                     context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "verify <player>"));
                     return 1;
@@ -143,7 +144,7 @@ public class PkLoginCommandNode {
                 )
             )
             .then(Commands.literal("setspawn")
-                .requires(source -> source.getSender().hasPermission("pklogin.admin.setspawn") && source.getSender() instanceof Player)
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_SETSPAWN) && source.getSender() instanceof Player)
                 .executes(context -> {
                     Player player = (Player) context.getSource().getSender();
                     plugin.runAsync(() -> {
@@ -162,7 +163,7 @@ public class PkLoginCommandNode {
                 })
             )
             .then(Commands.literal("changepass")
-                .requires(source -> source.getSender().hasPermission("pklogin.admin.changepass"))
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_CHANGEPASS))
                 .executes(context -> {
                     context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "changepass <player> <newpass>"));
                     return 1;
@@ -180,7 +181,10 @@ public class PkLoginCommandNode {
                             plugin.runAsync(() -> {
                                 Optional<Account> targetAccount = plugin.getAccountManagement().search(targetName);
                                 if (targetAccount.isPresent()) {
-                                    String hash = new BCryptStrategy().hash(newPass);
+                                    // Use whatever algorithm the server is configured for,
+                                    // not a hardcoded one.
+                                    String hash = com.pumpkiiings.pklogin.common.security.hashing.HashStrategyFactory
+                                            .fromSettings().hash(newPass);
                                     plugin.getAccountManagement().update(targetName, hash, targetAccount.get().getAddress());
                                     sender.sendMessage(Messages.ADMIN_CHANGEPASS_SUCCESS.asString().replace("{0}", targetName));
                                     Player target = Bukkit.getPlayer(targetName);
@@ -197,7 +201,7 @@ public class PkLoginCommandNode {
                 )
             )
             .then(Commands.literal("dupeip")
-                .requires(source -> source.getSender().hasPermission("pklogin.admin.dupeip"))
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_DUPEIP))
                 .executes(context -> {
                     context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "dupeip <target>"));
                     return 1;
@@ -232,7 +236,7 @@ public class PkLoginCommandNode {
                 )
             )
             .then(Commands.literal("reload")
-                .requires(source -> source.getSender().hasPermission("pklogin.admin.reload"))
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_RELOAD))
                 .executes(context -> {
                     CommandSender sender = context.getSource().getSender();
                     plugin.runAsync(() -> reloadLogic(plugin, sender));
@@ -240,7 +244,7 @@ public class PkLoginCommandNode {
                 })
             )
             .then(Commands.literal("update")
-                .requires(source -> source.getSender().hasPermission("pklogin.admin.update") && source.getSender() instanceof Player)
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_UPDATE) && source.getSender() instanceof Player)
                 .executes(context -> {
                     Player player = (Player) context.getSource().getSender();
                     plugin.runAsync(() -> {
@@ -264,7 +268,7 @@ public class PkLoginCommandNode {
                 })
             )
             .then(Commands.literal("help")
-                .requires(source -> source.getSender().hasPermission("pklogin.admin.help"))
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_HELP))
                 .executes(context -> {
                     CommandSender sender = context.getSource().getSender();
                     plugin.runAsync(() -> sendHelp(sender));
@@ -278,7 +282,7 @@ public class PkLoginCommandNode {
         sender.sendMessage(" §eThis server is running §fPkLogin v " + plugin.getDescription().getVersion() + ".");
         sender.sendMessage(" §7Powered by §bwww.pumpkiiings.com§7.");
         sender.sendMessage("");
-        sender.sendMessage(" §7GitHub: §fhttps://github.com/Pumpkiiiings/PkLogin");
+        sender.sendMessage(" §7GitHub: §f" + PluginConstants.GITHUB);
         sender.sendMessage("");
     }
 
@@ -292,14 +296,15 @@ public class PkLoginCommandNode {
         if (sender instanceof Player && !plugin.getLoginManagement().isAuthenticated(sender.getName())) {
             return;
         }
-        plugin.reloadConfig();
         plugin.setupSettings();
+        plugin.reloadProxySecret();
         sender.sendMessage(Messages.PLUGIN_RELOAD_MESSAGE.asString());
     }
 
     private static boolean update(PkLoginPaper plugin, Player player) {
         File output = new File(plugin.getDataFolder().getParentFile(), "PkLogin-" + plugin.getLatestVersion() + ".jar");
-        return downloadActionbar(plugin, player, "https://github.com/Pumpkiiiings/PkLogin/releases/download/" + plugin.getLatestVersion() + "/PkLogin.jar", output, true, null);
+        return downloadActionbar(plugin, player,
+                PluginConstants.downloadUrl(plugin.getLatestVersion()), output, true, null);
     }
 
     private static boolean downloadActionbar(PkLoginPaper plugin, Player player, String url, File output, boolean update, Runnable callback) {
@@ -350,7 +355,7 @@ public class PkLoginCommandNode {
         } catch (IOException e) {
             downloadLock.set(false);
             e.printStackTrace();
-            String msg = "§cFailed to download new version. Update manually at: https://github.com/Pumpkiiiings/PkLogin/releases";
+            String msg = "§cFailed to download new version. Update manually at: " + PluginConstants.RELEASES;
             plugin.sendMessage(msg);
             player.sendMessage(msg);
         } finally {

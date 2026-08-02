@@ -72,6 +72,8 @@ public enum Messages {
     PLAYER_COMMAND_USAGE("error-messages.player-command-usage"),
     PLUGIN_RELOAD_MESSAGE("error-messages.plugin-reload-message"),
     DATABASE_ERROR("error-messages.database-error"),
+    ATTEMPTS_LEFT("error-messages.attempts-left"),
+    PLAYER_NOT_ONLINE("error-messages.player-not-online"),
 
     // other messages
     MESSAGE_LOGIN("other-messages.message-login"),
@@ -82,6 +84,7 @@ public enum Messages {
     UPDATES_DOWNLOAD_LINK("other-messages.updates-download-link"),
     UPDATES_INVALID_RESPONSE("other-messages.updates-invalid-response"),
     UPDATES_AVAILABLE("other-messages.updates-available"),
+    UPDATES_USE_COMMAND("other-messages.updates-use-command"),
 
     // admin commands
     ADMIN_HELP("admin.help"),
@@ -128,12 +131,28 @@ public enum Messages {
     TWO_FACTOR_DISCORD_LINK_INSTRUCTION2("two-factor.discord-link-instruction2"),
     TWO_FACTOR_LOGIN_SUCCESS("two-factor.login-success"),
     TWO_FACTOR_LOGIN_MESSAGE("two-factor.login-message"),
+    TWO_FACTOR_SEND_FAILED("two-factor.send-failed"),
+    TWO_FACTOR_TOO_MANY_ATTEMPTS("two-factor.too-many-attempts"),
+    TWO_FACTOR_VERIFY_USAGE("two-factor.verify-usage"),
+
+    // messages the Discord bot sends back over DM
+    DISCORD_BOT_LINK_SUCCESS("discord-bot.link-success"),
+    DISCORD_BOT_LINK_ERROR("discord-bot.link-error"),
+    DISCORD_BOT_INVALID_CODE("discord-bot.invalid-code"),
+    DISCORD_BOT_HELP("discord-bot.help"),
+    DISCORD_BOT_VERIFICATION_CODE("discord-bot.verification-code"),
+
+    // 2FA e-mail contents
+    EMAIL_SUBJECT("email.subject"),
+    EMAIL_BODY("email.body"),
 
     // premium / offline
     OFFLINE_ALREADY("offline.already-offline"),
     OFFLINE_SUCCESS("offline.success"),
+    OFFLINE_SWITCH_KICK("offline.switch-kick"),
     PREMIUM_ALREADY("premium.already-premium"),
     PREMIUM_SUCCESS("premium.success"),
+    PREMIUM_SWITCH_KICK("premium.switch-kick"),
     PREMIUM_CURRENT_MODE("premium.current-mode"),
     PREMIUM_WARNING("premium.warning"),
     PREMIUM_AUTO_LOGIN("premium.auto-login"),

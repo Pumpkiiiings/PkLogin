@@ -1,5 +1,7 @@
 package com.pumpkiiings.pklogin.paper.command.executors;
 
+import com.pumpkiiings.pklogin.common.Permissions;
+
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
 import com.pumpkiiings.pklogin.common.manager.AccountManagement;
 import com.pumpkiiings.pklogin.common.model.Account;
@@ -61,7 +63,7 @@ public class UnregisterCommandNode {
     }
 
     private static void performConsole(CommandSender sender, PkLoginPaper plugin, String playerName) {
-        if (!sender.hasPermission("pklogin.admin")) {
+        if (!sender.hasPermission(Permissions.ADMIN)) {
             sender.sendMessage(Messages.INSUFFICIENT_PERMISSIONS.asString());
             return;
         }

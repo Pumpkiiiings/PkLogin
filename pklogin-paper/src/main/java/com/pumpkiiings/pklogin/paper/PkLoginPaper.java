@@ -67,9 +67,101 @@ public class PkLoginPaper extends JavaPlugin {
 
     private final java.util.concurrent.ConcurrentHashMap<String, com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession> verifiedSessions = new java.util.concurrent.ConcurrentHashMap<>();
 
+    /**
+     * How long a premium handshake result stays usable. It only has to survive
+     * the gap between the login packets and {@code PlayerJoinEvent}.
+     */
+    private static long verifiedSessionTtlMillis() {
+        return Settings.AUTOLOGIN_PREMIUM_SESSION_TIMEOUT.asInt() * 1000L;
+    }
+
+    /** Records a completed premium handshake for the given address. */
+    public void storeVerifiedSession(String ip, com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession session) {
+        purgeExpiredSessions();
+        verifiedSessions.put(ip, session);
+    }
+
+    /**
+     * Returns the still-valid verified session for this address and username,
+     * removing it. Returns null when there is none, the username does not match,
+     * or the session has gone stale — sessions are keyed by IP, so a leftover one
+     * must never authenticate a later connection.
+     */
+    public com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession consumeVerifiedSession(String ip, String username) {
+        purgeExpiredSessions();
+        com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession session = verifiedSessions.get(ip);
+        if (session == null) return null;
+        if (!session.getUsername().equalsIgnoreCase(username)) return null;
+        verifiedSessions.remove(ip, session);
+        return session;
+    }
+
+    /** Same checks as {@link #consumeVerifiedSession} but leaves the session in place. */
+    public boolean hasVerifiedSession(String ip, String username) {
+        purgeExpiredSessions();
+        com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession session = verifiedSessions.get(ip);
+        return session != null && session.getUsername().equalsIgnoreCase(username);
+    }
+
+    private void purgeExpiredSessions() {
+        long ttl = verifiedSessionTtlMillis();
+        verifiedSessions.values().removeIf(session -> session.isExpired(ttl));
+    }
+
     private String latestVersion;
     private boolean updateAvailable;
     private int registeredUsers;
+
+    /**
+     * Key for verifying proxy messages. Resolved once at startup rather than per
+     * message, so a plugin message never turns into a disk read.
+     */
+    private volatile String proxySecret;
+
+    /** @return the signing key, or null when none is configured or detectable */
+    public String getProxySecret() {
+        return proxySecret;
+    }
+
+    /** Re-reads the proxy signing key after a configuration reload. */
+    public void reloadProxySecret() {
+        resolveProxySecret();
+    }
+
+    /**
+     * Works out the proxy signing key and reports where it came from.
+     *
+     * <p>Called at enable and again on reload, so changing the secret does not
+     * need a full restart.</p>
+     */
+    private void resolveProxySecret() {
+        com.pumpkiiings.pklogin.common.security.ProxySecretResolver.Resolution resolution =
+                com.pumpkiiings.pklogin.common.security.ProxySecretResolver.resolve(
+                        PaperProxyConfig.readVelocityForwardingSecret());
+
+        this.proxySecret = resolution.getKey();
+
+        if (!Settings.PREMIUM_PROXY_MODE.asBoolean()) {
+            return;
+        }
+
+        if (resolution.isPresent()) {
+            sendMessage("Proxy messages authenticated using " + resolution.getSource() + ".");
+            return;
+        }
+
+        sendMessage("§c=========================================================");
+        sendMessage("§cPremium auto-login from the proxy is DISABLED.");
+        if (PaperProxyConfig.isAvailable() && !PaperProxyConfig.isVelocityForwardingEnabled()) {
+            sendMessage("§cThis server has 'proxies.velocity.enabled: false' in config/paper-global.yml,");
+            sendMessage("§cso there is no shared secret to authenticate the proxy with.");
+            sendMessage("§cEnable Velocity modern forwarding, or set 'proxy-secret' in PkLogin's config.yml.");
+        } else {
+            sendMessage("§cNo Velocity forwarding secret was found and 'proxy-secret' is empty in config.yml.");
+            sendMessage("§cSet one of the two — see the comments above 'proxy-secret'.");
+        }
+        sendMessage("§c=========================================================");
+    }
 
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
@@ -108,11 +200,11 @@ public class PkLoginPaper extends JavaPlugin {
         sendMessage(a + "                                   ██  ");
         sendMessage(a + "                                 ▀▀▀  ");
         sendMessage(dg + "A powerful open source login plugin");
-        sendMessage(lg + "Support: " + aq + "https://discord.gg/MVQ5r7X4Qd");
+        sendMessage(lg + "Support: " + aq + com.pumpkiiings.pklogin.common.PluginConstants.DISCORD_INVITE);
         sendMessage(lg + "Database Type: " + aq
                 + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
         sendMessage(lg + "Version: " + aq + getDescription().getVersion());
-        sendMessage(lg + "Source: " + aq + "github.com/Pumpkiiiings/PkLogin");
+        sendMessage(lg + "Source: " + aq + com.pumpkiiings.pklogin.common.PluginConstants.GITHUB);
         sendMessage("");
         sendMessage("§e" + "Thanks for use my plugin!");
         sendMessage("");
@@ -148,7 +240,8 @@ public class PkLoginPaper extends JavaPlugin {
 
         com.pumpkiiings.pklogin.api.service.PkLoginProvider.registerAccountManager(new com.pumpkiiings.pklogin.common.api.CommonAccountManagerAPI());
         com.pumpkiiings.pklogin.api.service.PkLoginProvider.registerSecurityAPI(new com.pumpkiiings.pklogin.common.api.CommonSecurityAPI());
-        com.pumpkiiings.pklogin.api.service.PkLoginProvider.registerSessionAPI(new com.pumpkiiings.pklogin.common.api.CommonSessionAPI());
+        com.pumpkiiings.pklogin.api.service.PkLoginProvider.registerSessionAPI(
+                new com.pumpkiiings.pklogin.paper.api.BukkitSessionAPI(this));
 
 
         // setup commands
@@ -185,14 +278,19 @@ public class PkLoginPaper extends JavaPlugin {
         PkLogin.setApi(new OLBukkitAPI(this));
         PkLogin.setAccountManagement(accountManagement);
 
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "pklogin:main");
-        getServer().getMessenger().registerIncomingPluginChannel(this, "pklogin:main",
+        resolveProxySecret();
+
+        String channel = com.pumpkiiings.pklogin.common.PluginConstants.CHANNEL_MAIN;
+        getServer().getMessenger().registerOutgoingPluginChannel(this, channel);
+        getServer().getMessenger().registerIncomingPluginChannel(this, channel,
                 new com.pumpkiiings.pklogin.paper.listener.ProxyMessageListener(this));
 
         // updates
-        runAsync(this::detectUpdates);
+        if (Settings.UPDATES_CHECK.asBoolean()) {
+            runAsync(this::detectUpdates);
+        }
 
-        com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().init();
+        com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().init(getDataFolder());
 
         if (getServer().getOnlineMode()) {
             sendMessage("§c=========================================================");
@@ -252,38 +350,9 @@ public class PkLoginPaper extends JavaPlugin {
 
         try {
             database.openConnection();
-            database.update(
-                    "CREATE TABLE IF NOT EXISTS `pklogin` (`name` TEXT, `realname` TEXT, `password` TEXT, `address` TEXT, `lastlogin` BIGINT, `regdate` BIGINT, `totp_secret` TEXT, `uuid_type` TEXT DEFAULT 'REAL', `random_uuid` TEXT, `discord_id` TEXT, `email_address` TEXT)");
-            database.update("CREATE TABLE IF NOT EXISTS `settings` (`key` TEXT, `value` TEXT)");
+            com.pumpkiiings.pklogin.common.database.DatabaseSchema.apply(database,
+                    warning -> getLogger().warning(warning));
 
-            try {
-                // For MariaDB/MySQL where INTEGER was created as INT (32-bit), we need to upgrade it to BIGINT (64-bit)
-                database.update("ALTER TABLE `pklogin` MODIFY COLUMN `lastlogin` BIGINT");
-                database.update("ALTER TABLE `pklogin` MODIFY COLUMN `regdate` BIGINT");
-            } catch (Exception ignored) {
-            }
-
-            // Check if columns exist, if not, add them (for existing SQLite databases)
-            try {
-                database.update("ALTER TABLE `pklogin` ADD COLUMN `totp_secret` TEXT");
-            } catch (Exception ignored) {
-            }
-            try {
-                database.update("ALTER TABLE `pklogin` ADD COLUMN `uuid_type` TEXT DEFAULT 'REAL'");
-            } catch (Exception ignored) {
-            }
-            try {
-                database.update("ALTER TABLE `pklogin` ADD COLUMN `random_uuid` TEXT");
-            } catch (Exception ignored) {
-            }
-            try {
-                database.update("ALTER TABLE `pklogin` ADD COLUMN `discord_id` TEXT");
-            } catch (Exception ignored) {
-            }
-            try {
-                database.update("ALTER TABLE `pklogin` ADD COLUMN `email_address` TEXT");
-            } catch (Exception ignored) {
-            }
             try (Database.Query query = database.query("SELECT COUNT(*) FROM `pklogin`")) {
                 ResultSet rs = query.resultSet;
                 if (rs.next()) {
@@ -312,7 +381,8 @@ public class PkLoginPaper extends JavaPlugin {
     public void detectUpdates() {
         String tagName = null;
         try {
-            String result = HttpClient.DEFAULT.get("https://api.github.com/repos/Pumpkiiiings/PkLogin/releases/latest");
+            String result = HttpClient.DEFAULT.get(
+                    com.pumpkiiings.pklogin.common.PluginConstants.LATEST_RELEASE_API);
 
             // avoid use Google Gson to avoid problems with older versions.
             if (result.contains("\"tag_name\":\"")) {
@@ -340,19 +410,23 @@ public class PkLoginPaper extends JavaPlugin {
 
     public boolean setupSettings() {
         try {
-            com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager configManager = new com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager(
-                new File(getDataFolder(), "config.yml"), 
-                getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/config.yml")
-            );
-            configManager.registerMigration(new com.pumpkiiings.pklogin.common.config.migrations.config.ConfigMigration_1_to_1_1());
-            dev.dejvokep.boostedyaml.YamlDocument configDoc = configManager.loadAndMigrate("1.1");
+            com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager configManager =
+                com.pumpkiiings.pklogin.common.config.migrations.ConfigMigrations.applyTo(
+                    new com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager(
+                        new File(getDataFolder(), "config.yml"),
+                        com.pumpkiiings.pklogin.common.util.PluginResources.openConfig(),
+                        com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager.VERSION_KEY_CONFIG,
+                        com.pumpkiiings.pklogin.common.config.migrations.ConfigMigrations.CURRENT_VERSION,
+                        com.pumpkiiings.pklogin.common.config.MigrationLogger.of(getLogger())));
+
+            dev.dejvokep.boostedyaml.YamlDocument configDoc = configManager.load();
 
             Settings.clear();
             for (Settings setting : Settings.values()) {
                 Settings.define(setting, configDoc.get(setting.getKey()));
             }
         } catch (Exception e) {
-            sendMessage("§cFailed to load config.yml");
+            getLogger().log(java.util.logging.Level.SEVERE, "Failed to load config.yml", e);
             return false;
         }
 
@@ -363,30 +437,35 @@ public class PkLoginPaper extends JavaPlugin {
 
         File discordFile = new File(twoFaFolder, "discord.yml");
         if (!discordFile.exists()
-                && !FileUtils.copyFromJar("com/Pumpkiiiings/PkLogin/config/2fa/discord.yml", discordFile)) {
+                && !FileUtils.copyFromJar(
+                        com.pumpkiiings.pklogin.common.util.PluginResources.TWO_FACTOR_DIR + "discord.yml", discordFile)) {
             sendMessage("§cFailed to create 'discord.yml' file.");
         }
 
         File emailFile = new File(twoFaFolder, "email.yml");
-        if (!emailFile.exists() && !FileUtils.copyFromJar("com/Pumpkiiiings/PkLogin/config/2fa/email.yml", emailFile)) {
+        if (!emailFile.exists()
+                && !FileUtils.copyFromJar(
+                        com.pumpkiiings.pklogin.common.util.PluginResources.TWO_FACTOR_DIR + "email.yml", emailFile)) {
             sendMessage("§cFailed to create 'email.yml' file.");
         }
 
         String lang = Settings.LANGUAGE_FILE.asString();
         File messagesFile = new File(getDataFolder() + "/lang", lang);
-        
-        java.io.InputStream defaultResource = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/" + lang);
-        if (defaultResource == null) {
-            defaultResource = getClass().getClassLoader().getResourceAsStream("com/Pumpkiiiings/PkLogin/config/lang/messages_en.yml");
-        }
+
+        java.io.InputStream defaultResource =
+                com.pumpkiiings.pklogin.common.util.PluginResources.openLanguage(lang);
 
         try {
-            com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager messagesManager = new com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager(
-                messagesFile, 
-                defaultResource
-            );
-            
-            dev.dejvokep.boostedyaml.YamlDocument messagesConfig = messagesManager.loadAndMigrate("1.0");
+            com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager messagesManager =
+                com.pumpkiiings.pklogin.common.config.migrations.MessagesMigrations.applyTo(
+                    new com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager(
+                        messagesFile,
+                        defaultResource,
+                        com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager.VERSION_KEY_MESSAGES,
+                        com.pumpkiiings.pklogin.common.config.migrations.MessagesMigrations.CURRENT_VERSION,
+                        com.pumpkiiings.pklogin.common.config.MigrationLogger.of(getLogger())));
+
+            dev.dejvokep.boostedyaml.YamlDocument messagesConfig = messagesManager.load();
 
             for (Messages message : Messages.values()) {
                 String path = message.getKey();
@@ -410,7 +489,7 @@ public class PkLoginPaper extends JavaPlugin {
                 }
             }
         } catch (Exception e) {
-            sendMessage("§cFailed to load messages file");
+            getLogger().log(java.util.logging.Level.SEVERE, "Failed to load messages file", e);
             return false;
         }
         return true;

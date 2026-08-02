@@ -64,19 +64,42 @@ public class LoginCommandNode {
                             if (tries >= maxTries) {
                                 player.getScheduler().run(plugin, task -> player.kick(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(Messages.DELAY_KICK_LOGIN.asString("§cExceeded maximum login attempts."))), null);
                             } else {
-                                player.sendMessage(Messages.INCORRECT_PASSWORD.asString() + " Attempts left: " + (maxTries - tries));
+                                player.sendMessage(Messages.INCORRECT_PASSWORD.asString());
+                                player.sendMessage(Messages.ATTEMPTS_LEFT
+                                        .asString("§cAttempts left: §e{0}")
+                                        .replace("{0}", String.valueOf(maxTries - tries)));
                             }
                             return;
                         }
 
                         loginManagement.resetFailedAttempts(name);
 
-                        if (account.getDiscordId() != null) {
-                            loginManagement.setAwaiting2FA(name);
-                            String loginCode = com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().generateLoginCode(name);
-                            com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorProvider discordProvider = com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().getDiscordProvider();
-                            discordProvider.sendVerificationCode(account, loginCode);
-                            player.sendMessage("§eTe hemos enviado un código a Discord. Escribe /2fa verify2fa <código> para entrar.");
+                        // The plain-text password is only available here, so this is the
+                        // one place a legacy or weaker hash can be silently upgraded.
+                        accountManagement.rehashIfNeeded(account, password);
+
+                        com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager twoFactor =
+                                com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance();
+                        com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorProvider discordProvider =
+                                twoFactor.getDiscordProvider();
+
+                        // A linked Discord account only gates the login while the provider is
+                        // actually usable; if the admin turned it off or JDA is absent, the
+                        // player must not be left stuck awaiting a code that never arrives.
+                        boolean discordRequired = account.getDiscordId() != null
+                                && discordProvider != null
+                                && discordProvider.isEnabled();
+
+                        if (discordRequired) {
+                            String loginCode = twoFactor.generateLoginCode(name);
+                            if (discordProvider.sendVerificationCode(account, loginCode)) {
+                                loginManagement.setAwaiting2FA(name);
+                                player.sendMessage(Messages.TWO_FACTOR_LOGIN_MESSAGE.asString());
+                            } else {
+                                twoFactor.removeLoginCode(name);
+                                player.sendMessage(Messages.TWO_FACTOR_SEND_FAILED
+                                        .asString("§cCould not deliver your 2FA code. Contact an administrator."));
+                            }
                         } else {
                             AsyncLoginEvent loginEvent = new AsyncLoginEvent(player);
                             if (loginEvent.callEvt()) {
@@ -89,12 +112,8 @@ public class LoginCommandNode {
                                 }
                                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player, Messages.TITLE_AFTER_LOGIN.asTitle().title, Messages.TITLE_AFTER_LOGIN.asTitle().subtitle, Messages.TITLE_AFTER_LOGIN.asTitle().start, Messages.TITLE_AFTER_LOGIN.asTitle().duration, Messages.TITLE_AFTER_LOGIN.asTitle().end);
 
-                                player.getScheduler().run(plugin, task -> {
-                                    player.setWalkSpeed(0.2F);
-                                    player.setFlySpeed(0.1F);
-                                    com.pumpkiiings.pklogin.paper.manager.LimboManager.removeLimboState(plugin, player);
-                                    com.pumpkiiings.pklogin.paper.manager.LimboManager.restoreLastLocation(player);
-                                }, null);
+                                player.getScheduler().run(plugin, task ->
+                                        com.pumpkiiings.pklogin.paper.manager.LimboManager.leaveLimbo(plugin, player), null);
 
                                 new AsyncAuthenticateEvent(player).callEvt();
                             }

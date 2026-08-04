@@ -39,6 +39,7 @@ public class PkLoginVelocity {
 
     private static PkLoginVelocity instance;
     private BackendConfig backendConfig;
+    private BackendVerification backendVerification;
     private YamlDocument yamlConfig;
     private Database database;
     private AccountManagement accountManagement;
@@ -57,8 +58,8 @@ public class PkLoginVelocity {
      * Works out the signing key and reports where it came from.
      *
      * <p>With Velocity modern forwarding the proxy and its backends already share
-     * a secret, so nothing needs configuring; {@code proxy-secret} covers the
-     * setups that have none.</p>
+     * a secret, so nothing needs configuring. Without it there is no key at all,
+     * and premium auto-login stays off rather than running unauthenticated.</p>
      */
     public void resolveProxySecret() {
         String forwardingSecret = VelocityProxyConfig.readForwardingSecret(dataDirectory);
@@ -76,9 +77,9 @@ public class PkLoginVelocity {
         logger.error("Premium auto-login is DISABLED: there is no key to sign backend messages with.");
         if (!VelocityProxyConfig.isModernForwarding(dataDirectory)) {
             logger.error("This proxy is not using modern player info forwarding, so there is no");
-            logger.error("shared secret to derive one from. Either switch velocity.toml to");
-            logger.error("player-info-forwarding-mode = \"modern\", or set 'proxy-secret' in PkLogin's config.yml");
-            logger.error("to the same value on the proxy and on every backend server.");
+            logger.error("shared secret to derive one from. Set player-info-forwarding-mode = \"modern\"");
+            logger.error("in velocity.toml, and point every backend's config/paper-global.yml at the");
+            logger.error("same secret under 'proxies.velocity'.");
         } else {
             logger.error("Modern forwarding is on but its secret could not be read. Check that");
             logger.error("the file named by 'forwarding-secret-file' in velocity.toml exists and is readable.");
@@ -118,36 +119,19 @@ public class PkLoginVelocity {
         // Setup messages
         setupMessages(dataFolder);
 
-        this.backendConfig = new BackendConfig(dataDirectory.resolve("backend.yml"));
+        this.backendConfig = new BackendConfig(dataDirectory.resolve("backend.yml"), migrationLogger());
         try {
             this.backendConfig.load();
         } catch (Exception e) {
             logger.error("Failed to load backend.yml", e);
         }
 
+        this.backendVerification = new BackendVerification(this);
+        this.backendVerification.reportUnknownAuthServers();
+
         try {
-            String dbType = com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString().toLowerCase();
-            if (dbType.equals("mariadb") || dbType.equals("mysql")) {
-                database = new com.pumpkiiings.pklogin.common.database.MariaDB(
-                    com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_HOST.asString(),
-                    com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_PORT.asInt(),
-                    com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_NAME.asString(),
-                    com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_USERNAME.asString(),
-                    com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_PASSWORD.asString()
-                );
-            } else if (dbType.equals("h2")) {
-                File databaseFile = new File(dataFolder, "accounts");
-                database = new com.pumpkiiings.pklogin.common.database.H2(databaseFile);
-            } else {
-                File databaseFile;
-                String customPath = com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_SQLITE_FILE_PATH.asString("");
-                if (!customPath.isEmpty()) {
-                    databaseFile = new File(customPath);
-                } else {
-                    databaseFile = new File(dataFolder, "accounts.db");
-                }
-                database = new com.pumpkiiings.pklogin.common.database.SQLite(databaseFile);
-            }
+            database = com.pumpkiiings.pklogin.common.database.DatabaseFactory.create(
+                    com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString(), dataFolder);
             database.openConnection();
             com.pumpkiiings.pklogin.common.database.DatabaseSchema.apply(database, logger::warn);
 
@@ -274,6 +258,10 @@ public class PkLoginVelocity {
         } catch (Exception e) {
             logger.error("Failed to load backend.yml", e);
         }
+        // The signing key and the server list may both have just changed, so
+        // every earlier result is stale.
+        this.backendVerification.reset();
+        this.backendVerification.reportUnknownAuthServers();
     }
 
     /** Bridges the migration system's log output onto Velocity's SLF4J logger. */
@@ -313,6 +301,10 @@ public class PkLoginVelocity {
 
     public BackendConfig getBackendConfig() {
         return backendConfig;
+    }
+
+    public BackendVerification getBackendVerification() {
+        return backendVerification;
     }
 
     public AccountManagement getAccountManagement() {

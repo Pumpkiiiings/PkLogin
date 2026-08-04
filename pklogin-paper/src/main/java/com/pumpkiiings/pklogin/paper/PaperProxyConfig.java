@@ -42,6 +42,30 @@ public final class PaperProxyConfig {
         return config != null && config.getBoolean("proxies.velocity.enabled", false);
     }
 
+    /**
+     * True when this server sits behind a proxy, whichever kind. Decides whether
+     * PkLogin checks premium accounts here, and is not a preference: behind any
+     * forwarding mode the login handshake belongs to the proxy, leaving the
+     * backend nothing to verify with. Read from the server's own configuration
+     * rather than asked for a second time, so the two cannot disagree.
+     */
+    public static boolean isBehindProxy() {
+        return isVelocityForwardingEnabled() || isBungeeForwardingEnabled();
+    }
+
+    /**
+     * True when {@code settings.bungeecord} is on in {@code spigot.yml}, the flag
+     * BungeeCord's legacy forwarding needs.
+     */
+    public static boolean isBungeeForwardingEnabled() {
+        try {
+            return org.bukkit.Bukkit.spigot().getConfig().getBoolean("settings.bungeecord", false);
+        } catch (Throwable unavailable) {
+            // Not a Spigot-derived server, or called before the server is up.
+            return false;
+        }
+    }
+
     private static YamlConfiguration load() {
         if (!PAPER_GLOBAL.isFile()) return null;
         try {

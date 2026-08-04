@@ -85,6 +85,18 @@ public interface Database {
         return true;
     }
 
+    /**
+     * Adapts a statement to this engine's dialect, immediately before it runs.
+     *
+     * <p>PkLogin writes its SQL once with backtick-quoted identifiers and every
+     * engine but PostgreSQL takes it as written. Keeping that difference in one
+     * overridable method is what lets the statements elsewhere stay plain strings
+     * instead of being built through a quoting helper.</p>
+     */
+    default String translate(String command) {
+        return command;
+    }
+
     // Query class
     class Query implements Closeable {
 

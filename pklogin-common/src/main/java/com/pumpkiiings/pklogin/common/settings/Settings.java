@@ -49,6 +49,14 @@ public enum Settings {
             "Security.password.large",
             15
     ),
+    SESSION_ENABLE(
+            "Security.session.enable",
+            true
+    ),
+    SESSION_TIMEOUT(
+            "Security.session.timeout",
+            5
+    ),
     SECURE_PASSWORDS_ENABLE(
             "Security.password.secure.enable",
             false
@@ -87,14 +95,6 @@ public enum Settings {
     ),
     DATABASE_PASSWORD(
             "Database.password",
-            ""
-    ),
-    PREMIUM_PROXY_MODE(
-            "proxy-mode",
-            false
-    ),
-    PROXY_SECRET(
-            "proxy-secret",
             ""
     ),
     APPENDER_ENABLED(
@@ -296,6 +296,14 @@ public enum Settings {
             true
     ),
 
+    AUTOLOGIN_PREMIUM_ENABLE(
+            "autologin.premium.enable",
+            true
+    ),
+    AUTOLOGIN_PREMIUM_CACHE_MINUTES(
+            "autologin.premium.cache-minutes",
+            60
+    ),
     AUTOLOGIN_PREMIUM_SESSION_TIMEOUT(
             "autologin.premium.session-timeout",
             60

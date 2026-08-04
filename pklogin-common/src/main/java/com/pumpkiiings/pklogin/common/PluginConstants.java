@@ -46,6 +46,12 @@ public final class PluginConstants {
     /** Sub-channel a backend uses to tell the proxy a player authenticated. */
     public static final String SUBCHANNEL_AUTHENTICATED = "Authenticated";
 
+    /** Sub-channel the proxy uses to ask a backend to identify itself. */
+    public static final String SUBCHANNEL_VERIFY = "PkLoginVerify";
+
+    /** Sub-channel a backend answers {@link #SUBCHANNEL_VERIFY} on. */
+    public static final String SUBCHANNEL_VERIFY_REPLY = "PkLoginVerifyReply";
+
     /** Address stored when a player's real IP is unavailable. */
     public static final String FALLBACK_ADDRESS = "127.0.0.1";
 
@@ -56,6 +62,14 @@ public final class PluginConstants {
 
     public static final String MOJANG_PROFILE =
             "https://sessionserver.mojang.com/session/minecraft/profile/";
+
+    /**
+     * Answers whether a name belongs to a paid account; {@code 200} means it does,
+     * {@code 404} that it does not. Asked before the login mode is decided, which
+     * is the only moment the answer can still change anything.
+     */
+    public static final String MOJANG_NAME_LOOKUP =
+            "https://api.mojang.com/users/profiles/minecraft/";
 
     // --- Project links ---
 

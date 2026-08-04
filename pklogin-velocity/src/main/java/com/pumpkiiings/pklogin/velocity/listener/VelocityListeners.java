@@ -3,6 +3,7 @@ package com.pumpkiiings.pklogin.velocity.listener;
 import com.pumpkiiings.pklogin.common.model.Account;
 import com.pumpkiiings.pklogin.common.security.ProxyMessageSecurity;
 import com.pumpkiiings.pklogin.velocity.PkLoginVelocity;
+import com.velocitypowered.api.event.EventTask;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PreLoginEvent;
 import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
@@ -37,26 +38,79 @@ public class VelocityListeners {
         this.plugin = plugin;
     }
 
+    /**
+     * Decides whether this connection is negotiated as online or as offline.
+     *
+     * <p>Runs off the network thread: it reads the database and, for a name never
+     * seen before, asks Mojang about it. Doing either on the connection's own
+     * thread would stall every other login behind it.</p>
+     */
     @Subscribe
-    public void onPreLogin(PreLoginEvent event) {
-        String username = event.getUsername();
-        
-        com.pumpkiiings.pklogin.api.event.velocity.auth.VelocityPreLoginEvent apiEvent = 
-            new com.pumpkiiings.pklogin.api.event.velocity.auth.VelocityPreLoginEvent(username);
-        plugin.getServer().getEventManager().fire(apiEvent);
+    public EventTask onPreLogin(PreLoginEvent event) {
+        return EventTask.async(() -> {
+            String username = event.getUsername();
 
-        Optional<Account> accountOpt = plugin.getAccountManagement().search(username);
-        if (accountOpt.isPresent()) {
-            String uuidType = accountOpt.get().getUuidType();
-            if ("REAL".equalsIgnoreCase(uuidType) || "PREMIUM".equalsIgnoreCase(uuidType)) {
-                event.setResult(PreLoginEvent.PreLoginComponentResult.forceOnlineMode());
-            } else {
-                event.setResult(PreLoginEvent.PreLoginComponentResult.forceOfflineMode());
+            com.pumpkiiings.pklogin.api.event.velocity.auth.VelocityPreLoginEvent apiEvent =
+                new com.pumpkiiings.pklogin.api.event.velocity.auth.VelocityPreLoginEvent(username);
+            plugin.getServer().getEventManager().fire(apiEvent);
+
+            Optional<Account> accountOpt = plugin.getAccountManagement().search(username);
+            if (accountOpt.isPresent()) {
+                String uuidType = accountOpt.get().getUuidType();
+                if ("REAL".equalsIgnoreCase(uuidType) || "PREMIUM".equalsIgnoreCase(uuidType)) {
+                    event.setResult(PreLoginEvent.PreLoginComponentResult.forceOnlineMode());
+                } else {
+                    event.setResult(PreLoginEvent.PreLoginComponentResult.forceOfflineMode());
+                }
+                return;
             }
-        } else {
-            // New user, determine based on config if we want them offline by default
-            event.setResult(PreLoginEvent.PreLoginComponentResult.forceOfflineMode());
+
+            event.setResult(isUnseenNamePremium(username)
+                    ? PreLoginEvent.PreLoginComponentResult.forceOnlineMode()
+                    : PreLoginEvent.PreLoginComponentResult.forceOfflineMode());
+        });
+    }
+
+    /**
+     * Only asked about names with no account, which is what keeps this from
+     * changing anything for players who already have one.
+     */
+    private boolean isUnseenNamePremium(String username) {
+        if (!com.pumpkiiings.pklogin.common.manager.PremiumNameLookup.isEnabled()) {
+            return false;
         }
+        // Anything short of a clear yes goes down the offline path. Being wrong
+        // there costs a password; being wrong the other way costs the player their
+        // ability to connect at all.
+        return com.pumpkiiings.pklogin.common.manager.PremiumNameLookup.lookup(username)
+                == com.pumpkiiings.pklogin.common.manager.PremiumNameLookup.Answer.PREMIUM;
+    }
+
+    /**
+     * Gives a first-time premium player an account, now that Mojang's handshake
+     * has proven the connection belongs to them. No password: every later login
+     * proves itself the same way this one did.
+     */
+    @Subscribe
+    public EventTask onPostLogin(com.velocitypowered.api.event.connection.PostLoginEvent event) {
+        Player player = event.getPlayer();
+        if (!player.isOnlineMode()) {
+            return null;
+        }
+
+        return EventTask.async(() -> {
+            if (plugin.getAccountManagement().search(player.getUsername()).isPresent()) {
+                return;
+            }
+
+            String address = player.getRemoteAddress() == null
+                    ? null
+                    : player.getRemoteAddress().getAddress().getHostAddress();
+
+            if (plugin.getAccountManagement().createPremium(player.getUsername(), address)) {
+                plugin.getLogger().info("Created a passwordless premium account for {}.", player.getUsername());
+            }
+        });
     }
 
     @Subscribe(order = PostOrder.EARLY)
@@ -97,6 +151,13 @@ public class VelocityListeners {
     public void onServerConnected(ServerConnectedEvent event) {
         Player player = event.getPlayer();
         String username = player.getUsername();
+
+        // Same grace period as the auto-login below: the backend has to have the
+        // player set up before it can answer on their channel.
+        plugin.getServer().getScheduler()
+                .buildTask(plugin, () -> plugin.getBackendVerification().checkIfNeeded(event.getServer()))
+                .delay(AUTO_LOGIN_DELAY_MILLIS, java.util.concurrent.TimeUnit.MILLISECONDS)
+                .schedule();
 
         boolean isBedrock = com.pumpkiiings.pklogin.common.hook.FloodgateHook.isBedrockPlayer(player.getUniqueId());
 

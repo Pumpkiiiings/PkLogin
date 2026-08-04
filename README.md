@@ -54,11 +54,19 @@
 | **H2** | In-process, file-based |
 | **MySQL** | External MySQL server |
 | **MariaDB** | External MariaDB server |
+| **PostgreSQL** | External PostgreSQL server (port 5432, not the 3306 in the default config) |
 
 ### 🔄 Migration Support
 - **AuthMe → PkLogin**: One-command async bulk import (`/pklogin authme-import`)
   - Preserves passwords (auto-migrated on first login)
   - Preserves IPs, registration dates
+- **Between engines**: `/pklogin migrate <engine>` copies every account into another
+  engine, so switching is not a fresh start
+  - Fill in the target's connection details under `Database` in `config.yml`, run the
+    command, then change `Database.type` and restart
+  - Nothing is deleted and `config.yml` is not touched — the original database stays
+    exactly as it was
+  - Safe to re-run: accounts already present in the target are skipped
   - Skips already-imported accounts
   - Progress updates every 100 accounts
 
@@ -136,35 +144,52 @@ limbo:
 
 username-appender:
   enabled: false             # Prevent name collisions premium vs cracked
-
-proxy-mode: true             # Let the proxy handle premium auto-login
-proxy-secret: ""             # REQUIRED for proxy auto-login — see below
 ```
 
 ### Proxy setup
 
+**There is nothing to configure in `config.yml` for a proxy.** Not whether this
+server is behind one, and not a shared secret. Both are read from settings your
+network already has, so there is no second copy to keep in sync and no way for the
+two to disagree.
+
 When PkLogin runs on a proxy, the proxy tells each backend when a premium player
-has been authenticated. The game client can send messages on that same channel
-and the server cannot tell the two apart, so those messages are signed.
+has been authenticated. The game client can send messages on that same channel and
+the backend cannot tell the two apart, so those messages are signed. The signing
+key is derived from the Velocity modern-forwarding secret the proxy and backends
+already share (`forwarding.secret` on the proxy, `proxies.velocity.secret` in the
+backend's `config/paper-global.yml`). The forwarding secret is never reused
+directly — a separate key is derived from it, so the two never share key material.
 
-**With Velocity modern forwarding there is nothing to configure.** PkLogin derives
-its signing key from the forwarding secret the proxy and backends already share
-(`forwarding.secret` on the proxy, `proxies.velocity.secret` in the backend's
-`config/paper-global.yml`). The forwarding secret itself is never reused directly
-— a separate key is derived from it, so the two never share key material.
+Whether a backend checks premium accounts itself is likewise not a setting: behind
+any forwarding mode the proxy owns the login handshake, so the backend has nothing
+left to verify with. PkLogin reads `proxies.velocity.enabled` from
+`config/paper-global.yml` (or `settings.bungeecord` from `spigot.yml`) and acts
+accordingly.
 
-The console states which source was used on startup:
+The console states what was resolved on startup:
 
 ```
 [PkLogin] Proxy messages authenticated using the Velocity modern forwarding secret.
 ```
 
-`proxy-secret` in `config.yml` is only needed where no such secret exists — in
-practice, BungeeCord. Set the same value on the proxy and every backend.
+On the proxy, each server listed under `backend.auth-servers` in `backend.yml` is
+asked to identify itself the first time a player reaches it. A server that answers
+correctly proves it runs PkLogin and resolved the same key:
 
-> BungeeCord's legacy forwarding is unauthenticated by design. If your backend
-> ports are reachable from the internet, anyone can connect to them directly and
-> claim any identity, whatever PkLogin does. Firewall them.
+```
+[PkLogin] Backend 'auth' verified: PkLogin 2.0.0, matching signing key (14 ms).
+```
+
+One that does not is named in the log, with the reason. Turn the check off with
+`backend.verify-connection: false` if a listed server deliberately runs without
+PkLogin.
+
+> Without Velocity modern forwarding there is no secret to derive a key from, and
+> premium auto-login stays off. This is not a limitation worth working around: a
+> network on legacy forwarding accepts whatever identity a client claims on any
+> backend port that is reachable, so a shared password between plugins would not
+> make it safe. Use modern forwarding, and firewall your backend ports.
 
 ### 2FA — `plugins/PkLogin/2fa/discord.yml`
 ```yaml

@@ -191,7 +191,7 @@ Messages:
       &r&cEzt a felhasználónévet már regisztráltuk {1}&r
       &r
       &r&cA belépéshez a becenevedet nagybetű / kisbetű nélkül kell használni!
-# Message sent when a user misses many times.
+    # Message sent when a user misses many times.
     failed-many-times: '&cHelytelenül adtad meg a jelszavadat!'
     
     # Message sent when password entered is incorrect.
@@ -204,11 +204,11 @@ Messages:
     wait-server-start: |-
       &cA szerver nem indult el még teljesen.
       &cVárj egy kicsit a csatlakozáshoz.
-# Message sent when an IP is blocked by suspected invasion.
+    # Message sent when an IP is blocked by suspected invasion.
     account-blocked: |-
       &cCímedet blokkolták a szerveren!&r
       &r&cFentmaradt várakozási idő: {0}
-# Message sent when two-factor system temporary password is incorrect.
+    # Message sent when two-factor system temporary password is incorrect.
     incorrect-temporary-password: '&cRossz jelszó. Kérlek, próbáld meg újra.'
     
     # Message to kick a user with an invalid nickname.
@@ -533,5 +533,7 @@ Messages:
     inventory-item: '&aClick Me!'
     chat-instruction: '&ePlease type the following code in chat: &b{code}'
     map-instruction: '&eLook at the map in your hand and type the code!'
+  session:
+    resumed: '&aÜdv újra! A munkameneted még nyitva van, így nem kell jelszó.'
 version-messages: 2
 

@@ -101,7 +101,7 @@ Messages:
       &r&cEste nick ya ha sido registrado como {1}&r
       &r&r
       &r&cPara entrar, debes ingresar tu nick sin letras mayúsculas/minúsculas
-    # Mensagem enviada quando um usuário erra muitas vezes
+# Mensagem enviada quando um usuário erra muitas vezes
     failed-many-times: '&cLa contraseña ingresada es incorrecta.'
     
     # Mensagem enviada quando a senha inserida é incorreta
@@ -279,3 +279,5 @@ Messages:
       Hello {0},
 
       Your PkLogin verification code is: {1}
+  session:
+    resumed: '&a¡Bienvenido de nuevo! Tu sesión sigue abierta, así que no hace falta la contraseña.'

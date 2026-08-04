@@ -85,7 +85,7 @@ Messages:
       &r&cTo ime je već registrirano kao {1}&r
       &r
       &r&cDa uđete morate koristit ime bez razlike u velikom i malom slovu
-# Message sent when a user misses many times
+    # Message sent when a user misses many times
     failed-many-times: '&cKriva lozinka.'
     
     # Message sent when password entered is incorrect
@@ -259,4 +259,6 @@ Messages:
     inventory-item: '&aClick Me!'
     chat-instruction: '&ePlease type the following code in chat: &b{code}'
     map-instruction: '&eLook at the map in your hand and type the code!'
+  session:
+    resumed: '&aDobro došao natrag! Tvoja sesija je još otvorena, pa lozinka nije potrebna.'
 version-messages: 2

@@ -88,7 +88,7 @@ Messages:
       &cTen użytkownik został zarejestrowany jako {1}
 
       &cBy wejść na serwer musisz użyć starego nicku. Zwróć uwagę na wielkie litery!
-# Message sent when a user misses many times
+    # Message sent when a user misses many times
     failed-many-times: '&cZbyt wiele razy wpisałeś złe hasło.'
     
     # Message sent when password entered is incorrect
@@ -260,4 +260,6 @@ Messages:
     inventory-item: '&aClick Me!'
     chat-instruction: '&ePlease type the following code in chat: &b{code}'
     map-instruction: '&eLook at the map in your hand and type the code!'
+  session:
+    resumed: '&aWitaj ponownie! Twoja sesja jest wciąż otwarta, więc hasło nie jest potrzebne.'
 version-messages: 2

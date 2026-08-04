@@ -44,6 +44,25 @@ public class PkLoginCommandNode {
                     return 1;
                 })
             )
+            .then(Commands.literal("migrate")
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_MIGRATE))
+                .executes(context -> {
+                    CommandSender sender = context.getSource().getSender();
+                    sender.sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "migrate <engine>"));
+                    sender.sendMessage("§7Engines: sqlite, h2, mariadb, mysql, postgresql");
+                    sender.sendMessage("§7Copies every account into the target engine. Fill in the target's");
+                    sender.sendMessage("§7connection details under Database in config.yml first.");
+                    return 1;
+                })
+                .then(Commands.argument("engine", StringArgumentType.word())
+                    .executes(context -> {
+                        CommandSender sender = context.getSource().getSender();
+                        String engine = context.getArgument("engine", String.class);
+                        new com.pumpkiiings.pklogin.paper.converter.DatabaseMigrator(plugin).run(sender, engine);
+                        return 1;
+                    })
+                )
+            )
             .then(Commands.literal("forcelogin")
                 .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_FORCELOGIN))
                 .executes(context -> {
@@ -298,6 +317,9 @@ public class PkLoginCommandNode {
         }
         plugin.setupSettings();
         plugin.reloadProxySecret();
+        // The timeout, or the whole feature, may have just been turned off; a
+        // session opened under the old settings must not outlive them.
+        com.pumpkiiings.pklogin.common.manager.LoginSessions.clear();
         sender.sendMessage(Messages.PLUGIN_RELOAD_MESSAGE.asString());
     }
 

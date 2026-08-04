@@ -49,6 +49,7 @@ public abstract class AbstractDatabase implements Database {
 
     @Override
     public void update(String command, Object... args) throws SQLException {
+        command = translate(command);
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(command)) {
             for (int i = 0; i < args.length; i++) {
@@ -67,6 +68,6 @@ public abstract class AbstractDatabase implements Database {
         // Notice we do NOT close the connection here. The caller must close the query, 
         // which should ideally also close the connection or return it to the pool.
         // We'll need to modify the Query class slightly to hold and close the connection.
-        return new Query(connection, command, args);
+        return new Query(connection, translate(command), args);
     }
 }

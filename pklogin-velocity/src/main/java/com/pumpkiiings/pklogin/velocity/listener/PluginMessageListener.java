@@ -6,6 +6,7 @@ import com.pumpkiiings.pklogin.velocity.PkLoginVelocity;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
 import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 
@@ -31,6 +32,9 @@ public class PluginMessageListener {
             return;
         }
 
+        // Never relayed: a backend's message is for the proxy to act on, and a
+        // client's is a forgery attempt. This is what stops a player injecting
+        // their own auto-login.
         event.setResult(PluginMessageEvent.ForwardResult.handled());
 
         if (!(event.getTarget() instanceof Player)) {
@@ -39,7 +43,20 @@ public class PluginMessageListener {
 
         Player player = (Player) event.getTarget();
         ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
-        String subChannel = in.readUTF();
+        final String subChannel;
+        try {
+            subChannel = in.readUTF();
+        } catch (IllegalStateException malformed) {
+            return;
+        }
+
+        if (com.pumpkiiings.pklogin.common.PluginConstants.SUBCHANNEL_VERIFY_REPLY.equals(subChannel)) {
+            if (event.getSource() instanceof ServerConnection) {
+                String serverName = ((ServerConnection) event.getSource()).getServerInfo().getName();
+                plugin.getBackendVerification().handleReply(serverName, in);
+            }
+            return;
+        }
 
         if (com.pumpkiiings.pklogin.common.PluginConstants.SUBCHANNEL_AUTHENTICATED.equals(subChannel)) {
             // Player has successfully logged in or registered on the auth server

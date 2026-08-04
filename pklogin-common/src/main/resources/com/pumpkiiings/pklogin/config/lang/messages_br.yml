@@ -85,7 +85,7 @@ Messages:
       &r&cEste nick já foi registrado como {1}&r
       &r
       &r&cPara entrar, você deverá usar seu nick sem letras maiúsculas/minúsculas
-# Mensagem enviada quando um usuário erra muitas vezes.
+    # Mensagem enviada quando um usuário erra muitas vezes.
     failed-many-times: '&cVocê inseriu a senha incorreta.'
     
     # Mensagem enviada quando a senha inserida é incorreta.
@@ -257,4 +257,6 @@ Messages:
     inventory-item: '&aClick Me!'
     chat-instruction: '&ePlease type the following code in chat: &b{code}'
     map-instruction: '&eLook at the map in your hand and type the code!'
+  session:
+    resumed: '&aBem-vindo de volta! Sua sessão ainda está aberta, então não é preciso senha.'
 version-messages: 2

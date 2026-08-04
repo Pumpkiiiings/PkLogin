@@ -48,9 +48,12 @@ public final class ConfigMigrations {
      *   <li>1 — original layout ({@code version: "1"} / {@code "1.0"} / {@code "1.1"})</li>
      *   <li>2 — proxy-secret and Bedrock auto-login ({@code "1.2"})</li>
      *   <li>3 — tunables moved out of the code ({@code "1.3"})</li>
+     *   <li>4 — proxy setup stopped being configuration</li>
+     *   <li>5 — login sessions</li>
+     *   <li>6 — passwordless premium logins</li>
      * </ul>
      */
-    public static final int CURRENT_VERSION = 3;
+    public static final int CURRENT_VERSION = 6;
 
     private ConfigMigrations() {}
 
@@ -60,7 +63,10 @@ public final class ConfigMigrations {
                 .withLegacyVersion("version", ConfigMigrations::readLegacyVersion)
                 .withLegacyVersion("file-version", ConfigMigrations::readLegacyVersion)
                 .register(new OneToTwo())
-                .register(new TwoToThree());
+                .register(new TwoToThree())
+                .register(new ThreeToFour())
+                .register(new FourToFive())
+                .register(new FiveToSix());
     }
 
     /**
@@ -133,6 +139,78 @@ public final class ConfigMigrations {
             // Intentionally empty. `allow-advertising` stopped being read in this
             // version but is left in place: an unused key is harmless, and deleting
             // settings out from under the server owner is not this system's job.
+        }
+    }
+
+    /**
+     * 3 &rarr; 4. Removes the two proxy options, which PkLogin now works out on
+     * its own.
+     *
+     * <p>Deleted rather than left behind, against the usual rule, because an
+     * unread key that looks like it decides where premium logins are handled — or
+     * like it keeps them safe — has owners reasoning about their network's
+     * security from a value nothing reads.</p>
+     */
+    static final class ThreeToFour implements ConfigurationMigration {
+
+        @Override
+        public int fromVersion() {
+            return 3;
+        }
+
+        @Override
+        public String description() {
+            return "proxy-mode and proxy-secret are now detected, not configured";
+        }
+
+        @Override
+        public void migrate(MigrationContext context) {
+            context.remove("proxy-mode");
+            context.remove("proxy-secret");
+        }
+    }
+
+    /** 4 &rarr; 5. Adds the login session block; the merger writes it in. */
+    static final class FourToFive implements ConfigurationMigration {
+
+        @Override
+        public int fromVersion() {
+            return 4;
+        }
+
+        @Override
+        public String description() {
+            return "login sessions";
+        }
+
+        @Override
+        public void migrate(MigrationContext context) {
+            // Intentionally empty; see the class javadoc on additive steps.
+        }
+    }
+
+    /**
+     * 5 &rarr; 6. Adds the passwordless premium login options.
+     *
+     * <p>{@code autologin.premium.enable} arrives switched on, which is safe
+     * because it only applies to names the server has never seen — no existing
+     * account changes behaviour.</p>
+     */
+    static final class FiveToSix implements ConfigurationMigration {
+
+        @Override
+        public int fromVersion() {
+            return 5;
+        }
+
+        @Override
+        public String description() {
+            return "premium players can log in without a password";
+        }
+
+        @Override
+        public void migrate(MigrationContext context) {
+            // Intentionally empty; see the class javadoc on additive steps.
         }
     }
 }

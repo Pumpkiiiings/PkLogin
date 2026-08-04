@@ -12,7 +12,7 @@
 # Schema version of this file. PkLogin maintains it — do not edit it by hand.
 # On startup an older file is upgraded in place: new options are added, and
 # anything you have changed is kept exactly as you set it.
-version-config: 3
+version-config: 6
 
 # Language of the plugin.
 # For more information: https://github.com/Pumpkiiiings/PkLogin/blob/master/docs/lang.md
@@ -55,6 +55,27 @@ Security:
   # bruteforce counter can react.
   command-cooldown: 750
 
+  # Login sessions.
+  #
+  # A player who reconnects soon after leaving skips the password. The session is
+  # opened when they disconnect, tied to the address they were on, and spent the
+  # first time it is used — one disconnect buys one reconnect.
+  #
+  # Know what the address check does and does not prove before raising the
+  # timeout. An address is not a person: everyone behind one router, one public
+  # network or one mobile carrier shares it. While a session is open, anyone on
+  # that address who types the player's name gets in without the password, and
+  # without the 2FA code if the account has one. Minutes are a reasonable bet on
+  # a dropped connection; hours are a standing invitation.
+  #
+  # Sessions are held in memory, so restarting the server ends all of them.
+  session:
+    enable: true
+
+    # How long a session stays open after the player leaves, in minutes.
+    # Set to 0 to turn sessions off just as 'enable: false' does.
+    timeout: 5
+
   # Names that do not match this are rejected before they reach the login step.
   # If you enable username-appender, the check runs on the name the player typed,
   # before any suffix is added.
@@ -80,12 +101,18 @@ Security:
 
 # Database settings
 Database:
-  # Available types: sqlite, mariadb, h2, mysql
+  # Available types: sqlite, h2, mariadb, mysql, postgresql
+  #
+  # sqlite and h2 keep everything in a file next to the plugin and need nothing
+  # configured below. The rest connect to a server, so set host, port, database,
+  # username and password.
   type: sqlite
   # If using sqlite and you want Velocity and Auth to share the same file, set the absolute path here:
   # Example: "C:/ruta/a/tu/servidor/plugins/pklogin/accounts.db" (Leave empty to use default)
   sqlite-file-path: ""
   host: localhost
+  # 3306 for MariaDB and MySQL. PostgreSQL listens on 5432 — change it if you
+  # switch, the default below is not right for both.
   port: 3306
   database: pklogin
   username: root
@@ -101,27 +128,17 @@ Database:
     # Keep this below your MySQL/MariaDB wait_timeout.
     max-lifetime: 1800000
 
-# Enable this if you have PkLogin installed on your proxy (BungeeCord/Velocity).
-# If true, the backend server will not perform premium checks and will let the proxy handle it.
-proxy-mode: true
-
-# Shared secret used to authenticate the messages the proxy sends to the backend
-# servers (premium auto-login).
+# Running behind a proxy needs nothing configured here.
 #
-# LEAVE THIS EMPTY if you use Velocity modern forwarding. PkLogin derives its own
-# key from the forwarding secret the proxy and backends already share, so there is
-# nothing to configure and nothing to keep in sync.
+# A server behind a proxy cannot check premium accounts itself — the proxy owns
+# the login handshake — so PkLogin reads whether this one is, straight from the
+# server's own settings: 'proxies.velocity.enabled' in config/paper-global.yml,
+# or 'settings.bungeecord' in spigot.yml.
 #
-# Set it only when there is no forwarding secret to derive from, which in practice
-# means BungeeCord. In that case:
-#   - Use the SAME value on the proxy and on every backend server.
-#   - Use a long random string. Treat it like a password: anyone who knows it can
-#     log in as any player.
-#
-# Note that BungeeCord's legacy forwarding is unauthenticated by design: if your
-# backend ports are reachable from the internet, anyone can connect to them
-# directly and claim any identity, whatever this setting says. Firewall them.
-proxy-secret: ""
+# The messages the proxy sends are signed, with a key both ends derive from the
+# Velocity forwarding secret they already share. Nothing to copy, nothing to keep
+# in sync. If your network does not use Velocity modern forwarding, premium
+# auto-login stays off and the console explains why at startup.
 
 # Automatic login for players that do not use a regular Java premium account.
 autologin:
@@ -133,6 +150,29 @@ autologin:
     skip-register: true
 
   premium:
+    # Let premium players in with no password at all, including the very first
+    # time they connect.
+    #
+    # Before deciding how to negotiate a connection, PkLogin asks Mojang whether
+    # the name belongs to a paid account. If it does, the connection is negotiated
+    # as online and the client has to prove it owns the account with Mojang's own
+    # encryption handshake. Passing that is proof, not a guess: nobody can fake it
+    # without the account. The account is then created without a password.
+    #
+    # This only applies to names PkLogin has never seen. Anyone already in the
+    # database keeps the mode they have, so turning this on cannot lock out a
+    # player who is on your server today. An offline account that is really a paid
+    # one is converted with /premium confirm, exactly as before.
+    #
+    # When Mojang cannot be reached the connection is negotiated as offline and
+    # the player registers a password as usual. That direction is deliberate: a
+    # wrong "offline" costs a password, a wrong "online" locks the player out.
+    enable: true
+
+    # How long a Mojang answer about a name is reused, in minutes. The endpoint is
+    # rate limited, and a name does not change hands often.
+    cache-minutes: 60
+
     # How long a completed Mojang handshake stays valid, in seconds. It only has
     # to cover the gap between the login packets and the player actually joining.
     session-timeout: 60

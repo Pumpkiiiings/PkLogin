@@ -44,6 +44,7 @@ shadowJar {
         exclude(dependency('org.xerial:sqlite-jdbc:.*'))
         exclude(dependency('com.h2database:h2:.*'))
         exclude(dependency('org.mariadb.jdbc:mariadb-java-client:.*'))
+        exclude(dependency('org.postgresql:postgresql:.*'))
         exclude(dependency('com.zaxxer:HikariCP:.*'))
         exclude(dependency('org.yaml:snakeyaml:.*'))
     }

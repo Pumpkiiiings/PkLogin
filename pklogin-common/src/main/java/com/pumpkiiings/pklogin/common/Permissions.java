@@ -51,4 +51,5 @@ public final class Permissions {
     public static final String ADMIN_SETSPAWN = ADMIN + ".setspawn";
     public static final String ADMIN_UPDATE = ADMIN + ".update";
     public static final String ADMIN_AUTHME_IMPORT = ADMIN + ".authme-import";
+    public static final String ADMIN_MIGRATE = ADMIN + ".migrate";
 }

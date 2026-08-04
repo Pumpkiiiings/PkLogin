@@ -52,12 +52,25 @@ public class PlayerJoinListeners implements Listener {
 
         boolean registered = plugin.getAccountManagement().retrieveOrLoad(name).isPresent();
 
-        String ip = player.getAddress().getAddress().getHostAddress();
+        String ip = player.getAddress() == null || player.getAddress().getAddress() == null
+                ? null
+                : player.getAddress().getAddress().getHostAddress();
+        // Verified sessions are keyed by address, so without one there is nothing
+        // to look up — and the map would reject the null key outright.
         com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession session =
-                plugin.consumeVerifiedSession(ip, name);
+                ip == null ? null : plugin.consumeVerifiedSession(ip, name);
 
         if (session != null && session.isVerified()) {
             plugin.getLoginManagement().setAuthenticated(name);
+
+            // First time in: Mojang's handshake just proved this connection owns
+            // the account, so there is something to save and no password to ask
+            // for. Later joins find the account and skip this.
+            if (!registered) {
+                final String address = ip;
+                plugin.runAsync(() -> plugin.getAccountManagement().createPremium(name, address));
+            }
+
             player.sendMessage(Messages.PREMIUM_AUTO_LOGIN.asString());
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().title, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().subtitle, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().start, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().duration, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().end);
@@ -72,6 +85,15 @@ public class PlayerJoinListeners implements Listener {
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().title, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().subtitle, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().start, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().duration, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().end);
             }
+            plugin.runAsync(() -> new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt());
+            return;
+        }
+
+        // Checked before the queue and the captcha: a player with an open session
+        // is already past the point either of those exists to guard.
+        if (registered && com.pumpkiiings.pklogin.common.manager.LoginSessions.resume(name, ip)) {
+            plugin.getLoginManagement().setAuthenticated(name);
+            player.sendMessage(Messages.SESSION_RESUMED.asString());
             plugin.runAsync(() -> new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt());
             return;
         }

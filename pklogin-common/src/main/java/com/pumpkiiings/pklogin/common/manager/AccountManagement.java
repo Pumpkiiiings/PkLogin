@@ -257,6 +257,9 @@ public class AccountManagement {
                         current,
                         name.toLowerCase()
                 );
+                // An open session would still let the old holder back in without
+                // the password that has just been replaced.
+                LoginSessions.invalidate(name);
                 if (passwordChangeCallback != null) {
                     passwordChangeCallback.accept(name);
                 }
@@ -273,6 +276,43 @@ public class AccountManagement {
                         null
                 );
             }
+            invalidateCache(name);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Creates an account for a player Mojang has just vouched for, with no
+     * password: they proved who they are through the encryption handshake, and a
+     * password would only be a second, weaker way into the same account.
+     * {@link #comparePassword} refuses an empty stored hash, so the absence cannot
+     * be turned into a way in.
+     *
+     * <p>Does nothing if the name already exists — another connection won the race
+     * and overwriting would discard whatever it holds.</p>
+     *
+     * @return true if a row was created
+     */
+    public boolean createPremium(@NonNull String name, @Nullable String address) {
+        if (search(name).isPresent()) {
+            return false;
+        }
+
+        long current = System.currentTimeMillis();
+        try {
+            database.update(
+                    "INSERT INTO `pklogin` (`name`, `realname`, `password`, `address`, `lastlogin`, `regdate`, "
+                            + "`totp_secret`, `uuid_type`, `random_uuid`, `discord_id`, `email_address`) "
+                            + "VALUES (?, ?, '', ?, ?, ?, NULL, 'REAL', NULL, NULL, NULL)",
+                    name.toLowerCase(),
+                    name,
+                    address == null ? com.pumpkiiings.pklogin.common.PluginConstants.FALLBACK_ADDRESS : address,
+                    current,
+                    current
+            );
             invalidateCache(name);
             return true;
         } catch (SQLException e) {
@@ -315,6 +355,7 @@ public class AccountManagement {
         if (!search(name).isPresent()) {
             return false;
         }
+        LoginSessions.invalidate(name);
         return write(name, "DELETE FROM `pklogin` WHERE `name` = ?");
     }
 
@@ -328,6 +369,7 @@ public class AccountManagement {
         if (!search(name).isPresent()) {
             return false;
         }
+        LoginSessions.invalidate(name);
         return write(name, "UPDATE `pklogin` SET `password` = '' WHERE `name` = ?");
     }
 
@@ -339,6 +381,8 @@ public class AccountManagement {
      * @return true on success
      */
     public boolean updateTotpSecret(@NonNull String name, @Nullable String totpSecret) {
+        // A session opened before 2FA changed should not outlive that decision.
+        LoginSessions.invalidate(name);
         return write(name, "UPDATE `pklogin` SET `totp_secret` = ? WHERE `name` = ?", totpSecret);
     }
 

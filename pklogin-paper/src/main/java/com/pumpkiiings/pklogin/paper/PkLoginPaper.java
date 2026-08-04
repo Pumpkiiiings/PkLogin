@@ -141,7 +141,7 @@ public class PkLoginPaper extends JavaPlugin {
 
         this.proxySecret = resolution.getKey();
 
-        if (!Settings.PREMIUM_PROXY_MODE.asBoolean()) {
+        if (!PaperProxyConfig.isBehindProxy()) {
             return;
         }
 
@@ -152,14 +152,49 @@ public class PkLoginPaper extends JavaPlugin {
 
         sendMessage("§c=========================================================");
         sendMessage("§cPremium auto-login from the proxy is DISABLED.");
-        if (PaperProxyConfig.isAvailable() && !PaperProxyConfig.isVelocityForwardingEnabled()) {
-            sendMessage("§cThis server has 'proxies.velocity.enabled: false' in config/paper-global.yml,");
-            sendMessage("§cso there is no shared secret to authenticate the proxy with.");
-            sendMessage("§cEnable Velocity modern forwarding, or set 'proxy-secret' in PkLogin's config.yml.");
+        sendMessage("§cThere is no key to verify the proxy's messages with, and this server");
+        sendMessage("§ccannot check premium accounts itself while it is behind a proxy.");
+        if (PaperProxyConfig.isBungeeForwardingEnabled() && !PaperProxyConfig.isVelocityForwardingEnabled()) {
+            sendMessage("§cThis server uses BungeeCord legacy forwarding ('settings.bungeecord: true'");
+            sendMessage("§cin spigot.yml), which shares no secret PkLogin can derive a key from.");
+            sendMessage("§cSwitch the network to Velocity with modern forwarding.");
         } else {
-            sendMessage("§cNo Velocity forwarding secret was found and 'proxy-secret' is empty in config.yml.");
-            sendMessage("§cSet one of the two — see the comments above 'proxy-secret'.");
+            sendMessage("§cSet 'proxies.velocity.enabled: true' and 'proxies.velocity.secret' in");
+            sendMessage("§cconfig/paper-global.yml to the secret your Velocity proxy uses.");
         }
+        sendMessage("§c=========================================================");
+    }
+
+    /**
+     * Explains what a standalone server loses without ProtocolLib or PacketEvents.
+     *
+     * <p>The limitation is Paper's, not PkLogin's. With {@code online-mode=false}
+     * the server never asks anyone to authenticate with Mojang, and there is no
+     * API to ask just one player to. Sending that request means writing the packet
+     * by hand, which is what those two libraries are for. Velocity has the same
+     * ability built in, so a proxied network needs neither.</p>
+     *
+     * <p>Spelled out at length only when the server owner has premium logins
+     * switched on, because only then is something they asked for missing.</p>
+     */
+    private void reportMissingPacketLibrary() {
+        if (!com.pumpkiiings.pklogin.common.settings.Settings.AUTOLOGIN_PREMIUM_ENABLE.asBoolean()) {
+            sendMessage("Premium Auto-Login is off in config.yml.");
+            return;
+        }
+
+        sendMessage("§c=========================================================");
+        sendMessage("§cPremium Auto-Login is DISABLED: no packet library was found.");
+        sendMessage("§cPremium players will have to /register and use a password, and new");
+        sendMessage("§cones will not be let in without one either.");
+        sendMessage("§c");
+        sendMessage("§cInstall §fPacketEvents §cor §fProtocolLib §cand restart. This server runs");
+        sendMessage("§cwith online-mode=false, so it never asks anyone to authenticate with");
+        sendMessage("§cMojang, and Paper offers no way to ask just one player to. Those");
+        sendMessage("§clibraries provide it; behind a Velocity proxy it comes for free.");
+        sendMessage("§c");
+        sendMessage("§cIf you do not want premium logins at all, set autologin.premium.enable");
+        sendMessage("§cto false in config.yml and this message will stop.");
         sendMessage("§c=========================================================");
     }
 
@@ -259,8 +294,10 @@ public class PkLoginPaper extends JavaPlugin {
         new com.pumpkiiings.pklogin.paper.captcha.PaperCaptchaHandler(this);
 
         // setup PacketEvents or ProtocolLib auto-login
-        if (com.pumpkiiings.pklogin.common.settings.Settings.PREMIUM_PROXY_MODE.asBoolean()) {
-            sendMessage("Proxy mode is enabled. The backend will let the proxy handle Premium Auto-Login.");
+        if (PaperProxyConfig.isBehindProxy()) {
+            // The proxy owns the login handshake, so the packet-level hooks would
+            // have nothing to intercept here.
+            sendMessage("This server is behind a proxy. Premium Auto-Login is handled there.");
         } else if (getServer().getPluginManager().getPlugin("packetevents") != null) {
             sendMessage("PacketEvents detected. Using PacketEvents for Premium Auto-Login.");
             com.pumpkiiings.pklogin.paper.autologin.packetevents.PacketEventsHook.init(this);
@@ -268,7 +305,7 @@ public class PkLoginPaper extends JavaPlugin {
             sendMessage("ProtocolLib detected. Using ProtocolLib for Premium Auto-Login.");
             com.pumpkiiings.pklogin.paper.autologin.protocollib.ProtocolLibHook.init(this);
         } else {
-            sendMessage("Neither PacketEvents nor ProtocolLib detected. Premium Auto-Login is disabled.");
+            reportMissingPacketLibrary();
         }
 
         // start login queue task
@@ -324,29 +361,8 @@ public class PkLoginPaper extends JavaPlugin {
     }
 
     private boolean setupDatabase() {
-        String dbType = com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString().toLowerCase();
-
-        if (dbType.equals("mariadb") || dbType.equals("mysql")) {
-            database = new com.pumpkiiings.pklogin.common.database.MariaDB(
-                com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_HOST.asString(),
-                com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_PORT.asInt(),
-                com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_NAME.asString(),
-                com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_USERNAME.asString(),
-                com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_PASSWORD.asString()
-            );
-        } else if (dbType.equals("h2")) {
-            File databaseFile = new File(getDataFolder(), "accounts");
-            database = new com.pumpkiiings.pklogin.common.database.H2(databaseFile);
-        } else {
-            File databaseFile;
-            String customPath = Settings.DATABASE_SQLITE_FILE_PATH.asString("");
-            if (!customPath.isEmpty()) {
-                databaseFile = new File(customPath);
-            } else {
-                databaseFile = new File(getDataFolder(), "accounts.db");
-            }
-            database = new SQLite(databaseFile);
-        }
+        database = com.pumpkiiings.pklogin.common.database.DatabaseFactory.create(
+                Settings.DATABASE_TYPE.asString(), getDataFolder());
 
         try {
             database.openConnection();
@@ -356,7 +372,9 @@ public class PkLoginPaper extends JavaPlugin {
             try (Database.Query query = database.query("SELECT COUNT(*) FROM `pklogin`")) {
                 ResultSet rs = query.resultSet;
                 if (rs.next()) {
-                    registeredUsers = rs.getInt("COUNT(*)");
+                    // By position: engines label an aggregate column differently
+                    // (PostgreSQL calls it "count"), and there is only one here.
+                    registeredUsers = rs.getInt(1);
                 }
             } catch (Exception e) {
                 sendMessage("§cFailed to update the register count.");

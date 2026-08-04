@@ -54,6 +54,9 @@ public final class DatabaseSchema {
         database.update("CREATE TABLE IF NOT EXISTS `settings` (`key` VARCHAR(64), `value` TEXT)");
 
         // Widen the timestamp columns on installs created when they were 32-bit.
+        // MODIFY COLUMN is MySQL syntax, but it only ever mattered to installs
+        // predating the fix — everywhere else CREATE TABLE already said BIGINT, so
+        // nothing is lost when the statement fails.
         quietly(database, "ALTER TABLE `pklogin` MODIFY COLUMN `lastlogin` BIGINT");
         quietly(database, "ALTER TABLE `pklogin` MODIFY COLUMN `regdate` BIGINT");
 

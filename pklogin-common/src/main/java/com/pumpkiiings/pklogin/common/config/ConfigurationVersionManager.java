@@ -74,6 +74,8 @@ public class ConfigurationVersionManager {
     public static final String VERSION_KEY_CONFIG = "version-config";
     /** Version key for the message files. */
     public static final String VERSION_KEY_MESSAGES = "version-messages";
+    /** Version key for the proxy's {@code backend.yml}. */
+    public static final String VERSION_KEY_BACKEND = "version-backend";
 
     /** Assumed when a file predates versioning entirely. */
     private static final int UNVERSIONED = 1;

@@ -87,21 +87,19 @@ public class PacketEventsListener extends PacketListenerAbstract {
                 return;
             }
 
-            Optional<Account> accountOpt = plugin.getAccountManagement().retrieveOrLoad(username);
-            if (accountOpt.isPresent()) {
-                String type = accountOpt.get().getUuidType();
-                if ("REAL".equals(type) || "PREMIUM".equals(type)) {
-                    byte[] verifyToken = EncryptionUtil.generateVerifyToken(random);
-                    AutoLoginSession session = new AutoLoginSession(username, verifyToken, clientPublicKey);
-                    pendingSessions.put(ip, session);
-                    
-                    event.setCancelled(true);
-                    
-                    WrapperLoginServerEncryptionRequest request = new WrapperLoginServerEncryptionRequest(
-                            "", keyPair.getPublic(), verifyToken
-                    );
-                    event.getUser().sendPacket(request);
-                }
+            // Known premium account, or a name Mojang says is a paid one.
+            if (com.pumpkiiings.pklogin.paper.autologin.PremiumDecision
+                    .shouldRequestEncryption(plugin, username)) {
+                byte[] verifyToken = EncryptionUtil.generateVerifyToken(random);
+                AutoLoginSession session = new AutoLoginSession(username, verifyToken, clientPublicKey);
+                pendingSessions.put(ip, session);
+
+                event.setCancelled(true);
+
+                WrapperLoginServerEncryptionRequest request = new WrapperLoginServerEncryptionRequest(
+                        "", keyPair.getPublic(), verifyToken
+                );
+                event.getUser().sendPacket(request);
             }
         } else if (event.getPacketType() == PacketType.Login.Client.ENCRYPTION_RESPONSE) {
             InetSocketAddress address = (InetSocketAddress) event.getUser().getAddress();

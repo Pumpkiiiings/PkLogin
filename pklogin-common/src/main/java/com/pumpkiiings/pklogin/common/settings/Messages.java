@@ -157,6 +157,9 @@ public enum Messages {
     PREMIUM_WARNING("premium.warning"),
     PREMIUM_AUTO_LOGIN("premium.auto-login"),
 
+    // login sessions
+    SESSION_RESUMED("session.resumed"),
+
     // queues and limits
     QUEUE_MESSAGE("queue.message"),
     MAX_IPS_REACHED("error-messages.max-ips-reached"),

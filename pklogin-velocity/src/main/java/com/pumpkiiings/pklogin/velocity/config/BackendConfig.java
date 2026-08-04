@@ -1,38 +1,48 @@
 package com.pumpkiiings.pklogin.velocity.config;
 
+import com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager;
+import com.pumpkiiings.pklogin.common.config.MigrationLogger;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The proxy's own settings: which servers players log in on, and where they go
+ * afterwards.
+ *
+ * <p>Separate from {@code config.yml} on purpose. That file describes how accounts
+ * and passwords work and every server shares it; this one describes the shape of
+ * the network and only the proxy has any use for it.</p>
+ */
 public class BackendConfig {
 
     private final Path configPath;
+    private final MigrationLogger logger;
     private Map<String, Object> data;
 
-    public BackendConfig(Path configPath) {
+    public BackendConfig(Path configPath, MigrationLogger logger) {
         this.configPath = configPath;
+        this.logger = logger;
     }
 
+    /**
+     * Creates the file if it is missing, brings it up to the current schema, then
+     * reads it.
+     *
+     * <p>The upgrade runs through the same machinery as {@code config.yml}, so an
+     * existing file keeps every value its owner set while gaining any option a new
+     * version introduced, comments included.</p>
+     */
     public void load() throws Exception {
+        newManager().load();
+
         File file = configPath.toFile();
-        if (!file.exists()) {
-            file.getParentFile().mkdirs();
-            try (InputStream in = getClass().getClassLoader().getResourceAsStream("backend.yml")) {
-                if (in != null) {
-                    Files.copy(in, file.toPath());
-                } else {
-                    file.createNewFile();
-                }
-            }
-        }
         try (FileInputStream fis = new FileInputStream(file)) {
             Yaml yaml = new Yaml();
             data = yaml.load(fis);
@@ -42,9 +52,27 @@ public class BackendConfig {
         }
     }
 
+    private ConfigurationVersionManager newManager() {
+        InputStream defaults = getClass().getClassLoader().getResourceAsStream("backend.yml");
+        return BackendMigrations.applyTo(new ConfigurationVersionManager(
+                configPath.toFile(),
+                defaults,
+                ConfigurationVersionManager.VERSION_KEY_BACKEND,
+                BackendMigrations.CURRENT_VERSION,
+                logger));
+    }
+
     @SuppressWarnings("unchecked")
     public List<String> getAuthServers() {
         return (List<String>) getNested("backend.auth-servers", Collections.singletonList("auth"));
+    }
+
+    /**
+     * Defaults to on: a network where the check fails is one where premium players
+     * silently cannot log in, which is worth a message at startup.
+     */
+    public boolean isVerifyConnection() {
+        return (boolean) getNested("backend.verify-connection", true);
     }
 
     public boolean isOverrideFirstServer() {

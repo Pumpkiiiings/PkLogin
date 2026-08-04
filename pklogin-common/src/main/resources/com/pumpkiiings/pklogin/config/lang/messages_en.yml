@@ -258,6 +258,9 @@ Messages:
       - "&eUse /premium confirm to confirm."
     auto-login: "&aYou have been automatically logged in via Premium!"
 
+  session:
+    resumed: "&aWelcome back! Your session is still open, so no password is needed."
+
   queue:
     message: "&eYou have &b{0} &econds left to {1} or you will be kicked."
 

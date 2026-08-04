@@ -88,7 +88,7 @@ Messages:
       &r&cQuesto nome utente è già registrato come {1}&r
       &r
       &r&cPer entrare, devi usare il tuo nickname senza maiuscole/minuscole
-# Messaggio inviato quando un utente perde molte volte
+    # Messaggio inviato quando un utente perde molte volte
     failed-many-times: '&cPassword errata.'
     
     # Messaggio inviato quando la password inserita non è corretta
@@ -262,4 +262,6 @@ Messages:
     inventory-item: '&aClick Me!'
     chat-instruction: '&ePlease type the following code in chat: &b{code}'
     map-instruction: '&eLook at the map in your hand and type the code!'
+  session:
+    resumed: '&aBentornato! La tua sessione è ancora aperta, quindi non serve la password.'
 version-messages: 2

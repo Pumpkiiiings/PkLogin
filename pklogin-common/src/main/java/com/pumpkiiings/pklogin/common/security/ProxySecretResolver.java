@@ -24,16 +24,18 @@
 
 package com.pumpkiiings.pklogin.common.security;
 
-import com.pumpkiiings.pklogin.common.settings.Settings;
-
 /**
  * Works out which key signs the plugin messages exchanged with the proxy.
  *
  * <p>Velocity's modern forwarding already establishes a secret that the proxy and
  * every backend know and the game client does not — exactly the property these
- * signatures need. Where that is in use, PkLogin reuses it and the server owner
- * configures nothing. {@code proxy-secret} in {@code config.yml} stays available
- * for setups that have no such secret, notably BungeeCord's legacy forwarding.</p>
+ * signatures need. PkLogin reuses it, so there is nothing to configure and
+ * nothing to keep in sync.</p>
+ *
+ * <p>There is deliberately no way to set a key by hand. Without modern forwarding
+ * the backend ports accept any identity a client claims, so an attacker never has
+ * to forge a plugin message at all — a shared password there would suggest a
+ * safety it cannot provide.</p>
  *
  * <p>The forwarding secret is never used directly. A separate key is derived from
  * it, so PkLogin's signatures and Velocity's forwarding never share key material:
@@ -85,11 +87,6 @@ public final class ProxySecretResolver {
      * @return the resolution; check {@link Resolution#isPresent()} before use
      */
     public static Resolution resolve(String forwardingSecret) {
-        String configured = Settings.PROXY_SECRET.asString("");
-        if (configured != null && !configured.trim().isEmpty()) {
-            return new Resolution(configured.trim(), "'proxy-secret' in config.yml");
-        }
-
         if (forwardingSecret != null && !forwardingSecret.trim().isEmpty()) {
             return new Resolution(derive(forwardingSecret.trim()),
                     "the Velocity modern forwarding secret");

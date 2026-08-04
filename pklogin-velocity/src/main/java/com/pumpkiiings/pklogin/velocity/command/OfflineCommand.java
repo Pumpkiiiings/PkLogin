@@ -35,7 +35,9 @@ public class OfflineCommand extends VelocityAbstractCommand {
             accountManagement.updateUuidType(name, "OFFLINE");
             accountManagement.invalidateCache(name);
             sendMessage(player, Messages.OFFLINE_SUCCESS.asString());
-            player.disconnect(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize("§aHas cambiado a modo Offline.\n§ePor favor vuelve a conectarte al servidor."));
+            player.disconnect(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                    .deserialize(Messages.OFFLINE_SWITCH_KICK.asString(
+                            "§aYou have switched to Offline mode.\n§ePlease reconnect to the server.")));
         }
     }
 

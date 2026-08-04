@@ -191,7 +191,7 @@ Messages:
       &r&cDieser Nickname wurde bereits als {1} registriert&r
       &r
       &r&cUm beizutreten, musst du deinen Nicknamen in Groß- und Kleinbuchstaben schreiben.
-# Message sent when a user misses many times.
+    # Message sent when a user misses many times.
     failed-many-times: '&cDu hast ein falsches Passwort eingegeben.'
     
     # Message sent when password entered is incorrect.
@@ -204,11 +204,11 @@ Messages:
     wait-server-start: |-
       &cDer Server wurde noch nicht vollständig gestartet.
       &cWarte bis zu dich verbinden kannst.
-# Message sent when an IP is blocked by suspected invasion.
+    # Message sent when an IP is blocked by suspected invasion.
     account-blocked: |-
       &cDeine Adresse wurde wegen verdächtiger Invasion gesperrt.&r
       &r&cVerbleibende Zeit: {0}
-# Message sent when two-factor system temporary password is incorrect.
+    # Message sent when two-factor system temporary password is incorrect.
     incorrect-temporary-password: '&cFalsches Passwort. Bitte versuche es erneut.'
     
     # Message to kick a user with an invalid nickname.
@@ -496,4 +496,6 @@ Messages:
     inventory-item: '&aClick Me!'
     chat-instruction: '&ePlease type the following code in chat: &b{code}'
     map-instruction: '&eLook at the map in your hand and type the code!'
+  session:
+    resumed: '&aWillkommen zurück! Deine Sitzung ist noch offen, ein Passwort ist nicht nötig.'
 version-messages: 2

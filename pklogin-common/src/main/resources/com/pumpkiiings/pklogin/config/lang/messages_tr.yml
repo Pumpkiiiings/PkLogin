@@ -191,7 +191,7 @@ Messages:
       &r&cBu kullanıcı daha önce kayıt oldu {1}&r
       &r
       &r&cSunucuya girmek için kendi takma adını kullanman gerekiyor.Başkalarının isminde ki harfleri büyük ve küçük olarak değiştirerek giriş yapamazsınız.
-# Oyuncu çok fazla yanlış şifre yazınca gönderilen mesaj.
+    # Oyuncu çok fazla yanlış şifre yazınca gönderilen mesaj.
     failed-many-times: '&cÇok fazla yanlış şifre yazdın.'
     
     # Oyuncu yanlış şifre yazınca gönderilen mesaj.
@@ -204,11 +204,11 @@ Messages:
     wait-server-start: |-
       &cSunucu tamamen açılmadı.
       &cBağlanman için biraz bekleyeceksin.
-# Şüpheli eylemleri yüzünden IP adresi engellenen oyuncuya gönderilen mesaj.
+    # Şüpheli eylemleri yüzünden IP adresi engellenen oyuncuya gönderilen mesaj.
     account-blocked: |-
       &cIP adresin şüpheli eylemler yüzünden engellendi.&r
       &r&cKalan ceza süren: {0}
-# Oyuncu geçici şifresini yanlış yazınca gönderilen mesaj.
+    # Oyuncu geçici şifresini yanlış yazınca gönderilen mesaj.
     incorrect-temporary-password: '&cGeçiçi şifre yanlış yazıldı.Lütfen tekrar deneyin.'
     
     # Oyuncu geçersiz bir takma adıyla giriş yapınca gönderilen mesaj.
@@ -496,4 +496,6 @@ Messages:
     inventory-item: '&aClick Me!'
     chat-instruction: '&ePlease type the following code in chat: &b{code}'
     map-instruction: '&eLook at the map in your hand and type the code!'
+  session:
+    resumed: '&aTekrar hoş geldin! Oturumun hâlâ açık, bu yüzden şifreye gerek yok.'
 version-messages: 2

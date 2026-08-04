@@ -159,23 +159,20 @@ public class ProtocolLibListener extends PacketAdapter {
             return;
         }
 
-        // Check if player has PREMIUM account
-        Optional<Account> accountOpt = plugin.getAccountManagement().retrieveOrLoad(username);
-        if (accountOpt.isPresent()) {
-            String type = accountOpt.get().getUuidType();
-            if ("REAL".equals(type) || "PREMIUM".equals(type)) {
-                // Request Premium Login!
-                AutoLoginSession session = new AutoLoginSession(username, EncryptionUtil.generateVerifyToken(random), clientKey.orElse(null));
-                pendingSessions.put(ip, session);
-                
-                // Cancel START packet processing so server waits
-                synchronized (event.getAsyncMarker().getProcessingLock()) {
-                    event.setCancelled(true);
-                }
+        // Known premium account, or a name Mojang says is a paid one.
+        if (com.pumpkiiings.pklogin.paper.autologin.PremiumDecision
+                .shouldRequestEncryption(plugin, username)) {
+            // Request Premium Login!
+            AutoLoginSession session = new AutoLoginSession(username, EncryptionUtil.generateVerifyToken(random), clientKey.orElse(null));
+            pendingSessions.put(ip, session);
 
-                // Send Encryption Request
-                sendEncryptionRequest(player, session.getVerifyToken());
+            // Cancel START packet processing so server waits
+            synchronized (event.getAsyncMarker().getProcessingLock()) {
+                event.setCancelled(true);
             }
+
+            // Send Encryption Request
+            sendEncryptionRequest(player, session.getVerifyToken());
         }
     }
 

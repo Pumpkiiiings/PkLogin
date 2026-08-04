@@ -50,7 +50,9 @@ public class PremiumCommand extends VelocityAbstractCommand {
             accountManagement.updateUuidType(name, "REAL");
             accountManagement.invalidateCache(name);
             sendMessage(player, Messages.PREMIUM_SUCCESS.asString());
-            player.disconnect(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize("§aHas cambiado a modo Premium.\n§ePor favor vuelve a conectarte al servidor."));
+            player.disconnect(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                    .deserialize(Messages.PREMIUM_SWITCH_KICK.asString(
+                            "§aYou have switched to Premium mode.\n§ePlease reconnect to the server.")));
         } else {
             if (currentType.equals("REAL")) {
                 sendMessage(player, Messages.PREMIUM_ALREADY.asString());

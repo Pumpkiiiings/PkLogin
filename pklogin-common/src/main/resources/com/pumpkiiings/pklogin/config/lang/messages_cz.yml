@@ -85,7 +85,7 @@ Messages:
       &r&cToto jméno je již zaregistrováno jako {1}&r
       &r
       &r&cPro registraci zvol jméno bez velkých/malých písmen.
-# Message sent when a user misses many times
+    # Message sent when a user misses many times
     failed-many-times: '&cZadáno špatné heslo..'
     
     # Message sent when password entered is incorrect
@@ -257,4 +257,6 @@ Messages:
     inventory-item: '&aClick Me!'
     chat-instruction: '&ePlease type the following code in chat: &b{code}'
     map-instruction: '&eLook at the map in your hand and type the code!'
+  session:
+    resumed: '&aVítej zpět! Tvá relace je stále otevřená, takže heslo není potřeba.'
 version-messages: 2

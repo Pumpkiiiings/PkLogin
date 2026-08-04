@@ -87,7 +87,7 @@ Messages:
       &r&cEste nombre de usuario ya se registró como {1}&r
       &r
       &r&cPara entrar, tenés que usar tu nickname sin mayúsculas o minúsculas.
-# Message sent when a user misses many times
+    # Message sent when a user misses many times
     failed-many-times: '&cIntroduciste una contraseña incorrecta.'
     
     # Message sent when password entered is incorrect
@@ -259,5 +259,7 @@ Messages:
     inventory-item: '&aClick Me!'
     chat-instruction: '&ePlease type the following code in chat: &b{code}'
     map-instruction: '&eLook at the map in your hand and type the code!'
+  session:
+    resumed: '&aأهلاً بعودتك! جلستك ما زالت مفتوحة، لذا لا حاجة لكلمة المرور.'
 version-messages: 2
 

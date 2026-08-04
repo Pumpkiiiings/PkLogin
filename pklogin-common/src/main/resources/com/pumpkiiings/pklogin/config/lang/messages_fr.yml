@@ -87,7 +87,7 @@ Messages:
       &r&cCe pseudo à déjà été enregistré en temps que {1}&r
       &r
       &r&c Pour venir ton pseudo doit etre valide.
-# Message sent when a user misses many times
+    # Message sent when a user misses many times
     failed-many-times: '&cMot de passe incorrect'
     
     # Message sent when password entered is incorrect
@@ -259,5 +259,7 @@ Messages:
     inventory-item: '&aClick Me!'
     chat-instruction: '&ePlease type the following code in chat: &b{code}'
     map-instruction: '&eLook at the map in your hand and type the code!'
+  session:
+    resumed: '&aBon retour ! Ta session est toujours ouverte, aucun mot de passe n''est nécessaire.'
 version-messages: 2
 

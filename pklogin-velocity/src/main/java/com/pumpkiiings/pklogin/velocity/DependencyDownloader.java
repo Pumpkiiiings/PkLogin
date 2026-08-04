@@ -26,6 +26,7 @@ public class DependencyDownloader {
         DEPENDENCIES.put("sqlite-jdbc-3.42.0.0.jar", "https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.42.0.0/sqlite-jdbc-3.42.0.0.jar");
         DEPENDENCIES.put("h2-2.2.224.jar", "https://repo1.maven.org/maven2/com/h2database/h2/2.2.224/h2-2.2.224.jar");
         DEPENDENCIES.put("mariadb-java-client-3.1.4.jar", "https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/3.1.4/mariadb-java-client-3.1.4.jar");
+        DEPENDENCIES.put("postgresql-42.7.4.jar", "https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.4/postgresql-42.7.4.jar");
         DEPENDENCIES.put("HikariCP-5.1.0.jar", "https://repo1.maven.org/maven2/com/zaxxer/HikariCP/5.1.0/HikariCP-5.1.0.jar");
         DEPENDENCIES.put("snakeyaml-2.2.jar", "https://repo1.maven.org/maven2/org/yaml/snakeyaml/2.2/snakeyaml-2.2.jar");
     }

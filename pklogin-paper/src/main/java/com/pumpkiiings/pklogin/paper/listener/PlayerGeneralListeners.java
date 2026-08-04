@@ -53,10 +53,24 @@ public class PlayerGeneralListeners implements Listener {
         Player player = e.getPlayer();
         String name = player.getName();
         LoginManagement loginManagement = plugin.getLoginManagement();
+
+        // Before cleanup, which is what forgets they were authenticated: only a
+        // player who had actually logged in may leave a session behind.
+        if (loginManagement.isAuthenticated(name)) {
+            com.pumpkiiings.pklogin.common.manager.LoginSessions.remember(name, addressOf(player));
+        }
+
         loginManagement.cleanup(name);
         LoginQueue.removeFromQueue(name);
         com.pumpkiiings.pklogin.paper.manager.LimboManager.discard(plugin, player);
         com.pumpkiiings.pklogin.paper.util.AdventureAPI.clearTitle(player);
+    }
+
+    /** @return the player's address, or null when the connection is already gone */
+    private static String addressOf(Player player) {
+        return player.getAddress() == null || player.getAddress().getAddress() == null
+                ? null
+                : player.getAddress().getAddress().getHostAddress();
     }
 
     @EventHandler(priority = EventPriority.HIGH)

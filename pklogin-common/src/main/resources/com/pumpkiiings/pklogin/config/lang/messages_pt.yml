@@ -85,7 +85,7 @@ Messages:
       &r&cEste nome já foi registado como {1}&r
       &r
       &r&cPara entrar, deve usar o seu nome sem maiúsculas / minúsculas.
-# Message sent when a user misses many times
+    # Message sent when a user misses many times
     failed-many-times: '&cIntroduziu a palavra-passe incorrecta.'
     
     # Message sent when password entered is incorrect
@@ -259,4 +259,6 @@ Messages:
     inventory-item: '&aClick Me!'
     chat-instruction: '&ePlease type the following code in chat: &b{code}'
     map-instruction: '&eLook at the map in your hand and type the code!'
+  session:
+    resumed: '&aBem-vindo de volta! A tua sessão ainda está aberta, por isso não é preciso palavra-passe.'
 version-messages: 2

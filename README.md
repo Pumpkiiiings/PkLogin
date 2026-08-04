@@ -20,13 +20,24 @@
 
 ### 🔐 Authentication
 - **Dual-mode**: Works on both **Spigot/Paper/Folia and Velocity**
-- **Premium / Cracked**: Auto-login for premium (paid) players, manual login for cracked players
+- **Passwordless premium login**: Premium players never type a password, not even on
+  their first join — see [below](#passwordless-premium-login)
+- **Login sessions**: Reconnect soon after leaving and skip the password —
+  see [below](#login-sessions)
 - **Username Appender**: Prevent username collisions between premium and cracked players sharing a name
 - **Brute-force protection**: Configurable max login attempts before kick
 - **IP Account Limit**: Restrict how many accounts can be registered per IP address
 - **Login timeout**: Auto-kick players who don't authenticate in time
 - **Limbo system**: Players are frozen (movement, commands, chat blocked) until authenticated
 - **Safe-location teleport**: Teleport players to a safe spawn on join, restore last location after login
+
+### 🛰️ Proxy
+- **Nothing to configure**: neither a proxy-mode switch nor a shared secret — both
+  are read from settings your network already has
+- **Signed messages**: the proxy's auto-login messages carry an HMAC keyed by a
+  secret derived from Velocity's forwarding secret, so a client cannot forge one
+- **Backend verification**: the proxy checks that each auth server runs PkLogin and
+  resolved the same key, and names the ones that do not
 
 ### 🔑 Password Security
 | Algorithm | Notes |
@@ -58,8 +69,8 @@
 
 ### 🔄 Migration Support
 - **AuthMe → PkLogin**: One-command async bulk import (`/pklogin authme-import`)
-  - Preserves passwords (auto-migrated on first login)
-  - Preserves IPs, registration dates
+  - Preserves passwords (auto-migrated on first login), IPs and registration dates
+  - Skips already-imported accounts; progress updates every 100
 - **Between engines**: `/pklogin migrate <engine>` copies every account into another
   engine, so switching is not a fresh start
   - Fill in the target's connection details under `Database` in `config.yml`, run the
@@ -67,8 +78,6 @@
   - Nothing is deleted and `config.yml` is not touched — the original database stays
     exactly as it was
   - Safe to re-run: accounts already present in the target are skipped
-  - Skips already-imported accounts
-  - Progress updates every 100 accounts
 
 ### 🌍 Internationalization
 20+ built-in translations: English, Spanish, Portuguese, French, German, Russian, Chinese, Polish, Italian, Turkish, Vietnamese, and more.
@@ -104,6 +113,7 @@ Each subcommand has its own permission, so access can be granted individually.
 | `/pklogin help` | `pklogin.admin.help` | Show the admin help |
 | `/pklogin reload` | `pklogin.admin.reload` | Reload config and messages |
 | `/pklogin authme-import` | `pklogin.admin.authme-import` | Import accounts from AuthMe (async) |
+| `/pklogin migrate <engine>` | `pklogin.admin.migrate` | Copy every account into another database engine (async) |
 | `/pklogin forcelogin <user>` | `pklogin.admin.forcelogin` | Force log in a player |
 | `/pklogin unregister <user>` | `pklogin.admin.unregister` | Clear a player's password |
 | `/pklogin delete <user>` | `pklogin.admin.delete` | Permanently delete a player account |
@@ -126,6 +136,19 @@ Security:
     small: 5                 # Min password length (inclusive)
     large: 15                # Max password length (inclusive)
 
+  session:
+    enable: true             # Skip the password on a quick reconnect
+    timeout: 5               # Minutes a session stays open (0 = off)
+
+autologin:
+  premium:
+    enable: true             # Let premium players in with no password at all
+    cache-minutes: 60        # How long a Mojang answer about a name is reused
+
+  bedrock:
+    enable: true             # Log Bedrock players in once Floodgate authenticated them
+    skip-register: true
+
 passwords:
   bruteforce:
     max-login-tries: 3       # Failed attempts before kick
@@ -145,6 +168,61 @@ limbo:
 username-appender:
   enabled: false             # Prevent name collisions premium vs cracked
 ```
+
+### Passwordless premium login
+
+A premium player types no password, not even on their first connection. They join
+and play.
+
+Before deciding how to negotiate a connection, PkLogin asks Mojang whether the name
+belongs to a paid account. If it does, the connection is negotiated as **online
+mode** and the client has to complete Mojang's encryption handshake. Passing that is
+cryptographic proof of ownership, not a guess — nobody can fake it without the
+account. PkLogin then creates the account with no password, because there is nothing
+to remember: every later login proves itself the same way.
+
+**This only applies to names PkLogin has never seen.** Anyone already in the database
+keeps the mode their account says, so turning this on cannot lock out a player who is
+on your server today. An offline account that is really a paid one is converted with
+`/premium confirm`, as before.
+
+**When Mojang cannot be reached**, the connection is negotiated as offline and the
+player registers a password as usual. That direction is deliberate: a wrong "offline"
+costs a password, a wrong "online" costs the player their ability to connect at all.
+
+> **Standalone servers need a packet library.** On Velocity this works out of the
+> box. A Paper server with no proxy needs **PacketEvents** or **ProtocolLib**,
+> because with `online-mode=false` the server never asks anyone to authenticate with
+> Mojang and Paper offers no way to ask just one player to — those libraries provide
+> it. Without one, the console says so at startup and premium players fall back to
+> `/register`.
+
+### Login sessions
+
+A player who reconnects soon after leaving skips the password. The session opens when
+they disconnect, is tied to the address they were on, and is spent the first time it
+is used — one disconnect buys one reconnect.
+
+```yaml
+Security:
+  session:
+    enable: true
+    timeout: 5     # minutes
+```
+
+Sessions are dropped when the password changes, when 2FA is turned on or off, when
+the account is deleted, and on `/pklogin reload`. They live in memory, so restarting
+the server ends all of them.
+
+> **Know what the address check proves before raising the timeout.** An address is
+> not a person: everyone behind one router, one public network or one mobile carrier
+> shares it. While a session is open, anyone on that address who types the player's
+> name gets in without the password — and without the 2FA code if the account has
+> one. Minutes are a reasonable bet on a dropped connection; hours are a standing
+> invitation.
+
+> On a network with **several auth servers**, a session opened on one is not known to
+> the others, since it lives in that server's memory.
 
 ### Proxy setup
 
@@ -255,9 +333,25 @@ Optional<Account> account = api.getAccountManagement().retrieveOrLoad("Steve");
 
 1. Download `PkLogin-XXXXX-X.X.jar` from [Releases](https://github.com/Pumpkiiiings/PkLogin/releases)
 2. Drop it into your `plugins/` (Spigot/Paper) or `mods/` (Forge) folder
-3. Start the server — config files are auto-generated
-4. Edit `plugins/PkLogin/config.yml` (or `config/pklogin/config.yml` on Forge)
-5. Restart or run `/pklogin reload`
+3. Set `online-mode=false` in `server.properties` — with it on, the server
+   authenticates everyone against Mojang itself and no cracked player can join
+4. On a **standalone** server, install **PacketEvents** or **ProtocolLib** as well,
+   or premium players will have to register a password
+5. Start the server — config files are auto-generated
+6. Edit `plugins/PkLogin/config.yml` (or `config/pklogin/config.yml` on Forge)
+7. Restart or run `/pklogin reload`
+
+### Behind a Velocity proxy
+
+1. Install PkLogin on the proxy **and** on every server listed under
+   `backend.auth-servers` in the proxy's `backend.yml`
+2. Use modern forwarding: `player-info-forwarding-mode = "modern"` in `velocity.toml`,
+   and the same secret under `proxies.velocity` in each backend's
+   `config/paper-global.yml`
+3. Firewall the backend ports so nobody can bypass the proxy
+4. Start it up — the proxy reports which backends answered its verification check
+
+No proxy settings exist in `config.yml`. There is nothing to fill in.
 
 ### Migrating from AuthMe
 ```

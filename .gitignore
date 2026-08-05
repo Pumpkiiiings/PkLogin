@@ -40,3 +40,8 @@ pklogin-translator/cache.json
 # Whole-source dump produced by analyzer.py; it duplicates the tree and makes
 # grepping the repo return every hit twice.
 all_code.txt
+
+# Per-machine Claude Code permissions. Holds absolute paths and per-session
+# scratchpad ids, so it is rewritten constantly and means nothing on another
+# checkout. The shared settings.json is tracked.
+.claude/settings.local.json

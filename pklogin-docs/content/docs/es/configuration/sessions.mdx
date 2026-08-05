@@ -1,42 +1,42 @@
 ---
 title: Sesiones de login
-description: Deja que un jugador que reconecta poco después de salir se salte la contraseña.
+description: Deja que el jugador que vuelve enseguida se saltee la contraseña.
 ---
 
-Un jugador que reconecta poco después de salir se salta la contraseña. La sesión se abre
-cuando se desconecta, va atada a la dirección en la que estaba, y se gasta la primera vez
-que se usa: una desconexión compra una reconexión.
+Si un jugador se reconecta al poco tiempo de salir, se saltea la contraseña. La sesión se
+abre cuando se desconecta, queda atada a la IP que tenía, y se gasta la primera vez que se
+usa: cada desconexión te da una sola reconexión.
 
 ```yaml title="config.yml"
 Security:
   session:
     enable: true
-    # Minutos que una sesión sigue abierta. 0 apaga las sesiones, igual que enable: false.
+    # Minutos que la sesión sigue abierta. 0 desactiva las sesiones, igual que enable: false.
     timeout: 5
 ```
 
 ## Qué cierra una sesión
 
-Las sesiones se descartan cuando:
+Las sesiones se tiran abajo cuando:
 
-- cambia la contraseña
-- se activa o desactiva el 2FA
+- se cambia la contraseña
+- se activa o se desactiva el 2FA
 - se borra la cuenta
-- se ejecuta `/pklogin reload`
+- alguien ejecuta `/pklogin reload`
 - se reinicia el servidor: viven solo en memoria
 
-## Ten claro qué prueba la comprobación de dirección
+## Qué prueba en realidad la comprobación de IP
 
 <Callout type="warn" title="Minutos, no horas">
-  Una dirección no es una persona: todos los que están detrás de un router, de una red
-  pública o de una operadora móvil la comparten. Mientras una sesión está abierta, cualquiera
-  en esa dirección que escriba el nombre del jugador entra sin la contraseña, y sin el código
-  2FA si la cuenta tiene uno. Unos minutos son una apuesta razonable ante una caída de
-  conexión; unas horas son una invitación abierta.
+  Una IP no es una persona: la comparten todos los que están detrás del mismo router, de una
+  red pública o de una compañía de datos móviles. Mientras la sesión está abierta, cualquiera
+  con esa IP que escriba el nick del jugador entra sin contraseña, y sin el código 2FA si la
+  cuenta tiene 2FA. Unos minutos es una apuesta razonable para cubrir una caída de conexión;
+  unas horas es dejar la puerta abierta.
 </Callout>
 
-## Varios servidores de auth
+## Con varios servidores de auth
 
 Las sesiones viven en la memoria del servidor que las abrió. En una red con más de un
-servidor de auth, una sesión abierta en uno no la conocen los demás, así que a un jugador que
-aterrice en otro backend se le vuelve a pedir la contraseña.
+servidor de auth, una sesión abierta en uno no la conocen los demás, así que al jugador que
+caiga en otro backend le van a pedir la contraseña de nuevo.

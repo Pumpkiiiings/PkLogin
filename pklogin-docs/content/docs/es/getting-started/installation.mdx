@@ -3,15 +3,15 @@ title: Instalación
 description: Instala PkLogin en un servidor Paper, Spigot o Folia sin proxy.
 ---
 
-Esta página cubre un solo servidor sin proxy delante. Si tu red usa Velocity, lee
-[Configuración de Velocity](/es/docs/getting-started/velocity): los pasos son distintos y el
-proxy se instala primero.
+Esta página es para un servidor solo, sin proxy adelante. Si tu red usa Velocity, mira
+[Configuración de Velocity](/es/docs/getting-started/velocity): los pasos son otros y el
+proxy va primero.
 
-## Requisitos
+## Qué necesitas
 
 - **Java 21** o superior
 - **Paper, Spigot o Folia** con API 1.20 o superior
-- **PacketEvents o ProtocolLib**, si quieres login premium sin contraseña (ver abajo)
+- **PacketEvents o ProtocolLib**, si quieres login premium sin contraseña (más abajo)
 
 ## Pasos
 
@@ -21,42 +21,42 @@ proxy se instala primero.
 
 ### Descarga el jar
 
-Baja `PkLogin.jar` desde la [página de releases](https://github.com/Pumpkiiiings/PkLogin/releases)
-y ponlo en la carpeta `plugins/` de tu servidor.
+Descarga `PkLogin.jar` desde la [página de releases](https://github.com/Pumpkiiiings/PkLogin/releases)
+y ponlo en la carpeta `plugins/` del servidor.
 
 </Step>
 
 <Step>
 
-### Apaga el modo online
+### Desactiva el online-mode
 
 ```properties title="server.properties"
 online-mode=false
 ```
 
-Con `online-mode=true` el servidor autentica a todos contra Mojang por su cuenta y ningún
-jugador cracked puede entrar, lo que deja a PkLogin sin nada que hacer.
+Con `online-mode=true` el servidor autentica él mismo a todos contra Mojang, no entra ningún
+jugador cracked y PkLogin se queda sin nada que hacer.
 
-<Callout type="warn" title="Protege el puerto">
-  Un servidor en modo offline acepta cualquier nombre que el cliente diga. No expongas el
-  puerto del juego a internet sin saber qué llega a él.
+<Callout type="warn" title="Cuida el puerto">
+  Un servidor en modo offline se cree cualquier nombre que le mande el cliente. No abras el
+  puerto del juego a internet sin saber qué le está llegando.
 </Callout>
 
 </Step>
 
 <Step>
 
-### Instala una librería de paquetes (opcional pero recomendado)
+### Instala una librería de packets (opcional, pero conviene)
 
-Para que los jugadores premium se salten la contraseña en un servidor sin proxy, PkLogin
-tiene que pedirle a *un* jugador concreto que se autentique con Mojang. Paper no ofrece
-forma de hacerlo cuando `online-mode=false`, así que una librería de paquetes lo aporta:
+Para que los jugadores premium se salteen la contraseña en un servidor sin proxy, PkLogin
+tiene que pedirle a *un* jugador puntual que se autentique con Mojang. Paper no tiene forma
+de hacer eso con `online-mode=false`, así que hace falta una librería de packets:
 
 - [PacketEvents](https://github.com/retrooper/packetevents)
 - [ProtocolLib](https://github.com/dmulloy2/ProtocolLib)
 
-Instala cualquiera de las dos en `plugins/`. Sin ninguna, la consola lo avisa al arrancar y
-los jugadores premium caen de vuelta a `/register`.
+Instala cualquiera de las dos en `plugins/`. Si no hay ninguna, la consola avisa al arrancar
+y los jugadores premium terminan usando `/register` igual que todos.
 
 </Step>
 
@@ -64,7 +64,7 @@ los jugadores premium caen de vuelta a `/register`.
 
 ### Arranca el servidor
 
-Los archivos de configuración se generan en el primer arranque:
+Los archivos de configuración se crean solos en el primer arranque:
 
 <Files>
   <Folder name="plugins/PkLogin" defaultOpen>
@@ -83,54 +83,55 @@ Los archivos de configuración se generan en el primer arranque:
 
 ### Edita y recarga
 
-Abre `plugins/PkLogin/config.yml`, cambia lo que necesites y ejecuta:
+Abre `plugins/PkLogin/config.yml`, cambia lo que quieras y ejecuta:
 
 ```
 /pklogin reload
 ```
 
 El reload vuelve a leer `config.yml` y el archivo de mensajes. Cambiar el **motor de base de
-datos** sigue necesitando reinicio completo.
+datos** sigue necesitando reiniciar el servidor entero.
 
 </Step>
 
 </Steps>
 
-## Comprobar que funciona
+## Prueba que quedó andando
 
-Entra con un cliente cracked. Deberías quedarte congelado y con la petición de registro:
+Entra con un cliente cracked. Te tienes que quedar congelado y con el mensaje de registro:
 
 ```
 /register <contraseña> <contraseña>
 ```
 
-Después entra con una cuenta premium cuyo nombre PkLogin nunca haya visto. Si la librería de
-paquetes está instalada y `autologin.premium.enable` está activo, deberías entrar sin
+Después entra con una cuenta premium con un nick que PkLogin nunca haya visto. Si tienes la
+librería de packets instalada y `autologin.premium.enable` activado, tienes que entrar sin
 escribir nada.
 
-## Problemas típicos del primer arranque
+## Lo que suele fallar el primer día
 
 <Accordions>
 
-<Accordion title="A los jugadores premium se les pide registrarse">
+<Accordion title="A los jugadores premium les pide registrarse">
 
-O no hay librería de paquetes instalada, o `autologin.premium.enable` está en `false`, o el
-nombre ya existe en la base de datos como cuenta offline. Una cuenta offline existente se
-convierte con `/premium confirm`: PkLogin nunca cambia el modo de una cuenta que ya conoce.
-
-</Accordion>
-
-<Accordion title="Todos entran sin hacer login">
-
-`online-mode` sigue en `true` en `server.properties`, así que el servidor autenticó a todos
-contra Mojang antes de llegar a PkLogin.
+O no tienes librería de packets instalada, o `autologin.premium.enable` está en `false`, o
+ese nick ya está en la base de datos como cuenta offline. Una cuenta offline que ya existe se
+pasa a premium con `/premium confirm`: PkLogin nunca le cambia el modo a una cuenta que ya
+conoce.
 
 </Accordion>
 
-<Accordion title="Los jugadores son expulsados a los 45 segundos">
+<Accordion title="Entran todos sin hacer login">
 
-Eso es `Security.time-to-login`, la ventana para ejecutar `/login` o `/register`. Súbela si
-tu flujo de entrada necesita más tiempo.
+`online-mode` te quedó en `true` en `server.properties`, así que el servidor los autenticó
+contra Mojang antes de que PkLogin llegara a hacer nada.
+
+</Accordion>
+
+<Accordion title="A los 45 segundos los kickea a todos">
+
+Eso es `Security.time-to-login`, el tiempo que tienen para escribir `/login` o `/register`.
+Súbelo si tu servidor necesita más.
 
 </Accordion>
 

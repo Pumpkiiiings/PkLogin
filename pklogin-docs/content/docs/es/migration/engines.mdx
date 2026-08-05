@@ -4,7 +4,7 @@ description: Copia todas las cuentas a otro motor de base de datos sin empezar d
 ---
 
 `/pklogin migrate <motor>` copia todas las cuentas del motor que estás usando a otro, así que
-cambiar no significa empezar de cero.
+cambiarte no significa empezar de cero.
 
 ## Pasos
 
@@ -12,17 +12,17 @@ cambiar no significa empezar de cero.
 
 <Step>
 
-### Rellena los datos de conexión del destino
+### Completa los datos de conexión del motor nuevo
 
-Edita el bloque `Database` con los datos del motor al que te mueves, pero deja `type`
-apuntando al motor en el que estás ahora:
+Edita el bloque `Database` con los datos del motor al que te vas, pero deja `type` apuntando
+al que estás usando ahora:
 
 ```yaml title="config.yml"
 Database:
   type: sqlite          # sigue siendo el motor actual
 
   host: localhost
-  port: 5432            # PostgreSQL, no el 3306 por defecto
+  port: 5432            # PostgreSQL, no el 3306 que viene puesto
   database: pklogin
   username: pklogin
   password: "..."
@@ -40,15 +40,15 @@ Database:
 
 Destinos válidos: `sqlite`, `h2`, `mysql`, `mariadb`, `postgresql`.
 
-La copia corre de forma asíncrona e informa del progreso cada 100 cuentas.
+La copia corre en segundo plano y avisa del progreso cada 100 cuentas.
 
 </Step>
 
 <Step>
 
-### Cambia y reinicia
+### Cambia el motor y reinicia
 
-Cambia `Database.type` al motor nuevo y reinicia el servidor. `/pklogin reload` no reabre la
+Ponle a `Database.type` el motor nuevo y reinicia el servidor. `/pklogin reload` no reabre la
 conexión.
 
 ```yaml title="config.yml"
@@ -60,19 +60,20 @@ Database:
 
 </Steps>
 
-## Qué no toca el comando
+## Lo que el comando no toca
 
-- **No borra nada.** La base de datos original queda exactamente como estaba, y ese es tu
-  rollback: vuelve a poner `type` como estaba y reinicia.
-- **No modifica `config.yml`.** El cambio lo haces tú, después de comprobar la copia.
+- **No borra nada.** La base de datos vieja queda tal cual estaba, y ese es tu plan B: dejas
+  `type` como estaba y reinicias.
+- **No te edita el `config.yml`.** El cambio lo haces tú, después de comprobar que la copia
+  quedó bien.
 
-## Se puede repetir
+## Lo puedes correr las veces que quieras
 
-Las cuentas ya presentes en el destino se saltan, así que una segunda ejecución solo copia lo
-que falta.
+Las cuentas que ya estén en el destino se saltean, así que una segunda pasada solo copia lo
+que falte.
 
-<Callout type="warn" title="Comprueba el puerto antes de migrar">
-  El `port: 3306` que viene por defecto es correcto para MySQL y MariaDB. PostgreSQL escucha
-  en **5432**. Una migración apuntada al puerto equivocado falla al conectar en vez de a
-  medio camino, pero sigue siendo un reinicio desperdiciado.
+<Callout type="warn" title="Fíjate el puerto antes de migrar">
+  El `port: 3306` que viene puesto sirve para MySQL y MariaDB. PostgreSQL escucha en el
+  **5432**. Si apuntas al puerto equivocado, la migración falla al conectar y no a mitad de
+  camino, pero igual te hace perder un reinicio de gusto.
 </Callout>

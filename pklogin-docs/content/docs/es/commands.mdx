@@ -6,55 +6,55 @@ icon: Terminal
 
 ## Comandos de jugador
 
-| Comando | Descripción |
+| Comando | Qué hace |
 | --- | --- |
-| `/login <contraseña>` | Autenticarte con tu contraseña. |
-| `/register <pass> <confirmación>` | Registrar una cuenta nueva. |
-| `/changepassword <vieja> <nueva>` | Cambiar tu contraseña. |
+| `/login <contraseña>` | Entrar con tu contraseña. |
+| `/register <pass> <confirmación>` | Crear una cuenta nueva. |
+| `/changepassword <vieja> <nueva>` | Cambiarte la contraseña. |
 | `/unregister <contraseña>` | Borrar tu propia cuenta. |
-| `/premium confirm` | Convertir tu cuenta a modo `REAL`, autenticada contra Mojang. |
+| `/premium confirm` | Pasar tu cuenta a modo `REAL`, autenticada contra Mojang. |
 | `/offline` | Devolver tu cuenta a modo offline. |
-| `/2fa discord` | Generar un código para vincular tu cuenta de Discord. |
-| `/2fa verify2fa <código>` | Introducir el código 2FA que te enviaron. |
+| `/2fa discord` | Sacar un código para vincular tu cuenta de Discord. |
+| `/2fa verify2fa <código>` | Escribir el código 2FA que te llegó. |
 
-Cambiar una contraseña o activar/desactivar el 2FA descarta cualquier [sesión de
+Cambiar la contraseña o activar/desactivar el 2FA tira abajo cualquier [sesión de
 login](/es/docs/configuration/sessions) abierta de esa cuenta.
 
-## Comandos de administración
+## Comandos de admin
 
-Cada subcomando tiene su propio permiso, así que el acceso se puede dar individualmente.
-`pklogin.admin` es un nodo general, todavía respetado en las rutas de comando de consola.
+Cada subcomando tiene su propio permiso, así que puedes dar acceso de a uno. `pklogin.admin`
+es el permiso que abre todos, y sigue funcionando para los comandos desde consola.
 
-| Comando | Permiso | Descripción |
+| Comando | Permiso | Qué hace |
 | --- | --- | --- |
-| `/pklogin help` | `pklogin.admin.help` | Mostrar la ayuda de admin. |
-| `/pklogin reload` | `pklogin.admin.reload` | Recargar config y mensajes. |
-| `/pklogin authme-import` | `pklogin.admin.authme-import` | Importar cuentas de AuthMe. Asíncrono. |
-| `/pklogin migrate <motor>` | `pklogin.admin.migrate` | Copiar todas las cuentas a otro motor de base de datos. Asíncrono. |
-| `/pklogin forcelogin <usuario>` | `pklogin.admin.forcelogin` | Forzar el login de un jugador. |
-| `/pklogin unregister <usuario>` | `pklogin.admin.unregister` | Borrar la contraseña de un jugador. |
-| `/pklogin delete <usuario>` | `pklogin.admin.delete` | Borrar permanentemente la cuenta de un jugador. |
-| `/pklogin changepass <usuario> <pass>` | `pklogin.admin.changepass` | Cambiar por la fuerza la contraseña de un jugador. |
-| `/pklogin verify <usuario>` | `pklogin.admin.verify` | Mostrar los datos de una cuenta. |
-| `/pklogin dupeip <ip\|usuario>` | `pklogin.admin.dupeip` | Listar cuentas que comparten una IP. |
-| `/pklogin setspawn` | `pklogin.admin.setspawn` | Fijar el spawn previo al login. Solo jugador. |
-| `/pklogin update` | `pklogin.admin.update` | Descargar la última versión de PkLogin. Solo jugador. |
+| `/pklogin help` | `pklogin.admin.help` | Muestra la ayuda de admin. |
+| `/pklogin reload` | `pklogin.admin.reload` | Recarga la config y los mensajes. |
+| `/pklogin authme-import` | `pklogin.admin.authme-import` | Importa las cuentas de AuthMe. Va en segundo plano. |
+| `/pklogin migrate <motor>` | `pklogin.admin.migrate` | Copia todas las cuentas a otro motor de base de datos. Va en segundo plano. |
+| `/pklogin forcelogin <jugador>` | `pklogin.admin.forcelogin` | Loguea a un jugador a la fuerza. |
+| `/pklogin unregister <jugador>` | `pklogin.admin.unregister` | Le borra la contraseña a un jugador. |
+| `/pklogin delete <jugador>` | `pklogin.admin.delete` | Borra la cuenta de un jugador para siempre. |
+| `/pklogin changepass <jugador> <pass>` | `pklogin.admin.changepass` | Le cambia la contraseña a un jugador. |
+| `/pklogin verify <jugador>` | `pklogin.admin.verify` | Muestra los datos de una cuenta. |
+| `/pklogin dupeip <ip\|jugador>` | `pklogin.admin.dupeip` | Lista las cuentas que comparten una IP. |
+| `/pklogin setspawn` | `pklogin.admin.setspawn` | Pone el spawn de antes del login. Solo en el juego. |
+| `/pklogin update` | `pklogin.admin.update` | Descarga la última versión de PkLogin. Solo en el juego. |
 
-<Callout title="Dos comandos necesitan un jugador">
-  `/pklogin setspawn` y `/pklogin update` se rechazan desde la consola: el primero necesita
-  una ubicación, el segundo informa del progreso por chat.
+<Callout title="Dos comandos no andan por consola">
+  `/pklogin setspawn` y `/pklogin update` no funcionan desde la consola: el primero necesita
+  una posición, y el segundo avisa del progreso por chat.
 </Callout>
 
-## Qué hace y qué no hace el reload
+## Qué recarga y qué no recarga el reload
 
-`/pklogin reload` vuelve a leer `config.yml` y el archivo de mensajes activo, y descarta
-todas las sesiones de login abiertas.
+`/pklogin reload` vuelve a leer `config.yml` y el archivo de mensajes que estés usando, y
+tira abajo todas las sesiones de login abiertas.
 
-**No** reabre la conexión a la base de datos. Cambiar `Database.type` necesita reinicio
-completo. Ver [Bases de datos](/es/docs/configuration/database).
+Lo que **no** hace es reabrir la conexión a la base de datos. Cambiar `Database.type` pide
+reiniciar el servidor entero. Mira [Bases de datos](/es/docs/configuration/database).
 
-## Comandos largos
+## Los comandos que tardan
 
-`/pklogin authme-import` y `/pklogin migrate` corren de forma asíncrona e informan del
-progreso cada 100 cuentas. Ninguno borra nada, y ambos saltan las cuentas que ya existen en
-el destino, así que volver a ejecutar cualquiera de los dos es seguro.
+`/pklogin authme-import` y `/pklogin migrate` corren en segundo plano y avisan del progreso
+cada 100 cuentas. Ninguno de los dos borra nada, y los dos saltean las cuentas que ya existen
+en el destino, así que volver a ejecutarlos no rompe nada.

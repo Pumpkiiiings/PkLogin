@@ -1,13 +1,14 @@
 ---
 title: Referencia de config.yml
-description: Todas las opciones del archivo principal, agrupadas como aparecen en disco.
+description: Todas las opciones del archivo principal, en el mismo orden en que aparecen.
 ---
 
-`config.yml` vive en `plugins/PkLogin/`. PkLogin mantiene un campo `version-config` arriba y
-actualiza los archivos antiguos en el sitio al arrancar: se añaden las opciones nuevas y lo
-que cambiaste se conserva exactamente como lo dejaste. No edites ese campo a mano.
+`config.yml` está en `plugins/PkLogin/`. PkLogin mantiene un campo `version-config` arriba de
+todo y va actualizando los archivos viejos al arrancar: agrega las opciones nuevas y te deja
+tal cual lo que hayas cambiado. No toques ese campo a mano.
 
-La mayoría de los cambios se aplican con `/pklogin reload`. Las excepciones se indican abajo.
+Casi todos los cambios se aplican con `/pklogin reload`. Los que no, están avisados más
+abajo.
 
 ## Idioma
 
@@ -15,13 +16,14 @@ La mayoría de los cambios se aplican con `/pklogin reload`. Las excepciones se 
 languageFile: 'messages_en.yml'
 ```
 
-Ver [Idiomas](/es/docs/configuration/languages) para la lista completa de archivos incluidos.
+Mira [Idiomas](/es/docs/configuration/languages) para la lista completa de archivos que
+vienen incluidos.
 
 ## Security
 
 ```yaml
 Security:
-  # Segundos que tiene un jugador para hacer login o registrarse antes de ser expulsado.
+  # Segundos que tiene el jugador para loguearse o registrarse antes de que lo kickee.
   time-to-login: 45
 
   # BCRYPT (por defecto) | ARGON2 | PBKDF2 | SHA512 | SHA256
@@ -37,16 +39,16 @@ Security:
       memory-kb: 65536
       parallelism: 1
 
-  # Retardo mínimo entre dos comandos de autenticación del mismo jugador, en
+  # Tiempo mínimo entre dos comandos de login del mismo jugador, en
   # milisegundos. Evita que un cliente mande intentos más rápido de lo que el
-  # contador de bruteforce puede reaccionar.
+  # contador de fuerza bruta puede reaccionar.
   command-cooldown: 750
 
   session:
     enable: true
     timeout: 5
 
-  # Los nombres que no coincidan se rechazan antes del paso de login.
+  # Los nicks que no coincidan quedan rechazados antes del login.
   valid-name-regex: '([a-zA-Z0-9_]{3,16})|(\*[a-zA-Z0-9_]{3,17})'
 
   password:
@@ -59,7 +61,7 @@ Security:
       secure-regex: '(?=\S*\d)(?=\S*[A-Z])(?=\S*[a-z])(?=\S*[!@#$%^&*?])\S*$'
 ```
 
-Detalles en [Seguridad de contraseñas](/es/docs/configuration/security) y
+Los detalles están en [Seguridad de contraseñas](/es/docs/configuration/security) y
 [Sesiones](/es/docs/configuration/sessions).
 
 ## Database
@@ -69,8 +71,8 @@ Database:
   # sqlite | h2 | mariadb | mysql | postgresql
   type: sqlite
 
-  # Ruta absoluta para compartir un archivo SQLite entre Velocity y el servidor
-  # de auth. Vacío usa la ubicación por defecto.
+  # Ruta absoluta, para compartir un archivo SQLite entre Velocity y el servidor
+  # de auth. Vacío usa la ubicación de siempre.
   sqlite-file-path: ""
 
   host: localhost
@@ -85,7 +87,7 @@ Database:
     max-lifetime: 1800000
 ```
 
-Cambiar `type` requiere **reinicio**, no reload. Ver
+Cambiar `type` pide **reiniciar**, no alcanza con el reload. Mira
 [Bases de datos](/es/docs/configuration/database).
 
 ## Login automático
@@ -97,11 +99,11 @@ autologin:
     skip-register: true
 
   premium:
-    # Apagado por defecto: con esto activo, un jugador offline con el nick de
-    # una cuenta de pago no puede entrar.
+    # Viene desactivado: con esto activado, un jugador offline que use el nick de
+    # una cuenta premium no puede entrar.
     enable: false
 
-    # Preguntar al que acaba de registrar un nick de pago si es suyo.
+    # Preguntarle al que acaba de registrar un nick premium si la cuenta es suya.
     question: true
 
     cache-minutes: 60
@@ -109,22 +111,22 @@ autologin:
     mojang-timeout: 5000
 ```
 
-Ver [Login premium sin contraseña](/es/docs/getting-started/premium-login).
+Mira [Login premium sin contraseña](/es/docs/getting-started/premium-login).
 
 ## Two-factor
 
 ```yaml
 two-factor:
-  # Dígitos por código. Limitado a 4-9.
+  # Dígitos que tiene cada código. De 4 a 9.
   code-length: 6
 
-  # Segundos que un código de login sigue siendo válido.
+  # Segundos que sigue valiendo un código de login.
   login-code-expiration: 300
 
-  # Segundos que un código de vinculación sigue siendo válido.
+  # Segundos que sigue valiendo un código de vinculación.
   link-code-expiration: 600
 
-  # Códigos erróneos permitidos antes de descartar el código pendiente.
+  # Códigos errados que se permiten antes de tirar abajo el código pendiente.
   max-verify-attempts: 5
 
   discord:
@@ -132,17 +134,17 @@ two-factor:
     link-attempt-window: 600
 ```
 
-Las credenciales de cada proveedor viven en `plugins/PkLogin/2fa/`. Ver
+Los datos de cada proveedor están en `plugins/PkLogin/2fa/`. Mira
 [Autenticación en dos pasos](/es/docs/configuration/two-factor).
 
 ## Actualizaciones
 
 ```yaml
 updates:
-  # Contactar con GitHub al arrancar para buscar una versión nueva.
+  # Consultar a GitHub al arrancar si hay versión nueva.
   check: true
 
-  # Avisar a los admins con pklogin.admin.update cuando entren.
+  # Avisarles a los admins con pklogin.admin.update cuando entren.
   notify-admins: true
 ```
 
@@ -154,11 +156,11 @@ authme-import:
   database-path: ""
 ```
 
-Ver [Importar desde AuthMe](/es/docs/migration/authme).
+Mira [Importar desde AuthMe](/es/docs/migration/authme).
 
 ## Username appender
 
-Evita colisiones de nombre entre un jugador premium y uno cracked que comparten nombre.
+Evita que se choquen los nicks de un jugador premium y uno cracked que se llaman igual.
 
 ```yaml
 username-appender:
@@ -175,9 +177,9 @@ username-appender:
       - "myserver.com"
 ```
 
-El jugador se asigna al grupo premium u offline según el hostname por el que conectó, y se le
-añade el apéndice correspondiente al nombre. `valid-name-regex` se comprueba contra el nombre
-que el jugador escribió, antes de añadir cualquier sufijo.
+El jugador cae en el grupo premium o en el offline según el host por el que se conectó, y al
+nick se le agrega lo que corresponda. `valid-name-regex` se comprueba contra el nick que
+escribió el jugador, antes de agregarle ningún sufijo.
 
 ## Legacy
 
@@ -199,14 +201,14 @@ ui:
 
 ```yaml
 teleport:
-  # Teletransportar a una posición segura al entrar.
+  # Teletransportar a un lugar seguro al entrar.
   safe-location: true
 
-  # Restaurar la última posición después del login.
+  # Devolver al jugador a donde estaba después del login.
   last-location: true
 ```
 
-El spawn previo al login se fija en el juego con `/pklogin setspawn`.
+El spawn de antes del login se pone desde el juego con `/pklogin setspawn`.
 
 ## Limbo
 
@@ -219,9 +221,9 @@ limbo:
   inventory:
     hide-inventory: true
 
-  # Velocidades restauradas cuando el jugador se autentica. Son los valores
-  # vanilla: cámbialos solo si otro plugin de tu servidor usa otros.
-  # Solo se aplican cuando block-player-walk está activo.
+  # Velocidades que se le devuelven al jugador cuando se autentica. Son los
+  # valores de vanilla: cámbialos solo si otro plugin de tu servidor usa otros.
+  # Solo se aplican si block-player-walk está activado.
   restore:
     walk-speed: 0.2
     fly-speed: 0.1
@@ -232,7 +234,7 @@ limbo:
 ```yaml
 passwords:
   bruteforce:
-    # Intentos incorrectos permitidos antes de expulsar al jugador.
+    # Intentos errados que se permiten antes de kickear al jugador.
     max-login-tries: 3
 ```
 
@@ -244,28 +246,29 @@ security:
     enable: false
     # INVENTORY | CHAT | MAP
     type: INVENTORY
-    # Caracteres del código, para CHAT y MAP.
+    # Caracteres que tiene el código, para CHAT y MAP.
     code-length: 5
-    # Bloquear todos los comandos hasta resolver el captcha.
-    # /login y /register siguen bloqueados de todas formas.
+    # Bloquear todos los comandos hasta que resuelva el captcha.
+    # /login y /register quedan bloqueados igual.
     blocked-commands: true
 
   ip-limit:
     enable: true
     limit: 3
 
-  # Ignorar la comprobación de "el jugador ya está online" cuando la IP coincide
-  # con la registrada. Útil cuando un jugador pierde conexión y reconecta.
+  # Saltear la comprobación de "ese jugador ya está online" cuando la IP es la
+  # misma con la que está registrado. Sirve cuando a un jugador se le cae la
+  # conexión y vuelve a entrar.
   bypass-online-check-with-same-address: true
 ```
 
-<Callout title="Dos bloques llamados security">
+<Callout title="Ojo: hay dos bloques que se llaman security">
   `Security` (con S mayúscula) tiene los tiempos de login, el hashing, las sesiones y las
-  reglas de contraseña. `security` (minúscula) tiene el captcha, el límite por IP y la
-  comprobación de online. Son bloques separados en el mismo archivo.
+  reglas de contraseña. `security` (con minúscula) tiene el captcha, el límite por IP y la
+  comprobación de online. Son dos bloques distintos en el mismo archivo.
 </Callout>
 
 ## Proxies
 
-Nada. Correr detrás de un proxy no necesita configuración aquí; el motivo está en
+Nada. Correr detrás de un proxy no lleva configuración acá; el motivo está en
 [Configuración de Velocity](/es/docs/getting-started/velocity).

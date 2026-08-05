@@ -41,6 +41,7 @@ pklogin-translator/cache.json
 # tree into all_code.txt, which makes grepping the repo return every hit twice.
 analyzer.py
 all_code.txt
+scratch/
 
 # AI assistant workspace. Machine-local: absolute paths, per-session ids and a
 # vendored copy of skill definitions that belong to whoever set them up.

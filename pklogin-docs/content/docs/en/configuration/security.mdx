@@ -1,0 +1,151 @@
+---
+title: Password security
+description: Hashing algorithms, cost tuning, brute-force protection and the per-IP limit.
+---
+
+## Algorithms
+
+| Algorithm | Notes |
+| --- | --- |
+| **BCRYPT** (default) | Adaptive cost factor. Best general choice. |
+| **ARGON2** | Argon2id, winner of the Password Hashing Competition. Highest security. |
+| **PBKDF2** | Widely standardised. 600,000 iterations, the OWASP 2024 recommendation. |
+| **SHA512** | Salted. Compatibility only, not recommended for new servers. |
+| **SHA256** | Salted. Compatibility only, not recommended for new servers. |
+| AuthMe SHA256 | Read-only. Imported accounts are auto-migrated on first login. |
+
+```yaml title="config.yml"
+Security:
+  hash-algorithm: BCRYPT
+```
+
+<Callout title="Zero-downtime migration">
+  Change `Security.hash-algorithm` at any time. Existing hashes are auto-detected and
+  silently re-hashed to the new algorithm on the player's next successful login — there is
+  no migration command and nobody is locked out.
+</Callout>
+
+## Cost tuning
+
+Higher values slow down both legitimate logins and brute-force attempts, so tune them to
+your CPU. Aim for roughly **250 ms per hash**.
+
+```yaml title="config.yml"
+Security:
+  hashing:
+    bcrypt:
+      # Work factor. Each +1 doubles the time taken.
+      cost: 12
+    pbkdf2:
+      iterations: 600000
+    argon2:
+      iterations: 2
+      # Memory per hash in kibibytes. 65536 = 64 MB.
+      memory-kb: 65536
+      parallelism: 1
+```
+
+Raising a value re-hashes each password on its next login. Lowering one never weakens
+hashes that already exist — they keep the parameters they were created with until the
+player logs in again.
+
+<Callout type="warn" title="Argon2 memory is per hash">
+  `memory-kb: 65536` means every concurrent hash allocates 64 MB. A burst of logins after a
+  restart multiplies that. Check it against the memory your server actually has free.
+</Callout>
+
+## Password rules
+
+```yaml title="config.yml"
+Security:
+  password:
+    # Minimum length, inclusive.
+    small: 5
+    # Maximum length, inclusive.
+    large: 15
+
+    secure:
+      # Perform password strength validation.
+      enable: false
+
+      # Require already-registered players to update passwords that do not
+      # meet the pattern.
+      enforce: false
+
+      secure-regex: '(?=\S*\d)(?=\S*[A-Z])(?=\S*[a-z])(?=\S*[!@#$%^&*?])\S*$'
+```
+
+The shipped `secure-regex` requires a digit, an uppercase letter, a lowercase letter and one
+of `!@#$%^&*?`.
+
+## Brute-force protection
+
+```yaml title="config.yml"
+passwords:
+  bruteforce:
+    max-login-tries: 3
+```
+
+After that many incorrect attempts the player is kicked.
+
+A second limit works alongside it:
+
+```yaml title="config.yml"
+Security:
+  # Minimum milliseconds between two authentication commands from one player.
+  command-cooldown: 750
+```
+
+This stops a client from spamming attempts faster than the counter can react, which matters
+because the counter is checked per attempt and hashing is deliberately slow.
+
+## Per-IP account limit
+
+```yaml title="config.yml"
+security:
+  ip-limit:
+    enable: true
+    limit: 3
+```
+
+Restricts how many accounts can be registered from one address. `/pklogin dupeip <ip|user>`
+lists the accounts sharing an address.
+
+## Name validation
+
+```yaml title="config.yml"
+Security:
+  valid-name-regex: '([a-zA-Z0-9_]{3,16})|(\*[a-zA-Z0-9_]{3,17})'
+```
+
+Names that do not match are rejected before they reach the login step. If
+`username-appender` is enabled the check runs on the name the player typed, before any
+suffix is added.
+
+## Captcha
+
+```yaml title="config.yml"
+security:
+  captcha:
+    enable: false
+    # INVENTORY | CHAT | MAP
+    type: INVENTORY
+    code-length: 5
+    blocked-commands: true
+```
+
+`code-length` applies to the `CHAT` and `MAP` types. With `blocked-commands: true` every
+command is blocked until the captcha is solved; `/login` and `/register` stay blocked either
+way.
+
+## Already-online check
+
+```yaml title="config.yml"
+security:
+  bypass-online-check-with-same-address: true
+```
+
+Normally a second connection under a name that is already online is refused. With this on,
+the refusal is skipped when the new connection comes from the address the account is
+registered with — which is what happens when a player loses connection and reconnects
+before the server notices.

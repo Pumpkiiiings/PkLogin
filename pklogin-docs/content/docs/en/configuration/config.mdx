@@ -1,0 +1,271 @@
+---
+title: config.yml reference
+description: Every option in the main configuration file, grouped as it appears on disk.
+---
+
+`config.yml` lives in `plugins/PkLogin/`. PkLogin maintains a `version-config` field at the
+top and upgrades older files in place on startup: new options are added, and anything you
+changed is kept exactly as you set it. Do not edit that field by hand.
+
+Most changes take effect on `/pklogin reload`. The exceptions are called out below.
+
+## Language
+
+```yaml
+languageFile: 'messages_en.yml'
+```
+
+See [Languages](/en/docs/configuration/languages) for the full list of shipped files.
+
+## Security
+
+```yaml
+Security:
+  # Seconds a player has to log in or register before being kicked.
+  time-to-login: 45
+
+  # BCRYPT (default) | ARGON2 | PBKDF2 | SHA512 | SHA256
+  hash-algorithm: BCRYPT
+
+  hashing:
+    bcrypt:
+      cost: 12
+    pbkdf2:
+      iterations: 600000
+    argon2:
+      iterations: 2
+      memory-kb: 65536
+      parallelism: 1
+
+  # Minimum delay between two authentication commands from the same player, in
+  # milliseconds. Stops a client from spamming attempts faster than the
+  # bruteforce counter can react.
+  command-cooldown: 750
+
+  session:
+    enable: true
+    timeout: 5
+
+  # Names that do not match this are rejected before the login step.
+  valid-name-regex: '([a-zA-Z0-9_]{3,16})|(\*[a-zA-Z0-9_]{3,17})'
+
+  password:
+    small: 5
+    large: 15
+
+    secure:
+      enable: false
+      enforce: false
+      secure-regex: '(?=\S*\d)(?=\S*[A-Z])(?=\S*[a-z])(?=\S*[!@#$%^&*?])\S*$'
+```
+
+Details in [Password security](/en/docs/configuration/security) and
+[Sessions](/en/docs/configuration/sessions).
+
+## Database
+
+```yaml
+Database:
+  # sqlite | h2 | mariadb | mysql | postgresql
+  type: sqlite
+
+  # Absolute path to share one SQLite file between Velocity and the auth server.
+  # Leave empty for the default location.
+  sqlite-file-path: ""
+
+  host: localhost
+  port: 3306
+  database: pklogin
+  username: root
+  password: ""
+
+  pool:
+    maximum-pool-size: 10
+    connection-timeout: 10000
+    max-lifetime: 1800000
+```
+
+Changing `type` requires a **restart**, not a reload. See
+[Databases](/en/docs/configuration/database).
+
+## Automatic login
+
+```yaml
+autologin:
+  bedrock:
+    enable: true
+    skip-register: true
+
+  premium:
+    # Off by default: with it on, an offline player using a paid account's
+    # nickname cannot join at all.
+    enable: false
+
+    # Ask a player who just registered a paid nickname whether it is theirs.
+    question: true
+
+    cache-minutes: 60
+    session-timeout: 60
+    mojang-timeout: 5000
+```
+
+See [Passwordless premium login](/en/docs/getting-started/premium-login).
+
+## Two-factor
+
+```yaml
+two-factor:
+  # Digits per code. Clamped to 4-9.
+  code-length: 6
+
+  # Seconds a login code stays valid.
+  login-code-expiration: 300
+
+  # Seconds an account-linking code stays valid.
+  link-code-expiration: 600
+
+  # Wrong codes allowed before the pending code is discarded.
+  max-verify-attempts: 5
+
+  discord:
+    max-link-attempts: 10
+    link-attempt-window: 600
+```
+
+Provider credentials live in `plugins/PkLogin/2fa/`. See
+[Two-factor authentication](/en/docs/configuration/two-factor).
+
+## Updates
+
+```yaml
+updates:
+  # Contact GitHub on startup to look for a newer release.
+  check: true
+
+  # Tell admins with pklogin.admin.update when they log in.
+  notify-admins: true
+```
+
+## AuthMe import
+
+```yaml
+authme-import:
+  # Absolute path to authme.db. Empty uses plugins/AuthMe/authme.db.
+  database-path: ""
+```
+
+See [Importing from AuthMe](/en/docs/migration/authme).
+
+## Username appender
+
+Prevents name collisions between a premium and a cracked player who share a name.
+
+```yaml
+username-appender:
+  enabled: false
+  premium:
+    username-appendix: ""
+    position: "suffix"
+    domains:
+      - "premium.myserver.com"
+  offline:
+    username-appendix: "+"
+    position: "suffix"
+    domains:
+      - "myserver.com"
+```
+
+The player is placed in the premium or offline group by the hostname they connected to, and
+the matching appendix is added to their name. `valid-name-regex` is checked against the name
+the player typed, before any suffix is added.
+
+## Legacy
+
+```yaml
+legacy:
+  # REAL [recommended] | RANDOM | OFFLINE
+  unique-id-type: OFFLINE
+```
+
+## Interface
+
+```yaml
+ui:
+  use-title-bar: true
+  use-action-bar: true
+```
+
+## Teleport
+
+```yaml
+teleport:
+  # Teleport to a safe position on join.
+  safe-location: true
+
+  # Restore the last position after login.
+  last-location: true
+```
+
+The pre-login spawn is set in game with `/pklogin setspawn`.
+
+## Limbo
+
+```yaml
+limbo:
+  hide-players-before-login: true
+  block-player-walk: true
+  blindness-effect: false
+
+  inventory:
+    hide-inventory: true
+
+  # Speeds restored once the player authenticates. Vanilla values — change them
+  # only if another plugin on your server uses different ones.
+  # Only applied when block-player-walk is enabled.
+  restore:
+    walk-speed: 0.2
+    fly-speed: 0.1
+```
+
+## Brute force
+
+```yaml
+passwords:
+  bruteforce:
+    # Incorrect attempts allowed before the player is kicked.
+    max-login-tries: 3
+```
+
+## General security
+
+```yaml
+security:
+  captcha:
+    enable: false
+    # INVENTORY | CHAT | MAP
+    type: INVENTORY
+    # Characters in the code, for CHAT and MAP.
+    code-length: 5
+    # Block every command until the captcha is solved.
+    # /login and /register stay blocked either way.
+    blocked-commands: true
+
+  ip-limit:
+    enable: true
+    limit: 3
+
+  # Ignore the "player is already online" check when the IP matches the
+  # registered one. Useful when a player loses connection and reconnects.
+  bypass-online-check-with-same-address: true
+```
+
+<Callout title="Two blocks named security">
+  `Security` (capital S) holds login timing, hashing, sessions and password rules.
+  `security` (lowercase) holds the captcha, the per-IP limit and the online check. They are
+  separate blocks in the same file.
+</Callout>
+
+## Proxies
+
+Nothing. Running behind a proxy needs no configuration here — see
+[Velocity setup](/en/docs/getting-started/velocity) for why.

@@ -1,0 +1,159 @@
+---
+title: Configuración de Velocity
+description: Ejecuta PkLogin en un proxy Velocity y en sus backends de autenticación.
+---
+
+**No hay nada que configurar en `config.yml` para un proxy.** Ni si este servidor está
+detrás de uno, ni un secreto compartido. Ambos se leen de ajustes que tu red ya tiene, así
+que no hay una segunda copia que mantener sincronizada ni forma de que las dos discrepen.
+
+## Qué se instala dónde
+
+<Steps>
+
+<Step>
+
+### Instala PkLogin en el proxy
+
+Pon el jar en la carpeta `plugins/` del proxy. En el primer arranque genera
+`plugins/pklogin/backend.yml`.
+
+</Step>
+
+<Step>
+
+### Instala PkLogin en cada backend de autenticación
+
+Cada servidor listado en `backend.auth-servers` también debe ejecutar PkLogin. Los jugadores
+sin autenticar se envían a uno de ellos, elegido al azar si listas más de uno.
+
+</Step>
+
+<Step>
+
+### Usa modern forwarding
+
+```toml title="velocity.toml"
+player-info-forwarding-mode = "modern"
+```
+
+```yaml title="config/paper-global.yml (cada backend)"
+proxies:
+  velocity:
+    enabled: true
+    secret: '<el mismo secreto que forwarding.secret>'
+```
+
+</Step>
+
+<Step>
+
+### Cierra los puertos de los backends con firewall
+
+Un backend accesible directamente es un backend al que se puede entrar sin pasar por el
+proxy, y por tanto sin hacer login.
+
+</Step>
+
+<Step>
+
+### Arranca
+
+El proxy informa qué backends respondieron a su verificación.
+
+</Step>
+
+</Steps>
+
+## backend.yml
+
+```yaml title="plugins/pklogin/backend.yml"
+backend:
+  # Los servidores donde los jugadores hacen login. Cada uno debe correr PkLogin.
+  auth-servers:
+    - 'auth'
+
+  # Pide a cada servidor de arriba que se identifique la primera vez que un
+  # jugador llega a él.
+  verify-connection: true
+
+redirect:
+  # Envía a los jugadores sin autenticar a un servidor de auth aunque el proxy
+  # quisiera ponerlos en otro sitio. Déjalo activado.
+  override-first-server: true
+
+  # Devuelve a los jugadores al último servidor donde estuvieron, en vez de un lobby.
+  redirect-to-last-server: false
+
+  # Milisegundos de espera antes de mover a un jugador a otro servidor.
+  connect-delay: 500
+
+  # Milisegundos de espera antes de reintentar un cambio de servidor fallido.
+  retry-delay: 5000
+
+  after-auth:
+    # Saca a los jugadores del servidor de auth una vez que hicieron login.
+    enabled: false
+    servers:
+      - "lobby-1"
+      - "lobby-2"
+```
+
+<Callout type="warn" title="Deja override-first-server activado">
+  Con esta opción apagada, cualquier cosa que elija un primer servidor —`try` en
+  `velocity.toml`, un forced host, otro plugin— puede meter a un jugador directamente en la
+  red sin que pase nunca por el paso de login.
+</Callout>
+
+## Cómo se aseguran los mensajes
+
+Cuando PkLogin corre en un proxy, el proxy le dice a cada backend cuándo un jugador premium
+fue autenticado. El cliente del juego puede enviar mensajes por ese mismo canal y el backend
+no puede distinguirlos, así que esos mensajes van firmados.
+
+La clave de firma se deriva del secreto de modern forwarding que el proxy y los backends ya
+comparten (`forwarding.secret` en el proxy, `proxies.velocity.secret` en el
+`config/paper-global.yml` de cada backend). El secreto de forwarding nunca se reutiliza
+directamente: se deriva una clave separada, así que los dos nunca comparten material de
+clave.
+
+La consola indica qué se resolvió al arrancar:
+
+```
+[PkLogin] Proxy messages authenticated using the Velocity modern forwarding secret.
+```
+
+## Verificación de backends
+
+A cada servidor listado en `backend.auth-servers` se le pide identificarse la primera vez
+que un jugador llega a él. Un servidor que responde correctamente demuestra que corre
+PkLogin y resolvió la misma clave:
+
+```
+[PkLogin] Backend 'auth' verified: PkLogin 1.7, matching signing key (14 ms).
+```
+
+Uno que no lo hace aparece nombrado en el log, con la causa. La verificación solo informa,
+nunca bloquea una conexión. Apágala con `backend.verify-connection: false` si un servidor de
+la lista corre deliberadamente sin PkLogin, como un limbo que no es Paper/Spigot.
+
+## Por qué la comprobación premium se mueve al proxy
+
+Con cualquier modo de forwarding el proxy es el dueño del handshake de login, así que a un
+backend no le queda nada con qué verificar. PkLogin lee `proxies.velocity.enabled` de
+`config/paper-global.yml` (o `settings.bungeecord` de `spigot.yml`) y actúa en consecuencia:
+esto no es una opción que actives.
+
+<Callout type="warn" title="Legacy forwarding no sirve para el auto-login premium">
+  Sin modern forwarding no hay secreto del que derivar una clave, y el auto-login premium se
+  queda apagado. No es una limitación que valga la pena esquivar: una red con legacy
+  forwarding acepta la identidad que el cliente diga en cualquier puerto de backend
+  alcanzable, así que una contraseña compartida entre plugins no la haría segura. Usa modern
+  forwarding y protege los puertos de tus backends con firewall.
+</Callout>
+
+## Sesiones en una red multiservidor
+
+Las sesiones de login viven en la memoria del servidor que las abrió. En una red con varios
+servidores de auth, una sesión abierta en uno no la conocen los demás. Ver
+[Sesiones](/es/docs/configuration/sessions).

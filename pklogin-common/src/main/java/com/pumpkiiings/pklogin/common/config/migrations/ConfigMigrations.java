@@ -51,9 +51,10 @@ public final class ConfigMigrations {
      *   <li>4 — proxy setup stopped being configuration</li>
      *   <li>5 — login sessions</li>
      *   <li>6 — passwordless premium logins</li>
+     *   <li>7 — the premium question, and premium auto-login off by default</li>
      * </ul>
      */
-    public static final int CURRENT_VERSION = 6;
+    public static final int CURRENT_VERSION = 7;
 
     private ConfigMigrations() {}
 
@@ -66,7 +67,8 @@ public final class ConfigMigrations {
                 .register(new TwoToThree())
                 .register(new ThreeToFour())
                 .register(new FourToFive())
-                .register(new FiveToSix());
+                .register(new FiveToSix())
+                .register(new SixToSeven());
     }
 
     /**
@@ -206,6 +208,35 @@ public final class ConfigMigrations {
         @Override
         public String description() {
             return "premium players can log in without a password";
+        }
+
+        @Override
+        public void migrate(MigrationContext context) {
+            // Intentionally empty; see the class javadoc on additive steps.
+        }
+    }
+
+    /**
+     * Adds {@code autologin.premium.question}.
+     *
+     * <p>The bundled default for {@code autologin.premium.enable} flipped to
+     * {@code false} in this version, but this step deliberately does not write
+     * that: a server already running with it on has offline players who have
+     * lived with the trade-off, and turning it off under them would silently
+     * open every paid nickname they were relying on being reserved. New installs
+     * get the new default from the bundled file; existing ones keep their
+     * answer.</p>
+     */
+    static final class SixToSeven implements ConfigurationMigration {
+
+        @Override
+        public int fromVersion() {
+            return 6;
+        }
+
+        @Override
+        public String description() {
+            return "ask a registering player whether a paid nickname is theirs";
         }
 
         @Override

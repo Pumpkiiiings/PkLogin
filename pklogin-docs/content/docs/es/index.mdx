@@ -1,0 +1,102 @@
+---
+title: Introducción
+description: Un plugin de autenticación práctico, seguro y completo para Spigot, Paper, Folia y Velocity.
+icon: House
+---
+
+PkLogin es un plugin de autenticación para servidores de Minecraft en modo offline. Funciona
+en **Spigot, Paper, Folia y Velocity** desde el mismo código, y su rasgo distintivo es que un
+jugador premium deja de escribir contraseña — le basta con confirmar una vez que el nick es
+suyo.
+
+## Por qué existe
+
+Un servidor en modo offline acepta cualquier nombre que el cliente diga, así que algo tiene
+que probar la identidad. La mayoría de plugins resuelve esto con una contraseña para todos.
+PkLogin también lo hace, pero antes hace una pregunta más barata: ¿este nombre pertenece a
+una cuenta de pago de Mojang? Si es así, la conexión se negocia en modo online y el cliente
+tiene que completar el handshake de cifrado de Mojang. Ese handshake es prueba criptográfica
+de propiedad, no una suposición, así que no hace falta contraseña alguna.
+
+<Callout title="Las contraseñas siguen importando">
+  Los jugadores cracked, los de Bedrock sin Floodgate y cualquiera cuya cuenta ya exista en
+  modo offline siguen registrándose y entrando con contraseña. PkLogin las hashea con BCrypt
+  por defecto, y se puede cambiar a Argon2id o PBKDF2 sin ningún paso de migración.
+</Callout>
+
+## Qué incluye
+
+<Cards>
+  <Card
+    title="Login premium sin contraseña"
+    description="Las cuentas premium se crean sin contraseña en la primera entrada."
+    href="/es/docs/getting-started/premium-login"
+  />
+  <Card
+    title="Seis algoritmos de hash"
+    description="BCrypt, Argon2id, PBKDF2, SHA-512, SHA-256 y AuthMe SHA256 en solo lectura."
+    href="/es/docs/configuration/security"
+  />
+  <Card
+    title="Sesiones de login"
+    description="Reconecta poco después de salir y sáltate la contraseña una vez."
+    href="/es/docs/configuration/sessions"
+  />
+  <Card
+    title="2FA por Discord"
+    description="Un código de un solo uso por sesión, enviado por un bot en DM."
+    href="/es/docs/configuration/two-factor"
+  />
+  <Card
+    title="Cinco motores de base de datos"
+    description="SQLite, H2, MySQL, MariaDB y PostgreSQL, intercambiables con un comando."
+    href="/es/docs/configuration/database"
+  />
+  <Card
+    title="API para desarrolladores"
+    description="Servicios asíncronos y eventos para Bukkit y Velocity."
+    href="/es/docs/developers/api"
+  />
+</Cards>
+
+## Plataformas soportadas
+
+| Plataforma | Notas |
+| --- | --- |
+| Paper / Spigot | API 1.20 o superior, Java 21. Folia está soportado. |
+| Velocity | Corre en el proxy y coordina los backends de autenticación. |
+| Bedrock | Auto-login una vez que Floodgate autenticó al jugador. |
+
+## El estado limbo
+
+Hasta que un jugador se autentica, PkLogin lo mantiene en un estado limbo: movimiento,
+comandos y chat bloqueados, otros jugadores ocultos y el inventario sin mostrar. Todos los
+detalles se configuran bajo `limbo` en `config.yml`.
+
+Un jugador que no se autentica dentro de `Security.time-to-login` segundos (45 por defecto)
+es expulsado.
+
+## Por dónde seguir
+
+<Cards>
+  <Card
+    title="Instalarlo"
+    description="Servidor Paper, Spigot o Folia sin proxy."
+    href="/es/docs/getting-started/installation"
+  />
+  <Card
+    title="Instalarlo detrás de Velocity"
+    description="Proxy más backends de autenticación."
+    href="/es/docs/getting-started/velocity"
+  />
+  <Card
+    title="Vienes de AuthMe"
+    description="Un comando importa todas las cuentas."
+    href="/es/docs/migration/authme"
+  />
+  <Card
+    title="Referencia de comandos"
+    description="Comandos de jugador y admin con sus permisos."
+    href="/es/docs/commands"
+  />
+</Cards>

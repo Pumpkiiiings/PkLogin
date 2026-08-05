@@ -1,0 +1,271 @@
+---
+title: Referencia de config.yml
+description: Todas las opciones del archivo principal, agrupadas como aparecen en disco.
+---
+
+`config.yml` vive en `plugins/PkLogin/`. PkLogin mantiene un campo `version-config` arriba y
+actualiza los archivos antiguos en el sitio al arrancar: se añaden las opciones nuevas y lo
+que cambiaste se conserva exactamente como lo dejaste. No edites ese campo a mano.
+
+La mayoría de los cambios se aplican con `/pklogin reload`. Las excepciones se indican abajo.
+
+## Idioma
+
+```yaml
+languageFile: 'messages_en.yml'
+```
+
+Ver [Idiomas](/es/docs/configuration/languages) para la lista completa de archivos incluidos.
+
+## Security
+
+```yaml
+Security:
+  # Segundos que tiene un jugador para hacer login o registrarse antes de ser expulsado.
+  time-to-login: 45
+
+  # BCRYPT (por defecto) | ARGON2 | PBKDF2 | SHA512 | SHA256
+  hash-algorithm: BCRYPT
+
+  hashing:
+    bcrypt:
+      cost: 12
+    pbkdf2:
+      iterations: 600000
+    argon2:
+      iterations: 2
+      memory-kb: 65536
+      parallelism: 1
+
+  # Retardo mínimo entre dos comandos de autenticación del mismo jugador, en
+  # milisegundos. Evita que un cliente mande intentos más rápido de lo que el
+  # contador de bruteforce puede reaccionar.
+  command-cooldown: 750
+
+  session:
+    enable: true
+    timeout: 5
+
+  # Los nombres que no coincidan se rechazan antes del paso de login.
+  valid-name-regex: '([a-zA-Z0-9_]{3,16})|(\*[a-zA-Z0-9_]{3,17})'
+
+  password:
+    small: 5
+    large: 15
+
+    secure:
+      enable: false
+      enforce: false
+      secure-regex: '(?=\S*\d)(?=\S*[A-Z])(?=\S*[a-z])(?=\S*[!@#$%^&*?])\S*$'
+```
+
+Detalles en [Seguridad de contraseñas](/es/docs/configuration/security) y
+[Sesiones](/es/docs/configuration/sessions).
+
+## Database
+
+```yaml
+Database:
+  # sqlite | h2 | mariadb | mysql | postgresql
+  type: sqlite
+
+  # Ruta absoluta para compartir un archivo SQLite entre Velocity y el servidor
+  # de auth. Vacío usa la ubicación por defecto.
+  sqlite-file-path: ""
+
+  host: localhost
+  port: 3306
+  database: pklogin
+  username: root
+  password: ""
+
+  pool:
+    maximum-pool-size: 10
+    connection-timeout: 10000
+    max-lifetime: 1800000
+```
+
+Cambiar `type` requiere **reinicio**, no reload. Ver
+[Bases de datos](/es/docs/configuration/database).
+
+## Login automático
+
+```yaml
+autologin:
+  bedrock:
+    enable: true
+    skip-register: true
+
+  premium:
+    # Apagado por defecto: con esto activo, un jugador offline con el nick de
+    # una cuenta de pago no puede entrar.
+    enable: false
+
+    # Preguntar al que acaba de registrar un nick de pago si es suyo.
+    question: true
+
+    cache-minutes: 60
+    session-timeout: 60
+    mojang-timeout: 5000
+```
+
+Ver [Login premium sin contraseña](/es/docs/getting-started/premium-login).
+
+## Two-factor
+
+```yaml
+two-factor:
+  # Dígitos por código. Limitado a 4-9.
+  code-length: 6
+
+  # Segundos que un código de login sigue siendo válido.
+  login-code-expiration: 300
+
+  # Segundos que un código de vinculación sigue siendo válido.
+  link-code-expiration: 600
+
+  # Códigos erróneos permitidos antes de descartar el código pendiente.
+  max-verify-attempts: 5
+
+  discord:
+    max-link-attempts: 10
+    link-attempt-window: 600
+```
+
+Las credenciales de cada proveedor viven en `plugins/PkLogin/2fa/`. Ver
+[Autenticación en dos pasos](/es/docs/configuration/two-factor).
+
+## Actualizaciones
+
+```yaml
+updates:
+  # Contactar con GitHub al arrancar para buscar una versión nueva.
+  check: true
+
+  # Avisar a los admins con pklogin.admin.update cuando entren.
+  notify-admins: true
+```
+
+## Importación de AuthMe
+
+```yaml
+authme-import:
+  # Ruta absoluta a authme.db. Vacío usa plugins/AuthMe/authme.db.
+  database-path: ""
+```
+
+Ver [Importar desde AuthMe](/es/docs/migration/authme).
+
+## Username appender
+
+Evita colisiones de nombre entre un jugador premium y uno cracked que comparten nombre.
+
+```yaml
+username-appender:
+  enabled: false
+  premium:
+    username-appendix: ""
+    position: "suffix"
+    domains:
+      - "premium.myserver.com"
+  offline:
+    username-appendix: "+"
+    position: "suffix"
+    domains:
+      - "myserver.com"
+```
+
+El jugador se asigna al grupo premium u offline según el hostname por el que conectó, y se le
+añade el apéndice correspondiente al nombre. `valid-name-regex` se comprueba contra el nombre
+que el jugador escribió, antes de añadir cualquier sufijo.
+
+## Legacy
+
+```yaml
+legacy:
+  # REAL [recomendado] | RANDOM | OFFLINE
+  unique-id-type: OFFLINE
+```
+
+## Interfaz
+
+```yaml
+ui:
+  use-title-bar: true
+  use-action-bar: true
+```
+
+## Teleport
+
+```yaml
+teleport:
+  # Teletransportar a una posición segura al entrar.
+  safe-location: true
+
+  # Restaurar la última posición después del login.
+  last-location: true
+```
+
+El spawn previo al login se fija en el juego con `/pklogin setspawn`.
+
+## Limbo
+
+```yaml
+limbo:
+  hide-players-before-login: true
+  block-player-walk: true
+  blindness-effect: false
+
+  inventory:
+    hide-inventory: true
+
+  # Velocidades restauradas cuando el jugador se autentica. Son los valores
+  # vanilla: cámbialos solo si otro plugin de tu servidor usa otros.
+  # Solo se aplican cuando block-player-walk está activo.
+  restore:
+    walk-speed: 0.2
+    fly-speed: 0.1
+```
+
+## Fuerza bruta
+
+```yaml
+passwords:
+  bruteforce:
+    # Intentos incorrectos permitidos antes de expulsar al jugador.
+    max-login-tries: 3
+```
+
+## Seguridad general
+
+```yaml
+security:
+  captcha:
+    enable: false
+    # INVENTORY | CHAT | MAP
+    type: INVENTORY
+    # Caracteres del código, para CHAT y MAP.
+    code-length: 5
+    # Bloquear todos los comandos hasta resolver el captcha.
+    # /login y /register siguen bloqueados de todas formas.
+    blocked-commands: true
+
+  ip-limit:
+    enable: true
+    limit: 3
+
+  # Ignorar la comprobación de "el jugador ya está online" cuando la IP coincide
+  # con la registrada. Útil cuando un jugador pierde conexión y reconecta.
+  bypass-online-check-with-same-address: true
+```
+
+<Callout title="Dos bloques llamados security">
+  `Security` (con S mayúscula) tiene los tiempos de login, el hashing, las sesiones y las
+  reglas de contraseña. `security` (minúscula) tiene el captcha, el límite por IP y la
+  comprobación de online. Son bloques separados en el mismo archivo.
+</Callout>
+
+## Proxies
+
+Nada. Correr detrás de un proxy no necesita configuración aquí; el motivo está en
+[Configuración de Velocity](/es/docs/getting-started/velocity).

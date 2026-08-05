@@ -1,0 +1,60 @@
+---
+title: Commands
+description: Every player and admin command, with the permission each one needs.
+icon: Terminal
+---
+
+## Player commands
+
+| Command | Description |
+| --- | --- |
+| `/login <password>` | Authenticate with your password. |
+| `/register <pass> <confirm>` | Register a new account. |
+| `/changepassword <old> <new>` | Change your password. |
+| `/unregister <password>` | Delete your own account. |
+| `/premium confirm` | Convert your account to `REAL` mode, authenticated against Mojang. |
+| `/offline` | Convert your account back to offline mode. |
+| `/2fa discord` | Generate a code to link your Discord account. |
+| `/2fa verify2fa <code>` | Enter the 2FA code you were sent. |
+
+Changing a password or toggling 2FA drops any open [login
+session](/en/docs/configuration/sessions) for that account.
+
+## Admin commands
+
+Each subcommand has its own permission, so access can be granted individually.
+`pklogin.admin` is a blanket node, still honoured on the console-side command paths.
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/pklogin help` | `pklogin.admin.help` | Show the admin help. |
+| `/pklogin reload` | `pklogin.admin.reload` | Reload config and messages. |
+| `/pklogin authme-import` | `pklogin.admin.authme-import` | Import accounts from AuthMe. Async. |
+| `/pklogin migrate <engine>` | `pklogin.admin.migrate` | Copy every account into another database engine. Async. |
+| `/pklogin forcelogin <user>` | `pklogin.admin.forcelogin` | Force a player to be logged in. |
+| `/pklogin unregister <user>` | `pklogin.admin.unregister` | Clear a player's password. |
+| `/pklogin delete <user>` | `pklogin.admin.delete` | Permanently delete a player account. |
+| `/pklogin changepass <user> <pass>` | `pklogin.admin.changepass` | Force-change a player's password. |
+| `/pklogin verify <user>` | `pklogin.admin.verify` | Show an account's details. |
+| `/pklogin dupeip <ip\|user>` | `pklogin.admin.dupeip` | List accounts sharing an IP address. |
+| `/pklogin setspawn` | `pklogin.admin.setspawn` | Set the pre-login spawn location. Player only. |
+| `/pklogin update` | `pklogin.admin.update` | Download the latest PkLogin version. Player only. |
+
+<Callout title="Two commands need a player">
+  `/pklogin setspawn` and `/pklogin update` are refused from the console — the first needs a
+  location, the second reports progress in chat.
+</Callout>
+
+## What reload does and does not do
+
+`/pklogin reload` re-reads `config.yml` and the active message file, and drops every open
+login session.
+
+It does **not** reopen the database connection. Changing `Database.type` needs a full
+restart. See [Databases](/en/docs/configuration/database).
+
+## Long-running commands
+
+`/pklogin authme-import` and `/pklogin migrate` both run asynchronously and report progress
+every 100 accounts. Neither deletes anything, and both skip accounts already present at the
+destination, so re-running either is safe.

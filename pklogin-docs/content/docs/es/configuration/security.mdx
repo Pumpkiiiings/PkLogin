@@ -1,0 +1,152 @@
+---
+title: Seguridad de contraseñas
+description: Algoritmos de hash, ajuste de coste, protección contra fuerza bruta y límite por IP.
+---
+
+## Algoritmos
+
+| Algoritmo | Notas |
+| --- | --- |
+| **BCRYPT** (por defecto) | Factor de coste adaptativo. La mejor opción general. |
+| **ARGON2** | Argon2id, ganador de la Password Hashing Competition. Máxima seguridad. |
+| **PBKDF2** | Muy estandarizado. 600.000 iteraciones, la recomendación OWASP 2024. |
+| **SHA512** | Con sal. Solo compatibilidad, no recomendado para servidores nuevos. |
+| **SHA256** | Con sal. Solo compatibilidad, no recomendado para servidores nuevos. |
+| AuthMe SHA256 | Solo lectura. Las cuentas importadas se migran solas en el primer login. |
+
+```yaml title="config.yml"
+Security:
+  hash-algorithm: BCRYPT
+```
+
+<Callout title="Migración sin downtime">
+  Cambia `Security.hash-algorithm` cuando quieras. Los hashes existentes se detectan solos y
+  se rehashean en silencio al nuevo algoritmo en el siguiente login correcto del jugador: no
+  hay comando de migración y nadie se queda fuera.
+</Callout>
+
+## Ajuste de coste
+
+Los valores más altos ralentizan tanto los logins legítimos como los intentos de fuerza
+bruta, así que ajústalos a tu CPU. Apunta a unos **250 ms por hash**.
+
+```yaml title="config.yml"
+Security:
+  hashing:
+    bcrypt:
+      # Factor de trabajo. Cada +1 duplica el tiempo.
+      cost: 12
+    pbkdf2:
+      iterations: 600000
+    argon2:
+      iterations: 2
+      # Memoria por hash en kibibytes. 65536 = 64 MB.
+      memory-kb: 65536
+      parallelism: 1
+```
+
+Subir un valor rehashea cada contraseña en su siguiente login. Bajar uno nunca debilita los
+hashes que ya existen: conservan los parámetros con los que se crearon hasta que el jugador
+vuelva a entrar.
+
+<Callout type="warn" title="La memoria de Argon2 es por hash">
+  `memory-kb: 65536` significa que cada hash concurrente reserva 64 MB. Una avalancha de
+  logins tras un reinicio lo multiplica. Compáralo con la memoria que tu servidor tiene
+  libre de verdad.
+</Callout>
+
+## Reglas de contraseña
+
+```yaml title="config.yml"
+Security:
+  password:
+    # Longitud mínima, inclusive.
+    small: 5
+    # Longitud máxima, inclusive.
+    large: 15
+
+    secure:
+      # Validar la fortaleza de la contraseña.
+      enable: false
+
+      # Obligar a los jugadores ya registrados a actualizar contraseñas que no
+      # cumplan el patrón.
+      enforce: false
+
+      secure-regex: '(?=\S*\d)(?=\S*[A-Z])(?=\S*[a-z])(?=\S*[!@#$%^&*?])\S*$'
+```
+
+El `secure-regex` que viene por defecto exige un dígito, una mayúscula, una minúscula y uno
+de `!@#$%^&*?`.
+
+## Protección contra fuerza bruta
+
+```yaml title="config.yml"
+passwords:
+  bruteforce:
+    max-login-tries: 3
+```
+
+Pasados esos intentos incorrectos, el jugador es expulsado.
+
+Un segundo límite trabaja junto a este:
+
+```yaml title="config.yml"
+Security:
+  # Milisegundos mínimos entre dos comandos de autenticación de un jugador.
+  command-cooldown: 750
+```
+
+Evita que un cliente mande intentos más rápido de lo que el contador puede reaccionar, lo
+que importa porque el contador se comprueba por intento y el hashing es lento a propósito.
+
+## Límite de cuentas por IP
+
+```yaml title="config.yml"
+security:
+  ip-limit:
+    enable: true
+    limit: 3
+```
+
+Restringe cuántas cuentas se pueden registrar desde una dirección.
+`/pklogin dupeip <ip|usuario>` lista las cuentas que comparten una dirección.
+
+## Validación de nombres
+
+```yaml title="config.yml"
+Security:
+  valid-name-regex: '([a-zA-Z0-9_]{3,16})|(\*[a-zA-Z0-9_]{3,17})'
+```
+
+Los nombres que no coinciden se rechazan antes de llegar al paso de login. Si
+`username-appender` está activo, la comprobación se hace sobre el nombre que el jugador
+escribió, antes de añadir cualquier sufijo.
+
+## Captcha
+
+```yaml title="config.yml"
+security:
+  captcha:
+    enable: false
+    # INVENTORY | CHAT | MAP
+    type: INVENTORY
+    code-length: 5
+    blocked-commands: true
+```
+
+`code-length` se aplica a los tipos `CHAT` y `MAP`. Con `blocked-commands: true` se bloquea
+todo comando hasta resolver el captcha; `/login` y `/register` siguen bloqueados de todas
+formas.
+
+## Comprobación de "ya está online"
+
+```yaml title="config.yml"
+security:
+  bypass-online-check-with-same-address: true
+```
+
+Normalmente una segunda conexión con un nombre que ya está online se rechaza. Con esto
+activo, el rechazo se salta cuando la conexión nueva viene de la dirección con la que la
+cuenta está registrada, que es lo que pasa cuando un jugador pierde conexión y reconecta
+antes de que el servidor se entere.

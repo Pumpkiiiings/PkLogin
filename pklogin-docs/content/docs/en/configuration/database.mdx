@@ -1,0 +1,78 @@
+---
+title: Databases
+description: SQLite, H2, MySQL, MariaDB and PostgreSQL, and how to move between them.
+---
+
+## Supported engines
+
+| Engine | Notes |
+| --- | --- |
+| **sqlite** | Default. Zero config, one local file. |
+| **h2** | In-process, file-based. |
+| **mysql** | External MySQL server. |
+| **mariadb** | External MariaDB server. |
+| **postgresql** | External PostgreSQL server. |
+
+`sqlite` and `h2` keep everything in a file next to the plugin and need nothing configured
+below `type`. The rest connect to a server, so set `host`, `port`, `database`, `username`
+and `password`.
+
+## Configuration
+
+```yaml title="config.yml"
+Database:
+  type: sqlite
+
+  # Absolute path to share one SQLite file between Velocity and the auth server.
+  # Leave empty for the default location.
+  sqlite-file-path: ""
+
+  host: localhost
+  port: 3306
+  database: pklogin
+  username: root
+  password: ""
+
+  pool:
+    # Ignored for SQLite, which is always limited to a single connection.
+    maximum-pool-size: 10
+    # Milliseconds to wait for a free connection.
+    connection-timeout: 10000
+    # Milliseconds a connection may live before being replaced.
+    max-lifetime: 1800000
+```
+
+<Callout type="warn" title="PostgreSQL does not listen on 3306">
+  The shipped `port: 3306` is right for MySQL and MariaDB only. PostgreSQL listens on
+  **5432** — change it when you switch, because the default is not correct for both.
+</Callout>
+
+## Connection pool
+
+`max-lifetime` should stay **below** your MySQL or MariaDB `wait_timeout`. If the server
+closes a connection the pool still believes is alive, the next query on it fails.
+
+`maximum-pool-size` is ignored for SQLite, which is always limited to a single connection.
+
+## Sharing SQLite between the proxy and a backend
+
+Set `sqlite-file-path` on both to the same absolute path:
+
+```yaml title="config.yml"
+Database:
+  type: sqlite
+  sqlite-file-path: "C:/servers/network/plugins/pklogin/accounts.db"
+```
+
+<Callout title="Prefer a server engine for networks">
+  One SQLite file written by two processes is a single writer at a time. For anything past a
+  proxy plus one backend, MySQL, MariaDB or PostgreSQL will behave better.
+</Callout>
+
+## Changing engine
+
+Changing `Database.type` requires a **full restart** — `/pklogin reload` does not reopen the
+connection.
+
+To keep your accounts, copy them first with `/pklogin migrate <engine>`. See
+[Migrating between engines](/en/docs/migration/engines).

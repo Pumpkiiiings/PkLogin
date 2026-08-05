@@ -1,0 +1,41 @@
+---
+title: Login sessions
+description: Let a player who reconnects soon after leaving skip the password.
+---
+
+A player who reconnects soon after leaving skips the password. The session opens when they
+disconnect, is tied to the address they were on, and is spent the first time it is used —
+one disconnect buys one reconnect.
+
+```yaml title="config.yml"
+Security:
+  session:
+    enable: true
+    # Minutes a session stays open. 0 turns sessions off, same as enable: false.
+    timeout: 5
+```
+
+## What ends a session
+
+Sessions are dropped when:
+
+- the password changes
+- 2FA is turned on or off
+- the account is deleted
+- `/pklogin reload` runs
+- the server restarts — they live in memory only
+
+## Know what the address check proves
+
+<Callout type="warn" title="Minutes, not hours">
+  An address is not a person: everyone behind one router, one public network or one mobile
+  carrier shares it. While a session is open, anyone on that address who types the player's
+  name gets in without the password — and without the 2FA code if the account has one.
+  Minutes are a reasonable bet on a dropped connection; hours are a standing invitation.
+</Callout>
+
+## Several auth servers
+
+Sessions live in the memory of the server that opened them. On a network with more than one
+auth server, a session opened on one is not known to the others, so a player who lands on a
+different backend is asked for the password again.

@@ -1,0 +1,79 @@
+---
+title: Migrating between engines
+description: Copy every account into another database engine without a fresh start.
+---
+
+`/pklogin migrate <engine>` copies every account from the engine you are running into
+another one, so switching is not a fresh start.
+
+## Steps
+
+<Steps>
+
+<Step>
+
+### Fill in the target's connection details
+
+Edit the `Database` block with the details of the engine you are moving **to**, but leave
+`type` pointing at the engine you are currently on:
+
+```yaml title="config.yml"
+Database:
+  type: sqlite          # still the current engine
+
+  host: localhost
+  port: 5432            # PostgreSQL, not the shipped 3306
+  database: pklogin
+  username: pklogin
+  password: "..."
+```
+
+</Step>
+
+<Step>
+
+### Run the migration
+
+```
+/pklogin migrate postgresql
+```
+
+Valid targets: `sqlite`, `h2`, `mysql`, `mariadb`, `postgresql`.
+
+The copy runs asynchronously and reports progress every 100 accounts.
+
+</Step>
+
+<Step>
+
+### Switch and restart
+
+Change `Database.type` to the new engine and restart the server. `/pklogin reload` does not
+reopen the connection.
+
+```yaml title="config.yml"
+Database:
+  type: postgresql
+```
+
+</Step>
+
+</Steps>
+
+## What the command does not touch
+
+- **Nothing is deleted.** The original database stays exactly as it was, which is your
+  rollback: change `type` back and restart.
+- **`config.yml` is not modified.** The switch is yours to make, after you have checked the
+  copy.
+
+## Safe to re-run
+
+Accounts already present in the target are skipped, so a second run only copies what is
+missing.
+
+<Callout type="warn" title="Check the port before you migrate">
+  The shipped `port: 3306` is right for MySQL and MariaDB. PostgreSQL listens on **5432**. A
+  migration pointed at the wrong port fails at connect time rather than halfway through, but
+  it is still a wasted restart.
+</Callout>

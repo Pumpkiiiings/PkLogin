@@ -1,0 +1,64 @@
+---
+title: Importing from AuthMe
+description: Move every AuthMe account into PkLogin with one command.
+---
+
+<Steps>
+
+<Step>
+
+### Place the AuthMe database
+
+Put `authme.db` at `plugins/AuthMe/authme.db`, or point PkLogin at it:
+
+```yaml title="config.yml"
+authme-import:
+  # Absolute path to authme.db. Empty uses plugins/AuthMe/authme.db.
+  database-path: ""
+```
+
+</Step>
+
+<Step>
+
+### Run the import
+
+```
+/pklogin authme-import
+```
+
+The import runs asynchronously and reports progress every 100 accounts.
+
+</Step>
+
+<Step>
+
+### Remove AuthMe
+
+Once the import reports finished, stop the server and delete the AuthMe jar. Two
+authentication plugins competing for the same login events will not end well.
+
+</Step>
+
+</Steps>
+
+## What is preserved
+
+| Field | Notes |
+| --- | --- |
+| Password | Imported as an AuthMe SHA256 hash, read-only. Auto-migrated to your configured algorithm on the player's first successful login. |
+| IP address | Kept, so the per-IP limit and `/pklogin dupeip` work from day one. |
+| Registration date | Kept. |
+
+## Safe to re-run
+
+Accounts already imported are skipped, so running the command a second time costs time and
+nothing else.
+
+## Passwords after the import
+
+AuthMe SHA256 is supported for **reading** only. PkLogin never writes a new hash in that
+format: the first time an imported player logs in successfully, the password is silently
+re-hashed with whatever `Security.hash-algorithm` says. Nobody has to reset anything.
+
+See [Password security](/en/docs/configuration/security) for the algorithm list.

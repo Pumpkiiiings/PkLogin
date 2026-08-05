@@ -1,0 +1,42 @@
+---
+title: Sesiones de login
+description: Deja que un jugador que reconecta poco después de salir se salte la contraseña.
+---
+
+Un jugador que reconecta poco después de salir se salta la contraseña. La sesión se abre
+cuando se desconecta, va atada a la dirección en la que estaba, y se gasta la primera vez
+que se usa: una desconexión compra una reconexión.
+
+```yaml title="config.yml"
+Security:
+  session:
+    enable: true
+    # Minutos que una sesión sigue abierta. 0 apaga las sesiones, igual que enable: false.
+    timeout: 5
+```
+
+## Qué cierra una sesión
+
+Las sesiones se descartan cuando:
+
+- cambia la contraseña
+- se activa o desactiva el 2FA
+- se borra la cuenta
+- se ejecuta `/pklogin reload`
+- se reinicia el servidor: viven solo en memoria
+
+## Ten claro qué prueba la comprobación de dirección
+
+<Callout type="warn" title="Minutos, no horas">
+  Una dirección no es una persona: todos los que están detrás de un router, de una red
+  pública o de una operadora móvil la comparten. Mientras una sesión está abierta, cualquiera
+  en esa dirección que escriba el nombre del jugador entra sin la contraseña, y sin el código
+  2FA si la cuenta tiene uno. Unos minutos son una apuesta razonable ante una caída de
+  conexión; unas horas son una invitación abierta.
+</Callout>
+
+## Varios servidores de auth
+
+Las sesiones viven en la memoria del servidor que las abrió. En una red con más de un
+servidor de auth, una sesión abierta en uno no la conocen los demás, así que a un jugador que
+aterrice en otro backend se le vuelve a pedir la contraseña.

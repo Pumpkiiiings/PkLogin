@@ -69,5 +69,9 @@ safe to ship.
 The project builds as a standard Next.js app — import it into Vercel with the root directory
 set to `pklogin-docs`.
 
+`vercel.json` pins `framework: nextjs`. Without it, a project whose preset is left as *Other*
+builds fine and then fails looking for a `public/` output directory, because that is what the
+Other preset publishes.
+
 Set `NEXT_PUBLIC_SITE_URL` to your production domain so OG images and canonical URLs resolve
 against it. Without it, Vercel's own deployment URL is used.

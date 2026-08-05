@@ -1,0 +1,157 @@
+---
+title: Velocity setup
+description: Run PkLogin on a Velocity proxy and its auth backends.
+---
+
+**There is nothing to configure in `config.yml` for a proxy.** Not whether this server is
+behind one, and not a shared secret. Both are read from settings your network already has,
+so there is no second copy to keep in sync and no way for the two to disagree.
+
+## What you install where
+
+<Steps>
+
+<Step>
+
+### Install PkLogin on the proxy
+
+Drop the jar into the proxy's `plugins/` folder. On first start it generates
+`plugins/pklogin/backend.yml`.
+
+</Step>
+
+<Step>
+
+### Install PkLogin on every auth backend
+
+Every server named under `backend.auth-servers` must run PkLogin too. Unauthenticated
+players are sent to one of them, picked at random when you list more than one.
+
+</Step>
+
+<Step>
+
+### Use modern forwarding
+
+```toml title="velocity.toml"
+player-info-forwarding-mode = "modern"
+```
+
+```yaml title="config/paper-global.yml (each backend)"
+proxies:
+  velocity:
+    enabled: true
+    secret: '<the same secret as forwarding.secret>'
+```
+
+</Step>
+
+<Step>
+
+### Firewall the backend ports
+
+A backend that is reachable directly is a backend that can be joined without passing
+through the proxy — and therefore without logging in.
+
+</Step>
+
+<Step>
+
+### Start it up
+
+The proxy reports which backends answered its verification check.
+
+</Step>
+
+</Steps>
+
+## backend.yml
+
+```yaml title="plugins/pklogin/backend.yml"
+backend:
+  # The servers where players log in. Each must run PkLogin.
+  auth-servers:
+    - 'auth'
+
+  # Ask each server above to identify itself the first time a player reaches it.
+  verify-connection: true
+
+redirect:
+  # Send unauthenticated players to an auth server even when the proxy wanted to
+  # put them somewhere else. Leave this on.
+  override-first-server: true
+
+  # Send players back to the server they were last on, instead of a lobby.
+  redirect-to-last-server: false
+
+  # Milliseconds to wait before moving a player to another server.
+  connect-delay: 500
+
+  # Milliseconds to wait before retrying a failed server switch.
+  retry-delay: 5000
+
+  after-auth:
+    # Move players off the auth server once they have logged in.
+    enabled: false
+    servers:
+      - "lobby-1"
+      - "lobby-2"
+```
+
+<Callout type="warn" title="Leave override-first-server on">
+  With it off, anything that picks a first server — `try` in `velocity.toml`, a forced host,
+  another plugin — can drop a player straight into the network without them ever passing
+  through the login step.
+</Callout>
+
+## How the messages are secured
+
+When PkLogin runs on a proxy, the proxy tells each backend when a premium player has been
+authenticated. The game client can send messages on that same channel and the backend
+cannot tell the two apart, so those messages are signed.
+
+The signing key is derived from the Velocity modern-forwarding secret the proxy and
+backends already share (`forwarding.secret` on the proxy, `proxies.velocity.secret` in each
+backend's `config/paper-global.yml`). The forwarding secret is never reused directly — a
+separate key is derived from it, so the two never share key material.
+
+The console states what was resolved on startup:
+
+```
+[PkLogin] Proxy messages authenticated using the Velocity modern forwarding secret.
+```
+
+## Backend verification
+
+Each server listed under `backend.auth-servers` is asked to identify itself the first time
+a player reaches it. A server that answers correctly proves it runs PkLogin and resolved
+the same key:
+
+```
+[PkLogin] Backend 'auth' verified: PkLogin 1.7, matching signing key (14 ms).
+```
+
+One that does not is named in the log, with the reason. The check only reports — it never
+blocks a connection. Turn it off with `backend.verify-connection: false` if a listed server
+deliberately runs without PkLogin, such as a limbo that is not a Paper/Spigot server.
+
+## Why premium checks move to the proxy
+
+Behind any forwarding mode the proxy owns the login handshake, so a backend has nothing
+left to verify with. PkLogin reads `proxies.velocity.enabled` from `config/paper-global.yml`
+(or `settings.bungeecord` from `spigot.yml`) and acts accordingly — this is not a setting
+you turn on.
+
+<Callout type="warn" title="Legacy forwarding is not supported for premium auto-login">
+  Without Velocity modern forwarding there is no secret to derive a key from, and premium
+  auto-login stays off. This is not a limitation worth working around: a network on legacy
+  forwarding accepts whatever identity a client claims on any backend port that is
+  reachable, so a shared password between plugins would not make it safe. Use modern
+  forwarding, and firewall your backend ports.
+</Callout>
+
+## Sessions on a multi-server network
+
+Login sessions live in the memory of the server that opened them. On a network with several
+auth servers, a session opened on one is not known to the others. See
+[Sessions](/en/docs/configuration/sessions).

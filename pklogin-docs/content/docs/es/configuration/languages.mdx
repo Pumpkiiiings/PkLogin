@@ -1,0 +1,84 @@
+---
+title: Idiomas
+description: Las 18 traducciones incluidas y cómo cambiarlas o personalizarlas.
+---
+
+## Cambiar el idioma
+
+<Steps>
+
+<Step>
+Instala el plugin y arranca el servidor una vez para que se generen los archivos.
+</Step>
+
+<Step>
+
+Fija `languageFile` en `config.yml` al archivo que quieras:
+
+```yaml title="config.yml"
+languageFile: 'messages_es.yml'
+```
+
+</Step>
+
+<Step>
+Ejecuta `/pklogin reload` y edita el archivo de mensajes a tu gusto.
+</Step>
+
+</Steps>
+
+## Traducciones incluidas
+
+| Código | Idioma |
+| --- | --- |
+| `ar` | Español (Argentina) |
+| `br` | Portugués (Brasil) |
+| `cn` | Chino (simplificado) |
+| `cz` | Checo |
+| `de` | Alemán |
+| `en` | Inglés |
+| `es` | Español |
+| `fr` | Francés |
+| `hr` | Croata |
+| `hu` | Húngaro |
+| `it` | Italiano |
+| `lt` | Lituano |
+| `pl` | Polaco |
+| `pt` | Portugués |
+| `ru` | Ruso |
+| `sr` | Serbio |
+| `tr` | Turco |
+| `ua` | Ucraniano |
+
+Cada archivo es `messages_<código>.yml` en `plugins/PkLogin/`. Las fuentes están en
+[`pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/`](https://github.com/Pumpkiiiings/PkLogin/tree/main/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang).
+
+## Personalizar mensajes
+
+Edita directamente el archivo que nombra `languageFile`. Los mensajes son YAML plano y
+soportan los códigos de color habituales:
+
+```yaml title="messages_es.yml"
+messages:
+  before-login:
+    subtitle: '&7Usa: /login <contraseña>'
+```
+
+## Dónde aparecen los mensajes
+
+Dos interruptores controlan las superficies en pantalla:
+
+```yaml title="config.yml"
+ui:
+  # Mensajes en la barra de título.
+  use-title-bar: true
+
+  # Mensajes en la action bar.
+  use-action-bar: true
+```
+
+## Contribuir una traducción
+
+Copia `messages_en.yml`, traduce los valores y abre un pull request con el archivo nombrado
+por su código de idioma. Las claves son comunes a todos los archivos, así que una clave que
+falte cae a nada en vez de al inglés: tradúcelas todas.

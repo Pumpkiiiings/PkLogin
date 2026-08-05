@@ -1,0 +1,248 @@
+---
+title: Login premium sin contraseña
+description: Cómo entran los jugadores premium sin crear nunca una contraseña.
+---
+
+Un jugador premium no escribe ninguna contraseña. Entra y juega.
+
+Cómo llega a eso depende de un ajuste. Con `autologin.premium.enable` activo, funciona desde
+su primera conexión. Con él apagado —
+[el valor por defecto](#viene-apagado-y-conviene-saber-por-qué) — se registra una vez,
+responde [una pregunta](#la-pregunta-al-registrarse), y no vuelve a escribir contraseña
+nunca más.
+
+## Cómo funciona
+
+Antes de decidir cómo negociar una conexión, PkLogin le pregunta a Mojang si el nombre
+pertenece a una cuenta de pago. Si es así, la conexión se negocia en **modo online** y el
+cliente tiene que completar el handshake de cifrado de Mojang. Pasarlo es prueba
+criptográfica de propiedad, no una suposición: nadie puede falsificarlo sin la cuenta.
+PkLogin entonces crea la cuenta sin contraseña, porque no hay nada que recordar: cada login
+posterior se prueba de la misma forma.
+
+<Callout title="Solo nombres que PkLogin nunca vio">
+  Quien ya está en la base de datos conserva el modo que diga su cuenta, así que activar
+  esto no puede dejar fuera a un jugador que hoy está en tu servidor. Una cuenta offline que
+  en realidad es de pago se convierte con `/premium confirm`.
+</Callout>
+
+## Qué pasa si un cliente cracked usa ese nick
+
+No entra, y la comprobación es criptográfica, no una comparación de nombres.
+
+Una vez que la cuenta está guardada como `REAL` o `PREMIUM`, a **toda** conexión posterior
+con ese nombre se le manda la petición de cifrado de Mojang: lo decide el modo de la propia
+cuenta, no una suposición sobre quién se está conectando. Un cliente sin sesión de Mojang no
+puede responderla.
+
+El jugador ve una de dos cosas, según dónde falle:
+
+| Dónde falla | Qué ve el jugador |
+| --- | --- |
+| El cliente no consigue sesión de Mojang | El error del propio launcher, normalmente `Failed to login: Invalid session (Try restarting your game and the launcher)`. El servidor ni se entera. |
+| El cliente responde y Mojang rechaza la sesión | Un kick del servidor: `Invalid session (Mojang rejected).` |
+
+En Velocity el proxy fuerza el modo online en su propio handshake, así que la conexión se
+rechaza antes de llegar a ningún backend.
+
+<Callout type="warn" title="Esos mensajes de kick no son traducibles">
+  Se emiten en la capa de paquetes, antes de que el archivo de mensajes entre en juego, así
+  que no están en `messages_<código>.yml` y salen siempre en inglés.
+</Callout>
+
+### No hay contraseña a la que caer
+
+A un cliente cracked no se le ofrece el prompt de `/login` como segunda oportunidad: fallar
+el handshake termina la conexión. Y aunque llegara a él, una cuenta premium sin contraseña
+se guarda con el hash vacío, y PkLogin se niega a comparar contra un hash vacío. La ausencia
+de contraseña no se puede convertir en una vía de entrada.
+
+### Sin librería de paquetes, falla cerrado
+
+En un servidor sin proxy y sin PacketEvents ni ProtocolLib no hay quien mande la petición de
+cifrado. Una cuenta `REAL` cae entonces al limbo pidiendo `/login`, y como no tiene
+contraseña, no entra **nadie**: ni un impostor, ni el dueño.
+
+Molesto, pero no inseguro. Instala una de las dos librerías, o convierte la cuenta con
+`/offline` para que use contraseña.
+
+### La comprobación no es un cotejo de UUID
+
+No se compara nada contra un UUID guardado. PkLogin le pregunta al endpoint `hasJoined` de
+Mojang por el nombre **y** por un server ID derivado de la clave de sesión de *esa conexión
+concreta*. Solo el dueño de la cuenta puede producir uno que Mojang valide. El UUID vuelve
+como respuesta, no como pregunta — por eso un segundo cliente que reclame el mismo nombre no
+llega a ningún lado, mande el UUID que mande.
+
+<Callout type="warn" title="Las cuentas se identifican por nombre, no por UUID">
+  Si el dueño de un nombre premium se lo cambia en Mojang y otra cuenta de pago coge el
+  nombre liberado, ese nuevo dueño pasa el handshake y hereda la cuenta existente. Raro, pero
+  conviene saberlo antes de dar rangos que sobrevivan a un cambio de nombre.
+</Callout>
+
+### Quién se queda con un nombre
+
+Depende por completo de `autologin.premium.enable`, y las dos respuestas son muy distintas.
+
+**Con la opción apagada (por defecto),** los nicks de pago no quedan reservados. El primero
+que registre el nombre se lo queda en este servidor, sea cracked o no. Cuando el dueño real
+llega después, PkLogin ve una cuenta `OFFLINE` existente y, a propósito, no la desafía: esa
+regla es justo la que evita que tus jugadores offline actuales se queden fuera. Así que al
+dueño se le trata como cracked y se le pide una contraseña que nunca puso.
+
+**Con la opción activada,** un cliente cracked no puede quedarse con un nombre que Mojang
+dice que es de pago, ni aunque el dueño no haya entrado nunca. Para un nombre sin cuenta,
+PkLogin lo consulta antes de crear nada: una respuesta `PREMIUM` significa que se manda la
+petición de cifrado, y un cliente que no puede responderla nunca llega al paso de registro.
+El nombre queda reservado para su dueño real.
+
+Esa reserva sigue teniendo dos huecos:
+
+- No se pudo contactar con Mojang, así que la consulta respondió `UNKNOWN`
+- El servidor es standalone y no tiene librería de paquetes
+
+En cualquiera de los dos, el cracked registra el nombre y vuelves al primer caso.
+
+<Callout type="warn" title="El dueño no puede arreglarlo solo">
+  `/premium confirm` exige estar logueado, y no puede loguearse. Un admin tiene que limpiar
+  la cuenta okupada con `/pklogin delete <nombre>`; el dueño vuelve a entrar y se crea como
+  `REAL`.
+</Callout>
+
+Para evitar la carrera del todo, usa `username-appender`, que separa a premium y cracked por
+el hostname con el que conectan y les da nombres distintos dentro del juego. Ver
+[Referencia de config.yml](/es/docs/configuration/config#username-appender).
+
+### Reconectar no deja una puerta abierta
+
+Un handshake correcto se recuerda durante `autologin.premium.session-timeout` segundos, solo
+lo justo para cubrir el hueco entre los paquetes de login y la entrada real. Ese registro va
+atado a la IP **y** al nombre, se gasta la primera vez que se usa, y se descarta al caducar:
+que un jugador premium se desconecte no deja nada que otra conexión pueda aprovechar.
+
+## Cuando no se puede contactar con Mojang
+
+La conexión se negocia como offline y el jugador registra una contraseña como siempre.
+
+Esa dirección es deliberada: un "offline" equivocado cuesta una contraseña, un "online"
+equivocado le cuesta al jugador la posibilidad de conectarse.
+
+## Viene apagado, y conviene saber por qué
+
+`autologin.premium.enable` es `false` de fábrica.
+
+Mandar la petición de cifrado es la única forma de distinguir al dueño de un nick de alguien
+que lo está usando, y un cliente que no puede responderla **no entra**. No existe volver a
+pedir contraseña a mitad de handshake. Así que con esta opción activada, un jugador offline
+con el nick de una cuenta de pago es rechazado, y lo único que ve es un `Invalid session` de
+su propio launcher que PkLogin no puede personalizar.
+
+En servidores donde los jugadores offline eligen nicks de cuentas de pago a menudo, eso se
+lee como "el servidor está roto".
+
+<Callout title="La pregunta resuelve las dos cosas">
+  Con `enable: false` nadie es rechazado, y el dueño real llega al mismo sitio un clic
+  después gracias a la pregunta de abajo. Ver [Quién se queda con un
+  nombre](#quién-se-queda-con-un-nombre).
+</Callout>
+
+## La pregunta al registrarse
+
+Cuando alguien registra por primera vez un nick que Mojang dice que es de pago, PkLogin le
+pregunta si la cuenta es suya:
+
+```
+Este nick pertenece a una cuenta original.
+Si la cuenta es tuya, puedes dejar de usar contraseña.
+Si no lo es, no pasa nada: sigue jugando como estás.
+
+[ SÍ, ES MÍA ]   [ NO ]
+```
+
+- **SÍ** convierte la cuenta a premium y le pide reconectar. Desde ese momento entra sin
+  contraseña, para siempre.
+- **NO** no cambia nada. Sigue con su contraseña.
+
+```yaml title="config.yml"
+autologin:
+  premium:
+    question: true
+```
+
+Se pregunta **una sola vez**, en el primer registro de ese nombre, y solo cuando Mojang
+responde que sí es de pago. Si Mojang no contesta, no se pregunta — decirle a alguien que su
+nick es original sin haberlo comprobado lo empujaría a convertir una cuenta en la que después
+no puede entrar.
+
+<Callout title="Por qué justo al registrarse">
+  Convertir a premium cambia el UUID, y por eso `/premium confirm` avisa de que se pierde el
+  inventario y el progreso. Al registrarse la cuenta tiene segundos de vida: no hay nada que
+  perder. Es el único momento en que convertir sale gratis.
+</Callout>
+
+## Configuración
+
+```yaml title="config.yml"
+autologin:
+  premium:
+    enable: false
+
+    # Cuántos minutos se reutiliza una respuesta de Mojang sobre un nombre. El
+    # endpoint tiene rate limit y un nombre no cambia de dueño a menudo.
+    cache-minutes: 60
+
+    # Segundos que sigue siendo válido un handshake completado con Mojang. Solo
+    # tiene que cubrir el hueco entre los paquetes de login y la entrada real.
+    session-timeout: 60
+
+    # Timeout de las llamadas al session server de Mojang, en milisegundos.
+    mojang-timeout: 5000
+```
+
+## Los servidores sin proxy necesitan una librería de paquetes
+
+En Velocity esto funciona sin más, porque el proxy es dueño del handshake de login.
+
+Un servidor Paper **sin proxy** necesita
+[PacketEvents](https://github.com/retrooper/packetevents) o
+[ProtocolLib](https://github.com/dmulloy2/ProtocolLib), porque con `online-mode=false` el
+servidor nunca le pide a nadie que se autentique con Mojang y Paper no ofrece forma de
+pedírselo a un solo jugador: esas librerías la aportan.
+
+Sin ninguna, la consola lo avisa al arrancar y los jugadores premium caen de vuelta a
+`/register`.
+
+## Jugadores de Bedrock
+
+Los jugadores de Bedrock nunca pasan por el handshake de Java de Mojang. Floodgate los
+autentica en su lugar, y PkLogin confía en ese resultado:
+
+```yaml title="config.yml"
+autologin:
+  bedrock:
+    enable: true
+    skip-register: true
+```
+
+## Cambiar una cuenta existente
+
+| Comando | Efecto |
+| --- | --- |
+| `/premium confirm` | Convierte la cuenta a modo `REAL`: a partir de ahí se autentica contra Mojang. |
+| `/offline` | Devuelve la cuenta a modo offline, con contraseña. |
+
+## Tipos de UUID
+
+`legacy.unique-id-type` decide bajo qué UUID se guarda una cuenta:
+
+| Valor | Significado |
+| --- | --- |
+| `REAL` | El UUID oficial de Mojang. Recomendado. |
+| `RANDOM` | Un UUID aleatorio generado por cuenta. |
+| `OFFLINE` | El UUID vanilla de modo offline derivado del nombre. Es el valor por defecto que se instala. |
+
+<Callout type="warn">
+  Cambiar esto en un servidor en producción cambia a qué UUID resuelven los jugadores
+  existentes, lo que afecta a cualquier otro plugin que guarde datos por UUID. Decídelo
+  antes de abrir el servidor, no después.
+</Callout>

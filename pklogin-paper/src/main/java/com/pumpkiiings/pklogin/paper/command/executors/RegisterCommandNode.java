@@ -118,6 +118,11 @@ public class RegisterCommandNode {
                     com.pumpkiiings.pklogin.paper.manager.LimboManager.leaveLimbo(plugin, sender), null);
 
             new AsyncAuthenticateEvent(sender).callEvt();
+
+            // Asked here rather than on a later join because this is the one
+            // moment converting is free: the account is seconds old, so the UUID
+            // change that /premium confirm warns about has nothing to discard.
+            com.pumpkiiings.pklogin.paper.autologin.PremiumQuestion.offerTo(sender);
         }
     }
 

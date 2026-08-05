@@ -298,6 +298,10 @@ public enum Settings {
 
     AUTOLOGIN_PREMIUM_ENABLE(
             "autologin.premium.enable",
+            false
+    ),
+    AUTOLOGIN_PREMIUM_QUESTION(
+            "autologin.premium.question",
             true
     ),
     AUTOLOGIN_PREMIUM_CACHE_MINUTES(

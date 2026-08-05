@@ -1,0 +1,84 @@
+---
+title: Languages
+description: The 18 shipped translations and how to change or customise them.
+---
+
+## Changing the language
+
+<Steps>
+
+<Step>
+Install the plugin and start the server once so the files are generated.
+</Step>
+
+<Step>
+
+Set `languageFile` in `config.yml` to the file you want:
+
+```yaml title="config.yml"
+languageFile: 'messages_es.yml'
+```
+
+</Step>
+
+<Step>
+Run `/pklogin reload`, then edit the message file to taste.
+</Step>
+
+</Steps>
+
+## Shipped translations
+
+| Code | Language |
+| --- | --- |
+| `ar` | Spanish (Argentina) |
+| `br` | Portuguese (Brazil) |
+| `cn` | Chinese (simplified) |
+| `cz` | Czech |
+| `de` | German |
+| `en` | English |
+| `es` | Spanish |
+| `fr` | French |
+| `hr` | Croatian |
+| `hu` | Hungarian |
+| `it` | Italian |
+| `lt` | Lithuanian |
+| `pl` | Polish |
+| `pt` | Portuguese |
+| `ru` | Russian |
+| `sr` | Serbian |
+| `tr` | Turkish |
+| `ua` | Ukrainian |
+
+Each file is `messages_<code>.yml` in `plugins/PkLogin/`. The sources live in
+[`pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang/`](https://github.com/Pumpkiiiings/PkLogin/tree/main/pklogin-common/src/main/resources/com/pumpkiiings/pklogin/config/lang).
+
+## Customising messages
+
+Edit the file named by `languageFile` directly. Messages are plain YAML and support the
+usual colour codes:
+
+```yaml title="messages_en.yml"
+messages:
+  before-login:
+    subtitle: '&7Use: /login <password>'
+```
+
+## Where messages appear
+
+Two switches control the on-screen surfaces:
+
+```yaml title="config.yml"
+ui:
+  # Title-bar messages.
+  use-title-bar: true
+
+  # Action-bar messages.
+  use-action-bar: true
+```
+
+## Contributing a translation
+
+Copy `messages_en.yml`, translate the values, and open a pull request with the file named
+for its language code. Keys are shared across every file, so a missing key falls back to
+nothing rather than to English — translate them all.

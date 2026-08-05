@@ -1,0 +1,110 @@
+---
+title: Two-factor authentication
+description: Discord 2FA — linking flow, bot setup and shared code settings.
+---
+
+Discord 2FA links a Minecraft account to a Discord account through a DM bot. Once linked,
+the player receives a code on every login session.
+
+<Callout type="warn" title="Discord is the only provider wired into the login flow">
+  Email 2FA ships with the plugin but is not yet connected to the login flow, and TOTP
+  requires the Forge module, which is not part of this repository. Both are tracked as
+  future work.
+</Callout>
+
+## Linking flow
+
+<Steps>
+
+<Step>
+The player runs `/2fa discord` in game and receives a 6-digit code.
+</Step>
+
+<Step>
+They send that code to the bot in a direct message on Discord.
+</Step>
+
+<Step>
+The accounts are linked. From then on, every login sends a fresh code to that DM.
+</Step>
+
+</Steps>
+
+The player enters a received code with:
+
+```
+/2fa verify2fa <code>
+```
+
+## Bot configuration
+
+```yaml title="plugins/PkLogin/2fa/discord.yml"
+enable: false
+
+authentication:
+  # Token from the Discord developer portal.
+  token: ""
+
+options:
+  link-required:
+    # Require a linked Discord account to authenticate.
+    enable: false
+    # Require it for premium players as well.
+    required-for-premium: true
+
+  # How many Minecraft accounts may share one Discord account.
+  account-limit: 1
+
+  # Suggest linking to players who have not.
+  recommend-linking: true
+
+  # Ask for a new password after account recovery. When off, a random one is set.
+  force-password-update: false
+
+  # Invitation URL of your Discord server. Required to complete a link.
+  invite-url: "SERVER INVITATION"
+
+  # Bot status message.
+  presence: ""
+```
+
+<Callout type="warn" title="invite-url is not decorative">
+  A link cannot be completed without it — the player has to be able to reach the server the
+  bot lives in.
+</Callout>
+
+## Shared code settings
+
+These live in the main config and apply to every provider:
+
+```yaml title="config.yml"
+two-factor:
+  # Digits per code. Clamped to 4-9.
+  code-length: 6
+
+  # Seconds a login code stays valid.
+  login-code-expiration: 300
+
+  # Seconds an account-linking code stays valid.
+  link-code-expiration: 600
+
+  # Wrong codes allowed before the pending code is discarded and the player has
+  # to log in again.
+  max-verify-attempts: 5
+
+  discord:
+    # Link codes a single Discord user may try per window, so nobody can walk
+    # the whole code space by messaging the bot.
+    max-link-attempts: 10
+    # Length of that window, in seconds.
+    link-attempt-window: 600
+```
+
+Codes are single-use.
+
+## Interaction with sessions
+
+Turning 2FA on or off for an account drops that account's open [login
+session](/en/docs/configuration/sessions). This matters in the other direction too: while a
+session is open, a reconnect from the same address skips **both** the password and the 2FA
+code. Keep `Security.session.timeout` short on accounts you expect to protect with 2FA.

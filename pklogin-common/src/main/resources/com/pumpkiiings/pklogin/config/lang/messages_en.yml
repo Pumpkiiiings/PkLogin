@@ -257,6 +257,16 @@ Messages:
       - "&4If you are NOT premium, you will lose your account forever!"
       - "&eUse /premium confirm to confirm."
     auto-login: "&aYou have been automatically logged in via Premium!"
+    question:
+      - ""
+      - "&6&lThis nickname belongs to a paid account."
+      - "&7If the account is yours, you can skip the password from now on."
+      - "&7If it is not, nothing changes — keep playing as you are."
+    question-yes: "&a&l[ YES, IT IS MINE ]"
+    question-no: "&c&l[ NO ]"
+    question-hover-yes: "&7Switch to premium and reconnect"
+    question-hover-no: "&7Keep using a password"
+    question-declined: "&7No problem. You will keep logging in with your password."
 
   session:
     resumed: "&aWelcome back! Your session is still open, so no password is needed."

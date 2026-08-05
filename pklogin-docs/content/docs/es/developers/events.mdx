@@ -1,0 +1,90 @@
+---
+title: Eventos
+description: Eventos de Bukkit y Velocity que dispara PkLogin, y cuáles se pueden cancelar.
+---
+
+## Bukkit / Paper
+
+Todos en `com.pumpkiiings.pklogin.api.event.bukkit`.
+
+| Evento | Cancelable | Se dispara cuando |
+| --- | --- | --- |
+| `AsyncLoginEvent` | Sí | Un jugador está a punto de entrar con `/login`. |
+| `AsyncRegisterEvent` | Sí | Un jugador está a punto de registrarse con `/register`. |
+| `AsyncAuthenticateEvent` | No | Un jugador quedó autenticado, por cualquier vía. |
+| `auth.PlayerAuthLoginEvent` | No | Un jugador hizo login o se registró correctamente. |
+| `auth.PlayerPasswordChangeEvent` | No | Un jugador cambió su contraseña en el juego. |
+
+`AsyncLoginEvent`, `AsyncRegisterEvent` y `AsyncAuthenticateEvent` extienden `PkLoginEvent` y
+se disparan de forma **asíncrona**.
+
+### AsyncAuthenticateEvent suele ser el que quieres
+
+Se dispara en todas las vías hacia el estado autenticado: `/login`, `/register`, una
+comprobación 2FA completada, un auto-login premium, un auto-login de Bedrock, una sesión
+reanudada, y un proxy avisando al backend de que el jugador ya está autenticado. Los otros
+eventos cubren una vía cada uno.
+
+```java
+@EventHandler
+public void onAuthenticate(AsyncAuthenticateEvent event) {
+    Player player = event.getPlayer();
+
+    Bukkit.getScheduler().runTask(plugin, () -> {
+        player.sendMessage("Autenticado.");
+    });
+}
+```
+
+<Callout type="warn" title="Son eventos asíncronos">
+  La API de Bukkit no es thread-safe. Programa el trabajo de vuelta al hilo principal antes
+  de tocar el mundo, el inventario del jugador o cualquier otra cosa del servidor.
+</Callout>
+
+### Cancelar un login
+
+```java
+@EventHandler
+public void onLogin(AsyncLoginEvent event) {
+    if (isBanned(event.getPlayer())) {
+        event.setCancelled(true);
+    }
+}
+```
+
+Cancelar `AsyncLoginEvent` o `AsyncRegisterEvent` detiene ese intento concreto.
+`AsyncAuthenticateEvent` no es cancelable: cuando se dispara, la decisión ya está tomada.
+
+## Velocity
+
+Todos en `com.pumpkiiings.pklogin.api.event.velocity.auth`, disparados por el `EventManager`
+de Velocity. Ninguno es cancelable.
+
+| Evento | Se dispara cuando |
+| --- | --- |
+| `VelocityPreLoginEvent` | Durante el handshake `PreLoginEvent` del proxy, antes de que PkLogin decida modo online u offline. Trae `getUsername()`. |
+| `VelocityPlayerAuthLoginEvent` | Un backend le dijo al proxy que el jugador se autenticó. Trae `getPlayer()`. |
+| `VelocityPlayerPasswordChangeEvent` | Un jugador cambió su contraseña. Trae `getPlayer()`. |
+
+```java
+@Subscribe
+public void onAuthLogin(VelocityPlayerAuthLoginEvent event) {
+    Player player = event.getPlayer();
+    // ...
+}
+```
+
+<Callout title="VelocityPreLoginEvent es informativo">
+  Se dispara antes de que PkLogin resuelva si el nombre es premium, en la tarea asíncrona del
+  handshake del proxy. Escucharlo no te deja cambiar el resultado: cambia el modo de la
+  cuenta en su lugar.
+</Callout>
+
+## Dos clases llamadas PlayerPasswordChangeEvent
+
+`com.pumpkiiings.pklogin.api.event.bukkit.auth.PlayerPasswordChangeEvent` es la que PkLogin
+dispara. Existe una clase con el mismo nombre bajo `...event.bukkit.account` que no se usa:
+importa el paquete `auth`.
+
+Del mismo modo, `...event.bukkit.auth.PreLoginEvent` está declarado pero nunca se dispara. En
+Bukkit, engancha el `AsyncPlayerPreLoginEvent` propio de Paper si necesitas esa etapa.

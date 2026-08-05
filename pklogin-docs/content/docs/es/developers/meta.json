@@ -1,0 +1,5 @@
+{
+  "title": "Desarrolladores",
+  "icon": "Code",
+  "pages": ["api", "events"]
+}

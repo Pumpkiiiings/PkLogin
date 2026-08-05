@@ -1,0 +1,183 @@
+---
+title: API para desarrolladores
+description: Depende de PkLogin y usa sus servicios de cuentas, seguridad y sesión.
+---
+
+## Añadir la dependencia
+
+Las clases de la API viven en `com.pumpkiiings.pklogin.api` y van shadeadas dentro del jar
+del plugin, así que depende de `pklogin-universal` y márcalo como provisto.
+
+<Tabs items={['Gradle', 'Maven']}>
+
+<Tab value="Gradle">
+
+```groovy title="build.gradle"
+repositories {
+    maven { url = uri('https://repo.pumpkiiings.com/maven-releases/') }
+}
+
+dependencies {
+    compileOnly('com.pumpkiiings.pklogin:pklogin-universal:1.7')
+}
+```
+
+</Tab>
+
+<Tab value="Maven">
+
+```xml title="pom.xml"
+<repositories>
+  <repository>
+    <id>pumpkiiings-repo</id>
+    <url>https://repo.pumpkiiings.com/maven-releases/</url>
+  </repository>
+</repositories>
+
+<dependencies>
+  <dependency>
+    <groupId>com.pumpkiiings.pklogin</groupId>
+    <artifactId>pklogin-universal</artifactId>
+    <version>1.7</version>
+    <scope>provided</scope>
+  </dependency>
+</dependencies>
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout title="Comprueba la versión">
+  `1.7` es la versión que hay en el `build.gradle` de este repositorio. Usa la que publique
+  la [página de releases](https://github.com/Pumpkiiiings/PkLogin/releases) en ese momento.
+</Callout>
+
+## Punto de entrada
+
+Todo se alcanza a través de `PkLoginProvider`:
+
+```java
+import com.pumpkiiings.pklogin.api.service.AccountManagerAPI;
+import com.pumpkiiings.pklogin.api.service.PkLoginProvider;
+import com.pumpkiiings.pklogin.api.service.SecurityAPI;
+import com.pumpkiiings.pklogin.api.service.SessionAPI;
+
+AccountManagerAPI accounts = PkLoginProvider.getAccountManager();
+SecurityAPI security = PkLoginProvider.getSecurityAPI();
+SessionAPI sessions = PkLoginProvider.getSessionAPI();
+```
+
+Cada getter lanza `PluginNotLoadedException` si PkLogin todavía no registró ese servicio.
+Declara PkLogin como dependencia de tu plugin para que cargue antes, y resuelve los servicios
+cuando los necesites en vez de en un campo estático.
+
+<Callout type="warn" title="PkLoginAPI está deprecada">
+  La interfaz única antigua `PkLoginAPI` todavía existe pero está marcada `@Deprecated`. Sus
+  métodos son síncronos y bloquean sobre trabajo de base de datos. Usa los tres servicios de
+  abajo.
+</Callout>
+
+## AccountManagerAPI
+
+```java
+public interface AccountManagerAPI {
+    CompletableFuture<Optional<AccountData>> getAccount(String name);
+    CompletableFuture<Optional<AccountData>> getAccount(UUID uuid);
+    CompletableFuture<Boolean> isRegistered(String name);
+    CompletableFuture<Void> deleteAccount(String name);
+}
+```
+
+`getAccount` resuelve a un `Optional` vacío cuando el jugador no está registrado.
+
+### AccountData
+
+```java
+public interface AccountData {
+    String getRealName();
+    String getAddress();
+    String getUuidType();
+    String getRandomUuid();
+    String getDiscordId();
+    String getEmailAddress();
+    long getLastLogin();
+    long getRegDate();
+}
+```
+
+`getUuidType()` devuelve el modo de la cuenta como texto: `REAL`, `RANDOM` u `OFFLINE`. Ver
+[Tipos de UUID](/es/docs/getting-started/premium-login#tipos-de-uuid).
+
+## SecurityAPI
+
+```java
+public interface SecurityAPI {
+    CompletableFuture<Boolean> changePassword(String name, String newPassword);
+    CompletableFuture<Boolean> comparePassword(String name, String rawPassword);
+}
+```
+
+`comparePassword` hashea el candidato con los parámetros guardados y compara de forma segura.
+`changePassword` se encarga del hashing con lo que diga `Security.hash-algorithm`, y descarta
+la sesión de login abierta de la cuenta.
+
+## SessionAPI
+
+```java
+public interface SessionAPI {
+    boolean isAuthenticated(String name);
+    boolean isAuthenticated(UUID uuid);
+    CompletableFuture<Boolean> forceLogin(String name);
+}
+```
+
+Los dos `isAuthenticated` son **síncronos**: leen estado en memoria y son seguros en el hilo
+principal. `forceLogin` no.
+
+## Hilos
+
+Todo método que toca la base de datos devuelve un `CompletableFuture`. Nada en la API
+reprograma sus callbacks de vuelta al hilo del servidor, así que vuelve tú antes de tocar
+estado del mundo:
+
+```java
+PkLoginProvider.getAccountManager()
+    .isRegistered(player.getName())
+    .thenAccept(registered -> {
+        if (!registered) return;
+
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            player.sendMessage("Bienvenido de vuelta.");
+        });
+    });
+```
+
+<Callout type="warn" title="No bloquees sobre los futures">
+  Llamar a `.join()` o `.get()` desde el hilo principal congela el servidor lo que dure un
+  viaje a la base de datos, que es justo lo que la API asíncrona existe para evitar.
+</Callout>
+
+## Enums
+
+```java
+com.pumpkiiings.pklogin.api.enums.AuthType        // PREMIUM, CRACKED, BEDROCK
+com.pumpkiiings.pklogin.api.enums.TwoFactorType   // TOTP, DISCORD, EMAIL
+com.pumpkiiings.pklogin.api.enums.EventResult     // ALLOWED, DENIED
+```
+
+## Excepciones
+
+| Excepción | Se lanza cuando |
+| --- | --- |
+| `PluginNotLoadedException` | Se pide un servicio antes de que PkLogin lo registre. |
+| `AccountNotFoundException` | Una operación apunta a un nombre sin cuenta. |
+| `InvalidPasswordException` | Una contraseña no pasa la validación. |
+| `DatabaseException` | Falló la llamada a la base de datos subyacente. |
+
+Todas viven en `com.pumpkiiings.pklogin.api.exception`.
+
+## Siguiente
+
+[Eventos](/es/docs/developers/events) — reaccionar a logins, registros y cambios de
+contraseña en Bukkit y Velocity.

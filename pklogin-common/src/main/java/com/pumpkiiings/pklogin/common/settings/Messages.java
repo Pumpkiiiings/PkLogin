@@ -156,6 +156,12 @@ public enum Messages {
     PREMIUM_CURRENT_MODE("premium.current-mode"),
     PREMIUM_WARNING("premium.warning"),
     PREMIUM_AUTO_LOGIN("premium.auto-login"),
+    PREMIUM_QUESTION("premium.question"),
+    PREMIUM_QUESTION_YES("premium.question-yes"),
+    PREMIUM_QUESTION_NO("premium.question-no"),
+    PREMIUM_QUESTION_HOVER_YES("premium.question-hover-yes"),
+    PREMIUM_QUESTION_HOVER_NO("premium.question-hover-no"),
+    PREMIUM_QUESTION_DECLINED("premium.question-declined"),
 
     // login sessions
     SESSION_RESUMED("session.resumed"),

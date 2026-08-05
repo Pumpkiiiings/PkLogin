@@ -1,0 +1,5 @@
+{
+  "title": "Configuración",
+  "icon": "Settings",
+  "pages": ["config", "security", "sessions", "database", "two-factor", "languages"]
+}

@@ -12,7 +12,7 @@
 # Schema version of this file. PkLogin maintains it — do not edit it by hand.
 # On startup an older file is upgraded in place: new options are added, and
 # anything you have changed is kept exactly as you set it.
-version-config: 6
+version-config: 7
 
 # Language of the plugin.
 # For more information: https://github.com/Pumpkiiiings/PkLogin/blob/master/docs/lang.md
@@ -167,7 +167,34 @@ autologin:
     # When Mojang cannot be reached the connection is negotiated as offline and
     # the player registers a password as usual. That direction is deliberate: a
     # wrong "offline" costs a password, a wrong "online" locks the player out.
-    enable: true
+    #
+    # (!) OFF BY DEFAULT, and the reason is worth reading before turning it on.
+    #     Sending the encryption request is the only way to tell a name's owner
+    #     from someone else using it, and a client that cannot answer it cannot
+    #     join at all — there is no falling back to a password prompt halfway
+    #     through a handshake. So with this on, an offline player using a paid
+    #     account's nickname is refused, and all they see is a "Invalid session"
+    #     message from their own launcher that PkLogin cannot customise.
+    #
+    #     On servers where offline players commonly pick paid nicknames, that
+    #     reads as "the server is broken". Leave this off and let 'question'
+    #     below handle it: nobody is refused, and real owners still get
+    #     passwordless logins from their second join onwards.
+    enable: false
+
+    # Ask a player who just registered whether a paid account's nickname is
+    # theirs.
+    #
+    # Runs only on the very first registration of a name, and only when Mojang
+    # says that name belongs to a paid account. The player gets a clickable
+    # yes/no: yes converts the account to premium and asks them to reconnect,
+    # after which they never type a password again; no changes nothing and is
+    # never asked again.
+    #
+    # This is what makes 'enable: false' the sensible default rather than a
+    # compromise — a real owner reaches the same place, one click later, and
+    # nobody is ever locked out of a nickname on a guess.
+    question: true
 
     # How long a Mojang answer about a name is reused, in minutes. The endpoint is
     # rate limited, and a name does not change hands often.

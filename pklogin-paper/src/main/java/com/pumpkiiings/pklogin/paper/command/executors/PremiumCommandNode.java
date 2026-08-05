@@ -29,6 +29,17 @@ public class PremiumCommandNode {
                     plugin.runAsync(() -> perform(plugin, (Player) sender, true));
                     return 1;
                 })
+            )
+            // Answers the question asked after registering a paid nickname.
+            // Nothing is stored: the question only ever fires on a first
+            // registration, so declining it cannot come round again.
+            .then(Commands.literal("no")
+                .executes(context -> {
+                    CommandSender sender = context.getSource().getSender();
+                    sender.sendMessage(Messages.PREMIUM_QUESTION_DECLINED.asString(
+                            "§7No problem. You will keep logging in with your password."));
+                    return 1;
+                })
             ).build();
     }
 

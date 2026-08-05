@@ -1,0 +1,137 @@
+---
+title: Instalación
+description: Instala PkLogin en un servidor Paper, Spigot o Folia sin proxy.
+---
+
+Esta página cubre un solo servidor sin proxy delante. Si tu red usa Velocity, lee
+[Configuración de Velocity](/es/docs/getting-started/velocity): los pasos son distintos y el
+proxy se instala primero.
+
+## Requisitos
+
+- **Java 21** o superior
+- **Paper, Spigot o Folia** con API 1.20 o superior
+- **PacketEvents o ProtocolLib**, si quieres login premium sin contraseña (ver abajo)
+
+## Pasos
+
+<Steps>
+
+<Step>
+
+### Descarga el jar
+
+Baja `PkLogin.jar` desde la [página de releases](https://github.com/Pumpkiiiings/PkLogin/releases)
+y ponlo en la carpeta `plugins/` de tu servidor.
+
+</Step>
+
+<Step>
+
+### Apaga el modo online
+
+```properties title="server.properties"
+online-mode=false
+```
+
+Con `online-mode=true` el servidor autentica a todos contra Mojang por su cuenta y ningún
+jugador cracked puede entrar, lo que deja a PkLogin sin nada que hacer.
+
+<Callout type="warn" title="Protege el puerto">
+  Un servidor en modo offline acepta cualquier nombre que el cliente diga. No expongas el
+  puerto del juego a internet sin saber qué llega a él.
+</Callout>
+
+</Step>
+
+<Step>
+
+### Instala una librería de paquetes (opcional pero recomendado)
+
+Para que los jugadores premium se salten la contraseña en un servidor sin proxy, PkLogin
+tiene que pedirle a *un* jugador concreto que se autentique con Mojang. Paper no ofrece
+forma de hacerlo cuando `online-mode=false`, así que una librería de paquetes lo aporta:
+
+- [PacketEvents](https://github.com/retrooper/packetevents)
+- [ProtocolLib](https://github.com/dmulloy2/ProtocolLib)
+
+Instala cualquiera de las dos en `plugins/`. Sin ninguna, la consola lo avisa al arrancar y
+los jugadores premium caen de vuelta a `/register`.
+
+</Step>
+
+<Step>
+
+### Arranca el servidor
+
+Los archivos de configuración se generan en el primer arranque:
+
+<Files>
+  <Folder name="plugins/PkLogin" defaultOpen>
+    <File name="config.yml" />
+    <File name="messages_en.yml" />
+    <Folder name="2fa">
+      <File name="discord.yml" />
+    </Folder>
+    <File name="accounts.db" />
+  </Folder>
+</Files>
+
+</Step>
+
+<Step>
+
+### Edita y recarga
+
+Abre `plugins/PkLogin/config.yml`, cambia lo que necesites y ejecuta:
+
+```
+/pklogin reload
+```
+
+El reload vuelve a leer `config.yml` y el archivo de mensajes. Cambiar el **motor de base de
+datos** sigue necesitando reinicio completo.
+
+</Step>
+
+</Steps>
+
+## Comprobar que funciona
+
+Entra con un cliente cracked. Deberías quedarte congelado y con la petición de registro:
+
+```
+/register <contraseña> <contraseña>
+```
+
+Después entra con una cuenta premium cuyo nombre PkLogin nunca haya visto. Si la librería de
+paquetes está instalada y `autologin.premium.enable` está activo, deberías entrar sin
+escribir nada.
+
+## Problemas típicos del primer arranque
+
+<Accordions>
+
+<Accordion title="A los jugadores premium se les pide registrarse">
+
+O no hay librería de paquetes instalada, o `autologin.premium.enable` está en `false`, o el
+nombre ya existe en la base de datos como cuenta offline. Una cuenta offline existente se
+convierte con `/premium confirm`: PkLogin nunca cambia el modo de una cuenta que ya conoce.
+
+</Accordion>
+
+<Accordion title="Todos entran sin hacer login">
+
+`online-mode` sigue en `true` en `server.properties`, así que el servidor autenticó a todos
+contra Mojang antes de llegar a PkLogin.
+
+</Accordion>
+
+<Accordion title="Los jugadores son expulsados a los 45 segundos">
+
+Eso es `Security.time-to-login`, la ventana para ejecutar `/login` o `/register`. Súbela si
+tu flujo de entrada necesita más tiempo.
+
+</Accordion>
+
+</Accordions>

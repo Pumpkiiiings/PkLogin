@@ -1,0 +1,112 @@
+---
+title: Autenticación en dos pasos
+description: 2FA por Discord — flujo de vinculación, configuración del bot y ajustes comunes de códigos.
+---
+
+El 2FA por Discord vincula una cuenta de Minecraft con una de Discord mediante un bot por DM.
+Una vez vinculada, el jugador recibe un código en cada sesión de login.
+
+<Callout type="warn" title="Discord es el único proveedor conectado al flujo de login">
+  El 2FA por email viene incluido en el plugin pero todavía no está conectado al flujo de
+  login, y TOTP requiere el módulo de Forge, que no forma parte de este repositorio. Ambos
+  están anotados como trabajo futuro.
+</Callout>
+
+## Flujo de vinculación
+
+<Steps>
+
+<Step>
+El jugador ejecuta `/2fa discord` en el juego y recibe un código de 6 dígitos.
+</Step>
+
+<Step>
+Le envía ese código al bot por mensaje directo en Discord.
+</Step>
+
+<Step>
+Las cuentas quedan vinculadas. A partir de ahí, cada login envía un código nuevo a ese DM.
+</Step>
+
+</Steps>
+
+El jugador introduce el código recibido con:
+
+```
+/2fa verify2fa <código>
+```
+
+## Configuración del bot
+
+```yaml title="plugins/PkLogin/2fa/discord.yml"
+enable: false
+
+authentication:
+  # Token del portal de desarrolladores de Discord.
+  token: ""
+
+options:
+  link-required:
+    # Exigir una cuenta de Discord vinculada para autenticarse.
+    enable: false
+    # Exigirla también a los jugadores premium.
+    required-for-premium: true
+
+  # Cuántas cuentas de Minecraft pueden compartir una cuenta de Discord.
+  account-limit: 1
+
+  # Sugerir la vinculación a los jugadores que no la tienen.
+  recommend-linking: true
+
+  # Pedir contraseña nueva tras recuperar la cuenta. Si está apagado, se fija una aleatoria.
+  force-password-update: false
+
+  # URL de invitación de tu servidor de Discord. Necesaria para completar una vinculación.
+  invite-url: "SERVER INVITATION"
+
+  # Mensaje de estado del bot.
+  presence: ""
+```
+
+<Callout type="warn" title="invite-url no es decorativo">
+  Una vinculación no se puede completar sin él: el jugador tiene que poder llegar al servidor
+  donde vive el bot.
+</Callout>
+
+## Ajustes comunes de códigos
+
+Viven en el config principal y se aplican a todos los proveedores:
+
+```yaml title="config.yml"
+two-factor:
+  # Dígitos por código. Limitado a 4-9.
+  code-length: 6
+
+  # Segundos que un código de login sigue siendo válido.
+  login-code-expiration: 300
+
+  # Segundos que un código de vinculación sigue siendo válido.
+  link-code-expiration: 600
+
+  # Códigos erróneos permitidos antes de descartar el código pendiente y obligar
+  # al jugador a hacer login otra vez.
+  max-verify-attempts: 5
+
+  discord:
+    # Códigos de vinculación que un mismo usuario de Discord puede probar por
+    # ventana, para que nadie recorra todo el espacio de códigos escribiéndole
+    # al bot.
+    max-link-attempts: 10
+    # Duración de esa ventana, en segundos.
+    link-attempt-window: 600
+```
+
+Los códigos son de un solo uso.
+
+## Interacción con las sesiones
+
+Activar o desactivar el 2FA en una cuenta descarta la [sesión de
+login](/es/docs/configuration/sessions) abierta de esa cuenta. Esto importa también en la
+otra dirección: mientras una sesión está abierta, una reconexión desde la misma dirección se
+salta **tanto** la contraseña como el código 2FA. Mantén `Security.session.timeout` corto en
+cuentas que esperas proteger con 2FA.

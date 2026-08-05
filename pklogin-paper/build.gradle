@@ -31,11 +31,17 @@ dependencies {
 }
 
 processResources {
+    // project.version has to be declared as an input, otherwise Gradle keeps the
+    // task UP-TO-DATE across a version bump and ships the previously expanded
+    // value in paper-plugin.yml.
+    def props = ['pluginVersion': project.version]
+    inputs.properties props
+
     filesMatching('paper-plugin.yml') {
-        expand 'pluginVersion': project.version
+        expand props
     }
     filesMatching('bungee.yml') {
-        expand 'pluginVersion': project.version
+        expand props
     }
 }
 

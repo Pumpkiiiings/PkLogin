@@ -41,7 +41,7 @@ import org.bukkit.entity.Player;
  * with a message from their own launcher that says nothing about this server —
  * on a network where offline players routinely pick paid nicknames, that reads
  * as an outage. Asking after the fact reaches the same destination for a real
- * owner, one click later, and costs a stranger nothing.</p>
+ * owner, a couple of clicks later, and costs a stranger nothing.</p>
  *
  * <p>Asked once, on the first registration of a name. A player who says no is
  * never asked again because there is no second first registration; nothing has
@@ -77,8 +77,14 @@ public final class PremiumQuestion {
 
         // Defaults use the section sign directly: they never pass through
         // Messages.define, which is what turns '&' into '§' for file values.
+        //
+        // Yes goes to a second prompt rather than straight to /premium confirm. A
+        // player who does not own the nickname and clicks through converts their
+        // seconds-old account to REAL, which leaves it with no password and no way
+        // to pass the Mojang handshake — unreachable until an admin deletes it. One
+        // stray click should not be able to reach that state.
         Component yes = AdventureAPI.parse(Messages.PREMIUM_QUESTION_YES.asString("§a§l[ YES, IT IS MINE ]"))
-                .clickEvent(ClickEvent.runCommand("/premium confirm"))
+                .clickEvent(ClickEvent.runCommand("/premium question-confirm"))
                 .hoverEvent(HoverEvent.showText(AdventureAPI.parse(
                         Messages.PREMIUM_QUESTION_HOVER_YES.asString("§7Switch to premium and reconnect"))));
 

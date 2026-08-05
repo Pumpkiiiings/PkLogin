@@ -238,18 +238,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&cTwoje konto jest już premium.'
+    success: '&aTwoje konto jest teraz Premium! Nie będziesz musiał używać /login.'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &aPrzełączyłeś się na tryb Premium.
+      &ePołącz się ponownie z serwerem.
+    current-mode: '&eTwoje konto jest obecnie w trybie {0}.'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&cUWAGA!'
+    - '&eJeśli włączysz tryb premium, będziesz wchodzić bez /login.'
+    - '&4Jeśli NIE jesteś premium, stracisz swoje konto na zawsze!'
+    - '&eUżyj /premium confirm, aby potwierdzić.'
+    auto-login: '&aZostałeś automatycznie zalogowany przez Premium!'
+    question:
+    - ''
+    - '&6&lTen nick należy do konta premium.'
+    - '&7Jeśli konto jest twoje, od teraz nie musisz używać hasła.'
+    - '&7Jeśli nie, nic się nie zmienia — graj dalej jak do tej pory.'
+    question-yes: '&a&l[ TAK, JEST MOJE ]'
+    question-no: '&c&l[ NIE ]'
+    question-hover-yes: '&7Przełącz na premium i połącz ponownie'
+    question-hover-no: '&7Dalej używaj hasła'
+    question-declined: '&7Nie ma sprawy. Nadal będziesz logować się hasłem.'
+    question-confirm:
+    - ''
+    - '&c&lNa pewno to konto jest twoje?'
+    - '&7Jeśli nie, stracisz do niego dostęp i tylko administrator'
+    - '&7będzie mógł ci je oddać.'
+    question-confirm-yes: '&4&l[ TAK, JESTEM PEWIEN ]'
+    question-confirm-hover-yes: '&cTylko jeśli to konto naprawdę jest twoje'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

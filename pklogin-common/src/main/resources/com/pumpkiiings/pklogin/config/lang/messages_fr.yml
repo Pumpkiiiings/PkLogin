@@ -237,18 +237,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&cTon compte est déjà premium.'
+    success: '&aTon compte est maintenant Premium ! Tu n''auras plus besoin de /login.'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &aTu es passé en mode Premium.
+      &eReconnecte-toi au serveur.
+    current-mode: '&eTon compte est actuellement en mode {0}.'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&cATTENTION !'
+    - '&eSi tu actives le mode premium, tu entreras sans /login.'
+    - '&4Si tu n''es PAS premium, tu perdras ton compte pour toujours !'
+    - '&eUtilise /premium confirm pour confirmer.'
+    auto-login: '&aTu as été connecté automatiquement via Premium !'
+    question:
+    - ''
+    - '&6&lCe pseudo appartient à un compte payant.'
+    - '&7Si le compte est à toi, tu peux arrêter d''utiliser un mot de passe.'
+    - '&7Sinon, rien ne change — continue à jouer comme avant.'
+    question-yes: '&a&l[ OUI, C''EST LE MIEN ]'
+    question-no: '&c&l[ NON ]'
+    question-hover-yes: '&7Passer en premium et se reconnecter'
+    question-hover-no: '&7Continuer avec un mot de passe'
+    question-declined: '&7Pas de souci. Tu continueras à te connecter avec ton mot de passe.'
+    question-confirm:
+    - ''
+    - '&c&lTu es sûr que ce compte est le tien ?'
+    - '&7Sinon, tu perdras l''accès à ce compte et seul un admin'
+    - '&7pourra te le rendre.'
+    question-confirm-yes: '&4&l[ OUI, J''EN SUIS SÛR ]'
+    question-confirm-hover-yes: '&cSeulement si ce compte est vraiment le tien'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

@@ -235,18 +235,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&cSua conta já é premium.'
+    success: '&aSua conta agora é Premium! Você não vai precisar usar /login.'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &aVocê mudou para o modo Premium.
+      &eReconecte-se ao servidor.
+    current-mode: '&eSua conta está no modo {0}.'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&cATENÇÃO!'
+    - '&eSe você ativar o modo premium, vai entrar sem /login.'
+    - '&4Se você NÃO for premium, vai perder sua conta para sempre!'
+    - '&eUse /premium confirm para confirmar.'
+    auto-login: '&aVocê entrou automaticamente via Premium!'
+    question:
+    - ''
+    - '&6&lEste nick pertence a uma conta original.'
+    - '&7Se a conta é sua, você pode parar de usar senha.'
+    - '&7Se não é, tudo bem: continue jogando do mesmo jeito.'
+    question-yes: '&a&l[ SIM, É MINHA ]'
+    question-no: '&c&l[ NÃO ]'
+    question-hover-yes: '&7Mudar para premium e reconectar'
+    question-hover-no: '&7Continuar usando senha'
+    question-declined: '&7Sem problema. Você vai continuar entrando com sua senha.'
+    question-confirm:
+    - ''
+    - '&c&lTem certeza de que esta conta é sua?'
+    - '&7Se não for, você vai perder o acesso a esta conta e só um admin'
+    - '&7vai poder devolvê-la.'
+    question-confirm-yes: '&4&l[ SIM, TENHO CERTEZA ]'
+    question-confirm-hover-yes: '&cSó se esta conta for realmente sua'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

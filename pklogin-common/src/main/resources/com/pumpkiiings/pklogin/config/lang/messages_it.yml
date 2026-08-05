@@ -240,18 +240,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&cIl tuo account è già premium.'
+    success: '&aIl tuo account ora è Premium! Non dovrai più usare /login.'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &aSei passato alla modalità Premium.
+      &eRiconnettiti al server.
+    current-mode: '&eIl tuo account è attualmente in modalità {0}.'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&cATTENZIONE!'
+    - '&eSe attivi la modalità premium, entrerai senza /login.'
+    - '&4Se NON sei premium, perderai il tuo account per sempre!'
+    - '&eUsa /premium confirm per confermare.'
+    auto-login: '&aSei stato connesso automaticamente tramite Premium!'
+    question:
+    - ''
+    - '&6&lQuesto nick appartiene a un account originale.'
+    - '&7Se l''account è tuo, da ora puoi smettere di usare la password.'
+    - '&7Se non lo è, non cambia nulla — continua a giocare così.'
+    question-yes: '&a&l[ SÌ, È MIO ]'
+    question-no: '&c&l[ NO ]'
+    question-hover-yes: '&7Passa a premium e riconnettiti'
+    question-hover-no: '&7Continua a usare la password'
+    question-declined: '&7Nessun problema. Continuerai a entrare con la tua password.'
+    question-confirm:
+    - ''
+    - '&c&lSei sicuro che questo account sia tuo?'
+    - '&7Se non lo è, perderai l''accesso a questo account e solo un admin'
+    - '&7potrà restituirtelo.'
+    question-confirm-yes: '&4&l[ SÌ, NE SONO SICURO ]'
+    question-confirm-hover-yes: '&cSolo se questo account è davvero tuo'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

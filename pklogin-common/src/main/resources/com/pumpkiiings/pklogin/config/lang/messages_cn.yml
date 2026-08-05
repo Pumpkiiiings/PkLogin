@@ -240,18 +240,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&c你的账号已经是正版了。'
+    success: '&a你的账号现在是正版了！不需要再使用 /login。'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &a你已切换到正版模式。
+      &e请重新连接服务器。
+    current-mode: '&e你的账号当前处于 {0} 模式。'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&c警告！'
+    - '&e启用正版模式后，你将无需 /login 即可进入。'
+    - '&4如果你不是正版，你将永远失去这个账号！'
+    - '&e使用 /premium confirm 确认。'
+    auto-login: '&a你已通过正版自动登录！'
+    question:
+    - ''
+    - '&6&l此昵称属于正版账号。'
+    - '&7如果这个账号是你的，从现在起可以不用输入密码。'
+    - '&7如果不是也没关系，照常游玩即可。'
+    question-yes: '&a&l[ 是，这是我的 ]'
+    question-no: '&c&l[ 否 ]'
+    question-hover-yes: '&7切换到正版并重新连接'
+    question-hover-no: '&7继续使用密码'
+    question-declined: '&7没问题，你将继续使用密码登录。'
+    question-confirm:
+    - ''
+    - '&c&l你确定这个账号是你的吗？'
+    - '&7如果不是，你将失去这个账号的访问权限，'
+    - '&7只有管理员才能帮你找回。'
+    question-confirm-yes: '&4&l[ 是，我确定 ]'
+    question-confirm-hover-yes: '&c只有当这个账号真的是你的时候'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

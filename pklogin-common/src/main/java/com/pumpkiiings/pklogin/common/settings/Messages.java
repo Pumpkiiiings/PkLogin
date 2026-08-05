@@ -162,6 +162,9 @@ public enum Messages {
     PREMIUM_QUESTION_HOVER_YES("premium.question-hover-yes"),
     PREMIUM_QUESTION_HOVER_NO("premium.question-hover-no"),
     PREMIUM_QUESTION_DECLINED("premium.question-declined"),
+    PREMIUM_QUESTION_CONFIRM("premium.question-confirm"),
+    PREMIUM_QUESTION_CONFIRM_YES("premium.question-confirm-yes"),
+    PREMIUM_QUESTION_CONFIRM_HOVER_YES("premium.question-confirm-hover-yes"),
 
     // login sessions
     SESSION_RESUMED("session.resumed"),

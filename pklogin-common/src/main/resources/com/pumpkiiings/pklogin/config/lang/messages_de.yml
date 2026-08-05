@@ -474,18 +474,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&cDein Account ist bereits Premium.'
+    success: '&aDein Account ist jetzt Premium! Du brauchst kein /login mehr.'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &aDu hast auf den Premium-Modus gewechselt.
+      &eBitte verbinde dich neu mit dem Server.
+    current-mode: '&eDein Account ist derzeit im Modus {0}.'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&cWARNUNG!'
+    - '&eWenn du den Premium-Modus aktivierst, kommst du ohne /login rein.'
+    - '&4Wenn du NICHT Premium bist, verlierst du deinen Account für immer!'
+    - '&eNutze /premium confirm zum Bestätigen.'
+    auto-login: '&aDu wurdest automatisch über Premium eingeloggt!'
+    question:
+    - ''
+    - '&6&lDieser Name gehört zu einem gekauften Account.'
+    - '&7Wenn der Account dir gehört, brauchst du ab jetzt kein Passwort mehr.'
+    - '&7Wenn nicht, ändert sich nichts — spiel einfach weiter.'
+    question-yes: '&a&l[ JA, GEHÖRT MIR ]'
+    question-no: '&c&l[ NEIN ]'
+    question-hover-yes: '&7Auf Premium wechseln und neu verbinden'
+    question-hover-no: '&7Weiter mit Passwort spielen'
+    question-declined: '&7Kein Problem. Du loggst dich weiterhin mit deinem Passwort ein.'
+    question-confirm:
+    - ''
+    - '&c&lBist du sicher, dass dieser Account dir gehört?'
+    - '&7Wenn nicht, verlierst du den Zugriff auf diesen Account und nur ein'
+    - '&7Admin kann ihn dir zurückgeben.'
+    question-confirm-yes: '&4&l[ JA, ICH BIN SICHER ]'
+    question-confirm-hover-yes: '&cNur wenn dieser Account wirklich dir gehört'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

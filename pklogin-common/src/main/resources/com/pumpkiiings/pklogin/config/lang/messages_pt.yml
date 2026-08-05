@@ -237,18 +237,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&cA tua conta já é premium.'
+    success: '&aA tua conta agora é Premium! Não vais precisar de usar /login.'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &aMudaste para o modo Premium.
+      &eVolta a ligar-te ao servidor.
+    current-mode: '&eA tua conta está atualmente no modo {0}.'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&cATENÇÃO!'
+    - '&eSe ativares o modo premium, vais entrar sem /login.'
+    - '&4Se NÃO fores premium, vais perder a tua conta para sempre!'
+    - '&eUsa /premium confirm para confirmar.'
+    auto-login: '&aEntraste automaticamente via Premium!'
+    question:
+    - ''
+    - '&6&lEste nick pertence a uma conta original.'
+    - '&7Se a conta é tua, podes deixar de usar palavra-passe.'
+    - '&7Se não é, não faz mal: continua a jogar como estás.'
+    question-yes: '&a&l[ SIM, É MINHA ]'
+    question-no: '&c&l[ NÃO ]'
+    question-hover-yes: '&7Mudar para premium e voltar a ligar'
+    question-hover-no: '&7Continuar a usar palavra-passe'
+    question-declined: '&7Sem problema. Vais continuar a entrar com a tua palavra-passe.'
+    question-confirm:
+    - ''
+    - '&c&lTens a certeza de que esta conta é tua?'
+    - '&7Se não for, vais perder o acesso a esta conta e só um admin'
+    - '&7a poderá devolver.'
+    question-confirm-yes: '&4&l[ SIM, TENHO A CERTEZA ]'
+    question-confirm-hover-yes: '&cSó se esta conta for mesmo tua'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

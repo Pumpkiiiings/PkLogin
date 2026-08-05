@@ -237,18 +237,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&cТвой аккаунт уже премиум.'
+    success: '&aТвой аккаунт теперь Премиум! Тебе больше не нужен /login.'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &aТы переключился на режим Премиум.
+      &eПереподключись к серверу.
+    current-mode: '&eТвой аккаунт сейчас в режиме {0}.'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&cВНИМАНИЕ!'
+    - '&eЕсли включишь режим премиум, будешь заходить без /login.'
+    - '&4Если ты НЕ премиум, ты потеряешь свой аккаунт навсегда!'
+    - '&eИспользуй /premium confirm для подтверждения.'
+    auto-login: '&aТы автоматически вошёл через Премиум!'
+    question:
+    - ''
+    - '&6&lЭтот ник принадлежит лицензионному аккаунту.'
+    - '&7Если аккаунт твой, с этого момента можешь не вводить пароль.'
+    - '&7Если нет, ничего не меняется — играй как играл.'
+    question-yes: '&a&l[ ДА, ОН МОЙ ]'
+    question-no: '&c&l[ НЕТ ]'
+    question-hover-yes: '&7Перейти на премиум и переподключиться'
+    question-hover-no: '&7Продолжить с паролем'
+    question-declined: '&7Без проблем. Ты продолжишь входить по паролю.'
+    question-confirm:
+    - ''
+    - '&c&lТы уверен, что этот аккаунт твой?'
+    - '&7Если нет, ты потеряешь доступ к этому аккаунту, и вернуть его'
+    - '&7сможет только администратор.'
+    question-confirm-yes: '&4&l[ ДА, Я УВЕРЕН ]'
+    question-confirm-hover-yes: '&cТолько если этот аккаунт действительно твой'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

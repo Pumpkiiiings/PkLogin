@@ -5,9 +5,13 @@ import com.pumpkiiings.pklogin.common.manager.AccountManagement;
 import com.pumpkiiings.pklogin.common.manager.LoginManagement;
 import com.pumpkiiings.pklogin.common.model.Account;
 import com.pumpkiiings.pklogin.common.settings.Messages;
+import com.pumpkiiings.pklogin.paper.util.AdventureAPI;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -30,6 +34,17 @@ public class PremiumCommandNode {
                     return 1;
                 })
             )
+            // Second step of the question's yes button. Clicking yes lands here
+            // rather than on confirm, so that converting the account always takes
+            // a deliberate second click: a player who does not own the nickname
+            // ends up with an account that has no password and cannot pass the
+            // Mojang handshake, and only an admin can undo that.
+            .then(Commands.literal("question-confirm")
+                .executes(context -> {
+                    sendQuestionConfirm((Player) context.getSource().getSender());
+                    return 1;
+                })
+            )
             // Answers the question asked after registering a paid nickname.
             // Nothing is stored: the question only ever fires on a first
             // registration, so declining it cannot come round again.
@@ -41,6 +56,32 @@ public class PremiumCommandNode {
                     return 1;
                 })
             ).build();
+    }
+
+    /**
+     * Asks the player to confirm the answer they just clicked.
+     *
+     * <p>Reuses the question's own no button, so declining at either step lands on
+     * the same declined message.</p>
+     */
+    private static void sendQuestionConfirm(Player player) {
+        for (String line : Messages.PREMIUM_QUESTION_CONFIRM.asList()) {
+            player.sendMessage(AdventureAPI.parse(line));
+        }
+
+        Component yes = AdventureAPI.parse(
+                        Messages.PREMIUM_QUESTION_CONFIRM_YES.asString("§4§l[ YES, I AM SURE ]"))
+                .clickEvent(ClickEvent.runCommand("/premium confirm"))
+                .hoverEvent(HoverEvent.showText(AdventureAPI.parse(
+                        Messages.PREMIUM_QUESTION_CONFIRM_HOVER_YES.asString(
+                                "§cOnly if this account is really yours"))));
+
+        Component no = AdventureAPI.parse(Messages.PREMIUM_QUESTION_NO.asString("§c§l[ NO ]"))
+                .clickEvent(ClickEvent.runCommand("/premium no"))
+                .hoverEvent(HoverEvent.showText(AdventureAPI.parse(
+                        Messages.PREMIUM_QUESTION_HOVER_NO.asString("§7Keep using a password"))));
+
+        player.sendMessage(Component.empty().append(yes).append(Component.text("  ")).append(no));
     }
 
     private static void perform(PkLoginPaper plugin, Player player, boolean confirm) {

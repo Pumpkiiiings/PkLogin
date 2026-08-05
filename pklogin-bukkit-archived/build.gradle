@@ -23,11 +23,16 @@ dependencies {
 }
 
 processResources {
+    // See pklogin-paper: without this the task stays UP-TO-DATE across a version
+    // bump and keeps the previously expanded value.
+    def props = ['pluginVersion': project.version]
+    inputs.properties props
+
     filesMatching('plugin.yml') {
-        expand 'pluginVersion': project.version
+        expand props
     }
     filesMatching('bungee.yml') {
-        expand 'pluginVersion': project.version
+        expand props
     }
 }
 

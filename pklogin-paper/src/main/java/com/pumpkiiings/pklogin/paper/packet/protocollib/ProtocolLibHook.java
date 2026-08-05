@@ -1,4 +1,4 @@
-package com.pumpkiiings.pklogin.paper.autologin.protocollib;
+package com.pumpkiiings.pklogin.paper.packet.protocollib;
 
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
 

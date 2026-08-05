@@ -57,7 +57,7 @@ public class PlayerJoinListeners implements Listener {
                 : player.getAddress().getAddress().getHostAddress();
         // Verified sessions are keyed by address, so without one there is nothing
         // to look up — and the map would reject the null key outright.
-        com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession session =
+        com.pumpkiiings.pklogin.paper.packet.AutoLoginSession session =
                 ip == null ? null : plugin.consumeVerifiedSession(ip, name);
 
         if (session != null && session.isVerified()) {

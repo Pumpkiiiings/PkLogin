@@ -1,5 +1,8 @@
-package com.pumpkiiings.pklogin.paper.autologin.protocollib;
+package com.pumpkiiings.pklogin.paper.packet.protocollib;
 
+import com.pumpkiiings.pklogin.paper.packet.AutoLoginSession;
+import com.pumpkiiings.pklogin.paper.packet.ClientPublicKey;
+import com.pumpkiiings.pklogin.paper.packet.EncryptionUtil;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
@@ -160,7 +163,7 @@ public class ProtocolLibListener extends PacketAdapter {
         }
 
         // Known premium account, or a name Mojang says is a paid one.
-        if (com.pumpkiiings.pklogin.paper.autologin.PremiumDecision
+        if (com.pumpkiiings.pklogin.paper.manager.PremiumManager
                 .shouldRequestEncryption(plugin, username)) {
             // Request Premium Login!
             AutoLoginSession session = new AutoLoginSession(username, EncryptionUtil.generateVerifyToken(random), clientKey.orElse(null));

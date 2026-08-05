@@ -65,7 +65,7 @@ public class PkLoginPaper extends JavaPlugin {
     private Database database;
     private PluginSettings pluginSettings;
 
-    private final java.util.concurrent.ConcurrentHashMap<String, com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession> verifiedSessions = new java.util.concurrent.ConcurrentHashMap<>();
+    private final java.util.concurrent.ConcurrentHashMap<String, com.pumpkiiings.pklogin.paper.packet.AutoLoginSession> verifiedSessions = new java.util.concurrent.ConcurrentHashMap<>();
 
     /**
      * How long a premium handshake result stays usable. It only has to survive
@@ -76,7 +76,7 @@ public class PkLoginPaper extends JavaPlugin {
     }
 
     /** Records a completed premium handshake for the given address. */
-    public void storeVerifiedSession(String ip, com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession session) {
+    public void storeVerifiedSession(String ip, com.pumpkiiings.pklogin.paper.packet.AutoLoginSession session) {
         purgeExpiredSessions();
         verifiedSessions.put(ip, session);
     }
@@ -87,19 +87,30 @@ public class PkLoginPaper extends JavaPlugin {
      * or the session has gone stale — sessions are keyed by IP, so a leftover one
      * must never authenticate a later connection.
      */
-    public com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession consumeVerifiedSession(String ip, String username) {
+    public com.pumpkiiings.pklogin.paper.packet.AutoLoginSession consumeVerifiedSession(String ip, String username) {
         purgeExpiredSessions();
-        com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession session = verifiedSessions.get(ip);
+        com.pumpkiiings.pklogin.paper.packet.AutoLoginSession session = verifiedSessions.get(ip);
         if (session == null) return null;
         if (!session.getUsername().equalsIgnoreCase(username)) return null;
         verifiedSessions.remove(ip, session);
         return session;
     }
 
+    /**
+     * The native handshake's pipeline hook, when that is the provider in use. Held
+     * so the server's own child handler can be put back on disable.
+     */
+    private com.pumpkiiings.pklogin.paper.packet.nativehandshake.NativeLoginHook nativeLoginHook;
+
+    public void setNativeLoginHook(
+            com.pumpkiiings.pklogin.paper.packet.nativehandshake.NativeLoginHook hook) {
+        this.nativeLoginHook = hook;
+    }
+
     /** Same checks as {@link #consumeVerifiedSession} but leaves the session in place. */
     public boolean hasVerifiedSession(String ip, String username) {
         purgeExpiredSessions();
-        com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession session = verifiedSessions.get(ip);
+        com.pumpkiiings.pklogin.paper.packet.AutoLoginSession session = verifiedSessions.get(ip);
         return session != null && session.getUsername().equalsIgnoreCase(username);
     }
 
@@ -184,18 +195,40 @@ public class PkLoginPaper extends JavaPlugin {
         }
 
         sendMessage("§c=========================================================");
-        sendMessage("§cPremium Auto-Login is DISABLED: no packet library was found.");
+        sendMessage("§cPremium Auto-Login is DISABLED: the native handshake could not attach");
+        sendMessage("§cto this server, and no packet library was available either.");
         sendMessage("§cPremium players will have to /register and use a password, and new");
         sendMessage("§cones will not be let in without one either.");
         sendMessage("§c");
         sendMessage("§cInstall §fPacketEvents §cor §fProtocolLib §cand restart. This server runs");
         sendMessage("§cwith online-mode=false, so it never asks anyone to authenticate with");
-        sendMessage("§cMojang, and Paper offers no way to ask just one player to. Those");
-        sendMessage("§clibraries provide it; behind a Velocity proxy it comes for free.");
+        sendMessage("§cMojang, and Paper offers no way to ask just one player to. Behind a");
+        sendMessage("§cVelocity proxy it comes for free.");
         sendMessage("§c");
         sendMessage("§cIf you do not want premium logins at all, set autologin.premium.enable");
         sendMessage("§cto false in config.yml and this message will stop.");
         sendMessage("§c=========================================================");
+    }
+
+    /**
+     * Chooses and installs the premium encryption handshake for a server with no
+     * proxy in front of it.
+     */
+    private void setupHandshakeProvider() {
+        com.pumpkiiings.pklogin.paper.packet.HandshakeProvider.Choice choice =
+                com.pumpkiiings.pklogin.paper.packet.HandshakeProvider.parse(this,
+                        com.pumpkiiings.pklogin.common.settings.Settings
+                                .AUTOLOGIN_PREMIUM_HANDSHAKE_PROVIDER.asString());
+
+        com.pumpkiiings.pklogin.paper.packet.HandshakeProvider.Installed installed =
+                com.pumpkiiings.pklogin.paper.packet.HandshakeProvider.install(this, choice);
+
+        if (installed == com.pumpkiiings.pklogin.paper.packet.HandshakeProvider.Installed.NONE) {
+            reportMissingPacketLibrary();
+            return;
+        }
+
+        sendMessage("Premium handshake: " + installed.getLabel() + ".");
     }
 
     public void onEnable() {
@@ -293,19 +326,13 @@ public class PkLoginPaper extends JavaPlugin {
         // setup Captcha Handler
         new com.pumpkiiings.pklogin.paper.captcha.PaperCaptchaHandler(this);
 
-        // setup PacketEvents or ProtocolLib auto-login
+        // setup the premium encryption handshake
         if (PaperProxyConfig.isBehindProxy()) {
-            // The proxy owns the login handshake, so the packet-level hooks would
-            // have nothing to intercept here.
+            // The proxy owns the login handshake, so nothing here would have
+            // anything to intercept.
             sendMessage("This server is behind a proxy. Premium Auto-Login is handled there.");
-        } else if (getServer().getPluginManager().getPlugin("packetevents") != null) {
-            sendMessage("PacketEvents detected. Using PacketEvents for Premium Auto-Login.");
-            com.pumpkiiings.pklogin.paper.autologin.packetevents.PacketEventsHook.init(this);
-        } else if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
-            sendMessage("ProtocolLib detected. Using ProtocolLib for Premium Auto-Login.");
-            com.pumpkiiings.pklogin.paper.autologin.protocollib.ProtocolLibHook.init(this);
         } else {
-            reportMissingPacketLibrary();
+            setupHandshakeProvider();
         }
 
         // start login queue task
@@ -340,6 +367,12 @@ public class PkLoginPaper extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // Put the server's own connection setup back before the plugin's classes
+        // go away; a /reload otherwise leaves it pointing at a dead classloader.
+        if (nativeLoginHook != null) {
+            nativeLoginHook.uninstall();
+            nativeLoginHook = null;
+        }
         com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().shutdown();
     }
 

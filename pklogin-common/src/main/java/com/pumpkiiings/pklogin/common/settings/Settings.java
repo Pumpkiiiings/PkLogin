@@ -316,6 +316,10 @@ public enum Settings {
             "autologin.premium.mojang-timeout",
             5000
     ),
+    AUTOLOGIN_PREMIUM_HANDSHAKE_PROVIDER(
+            "autologin.premium.handshake-provider",
+            "native"
+    ),
 
     AUTHME_DATABASE_PATH(
             "authme-import.database-path",

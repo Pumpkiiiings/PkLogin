@@ -1,4 +1,4 @@
-package com.pumpkiiings.pklogin.paper.autologin.packetevents;
+package com.pumpkiiings.pklogin.paper.packet.packetevents;
 
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
 

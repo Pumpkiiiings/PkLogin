@@ -207,6 +207,20 @@ autologin:
     # Timeout for the calls to Mojang's session server, in milliseconds.
     mojang-timeout: 5000
 
+    # How a server with no proxy in front of it sends Mojang's encryption
+    # request. Ignored behind a proxy, where the proxy owns the login handshake
+    # and none of this applies.
+    #
+    #  |=> native  [default] PkLogin sends it itself. Nothing to install.
+    #  |=> plugin            Use PacketEvents or ProtocolLib, whichever is
+    #  |                     installed. There is no need to say which.
+    #
+    # Neither setting can leave premium logins broken: each falls back to the
+    # other when its own path is unavailable, and the console says which one the
+    # server ended up on. Set 'plugin' if a Minecraft update outpaces the native
+    # handshake and premium players stop being let in.
+    handshake-provider: native
+
 # Two-factor authentication shared settings.
 # Provider credentials live in the 2fa/ folder.
 two-factor:

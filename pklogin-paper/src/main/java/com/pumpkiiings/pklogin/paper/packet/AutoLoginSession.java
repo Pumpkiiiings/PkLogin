@@ -1,7 +1,15 @@
-package com.pumpkiiings.pklogin.paper.autologin.protocollib;
+package com.pumpkiiings.pklogin.paper.packet;
 
 import java.util.UUID;
 
+/**
+ * One in-flight or completed premium handshake, keyed by address on the plugin.
+ *
+ * <p>Written by whichever handshake backend is in use and read by
+ * {@code PlayerJoinListeners}, which is what makes this the handover point
+ * between the packet layer and the rest of the plugin — and why it belongs to
+ * none of the backends in particular.</p>
+ */
 public class AutoLoginSession {
     private final String username;
     private final byte[] verifyToken;

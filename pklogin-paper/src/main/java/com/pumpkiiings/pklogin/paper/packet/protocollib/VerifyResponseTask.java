@@ -1,5 +1,8 @@
-package com.pumpkiiings.pklogin.paper.autologin.protocollib;
+package com.pumpkiiings.pklogin.paper.packet.protocollib;
 
+import com.pumpkiiings.pklogin.paper.packet.AutoLoginSession;
+import com.pumpkiiings.pklogin.paper.packet.ClientPublicKey;
+import com.pumpkiiings.pklogin.paper.packet.EncryptionUtil;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;

@@ -182,19 +182,25 @@ autologin:
     #     passwordless logins from their second join onwards.
     enable: false
 
-    # Ask a player who just registered whether a paid account's nickname is
-    # theirs.
+    # Ask a player joining with a paid account's nickname whether it is theirs,
+    # before asking them to register.
     #
-    # Runs only on the very first registration of a name, and only when Mojang
-    # says that name belongs to a paid account. The player gets a clickable
-    # yes/no: yes converts the account to premium and asks them to reconnect,
-    # after which they never type a password again; no changes nothing and is
-    # never asked again.
+    # Runs only for a name with no account here, and only when Mojang says that
+    # name belongs to a paid account. The player gets a clickable yes/no: yes
+    # asks again to be sure and then creates the account as premium, so from the
+    # next join on they never type a password; no drops straight through to the
+    # normal registration, and is never asked again because there is no second
+    # first join.
     #
     # This is what makes 'enable: false' the sensible default rather than a
-    # compromise — a real owner reaches the same place, one click later, and
-    # nobody is ever locked out of a nickname on a guess.
+    # compromise — a real owner reaches the same place a couple of clicks later,
+    # and nobody is ever locked out of a nickname on a guess.
     question: true
+
+    # Seconds to answer that question before it gives up and asks for a normal
+    # registration instead. The login timer does not run while the question is
+    # on screen, so reading it never costs anyone their time to register.
+    question-timeout: 30
 
     # How long a Mojang answer about a name is reused, in minutes. The endpoint is
     # rate limited, and a name does not change hands often.

@@ -119,10 +119,8 @@ public class RegisterCommandNode {
 
             new AsyncAuthenticateEvent(sender).callEvt();
 
-            // Asked here rather than on a later join because this is the one
-            // moment converting is free: the account is seconds old, so the UUID
-            // change that /premium confirm warns about has nothing to discard.
-            com.pumpkiiings.pklogin.paper.manager.PremiumManager.offerQuestionTo(sender);
+            // Nothing is asked about premium here: anyone reaching this point was
+            // already offered the nickname on joining and chose a password.
         }
     }
 

@@ -93,16 +93,17 @@ public final class NativeVerifyTask implements Runnable {
             }
 
             String serverId = EncryptionUtil.getServerIdHashString("", loginKey, keyPair.getPublic());
-            UUID premiumUUID = fetchMojangProfile(exchange.getUsername(), serverId);
+            MojangProfile profile = fetchMojangProfile(exchange.getUsername(), serverId);
 
-            if (premiumUUID == null) {
+            if (profile == null) {
                 reject("Mojang rejected the session");
                 return;
             }
 
             AutoLoginSession session =
                     new AutoLoginSession(exchange.getUsername(), exchange.getVerifyToken(), null);
-            session.setPremiumUUID(premiumUUID);
+            session.setPremiumUUID(profile.uuid);
+            session.setSkin(profile.skinValue, profile.skinSignature);
             session.setVerified(true);
             plugin.storeVerifiedSession(exchange.getIp(), session);
 
@@ -165,11 +166,24 @@ public final class NativeVerifyTask implements Runnable {
         }
     }
 
+    /** What Mojang vouches for: who this is, and what they look like. */
+    private static final class MojangProfile {
+        private final UUID uuid;
+        private final String skinValue;
+        private final String skinSignature;
+
+        private MojangProfile(UUID uuid, String skinValue, String skinSignature) {
+            this.uuid = uuid;
+            this.skinValue = skinValue;
+            this.skinSignature = skinSignature;
+        }
+    }
+
     /**
-     * @return the account's real UUID, or null when Mojang does not vouch for
+     * @return the account's real profile, or null when Mojang does not vouch for
      *         this connection
      */
-    private UUID fetchMojangProfile(String username, String serverId) {
+    private MojangProfile fetchMojangProfile(String username, String serverId) {
         try {
             String query = PluginConstants.MOJANG_HAS_JOINED
                     + "?username=" + URLEncoder.encode(username, StandardCharsets.UTF_8.name())
@@ -188,7 +202,28 @@ public final class NativeVerifyTask implements Runnable {
                     .parse(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))
                     .getAsJsonObject();
 
-            return parseUndashedUuid(json.get("id").getAsString());
+            UUID uuid = parseUndashedUuid(json.get("id").getAsString());
+
+            // The signed skin rides along in this same response. Reading it here
+            // costs nothing; fetching it later would need a second request, and
+            // the player's own UUID cannot be used for it unless it is the real
+            // one.
+            String value = null;
+            String signature = null;
+            if (json.has("properties")) {
+                for (com.google.gson.JsonElement element : json.getAsJsonArray("properties")) {
+                    JsonObject property = element.getAsJsonObject();
+                    if (!"textures".equals(property.get("name").getAsString())) {
+                        continue;
+                    }
+                    value = property.has("value") ? property.get("value").getAsString() : null;
+                    signature = property.has("signature")
+                            ? property.get("signature").getAsString() : null;
+                    break;
+                }
+            }
+
+            return new MojangProfile(uuid, value, signature);
         } catch (Exception ignored) {
             return null;
         }

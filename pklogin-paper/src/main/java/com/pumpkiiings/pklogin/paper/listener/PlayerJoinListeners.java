@@ -75,6 +75,9 @@ public class PlayerJoinListeners implements Listener {
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().title, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().subtitle, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().start, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().duration, Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle().end);
             }
+
+            // The skin is already on: PremiumProfileListener put Mojang's signed
+            // textures on the profile at pre-login, before the player existed.
             plugin.runAsync(() -> new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt());
             return;
         }
@@ -98,8 +101,6 @@ public class PlayerJoinListeners implements Listener {
             return;
         }
 
-        LoginQueue.addToQueue(name, registered);
-
         // Freezing the player is applyLimboState's job, and doing it here as well
         // ignored the block-player-walk setting.
         if (com.pumpkiiings.pklogin.common.settings.Settings.TELEPORT_SAFE_LOCATION.asBoolean()) {
@@ -108,23 +109,37 @@ public class PlayerJoinListeners implements Listener {
         com.pumpkiiings.pklogin.paper.manager.LimboManager.applyLimboState(plugin, player);
 
         if (com.pumpkiiings.pklogin.common.settings.Settings.SECURITY_CAPTCHA_ENABLE.asBoolean()) {
+            LoginQueue.addToQueue(name, registered);
             com.pumpkiiings.pklogin.common.manager.CaptchaManager.getInstance().addPending(name, "");
             player.sendMessage(Messages.CAPTCHA_REQUIRED.asString());
-            
+
             com.pumpkiiings.pklogin.paper.captcha.PaperCaptchaHandler.sendCaptcha(plugin, player);
             return;
         }
 
         if (registered) {
+            LoginQueue.addToQueue(name, true);
             player.sendMessage(Messages.MESSAGE_LOGIN.asString());
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player, Messages.TITLE_BEFORE_LOGIN.asTitle().title, Messages.TITLE_BEFORE_LOGIN.asTitle().subtitle, Messages.TITLE_BEFORE_LOGIN.asTitle().start, Messages.TITLE_BEFORE_LOGIN.asTitle().duration, Messages.TITLE_BEFORE_LOGIN.asTitle().end);
             }
-        } else {
-            player.sendMessage(Messages.MESSAGE_REGISTER.asString());
-            if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
-                com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player, Messages.TITLE_BEFORE_REGISTER.asTitle().title, Messages.TITLE_BEFORE_REGISTER.asTitle().subtitle, Messages.TITLE_BEFORE_REGISTER.asTitle().start, Messages.TITLE_BEFORE_REGISTER.asTitle().duration, Messages.TITLE_BEFORE_REGISTER.asTitle().end);
-            }
+            return;
+        }
+
+        // A name with no account here may still belong to someone: ask before
+        // sending them off to invent a password they would immediately stop
+        // using. The queue starts only once that is settled, so the seconds spent
+        // reading the question do not come out of the time to register.
+        com.pumpkiiings.pklogin.paper.manager.PremiumManager.askOnJoin(plugin, player, ip,
+                () -> promptToRegister(player));
+    }
+
+    private void promptToRegister(Player player) {
+        com.pumpkiiings.pklogin.paper.manager.PremiumManager.startLoginQueue(player, false);
+
+        player.sendMessage(Messages.MESSAGE_REGISTER.asString());
+        if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
+            com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player, Messages.TITLE_BEFORE_REGISTER.asTitle().title, Messages.TITLE_BEFORE_REGISTER.asTitle().subtitle, Messages.TITLE_BEFORE_REGISTER.asTitle().start, Messages.TITLE_BEFORE_REGISTER.asTitle().duration, Messages.TITLE_BEFORE_REGISTER.asTitle().end);
         }
     }
 }

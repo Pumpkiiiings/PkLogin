@@ -62,6 +62,9 @@ public class PlayerGeneralListeners implements Listener {
 
         loginManagement.cleanup(name);
         LoginQueue.removeFromQueue(name);
+        // A question left unanswered would otherwise keep letting /premium through
+        // for whoever connects on this name next.
+        com.pumpkiiings.pklogin.paper.manager.PremiumManager.forget(name);
         com.pumpkiiings.pklogin.paper.manager.LimboManager.discard(plugin, player);
         com.pumpkiiings.pklogin.paper.util.AdventureAPI.clearTitle(player);
     }
@@ -80,7 +83,14 @@ public class PlayerGeneralListeners implements Listener {
         String message = e.getMessage().toLowerCase();
         String command = message.split(" ")[0];
         if (!plugin.getLoginManagement().isAuthenticated(name)) {
-            if (!command.equals("/login") && !command.equals("/register") && !command.equals("/2fa") && !command.equals("/changepassword")) {
+            // The premium question is answered by clicking, and those buttons run
+            // /premium — which nobody has logged in to be allowed to use yet.
+            boolean answeringQuestion = command.equals("/premium")
+                    && com.pumpkiiings.pklogin.paper.manager.PremiumManager.isAwaitingAnswer(name);
+
+            if (!answeringQuestion
+                    && !command.equals("/login") && !command.equals("/register")
+                    && !command.equals("/2fa") && !command.equals("/changepassword")) {
                 e.setCancelled(true);
             }
         }

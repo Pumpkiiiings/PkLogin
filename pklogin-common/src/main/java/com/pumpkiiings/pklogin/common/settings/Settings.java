@@ -304,6 +304,10 @@ public enum Settings {
             "autologin.premium.question",
             true
     ),
+    AUTOLOGIN_PREMIUM_QUESTION_TIMEOUT(
+            "autologin.premium.question-timeout",
+            30
+    ),
     AUTOLOGIN_PREMIUM_CACHE_MINUTES(
             "autologin.premium.cache-minutes",
             60

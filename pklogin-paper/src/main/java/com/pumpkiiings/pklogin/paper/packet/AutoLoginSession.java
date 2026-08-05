@@ -18,6 +18,17 @@ public class AutoLoginSession {
     private boolean verified;
     private UUID premiumUUID;
 
+    /**
+     * The account's skin, exactly as Mojang signed it.
+     *
+     * <p>It arrives in the same {@code hasJoined} response that proves ownership,
+     * so it costs no extra request. Kept as the raw property pair because that is
+     * what a profile takes: re-fetching it later would need the real UUID, which
+     * the player does not have unless {@code unique-id-type} is REAL.</p>
+     */
+    private String skinValue;
+    private String skinSignature;
+
     public AutoLoginSession(String username, byte[] verifyToken, ClientPublicKey clientKey) {
         this.username = username;
         this.verifyToken = verifyToken;
@@ -65,5 +76,18 @@ public class AutoLoginSession {
 
     public void setPremiumUUID(UUID premiumUUID) {
         this.premiumUUID = premiumUUID;
+    }
+
+    public String getSkinValue() {
+        return skinValue;
+    }
+
+    public String getSkinSignature() {
+        return skinSignature;
+    }
+
+    public void setSkin(String value, String signature) {
+        this.skinValue = value;
+        this.skinSignature = signature;
     }
 }

@@ -107,6 +107,20 @@ public class PkLoginPaper extends JavaPlugin {
         this.nativeLoginHook = hook;
     }
 
+    /**
+     * The verified session for this address and username, without spending it.
+     *
+     * <p>Used by the pre-login stage, which runs before the join listener that
+     * consumes it and must not take it away from that listener.</p>
+     */
+    public com.pumpkiiings.pklogin.paper.packet.AutoLoginSession peekVerifiedSession(String ip, String username) {
+        purgeExpiredSessions();
+        com.pumpkiiings.pklogin.paper.packet.AutoLoginSession session = verifiedSessions.get(ip);
+        if (session == null) return null;
+        if (!session.getUsername().equalsIgnoreCase(username)) return null;
+        return session;
+    }
+
     /** Same checks as {@link #consumeVerifiedSession} but leaves the session in place. */
     public boolean hasVerifiedSession(String ip, String username) {
         purgeExpiredSessions();
@@ -427,6 +441,7 @@ public class PkLoginPaper extends JavaPlugin {
         pm.registerEvents(new PlayerJoinListeners(this), this);
         pm.registerEvents(new PlayerKickListeners(this), this);
         pm.registerEvents(new PlayerAuthenticateListener(this), this);
+        pm.registerEvents(new com.pumpkiiings.pklogin.paper.listener.PremiumProfileListener(this), this);
     }
 
     public void detectUpdates() {

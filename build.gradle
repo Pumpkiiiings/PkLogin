@@ -2,7 +2,8 @@ subprojects {
     apply plugin: 'java'
 
     group = 'com.pumpkiiings.pklogin'
-    version = '2.0'
+    // Overridable for one-off builds: ./gradlew build -PpkVersion=2.0-FIX
+    version = findProperty('pkVersion') ?: '2.0'
 
     sourceCompatibility = 21
     targetCompatibility = 21

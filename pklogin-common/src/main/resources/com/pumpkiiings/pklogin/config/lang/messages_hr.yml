@@ -237,18 +237,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&cTvoj račun je već premium.'
+    success: '&aTvoj račun je sada Premium! Nećeš morati koristiti /login.'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &aPrebacio si se na Premium način.
+      &eMolimo, spoji se ponovno na server.
+    current-mode: '&eTvoj račun je trenutno u načinu {0}.'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&cUPOZORENJE!'
+    - '&eAko uključiš premium način, ulazit ćeš bez /login.'
+    - '&4Ako NISI premium, izgubit ćeš svoj račun zauvijek!'
+    - '&eKoristi /premium confirm za potvrdu.'
+    auto-login: '&aAutomatski si prijavljen preko Premiuma!'
+    question:
+    - ''
+    - '&6&lOvaj nadimak pripada plaćenom računu.'
+    - '&7Ako je račun tvoj, od sada ne moraš koristiti lozinku.'
+    - '&7Ako nije, ništa se ne mijenja — igraj kao i dosad.'
+    question-yes: '&a&l[ DA, MOJ JE ]'
+    question-no: '&c&l[ NE ]'
+    question-hover-yes: '&7Prebaci na premium i ponovno se spoji'
+    question-hover-no: '&7Nastavi koristiti lozinku'
+    question-declined: '&7Nema problema. I dalje ćeš se prijavljivati lozinkom.'
+    question-confirm:
+    - ''
+    - '&c&lJesi li siguran da je ovaj račun tvoj?'
+    - '&7Ako nije, izgubit ćeš pristup ovom računu i samo ti ga'
+    - '&7administrator može vratiti.'
+    question-confirm-yes: '&4&l[ DA, SIGURAN SAM ]'
+    question-confirm-hover-yes: '&cSamo ako je ovaj račun stvarno tvoj'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

@@ -511,18 +511,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&cA fiókod már premium.'
+    success: '&aA fiókod mostantól Premium! Nem kell többé /login parancsot használnod.'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &aÁtváltottál Premium módra.
+      &eKérlek, csatlakozz újra a szerverhez.
+    current-mode: '&eA fiókod jelenleg {0} módban van.'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&cFIGYELEM!'
+    - '&eHa bekapcsolod a premium módot, /login nélkül fogsz belépni.'
+    - '&4Ha NEM vagy premium, örökre elveszíted a fiókodat!'
+    - '&eA megerősítéshez használd a /premium confirm parancsot.'
+    auto-login: '&aAutomatikusan beléptettünk Premiumon keresztül!'
+    question:
+    - ''
+    - '&6&lEz a név egy fizetős fiókhoz tartozik.'
+    - '&7Ha a fiók a tiéd, mostantól nem kell jelszót használnod.'
+    - '&7Ha nem, semmi baj — játssz tovább ugyanígy.'
+    question-yes: '&a&l[ IGEN, AZ ENYÉM ]'
+    question-no: '&c&l[ NEM ]'
+    question-hover-yes: '&7Váltás premiumra és újracsatlakozás'
+    question-hover-no: '&7Maradok a jelszónál'
+    question-declined: '&7Semmi gond. Továbbra is jelszóval fogsz belépni.'
+    question-confirm:
+    - ''
+    - '&c&lBiztos, hogy ez a fiók a tiéd?'
+    - '&7Ha nem, elveszíted a hozzáférést ehhez a fiókhoz, és csak egy'
+    - '&7adminisztrátor tudja visszaadni.'
+    question-confirm-yes: '&4&l[ IGEN, BIZTOS VAGYOK ]'
+    question-confirm-hover-yes: '&cCsak ha ez a fiók tényleg a tiéd'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

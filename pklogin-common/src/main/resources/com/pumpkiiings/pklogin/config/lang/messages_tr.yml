@@ -474,18 +474,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&cHesabın zaten premium.'
+    success: '&aHesabın artık Premium! /login kullanman gerekmeyecek.'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &aPremium moduna geçtin.
+      &eLütfen sunucuya yeniden bağlan.
+    current-mode: '&eHesabın şu anda {0} modunda.'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&cUYARI!'
+    - '&ePremium modunu açarsan, /login olmadan gireceksin.'
+    - '&4Eğer premium DEĞİLSEN, hesabını sonsuza dek kaybedeceksin!'
+    - '&eOnaylamak için /premium confirm kullan.'
+    auto-login: '&aPremium ile otomatik olarak giriş yaptın!'
+    question:
+    - ''
+    - '&6&lBu isim satın alınmış bir hesaba ait.'
+    - '&7Hesap senin ise, bundan sonra şifre kullanmana gerek yok.'
+    - '&7Değilse sorun yok — oynamaya devam et.'
+    question-yes: '&a&l[ EVET, BENİM ]'
+    question-no: '&c&l[ HAYIR ]'
+    question-hover-yes: '&7Premium''a geç ve yeniden bağlan'
+    question-hover-no: '&7Şifre kullanmaya devam et'
+    question-declined: '&7Sorun değil. Şifrenle girmeye devam edeceksin.'
+    question-confirm:
+    - ''
+    - '&c&lBu hesabın senin olduğuna emin misin?'
+    - '&7Değilse bu hesaba erişimini kaybedersin ve sana geri'
+    - '&7sadece bir yetkili verebilir.'
+    question-confirm-yes: '&4&l[ EVET, EMİNİM ]'
+    question-confirm-hover-yes: '&cSadece bu hesap gerçekten seninse'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

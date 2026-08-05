@@ -235,18 +235,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&cVaš nalog je već premium.'
+    success: '&aVaš nalog je sada Premium! Nećete morati da koristite /login.'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &aPrebacili ste se na Premium režim.
+      &eMolimo, povežite se ponovo na server.
+    current-mode: '&eVaš nalog je trenutno u režimu {0}.'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&cUPOZORENJE!'
+    - '&eAko uključite premium režim, ulazićete bez /login.'
+    - '&4Ako NISTE premium, izgubićete svoj nalog zauvek!'
+    - '&eKoristite /premium confirm za potvrdu.'
+    auto-login: '&aAutomatski ste prijavljeni preko Premiuma!'
+    question:
+    - ''
+    - '&6&lOvaj nadimak pripada plaćenom nalogu.'
+    - '&7Ako je nalog vaš, od sada ne morate da koristite lozinku.'
+    - '&7Ako nije, ništa se ne menja — nastavite da igrate kao i do sada.'
+    question-yes: '&a&l[ DA, MOJ JE ]'
+    question-no: '&c&l[ NE ]'
+    question-hover-yes: '&7Prebacite na premium i povežite se ponovo'
+    question-hover-no: '&7Nastavite sa lozinkom'
+    question-declined: '&7Nema problema. Nastavićete da se prijavljujete lozinkom.'
+    question-confirm:
+    - ''
+    - '&c&lDa li ste sigurni da je ovaj nalog vaš?'
+    - '&7Ako nije, izgubićete pristup ovom nalogu i samo administrator'
+    - '&7može da vam ga vrati.'
+    question-confirm-yes: '&4&l[ DA, SIGURAN SAM ]'
+    question-confirm-hover-yes: '&cSamo ako je ovaj nalog zaista vaš'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

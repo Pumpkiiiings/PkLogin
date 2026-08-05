@@ -473,18 +473,35 @@ Messages:
       &aYou have switched to Offline mode.
       &ePlease reconnect to the server.
   premium:
-    already-premium: '&cYour account is already premium.'
-    success: '&aYour account is now Premium! You won''t need to use /login.'
+    already-premium: '&cTavo paskyra jau yra premium.'
+    success: '&aTavo paskyra dabar Premium! Nebereikės naudoti /login.'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
-    current-mode: '&eYour account is currently in {0} mode.'
+      &aPerjungei į Premium režimą.
+      &ePrisijunk prie serverio iš naujo.
+    current-mode: '&eTavo paskyra šiuo metu yra {0} režimu.'
     warning:
-    - '&cWARNING!'
-    - '&eIf you enable premium mode, you will enter without /login.'
-    - '&4If you are NOT premium, you will lose your account forever!'
-    - '&eUse /premium confirm to confirm.'
-    auto-login: '&aYou have been automatically logged in via Premium!'
+    - '&cĮSPĖJIMAS!'
+    - '&eJei įjungsi premium režimą, įeisi be /login.'
+    - '&4Jei NESI premium, prarasi savo paskyrą visam laikui!'
+    - '&eNaudok /premium confirm, kad patvirtintum.'
+    auto-login: '&aBuvai automatiškai prijungtas per Premium!'
+    question:
+    - ''
+    - '&6&lŠis slapyvardis priklauso pirktai paskyrai.'
+    - '&7Jei paskyra tavo, nuo dabar gali nebenaudoti slaptažodžio.'
+    - '&7Jei ne, niekas nesikeičia — žaisk toliau kaip iki šiol.'
+    question-yes: '&a&l[ TAIP, JI MANO ]'
+    question-no: '&c&l[ NE ]'
+    question-hover-yes: '&7Perjungti į premium ir prisijungti iš naujo'
+    question-hover-no: '&7Toliau naudoti slaptažodį'
+    question-declined: '&7Jokių problemų. Toliau jungsiesi su slaptažodžiu.'
+    question-confirm:
+    - ''
+    - '&c&lAr tikrai ši paskyra tavo?'
+    - '&7Jei ne, prarasi prieigą prie šios paskyros ir grąžinti ją'
+    - '&7galės tik administratorius.'
+    question-confirm-yes: '&4&l[ TAIP, ESU TIKRAS ]'
+    question-confirm-hover-yes: '&cTik jei ši paskyra tikrai tavo'
   queue:
     message: '&eYou have &b{0} &econds left to {1} or you will be kicked.'
   captcha:

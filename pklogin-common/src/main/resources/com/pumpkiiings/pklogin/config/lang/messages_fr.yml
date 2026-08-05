@@ -231,11 +231,11 @@ Messages:
 
       Your PkLogin verification code is: {1}
   offline:
-    already-offline: '&cYour account is already offline (cracked).'
-    success: '&aYour account is now offline! You will need to use /login.'
+    already-offline: '&cTon compte est déjà offline (cracked).'
+    success: '&aTon compte est maintenant offline ! Tu devras utiliser /login.'
     switch-kick: |-
-      &aYou have switched to Offline mode.
-      &ePlease reconnect to the server.
+      &aTu es passé en mode Offline.
+      &eReconnecte-toi au serveur.
   premium:
     already-premium: '&cTon compte est déjà premium.'
     success: '&aTon compte est maintenant Premium ! Tu n''auras plus besoin de /login.'

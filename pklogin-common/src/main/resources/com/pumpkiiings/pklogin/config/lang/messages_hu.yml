@@ -505,11 +505,11 @@ Messages:
 
       Your PkLogin verification code is: {1}
   offline:
-    already-offline: '&cYour account is already offline (cracked).'
-    success: '&aYour account is now offline! You will need to use /login.'
+    already-offline: '&cA fiókod már offline (cracked).'
+    success: '&aA fiókod mostantól offline! Használnod kell a /login parancsot.'
     switch-kick: |-
-      &aYou have switched to Offline mode.
-      &ePlease reconnect to the server.
+      &aÁtváltottál Offline módra.
+      &eKérlek, csatlakozz újra a szerverhez.
   premium:
     already-premium: '&cA fiókod már premium.'
     success: '&aA fiókod mostantól Premium! Nem kell többé /login parancsot használnod.'

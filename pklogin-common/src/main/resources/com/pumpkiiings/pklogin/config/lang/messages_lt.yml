@@ -467,11 +467,11 @@ Messages:
 
       Your PkLogin verification code is: {1}
   offline:
-    already-offline: '&cYour account is already offline (cracked).'
-    success: '&aYour account is now offline! You will need to use /login.'
+    already-offline: '&cTavo paskyra jau yra offline (cracked).'
+    success: '&aTavo paskyra dabar offline! Turėsi naudoti /login.'
     switch-kick: |-
-      &aYou have switched to Offline mode.
-      &ePlease reconnect to the server.
+      &aPerjungei į Offline režimą.
+      &ePrisijunk prie serverio iš naujo.
   premium:
     already-premium: '&cTavo paskyra jau yra premium.'
     success: '&aTavo paskyra dabar Premium! Nebereikės naudoti /login.'

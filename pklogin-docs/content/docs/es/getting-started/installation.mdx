@@ -11,7 +11,6 @@ proxy va primero.
 
 - **Java 21** o superior
 - **Paper, Spigot o Folia** con API 1.20 o superior
-- **PacketEvents o ProtocolLib**, si quieres login premium sin contraseña (más abajo)
 
 ## Pasos
 
@@ -41,22 +40,6 @@ jugador cracked y PkLogin se queda sin nada que hacer.
   Un servidor en modo offline se cree cualquier nombre que le mande el cliente. No abras el
   puerto del juego a internet sin saber qué le está llegando.
 </Callout>
-
-</Step>
-
-<Step>
-
-### Instala una librería de packets (opcional, pero conviene)
-
-Para que los jugadores premium se salteen la contraseña en un servidor sin proxy, PkLogin
-tiene que pedirle a *un* jugador puntual que se autentique con Mojang. Paper no tiene forma
-de hacer eso con `online-mode=false`, así que hace falta una librería de packets:
-
-- [PacketEvents](https://github.com/retrooper/packetevents)
-- [ProtocolLib](https://github.com/dmulloy2/ProtocolLib)
-
-Instala cualquiera de las dos en `plugins/`. Si no hay ninguna, la consola avisa al arrancar
-y los jugadores premium terminan usando `/register` igual que todos.
 
 </Step>
 
@@ -104,9 +87,8 @@ Entra con un cliente cracked. Te tienes que quedar congelado y con el mensaje de
 /register <contraseña> <contraseña>
 ```
 
-Después entra con una cuenta premium con un nick que PkLogin nunca haya visto. Si tienes la
-librería de packets instalada y `autologin.premium.enable` activado, tienes que entrar sin
-escribir nada.
+Después entra con una cuenta premium con un nick que PkLogin nunca haya visto. Con
+`autologin.premium.enable` activado, tienes que entrar sin escribir nada.
 
 ## Lo que suele fallar el primer día
 
@@ -114,8 +96,8 @@ escribir nada.
 
 <Accordion title="A los jugadores premium les pide registrarse">
 
-O no tienes librería de packets instalada, o `autologin.premium.enable` está en `false`, o
-ese nick ya está en la base de datos como cuenta offline. Una cuenta offline que ya existe se
+O `autologin.premium.enable` está en `false`, o ese nick ya está en la base de datos como
+cuenta offline. Una cuenta offline que ya existe se
 pasa a premium con `/premium confirm`: PkLogin nunca le cambia el modo a una cuenta que ya
 conoce.
 

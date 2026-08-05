@@ -55,14 +55,15 @@ handshake ends the connection. And even if it reached one, a passwordless premiu
 is stored with an empty hash, and PkLogin refuses to compare against an empty hash. The
 missing password cannot be turned into a way in.
 
-### Without a packet library, it fails closed
+### With no way to send the request, it fails closed
 
-On a standalone server with neither PacketEvents nor ProtocolLib, nothing can send the
-encryption request. A `REAL` account then lands in limbo asking for `/login`, and since it
-has no password, **nobody** gets in — not an impostor, and not the owner either.
+If nothing can send the encryption request, a `REAL` account lands in limbo asking for
+`/login`, and since it has no password, **nobody** gets in — not an impostor, and not the
+owner either.
 
-Inconvenient, but not insecure. Install one of the two libraries, or convert the account
-with `/offline` so it uses a password.
+Inconvenient, but not insecure. This is the state a standalone server used to be in without
+a packet library; it now only happens if the handshake cannot attach at all, which the
+console reports at startup.
 
 ### The check is not a UUID comparison
 
@@ -96,7 +97,7 @@ never reaches the registration step. The name is held for its real owner.
 That reservation still has two holes:
 
 - Mojang could not be reached, so the lookup answered `UNKNOWN`
-- the server is standalone with no packet library
+- the encryption request could not be sent at all
 
 In either case the cracked client registers the name and you are back to the first outcome.
 
@@ -215,16 +216,37 @@ autologin:
     mojang-timeout: 5000
 ```
 
-## Standalone servers need a packet library
+## How the request gets sent
 
 On Velocity this works out of the box, because the proxy owns the login handshake.
 
-A Paper server with **no proxy** needs [PacketEvents](https://github.com/retrooper/packetevents)
-or [ProtocolLib](https://github.com/dmulloy2/ProtocolLib), because with `online-mode=false`
-the server never asks anyone to authenticate with Mojang and Paper offers no way to ask just
-one player to — those libraries provide it.
+A Paper server with **no proxy** has to send Mojang's encryption request itself, and with
+`online-mode=false` the server never asks anyone to authenticate — Paper offers no API to
+ask just one player to. PkLogin does it directly, so nothing has to be installed:
 
-Without one, the console says so at startup and premium players fall back to `/register`.
+```yaml title="config.yml"
+autologin:
+  premium:
+    # native | plugin
+    handshake-provider: native
+```
+
+`plugin` uses [PacketEvents](https://github.com/retrooper/packetevents) or
+[ProtocolLib](https://github.com/dmulloy2/ProtocolLib), whichever is installed — there is no
+need to say which. Set it if a Minecraft update ever outpaces the built-in handshake and
+premium players stop being let in.
+
+Neither setting can leave premium logins broken: each falls back to the other when its own
+path is unavailable, and the console says which one the server ended up on.
+
+```
+[PkLogin] Premium handshake: native.
+```
+
+<Callout title="Ignored behind a proxy">
+  The proxy owns the login handshake, so this setting does nothing on a backend. The console
+  says `Premium Auto-Login is handled there` instead.
+</Callout>
 
 ## Bedrock players
 

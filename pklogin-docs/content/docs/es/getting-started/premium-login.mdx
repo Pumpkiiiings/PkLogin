@@ -57,14 +57,15 @@ se corta la conexión. Y aunque llegara a ese punto, una cuenta premium sin cont
 guarda con el hash vacío, y PkLogin se niega a comparar contra un hash vacío. No tener
 contraseña no se puede convertir en una forma de entrar.
 
-### Sin librería de packets no entra nadie
+### Si no hay quién mande el pedido, no entra nadie
 
-En un servidor sin proxy y sin PacketEvents ni ProtocolLib no hay quién mande el pedido de
-cifrado. Una cuenta `REAL` cae al limbo pidiendo `/login`, y como no tiene contraseña, no
-entra **nadie**: ni el que se quiere hacer pasar por otro, ni el dueño.
+Si nada puede mandar el pedido de cifrado, una cuenta `REAL` cae al limbo pidiendo `/login`,
+y como no tiene contraseña, no entra **nadie**: ni el que se quiere hacer pasar por otro, ni
+el dueño.
 
-Es molesto, pero no inseguro. Instala una de las dos librerías, o devuelve la cuenta a modo
-offline con `/offline` para que vuelva a usar contraseña.
+Es molesto, pero no inseguro. Antes era el estado de cualquier servidor sin proxy que no
+tuviera librería de packets; ahora solo pasa si el handshake no logra engancharse, y la
+consola lo avisa al arrancar.
 
 ### No se compara ningún UUID
 
@@ -99,7 +100,7 @@ queda reservado para su dueño.
 Esa reserva igual tiene dos agujeros:
 
 - No se pudo hablar con Mojang, así que la consulta respondió `UNKNOWN`
-- El servidor está solo, sin proxy, y no tiene librería de packets
+- No se pudo mandar el pedido de cifrado
 
 En cualquiera de los dos casos el cracked registra el nick y vuelves al caso anterior.
 
@@ -219,18 +220,37 @@ autologin:
     mojang-timeout: 5000
 ```
 
-## Los servidores sin proxy necesitan una librería de packets
+## Cómo se manda el pedido
 
 En Velocity esto funciona solo, porque el handshake de login lo maneja el proxy.
 
-Un servidor Paper **sin proxy** necesita
-[PacketEvents](https://github.com/retrooper/packetevents) o
-[ProtocolLib](https://github.com/dmulloy2/ProtocolLib), porque con `online-mode=false` el
-servidor no le pide a nadie que se autentique con Mojang y Paper no da forma de pedírselo a
-un jugador puntual: eso lo ponen esas librerías.
+Un servidor Paper **sin proxy** tiene que mandar el pedido de cifrado él mismo, y con
+`online-mode=false` el servidor no le pide a nadie que se autentique — Paper no da API para
+pedírselo a un jugador puntual. PkLogin lo hace directo, así que no hay que instalar nada:
 
-Si no tienes ninguna, la consola avisa al arrancar y los jugadores premium terminan usando
-`/register` igual que todos.
+```yaml title="config.yml"
+autologin:
+  premium:
+    # native | plugin
+    handshake-provider: native
+```
+
+`plugin` usa [PacketEvents](https://github.com/retrooper/packetevents) o
+[ProtocolLib](https://github.com/dmulloy2/ProtocolLib), la que tengas instalada — no hace
+falta decir cuál. Ponlo si alguna actualización de Minecraft se adelanta al handshake
+propio y los premium dejan de entrar.
+
+Ninguna de las dos opciones puede dejar el login premium roto: cada una cae en la otra
+cuando su camino no está disponible, y la consola dice en cuál terminó.
+
+```
+[PkLogin] Premium handshake: native.
+```
+
+<Callout title="Detrás de proxy se ignora">
+  El handshake de login lo tiene el proxy, así que esta opción no hace nada en un backend.
+  Ahí la consola dice `Premium Auto-Login is handled there`.
+</Callout>
 
 ## Jugadores de Bedrock
 

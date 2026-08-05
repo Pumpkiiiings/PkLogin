@@ -229,11 +229,11 @@ Messages:
 
       Your PkLogin verification code is: {1}
   offline:
-    already-offline: '&cYour account is already offline (cracked).'
-    success: '&aYour account is now offline! You will need to use /login.'
+    already-offline: '&cVaš nalog je već offline (cracked).'
+    success: '&aVaš nalog je sada offline! Moraćete da koristite /login.'
     switch-kick: |-
-      &aYou have switched to Offline mode.
-      &ePlease reconnect to the server.
+      &aPrebacili ste se na Offline režim.
+      &eMolimo, povežite se ponovo na server.
   premium:
     already-premium: '&cVaš nalog je već premium.'
     success: '&aVaš nalog je sada Premium! Nećete morati da koristite /login.'

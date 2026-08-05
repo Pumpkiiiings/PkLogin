@@ -241,8 +241,8 @@ Messages:
     already-offline: '&cTu cuenta ya es No-Premium (Cracked).'
     success: '&a¡Tu cuenta ahora es No-Premium (Cracked)! Volverás a usar /login.'
     switch-kick: |-
-      &aYou have switched to Offline mode.
-      &ePlease reconnect to the server.
+      &aPasaste al modo No-Premium (Cracked).
+      &eVuelve a conectarte al servidor.
   premium:
     already-premium: '&cYa eres un usuario premium.'
     success: '&a¡Tu cuenta ahora es Premium! Ya no necesitarás usar /login.'

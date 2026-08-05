@@ -234,11 +234,11 @@ Messages:
 
       Your PkLogin verification code is: {1}
   offline:
-    already-offline: '&cYour account is already offline (cracked).'
-    success: '&aYour account is now offline! You will need to use /login.'
+    already-offline: '&c你的账号已经是离线（盗版）模式了。'
+    success: '&a你的账号现在是离线模式了！你需要使用 /login。'
     switch-kick: |-
-      &aYou have switched to Offline mode.
-      &ePlease reconnect to the server.
+      &a你已切换到离线模式。
+      &e请重新连接服务器。
   premium:
     already-premium: '&c你的账号已经是正版了。'
     success: '&a你的账号现在是正版了！不需要再使用 /login。'

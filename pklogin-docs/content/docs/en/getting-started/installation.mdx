@@ -11,7 +11,6 @@ differ and the proxy has to be installed first.
 
 - **Java 21** or newer
 - **Paper, Spigot or Folia** on API level 1.20 or newer
-- **PacketEvents or ProtocolLib**, if you want passwordless premium login (see below)
 
 ## Steps
 
@@ -41,22 +40,6 @@ cracked player can join — which leaves PkLogin nothing to do.
   An offline-mode server accepts any name a client claims. Do not expose the game port to
   the internet without knowing what reaches it.
 </Callout>
-
-</Step>
-
-<Step>
-
-### Install a packet library (optional but recommended)
-
-For premium players to skip the password on a standalone server, PkLogin has to ask *one*
-specific player to authenticate with Mojang. Paper offers no way to do that when
-`online-mode=false`, so a packet library provides it:
-
-- [PacketEvents](https://github.com/retrooper/packetevents)
-- [ProtocolLib](https://github.com/dmulloy2/ProtocolLib)
-
-Install either one into `plugins/`. Without one, the console says so at startup and premium
-players fall back to `/register`.
 
 </Step>
 
@@ -104,9 +87,8 @@ Join the server with a cracked client. You should be frozen in place and asked t
 /register <password> <password>
 ```
 
-Then join with a premium account whose name PkLogin has never seen. If the packet library
-is installed and `autologin.premium.enable` is on, you should be logged in without typing
-anything.
+Then join with a premium account whose name PkLogin has never seen. With
+`autologin.premium.enable` on, you should be logged in without typing anything.
 
 ## Common first-run problems
 
@@ -114,8 +96,8 @@ anything.
 
 <Accordion title="Premium players are asked to register">
 
-Either no packet library is installed, or `autologin.premium.enable` is `false`, or the
-name already exists in the database as an offline account. An existing offline account is
+Either `autologin.premium.enable` is `false`, or the name already exists in the database
+as an offline account. An existing offline account is
 converted with `/premium confirm` — PkLogin never changes the mode of an account it already
 knows.
 

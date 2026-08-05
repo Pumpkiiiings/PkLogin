@@ -1,4 +1,4 @@
-package com.pumpkiiings.pklogin.paper.autologin.packetevents;
+package com.pumpkiiings.pklogin.paper.packet.packetevents;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
@@ -9,9 +9,9 @@ import com.github.retrooper.packetevents.wrapper.login.client.WrapperLoginClient
 import com.github.retrooper.packetevents.wrapper.login.client.WrapperLoginClientLoginStart;
 import com.github.retrooper.packetevents.wrapper.login.server.WrapperLoginServerEncryptionRequest;
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
-import com.pumpkiiings.pklogin.paper.autologin.protocollib.AutoLoginSession;
-import com.pumpkiiings.pklogin.paper.autologin.protocollib.ClientPublicKey;
-import com.pumpkiiings.pklogin.paper.autologin.protocollib.EncryptionUtil;
+import com.pumpkiiings.pklogin.paper.packet.AutoLoginSession;
+import com.pumpkiiings.pklogin.paper.packet.ClientPublicKey;
+import com.pumpkiiings.pklogin.paper.packet.EncryptionUtil;
 import com.pumpkiiings.pklogin.common.model.Account;
 
 import java.net.InetSocketAddress;
@@ -88,7 +88,7 @@ public class PacketEventsListener extends PacketListenerAbstract {
             }
 
             // Known premium account, or a name Mojang says is a paid one.
-            if (com.pumpkiiings.pklogin.paper.autologin.PremiumDecision
+            if (com.pumpkiiings.pklogin.paper.manager.PremiumManager
                     .shouldRequestEncryption(plugin, username)) {
                 byte[] verifyToken = EncryptionUtil.generateVerifyToken(random);
                 AutoLoginSession session = new AutoLoginSession(username, verifyToken, clientPublicKey);

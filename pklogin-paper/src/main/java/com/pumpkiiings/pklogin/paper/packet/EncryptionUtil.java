@@ -1,4 +1,4 @@
-package com.pumpkiiings.pklogin.paper.autologin.protocollib;
+package com.pumpkiiings.pklogin.paper.packet;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -23,6 +23,14 @@ import java.util.Random;
 import java.util.UUID;
 import com.pumpkiiings.pklogin.paper.PkLoginPaper;
 
+/**
+ * The cryptography behind Mojang's login handshake: the server key pair, the
+ * verify token, the shared secret, and the session hash {@code hasJoined} is
+ * asked about.
+ *
+ * <p>Plain JCA, tied to no packet library. All three handshake backends use it
+ * unchanged, which is why it sits here rather than beside any one of them.</p>
+ */
 public class EncryptionUtil {
     public static final int VERIFY_TOKEN_LENGTH = 4;
     public static final String KEY_PAIR_ALGORITHM = "RSA";

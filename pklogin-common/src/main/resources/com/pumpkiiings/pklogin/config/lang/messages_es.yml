@@ -264,9 +264,16 @@ Messages:
     question-hover-yes: '&7Cambiar a premium y reconectar'
     question-hover-no: '&7Seguir usando contraseña'
     question-declined: '&7Sin problema. Seguirás entrando con tu contraseña.'
+    question-confirm:
+    - ''
+    - '&c&l¿Seguro que esta cuenta es tuya?'
+    - '&7Si no lo es, vas a perder el acceso a esta cuenta y solo un admin va a'
+    - '&7poder devolvértela.'
+    question-confirm-yes: '&4&l[ SÍ, ESTOY SEGURO ]'
+    question-confirm-hover-yes: '&cSolo si esta cuenta es realmente tuya'
     switch-kick: |-
-      &aYou have switched to Premium mode.
-      &ePlease reconnect to the server.
+      &aPasaste al modo Premium.
+      &eVuelve a conectarte al servidor.
   queue:
     message: '&eTienes {0} segundos para {1}!'
   captcha:

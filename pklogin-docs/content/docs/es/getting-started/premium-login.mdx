@@ -142,8 +142,8 @@ En servidores donde los jugadores offline se ponen nicks de cuentas premium segu
 lee como "el servidor está roto".
 
 <Callout title="La pregunta resuelve las dos cosas">
-  Con `enable: false` no queda nadie afuera, y el dueño real llega al mismo lugar un clic
-  después gracias a la pregunta de acá abajo. Mira [Quién se queda con un
+  Con `enable: false` no queda nadie afuera, y el dueño real llega al mismo lugar un par de
+  clics después gracias a la pregunta de acá abajo. Mira [Quién se queda con un
   nick](#quién-se-queda-con-un-nick).
 </Callout>
 
@@ -160,9 +160,28 @@ Si no lo es, no pasa nada: sigue jugando como estás.
 [ SÍ, ES MÍA ]   [ NO ]
 ```
 
-- **SÍ** pasa la cuenta a premium y le pide que se reconecte. De ahí en adelante entra sin
-  contraseña, para siempre.
+- **SÍ** vuelve a preguntar antes de hacer nada.
 - **NO** no cambia nada. Sigue con su contraseña.
+
+Decir que sí no convierte la cuenta por sí solo. Abre una confirmación:
+
+```
+¿Seguro que esta cuenta es tuya?
+Si no lo es, vas a perder el acceso a esta cuenta y solo un admin va a
+poder devolvértela.
+
+[ SÍ, ESTOY SEGURO ]   [ NO ]
+```
+
+Recién ese segundo clic pasa la cuenta a premium y le pide que se reconecte. De ahí en
+adelante entra sin contraseña, para siempre.
+
+<Callout type="warn" title="Por qué pregunta dos veces">
+  Si el que aprieta de corrido no es el dueño del nick, convierte a `REAL` su propia cuenta
+  recién creada. Esa cuenta queda sin contraseña y no puede pasar el handshake de Mojang, así
+  que ya no entra nadie — y él solo no lo puede deshacer: hace falta que un admin ejecute
+  `/pklogin delete <nick>`. Un clic al pasar no debería poder llegar a eso.
+</Callout>
 
 ```yaml title="config.yml"
 autologin:

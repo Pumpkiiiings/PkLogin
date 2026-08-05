@@ -138,8 +138,9 @@ On servers where offline players routinely pick paid nicknames, that reads as "t
 broken".
 
 <Callout title="The question solves both">
-  With `enable: false` nobody is refused, and a real owner reaches the same place one click
-  later thanks to the question below. See [Who gets a name first](#who-gets-a-name-first).
+  With `enable: false` nobody is refused, and a real owner reaches the same place a couple
+  of clicks later thanks to the question below. See
+  [Who gets a name first](#who-gets-a-name-first).
 </Callout>
 
 ## The question on registering
@@ -155,9 +156,28 @@ If it is not, nothing changes — keep playing as you are.
 [ YES, IT IS MINE ]   [ NO ]
 ```
 
-- **Yes** converts the account to premium and asks them to reconnect. From then on they join
-  without a password, permanently.
+- **Yes** asks a second time before doing anything.
 - **No** changes nothing. They keep their password.
+
+Saying yes does not convert the account on its own. It opens a confirmation:
+
+```
+Are you sure this account is yours?
+If it is not, you will lose access to this account and only an admin
+will be able to give it back to you.
+
+[ YES, I AM SURE ]   [ NO ]
+```
+
+Only that second click converts the account to premium and asks them to reconnect. From then
+on they join without a password, permanently.
+
+<Callout type="warn" title="Why it asks twice">
+  A player who does not own the nickname and clicks straight through converts their own
+  seconds-old account to `REAL`. It then has no password and cannot pass the Mojang handshake,
+  so nobody can log into it, and they cannot undo it themselves — it takes an admin running
+  `/pklogin delete <name>`. One stray click should not reach that state.
+</Callout>
 
 ```yaml title="config.yml"
 autologin:

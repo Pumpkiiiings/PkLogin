@@ -267,6 +267,13 @@ Messages:
     question-hover-yes: "&7Switch to premium and reconnect"
     question-hover-no: "&7Keep using a password"
     question-declined: "&7No problem. You will keep logging in with your password."
+    question-confirm:
+      - ""
+      - "&c&lAre you sure this account is yours?"
+      - "&7If it is not, you will lose access to this account and only an admin"
+      - "&7will be able to give it back to you."
+    question-confirm-yes: "&4&l[ YES, I AM SURE ]"
+    question-confirm-hover-yes: "&cOnly if this account is really yours"
 
   session:
     resumed: "&aWelcome back! Your session is still open, so no password is needed."

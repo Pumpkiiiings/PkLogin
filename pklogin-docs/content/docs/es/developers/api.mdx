@@ -3,10 +3,10 @@ title: API para desarrolladores
 description: Depende de PkLogin y usa sus servicios de cuentas, seguridad y sesión.
 ---
 
-## Añadir la dependencia
+## Agregar la dependencia
 
-Las clases de la API viven en `com.pumpkiiings.pklogin.api` y van shadeadas dentro del jar
-del plugin, así que depende de `pklogin-universal` y márcalo como provisto.
+Las clases de la API están en `com.pumpkiiings.pklogin.api` y van shadeadas adentro del jar
+del plugin, así que depende de `pklogin-universal` y márcalo como `provided`.
 
 <Tabs items={['Gradle', 'Maven']}>
 
@@ -48,14 +48,15 @@ dependencies {
 
 </Tabs>
 
-<Callout title="Comprueba la versión">
-  `1.7` es la versión que hay en el `build.gradle` de este repositorio. Usa la que publique
-  la [página de releases](https://github.com/Pumpkiiiings/PkLogin/releases) en ese momento.
+<Callout title="Fíjate la versión">
+  `1.7` es la versión que hay en el `build.gradle` de este repositorio. Usa la que esté
+  publicada en la [página de releases](https://github.com/Pumpkiiiings/PkLogin/releases) en
+  ese momento.
 </Callout>
 
-## Punto de entrada
+## Por dónde se entra
 
-Todo se alcanza a través de `PkLoginProvider`:
+Todo pasa por `PkLoginProvider`:
 
 ```java
 import com.pumpkiiings.pklogin.api.service.AccountManagerAPI;
@@ -68,14 +69,14 @@ SecurityAPI security = PkLoginProvider.getSecurityAPI();
 SessionAPI sessions = PkLoginProvider.getSessionAPI();
 ```
 
-Cada getter lanza `PluginNotLoadedException` si PkLogin todavía no registró ese servicio.
-Declara PkLogin como dependencia de tu plugin para que cargue antes, y resuelve los servicios
-cuando los necesites en vez de en un campo estático.
+Cada getter tira `PluginNotLoadedException` si PkLogin todavía no registró ese servicio.
+Declara PkLogin como dependencia de tu plugin para que cargue antes, y pide los servicios
+cuando los vayas a usar en vez de guardarlos en un campo estático.
 
-<Callout type="warn" title="PkLoginAPI está deprecada">
-  La interfaz única antigua `PkLoginAPI` todavía existe pero está marcada `@Deprecated`. Sus
-  métodos son síncronos y bloquean sobre trabajo de base de datos. Usa los tres servicios de
-  abajo.
+<Callout type="warn" title="PkLoginAPI quedó deprecada">
+  La interfaz vieja `PkLoginAPI`, que tenía todo junto, sigue existiendo pero está marcada
+  como `@Deprecated`. Sus métodos son síncronos y bloquean esperando a la base de datos. Usa
+  los tres servicios de abajo.
 </Callout>
 
 ## AccountManagerAPI
@@ -89,7 +90,7 @@ public interface AccountManagerAPI {
 }
 ```
 
-`getAccount` resuelve a un `Optional` vacío cuando el jugador no está registrado.
+`getAccount` devuelve un `Optional` vacío cuando el jugador no está registrado.
 
 ### AccountData
 
@@ -106,7 +107,7 @@ public interface AccountData {
 }
 ```
 
-`getUuidType()` devuelve el modo de la cuenta como texto: `REAL`, `RANDOM` u `OFFLINE`. Ver
+`getUuidType()` devuelve el modo de la cuenta como texto: `REAL`, `RANDOM` u `OFFLINE`. Mira
 [Tipos de UUID](/es/docs/getting-started/premium-login#tipos-de-uuid).
 
 ## SecurityAPI
@@ -118,9 +119,9 @@ public interface SecurityAPI {
 }
 ```
 
-`comparePassword` hashea el candidato con los parámetros guardados y compara de forma segura.
-`changePassword` se encarga del hashing con lo que diga `Security.hash-algorithm`, y descarta
-la sesión de login abierta de la cuenta.
+`comparePassword` hashea lo que le pases con los parámetros guardados y lo compara de forma
+segura. `changePassword` se encarga del hashing con lo que digas en `Security.hash-algorithm`,
+y tira abajo la sesión de login que la cuenta tenga abierta.
 
 ## SessionAPI
 
@@ -132,14 +133,14 @@ public interface SessionAPI {
 }
 ```
 
-Los dos `isAuthenticated` son **síncronos**: leen estado en memoria y son seguros en el hilo
-principal. `forceLogin` no.
+Los dos `isAuthenticated` son **síncronos**: leen estado que está en memoria y los puedes
+llamar desde el hilo principal sin problema. `forceLogin` no.
 
 ## Hilos
 
-Todo método que toca la base de datos devuelve un `CompletableFuture`. Nada en la API
-reprograma sus callbacks de vuelta al hilo del servidor, así que vuelve tú antes de tocar
-estado del mundo:
+Todo método que toca la base de datos devuelve un `CompletableFuture`. La API no te devuelve
+sola al hilo del servidor en los callbacks, así que vuelve tú antes de tocar cualquier cosa
+del mundo:
 
 ```java
 PkLoginProvider.getAccountManager()
@@ -153,9 +154,10 @@ PkLoginProvider.getAccountManager()
     });
 ```
 
-<Callout type="warn" title="No bloquees sobre los futures">
-  Llamar a `.join()` o `.get()` desde el hilo principal congela el servidor lo que dure un
-  viaje a la base de datos, que es justo lo que la API asíncrona existe para evitar.
+<Callout type="warn" title="No bloquees esperando los futures">
+  Llamar a `.join()` o `.get()` desde el hilo principal te congela el servidor todo lo que
+  tarde la consulta a la base de datos, que es justamente lo que la API asíncrona existe para
+  evitar.
 </Callout>
 
 ## Enums
@@ -168,16 +170,16 @@ com.pumpkiiings.pklogin.api.enums.EventResult     // ALLOWED, DENIED
 
 ## Excepciones
 
-| Excepción | Se lanza cuando |
+| Excepción | Cuándo se tira |
 | --- | --- |
-| `PluginNotLoadedException` | Se pide un servicio antes de que PkLogin lo registre. |
-| `AccountNotFoundException` | Una operación apunta a un nombre sin cuenta. |
+| `PluginNotLoadedException` | Pediste un servicio antes de que PkLogin lo registrara. |
+| `AccountNotFoundException` | La operación apunta a un nick que no tiene cuenta. |
 | `InvalidPasswordException` | Una contraseña no pasa la validación. |
-| `DatabaseException` | Falló la llamada a la base de datos subyacente. |
+| `DatabaseException` | Falló la llamada a la base de datos. |
 
-Todas viven en `com.pumpkiiings.pklogin.api.exception`.
+Todas están en `com.pumpkiiings.pklogin.api.exception`.
 
-## Siguiente
+## Y después
 
-[Eventos](/es/docs/developers/events) — reaccionar a logins, registros y cambios de
+[Eventos](/es/docs/developers/events) — cómo reaccionar a logins, registros y cambios de
 contraseña en Bukkit y Velocity.

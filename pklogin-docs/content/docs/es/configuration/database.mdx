@@ -1,21 +1,21 @@
 ---
 title: Bases de datos
-description: SQLite, H2, MySQL, MariaDB y PostgreSQL, y cómo moverse entre ellas.
+description: SQLite, H2, MySQL, MariaDB y PostgreSQL, y cómo pasarte de una a otra.
 ---
 
-## Motores soportados
+## Motores que soporta
 
 | Motor | Notas |
 | --- | --- |
-| **sqlite** | Por defecto. Cero configuración, un archivo local. |
-| **h2** | En proceso, basado en archivo. |
-| **mysql** | Servidor MySQL externo. |
-| **mariadb** | Servidor MariaDB externo. |
-| **postgresql** | Servidor PostgreSQL externo. |
+| **sqlite** | El que viene por defecto. No hay nada que configurar, es un archivo local. |
+| **h2** | Corre dentro del mismo servidor y guarda todo en un archivo. |
+| **mysql** | Un servidor MySQL aparte. |
+| **mariadb** | Un servidor MariaDB aparte. |
+| **postgresql** | Un servidor PostgreSQL aparte. |
 
-`sqlite` y `h2` guardan todo en un archivo junto al plugin y no necesitan nada configurado
-debajo de `type`. Los demás conectan con un servidor, así que hay que fijar `host`, `port`,
-`database`, `username` y `password`.
+`sqlite` y `h2` guardan todo en un archivo al lado del plugin y no necesitan nada de lo que
+viene debajo de `type`. Los otros se conectan a un servidor, así que ahí sí tienes que
+completar `host`, `port`, `database`, `username` y `password`.
 
 ## Configuración
 
@@ -23,8 +23,8 @@ debajo de `type`. Los demás conectan con un servidor, así que hay que fijar `h
 Database:
   type: sqlite
 
-  # Ruta absoluta para compartir un archivo SQLite entre Velocity y el servidor
-  # de auth. Vacío usa la ubicación por defecto.
+  # Ruta absoluta, para compartir un archivo SQLite entre Velocity y el servidor
+  # de auth. Vacío usa la ubicación de siempre.
   sqlite-file-path: ""
 
   host: localhost
@@ -34,31 +34,31 @@ Database:
   password: ""
 
   pool:
-    # Ignorado en SQLite, que siempre se limita a una sola conexión.
+    # En SQLite se ignora, que siempre usa una sola conexión.
     maximum-pool-size: 10
-    # Milisegundos de espera por una conexión libre.
+    # Milisegundos que espera a que se libere una conexión.
     connection-timeout: 10000
-    # Milisegundos que puede vivir una conexión antes de ser reemplazada.
+    # Milisegundos que puede vivir una conexión antes de reemplazarla.
     max-lifetime: 1800000
 ```
 
-<Callout type="warn" title="PostgreSQL no escucha en 3306">
-  El `port: 3306` que viene por defecto solo es correcto para MySQL y MariaDB. PostgreSQL
-  escucha en **5432**: cámbialo cuando migres, porque el valor por defecto no sirve para
-  ambos.
+<Callout type="warn" title="PostgreSQL no escucha en el 3306">
+  El `port: 3306` que viene puesto solo sirve para MySQL y MariaDB. PostgreSQL escucha en el
+  **5432**: acuérdate de cambiarlo cuando migres, porque el valor por defecto no sirve para
+  los dos.
 </Callout>
 
-## Pool de conexiones
+## El pool de conexiones
 
-`max-lifetime` debe quedar **por debajo** del `wait_timeout` de tu MySQL o MariaDB. Si el
-servidor cierra una conexión que el pool todavía cree viva, la siguiente consulta sobre ella
-falla.
+`max-lifetime` tiene que quedar **por debajo** del `wait_timeout` de tu MySQL o MariaDB. Si
+el servidor cierra una conexión que el pool todavía cree viva, la siguiente consulta que use
+esa conexión falla.
 
-`maximum-pool-size` se ignora en SQLite, que siempre se limita a una sola conexión.
+`maximum-pool-size` se ignora en SQLite, que siempre usa una sola conexión.
 
 ## Compartir SQLite entre el proxy y un backend
 
-Fija `sqlite-file-path` en ambos a la misma ruta absoluta:
+Ponles a los dos el mismo `sqlite-file-path`, con la ruta absoluta:
 
 ```yaml title="config.yml"
 Database:
@@ -66,15 +66,15 @@ Database:
   sqlite-file-path: "C:/servers/network/plugins/pklogin/accounts.db"
 ```
 
-<Callout title="Para redes, mejor un motor de servidor">
-  Un archivo SQLite escrito por dos procesos admite un solo escritor a la vez. Para algo más
-  que un proxy y un backend, MySQL, MariaDB o PostgreSQL se comportan mejor.
+<Callout title="Para una red, mejor un motor de servidor">
+  Un archivo SQLite que escriben dos procesos aguanta un solo escritor a la vez. Si tienes
+  algo más que un proxy y un backend, MySQL, MariaDB o PostgreSQL te van a andar mejor.
 </Callout>
 
 ## Cambiar de motor
 
-Cambiar `Database.type` requiere **reinicio completo**: `/pklogin reload` no reabre la
+Cambiar `Database.type` pide **reiniciar el servidor entero**: `/pklogin reload` no reabre la
 conexión.
 
-Para conservar tus cuentas, cópialas antes con `/pklogin migrate <motor>`. Ver
+Para no perder las cuentas, cópialas antes con `/pklogin migrate <motor>`. Mira
 [Migrar entre motores](/es/docs/migration/engines).

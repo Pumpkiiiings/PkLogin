@@ -1,17 +1,17 @@
 ---
 title: Seguridad de contraseñas
-description: Algoritmos de hash, ajuste de coste, protección contra fuerza bruta y límite por IP.
+description: Algoritmos de hash, cómo ajustar el coste, protección contra fuerza bruta y límite por IP.
 ---
 
 ## Algoritmos
 
 | Algoritmo | Notas |
 | --- | --- |
-| **BCRYPT** (por defecto) | Factor de coste adaptativo. La mejor opción general. |
-| **ARGON2** | Argon2id, ganador de la Password Hashing Competition. Máxima seguridad. |
-| **PBKDF2** | Muy estandarizado. 600.000 iteraciones, la recomendación OWASP 2024. |
-| **SHA512** | Con sal. Solo compatibilidad, no recomendado para servidores nuevos. |
-| **SHA256** | Con sal. Solo compatibilidad, no recomendado para servidores nuevos. |
+| **BCRYPT** (por defecto) | Coste ajustable. La mejor opción para la mayoría. |
+| **ARGON2** | Argon2id, el que ganó la Password Hashing Competition. El más seguro. |
+| **PBKDF2** | El más estandarizado. 600.000 iteraciones, lo que recomienda OWASP en 2024. |
+| **SHA512** | Con sal. Solo por compatibilidad, no lo uses en un servidor nuevo. |
+| **SHA256** | Con sal. Solo por compatibilidad, no lo uses en un servidor nuevo. |
 | AuthMe SHA256 | Solo lectura. Las cuentas importadas se migran solas en el primer login. |
 
 ```yaml title="config.yml"
@@ -19,16 +19,16 @@ Security:
   hash-algorithm: BCRYPT
 ```
 
-<Callout title="Migración sin downtime">
-  Cambia `Security.hash-algorithm` cuando quieras. Los hashes existentes se detectan solos y
-  se rehashean en silencio al nuevo algoritmo en el siguiente login correcto del jugador: no
-  hay comando de migración y nadie se queda fuera.
+<Callout title="Se cambia sin bajar el servidor">
+  Cambia `Security.hash-algorithm` cuando quieras. Los hashes que ya existen se reconocen
+  solos y se vuelven a hashear con el algoritmo nuevo en el siguiente login del jugador: no
+  hay comando de migración ni queda nadie afuera.
 </Callout>
 
-## Ajuste de coste
+## Ajustar el coste
 
-Los valores más altos ralentizan tanto los logins legítimos como los intentos de fuerza
-bruta, así que ajústalos a tu CPU. Apunta a unos **250 ms por hash**.
+Los valores más altos hacen más lentos tanto los logins normales como los intentos de fuerza
+bruta, así que ajústalos a tu CPU. Busca que cada hash tarde unos **250 ms**.
 
 ```yaml title="config.yml"
 Security:
@@ -40,19 +40,19 @@ Security:
       iterations: 600000
     argon2:
       iterations: 2
-      # Memoria por hash en kibibytes. 65536 = 64 MB.
+      # Memoria por hash, en kibibytes. 65536 = 64 MB.
       memory-kb: 65536
       parallelism: 1
 ```
 
-Subir un valor rehashea cada contraseña en su siguiente login. Bajar uno nunca debilita los
-hashes que ya existen: conservan los parámetros con los que se crearon hasta que el jugador
-vuelva a entrar.
+Si subes un valor, cada contraseña se vuelve a hashear en el siguiente login. Si lo bajas, no
+debilita ningún hash que ya exista: cada uno se queda con los parámetros con los que se creó
+hasta que el jugador vuelva a entrar.
 
-<Callout type="warn" title="La memoria de Argon2 es por hash">
-  `memory-kb: 65536` significa que cada hash concurrente reserva 64 MB. Una avalancha de
-  logins tras un reinicio lo multiplica. Compáralo con la memoria que tu servidor tiene
-  libre de verdad.
+<Callout type="warn" title="La memoria de Argon2 es por cada hash">
+  `memory-kb: 65536` quiere decir que cada hash que se esté calculando al mismo tiempo reserva
+  64 MB. Una avalancha de logins después de un reinicio los multiplica. Compáralo con la RAM
+  que a tu servidor le sobra de verdad.
 </Callout>
 
 ## Reglas de contraseña
@@ -60,24 +60,24 @@ vuelva a entrar.
 ```yaml title="config.yml"
 Security:
   password:
-    # Longitud mínima, inclusive.
+    # Largo mínimo, incluido.
     small: 5
-    # Longitud máxima, inclusive.
+    # Largo máximo, incluido.
     large: 15
 
     secure:
-      # Validar la fortaleza de la contraseña.
+      # Comprobar que la contraseña sea fuerte.
       enable: false
 
-      # Obligar a los jugadores ya registrados a actualizar contraseñas que no
+      # Obligar a los que ya están registrados a cambiar las contraseñas que no
       # cumplan el patrón.
       enforce: false
 
       secure-regex: '(?=\S*\d)(?=\S*[A-Z])(?=\S*[a-z])(?=\S*[!@#$%^&*?])\S*$'
 ```
 
-El `secure-regex` que viene por defecto exige un dígito, una mayúscula, una minúscula y uno
-de `!@#$%^&*?`.
+El `secure-regex` que viene puesto pide un número, una mayúscula, una minúscula y uno de
+estos: `!@#$%^&*?`.
 
 ## Protección contra fuerza bruta
 
@@ -87,18 +87,18 @@ passwords:
     max-login-tries: 3
 ```
 
-Pasados esos intentos incorrectos, el jugador es expulsado.
+Pasados esos intentos errados, al jugador lo kickea.
 
-Un segundo límite trabaja junto a este:
+Junto a este hay un segundo límite:
 
 ```yaml title="config.yml"
 Security:
-  # Milisegundos mínimos entre dos comandos de autenticación de un jugador.
+  # Milisegundos mínimos entre dos comandos de login de un mismo jugador.
   command-cooldown: 750
 ```
 
-Evita que un cliente mande intentos más rápido de lo que el contador puede reaccionar, lo
-que importa porque el contador se comprueba por intento y el hashing es lento a propósito.
+Evita que un cliente mande intentos más rápido de lo que el contador puede reaccionar, que
+importa porque el contador se revisa por cada intento y el hashing es lento a propósito.
 
 ## Límite de cuentas por IP
 
@@ -109,19 +109,19 @@ security:
     limit: 3
 ```
 
-Restringe cuántas cuentas se pueden registrar desde una dirección.
-`/pklogin dupeip <ip|usuario>` lista las cuentas que comparten una dirección.
+Limita cuántas cuentas se pueden registrar desde una misma IP.
+`/pklogin dupeip <ip|jugador>` te lista las cuentas que comparten una IP.
 
-## Validación de nombres
+## Nicks permitidos
 
 ```yaml title="config.yml"
 Security:
   valid-name-regex: '([a-zA-Z0-9_]{3,16})|(\*[a-zA-Z0-9_]{3,17})'
 ```
 
-Los nombres que no coinciden se rechazan antes de llegar al paso de login. Si
-`username-appender` está activo, la comprobación se hace sobre el nombre que el jugador
-escribió, antes de añadir cualquier sufijo.
+Los nicks que no coincidan quedan rechazados antes de llegar al login. Si tienes
+`username-appender` activado, la comprobación se hace sobre el nick que escribió el jugador,
+antes de agregarle ningún sufijo.
 
 ## Captcha
 
@@ -135,18 +135,18 @@ security:
     blocked-commands: true
 ```
 
-`code-length` se aplica a los tipos `CHAT` y `MAP`. Con `blocked-commands: true` se bloquea
-todo comando hasta resolver el captcha; `/login` y `/register` siguen bloqueados de todas
-formas.
+`code-length` se usa en los tipos `CHAT` y `MAP`. Con `blocked-commands: true` no se puede
+usar ningún comando hasta resolver el captcha; `/login` y `/register` quedan bloqueados
+igual.
 
-## Comprobación de "ya está online"
+## La comprobación de "ya está online"
 
 ```yaml title="config.yml"
 security:
   bypass-online-check-with-same-address: true
 ```
 
-Normalmente una segunda conexión con un nombre que ya está online se rechaza. Con esto
-activo, el rechazo se salta cuando la conexión nueva viene de la dirección con la que la
-cuenta está registrada, que es lo que pasa cuando un jugador pierde conexión y reconecta
-antes de que el servidor se entere.
+Normalmente, si alguien se conecta con un nick que ya está online, lo rechaza. Con esto
+activado no lo rechaza cuando la conexión nueva viene de la misma IP con la que está
+registrada la cuenta, que es lo que pasa cuando a un jugador se le cae la conexión y vuelve a
+entrar antes de que el servidor se dé cuenta.

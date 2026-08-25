@@ -1,0 +1,6 @@
+name: PkLogin
+version: '${version}'
+main: com.pumpkiiings.pklogin.universal.PkLoginLoader
+api-version: '1.13'
+authors: [ Pumpkiiiings ]
+description: A practical, secure and feature-rich authentication plugin for Spigot/Paper/Folia and Velocity

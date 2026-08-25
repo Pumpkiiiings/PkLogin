@@ -1,0 +1,10 @@
+{
+  "id": "pklogin",
+  "name": "PkLogin",
+  "version": "${version}",
+  "description": "A practical, secure and feature-rich authentication plugin for Spigot/Paper/Folia and Velocity",
+  "authors": [
+    "Pumpkiiiings"
+  ],
+  "main": "com.pumpkiiings.pklogin.universal.PkLoginLoader"
+}

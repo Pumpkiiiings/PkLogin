@@ -3,25 +3,35 @@ plugins {
 }
 tasks.build.dependsOn('shadowJar')
 
-sourceCompatibility = 21
-targetCompatibility = 21
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+}
 
 dependencies {
-    implementation project(path: ':pklogin-common')
-    implementation project(path: ':pklogin-paper', configuration: 'shadow')
+    // Compile only dependencies to detect platforms
+    compileOnly 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
+    compileOnly "com.velocitypowered:velocity-api:3.3.0-SNAPSHOT"
+    
+    // HTTP/JSON fetching
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 shadowJar {
     archiveFileName = 'PkLogin.jar'
 
-    def libPkg = project.group + '.lib.'
-    relocate 'com.tcoded.folialib', libPkg + 'folialib'
-    
     dependencies {
         exclude(dependency('org.slf4j:.*'))
-        exclude(dependency('net.java.dev.jna:.*'))
     }
+}
 
-    dependsOn project(':pklogin-paper').tasks.named('shadowJar')
-    dependsOn project(':pklogin-paper').tasks.named('jar')
+processResources {
+    def props = [version: project.version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    
+    filesMatching(['velocity-plugin.json', 'paper-plugin.yml', 'plugin.yml']) {
+        expand props
+    }
 }

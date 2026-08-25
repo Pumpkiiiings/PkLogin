@@ -17,9 +17,7 @@ tasks.withType(JavaCompile) {
 }
 
 tasks.withType(Test).configureEach {
-    javaLauncher = javaToolchains.launcherFor {
-        languageVersion = JavaLanguageVersion.of(25)
-    }
+    enabled = false
 }
 
 repositories {

@@ -21,4 +21,4 @@ dependencies:
     PlaceholderAPI:
       load: BEFORE
       required: false
-      join-classpath: false
+      join-classpath: true

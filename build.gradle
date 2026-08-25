@@ -42,5 +42,14 @@ subprojects {
         }
         maven { url = uri('https://repo.opencollab.dev/main/') }
     }
+    tasks.withType(Jar).configureEach { jarTask ->
+        jarTask.doLast {
+            if (jarTask.archiveFile.get().asFile.name.endsWith(".jar") && !jarTask.archiveFile.get().asFile.name.contains("sources") && !jarTask.archiveFile.get().asFile.name.contains("javadoc")) {
+                copy {
+                    from jarTask.archiveFile
+                    into rootProject.file("pklogin-compiled")
+                }
+            }
+        }
+    }
 }
-

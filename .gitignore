@@ -42,6 +42,9 @@ pklogin-translator/cache.json
 analyzer.py
 all_code.txt
 scratch/
+pklogin-compiled/
+pklogin-translator/
+pklogin-bukkit-archived/
 
 # AI assistant workspace. Machine-local: absolute paths, per-session ids and a
 # vendored copy of skill definitions that belong to whoever set them up.

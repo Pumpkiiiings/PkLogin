@@ -315,6 +315,24 @@ public class PkLoginVelocity {
         return authenticatedPlayers;
     }
 
+    /** Returns true when the named player is currently authenticated on this proxy. */
+    public boolean isAuthenticated(String playerName) {
+        return server.getPlayer(playerName)
+                .map(p -> authenticatedPlayers.contains(p.getUniqueId()))
+                .orElse(false);
+    }
+
+    /** Returns the total number of accounts registered in the database. */
+    public int getRegisteredUsers() {
+        try {
+            try (com.pumpkiiings.pklogin.common.database.Database.Query q =
+                    database.query("SELECT COUNT(*) FROM `pklogin`")) {
+                if (q.resultSet.next()) return q.resultSet.getInt(1);
+            }
+        } catch (Exception ignored) {}
+        return 0;
+    }
+
     public ProxyServer getServer() {
         return server;
     }

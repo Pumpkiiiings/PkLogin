@@ -1,0 +1,29 @@
+---
+title: Placeholders
+description: Placeholders available in PkLogin for use in other plugins.
+---
+
+# Placeholders
+
+PkLogin provides integration with [PlaceholderAPI](https://placeholderapi.com/). All placeholders are prefixed with `pklogin`.
+
+## Available Placeholders
+
+The following table lists all available placeholders and their possible return values. 
+> Use the syntax `%pklogin_...%`.
+
+| Placeholder | Description | Returns |
+| --- | --- | --- |
+| `is_logged_in` | Whether the player is currently authenticated. | `true` or `false` |
+| `is_registered` | Whether the player is registered with a password. | `true` or `false` |
+| `account_type` | The type of account the player is using. | `PREMIUM`, `CRACKED`, `BEDROCK` or `UNKNOWN` |
+| `is_premium` | Whether the account is a premium (Mojang) account. | `true` or `false` |
+| `is_cracked` | Whether the account is an offline/cracked account. | `true` or `false` |
+| `is_bedrock` | Whether the account is a Bedrock (Geyser) account. | `true` or `false` |
+| `has_2fa` | Whether the player has TOTP 2FA enabled. | `true` or `false` |
+| `has_discord` | Whether the player has a Discord account linked. | `true` or `false` |
+| `has_email` | Whether the player has an Email address linked. | `true` or `false` |
+| `last_login` | The date and time the player last logged in. | `yyyy-MM-dd HH:mm` or `N/A` |
+| `reg_date` | The date and time the player registered. | `yyyy-MM-dd HH:mm` or `N/A` |
+| `ip` | The last known IP address of the player. | IP address or `N/A` |
+| `total_registered` | The total number of registered accounts in the database. | Integer (e.g. `1234`) |

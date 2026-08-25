@@ -106,6 +106,8 @@ public enum Messages {
     ADMIN_SETSPAWN_SUCCESS("admin.setspawn-success"),
     ADMIN_VERIFY_FORMAT("admin.verify-format"),
     ADMIN_ACCOUNT_NOT_FOUND("admin.account-not-found"),
+    ADMIN_CRACKED_SUCCESS("admin.cracked-success"),
+    ADMIN_PREMIUM_SUCCESS("admin.premium-success"),
 
     // two factor
     TWO_FACTOR_USAGE("two-factor.usage"),

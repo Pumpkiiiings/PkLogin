@@ -18,6 +18,7 @@ tasks.withType(JavaCompile) {
 repositories {
     maven { url 'https://repo.codemc.io/repository/maven-releases/' }
     maven { url 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url 'https://repo.helpch.at/releases/' }
 }
 
 dependencies {
@@ -28,6 +29,7 @@ dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
     compileOnly 'com.comphenix.protocol:ProtocolLib:5.3.0'
     compileOnly 'com.github.retrooper:packetevents-spigot:2.13.0'
+    compileOnly 'me.clip:placeholderapi:2.12.3'
 
     // The protocol primitives read ByteBuf, so the test needs Netty on its own
     // classpath: paper-api is compileOnly and does not reach the test source set.

@@ -368,6 +368,12 @@ public class PkLoginPaper extends JavaPlugin {
             runAsync(this::detectUpdates);
         }
 
+        // PlaceholderAPI integration (soft dependency)
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new com.pumpkiiings.pklogin.paper.placeholder.PkLoginPlaceholderExpansion(this).register();
+            sendMessage("PlaceholderAPI found - placeholders registered.");
+        }
+
         com.pumpkiiings.pklogin.common.security.twofactor.TwoFactorManager.getInstance().init(getDataFolder());
 
         if (getServer().getOnlineMode()) {

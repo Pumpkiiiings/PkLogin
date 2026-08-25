@@ -26,7 +26,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
         if (args.length <= 1) {
             String prefix = args.length == 1 ? args[0].toLowerCase() : "";
             java.util.List<String> subcommands = java.util.Arrays.asList(
-                "help", "forcelogin", "unregister", "delete", "changepass", "verify", "dupeip", "reload"
+                "help", "forcelogin", "unregister", "delete", "changepass", "verify", "dupeip", "cracked", "premium", "reload"
             );
             return java.util.concurrent.CompletableFuture.completedFuture(
                 subcommands.stream().filter(cmd -> cmd.startsWith(prefix)).collect(java.util.stream.Collectors.toList())
@@ -34,7 +34,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
         } else if (args.length == 2) {
             String subcommand = args[0].toLowerCase();
             String prefix = args[1].toLowerCase();
-            if (java.util.Arrays.asList("forcelogin", "unregister", "delete", "changepass", "verify", "dupeip").contains(subcommand)) {
+            if (java.util.Arrays.asList("forcelogin", "unregister", "delete", "changepass", "verify", "dupeip", "cracked", "premium").contains(subcommand)) {
                 return java.util.concurrent.CompletableFuture.completedFuture(
                     plugin.getServer().getAllPlayers().stream()
                         .map(Player::getUsername)
@@ -210,6 +210,62 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
                         String dateStr = sdf.format(new Date(lastLogin));
                         sendMessage(sender, Messages.ADMIN_DUPEIP_FORMAT.asString().replace("{0}", accName).replace("{1}", dateStr));
                     });
+                }
+                return;
+            }
+
+            case "cracked": {
+                if (!sender.hasPermission(Permissions.ADMIN_CRACKED)) {
+                    sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
+                    return;
+                }
+                if (args.length < 2) {
+                    sendMessage(sender, Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "cracked <player>"));
+                    return;
+                }
+                String targetName = args[1];
+                Optional<Account> accOpt = accountManagement.search(targetName);
+                if (accOpt.isPresent()) {
+                    accountManagement.updateUuidType(targetName, "OFFLINE");
+                    accountManagement.invalidateCache(targetName);
+                    sendMessage(sender, Messages.ADMIN_CRACKED_SUCCESS.asString().replace("{0}", targetName));
+                    Optional<Player> targetPlayer = plugin.getServer().getPlayer(targetName);
+                    if (targetPlayer.isPresent()) {
+                        targetPlayer.get().disconnect(
+                            net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                                .deserialize(Messages.OFFLINE_SWITCH_KICK.asString(
+                                    "§aYou have been set to cracked mode.\n§ePlease reconnect to the server.")));
+                    }
+                } else {
+                    sendMessage(sender, Messages.ADMIN_ACCOUNT_NOT_FOUND.asString());
+                }
+                return;
+            }
+
+            case "premium": {
+                if (!sender.hasPermission(Permissions.ADMIN_PREMIUM)) {
+                    sendMessage(sender, Messages.INSUFFICIENT_PERMISSIONS.asString());
+                    return;
+                }
+                if (args.length < 2) {
+                    sendMessage(sender, Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "premium <player>"));
+                    return;
+                }
+                String targetName = args[1];
+                Optional<Account> accOptP = accountManagement.search(targetName);
+                if (accOptP.isPresent()) {
+                    accountManagement.updateUuidType(targetName, "REAL");
+                    accountManagement.invalidateCache(targetName);
+                    sendMessage(sender, Messages.ADMIN_PREMIUM_SUCCESS.asString().replace("{0}", targetName));
+                    Optional<Player> targetPlayer = plugin.getServer().getPlayer(targetName);
+                    if (targetPlayer.isPresent()) {
+                        targetPlayer.get().disconnect(
+                            net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                                .deserialize(Messages.PREMIUM_SWITCH_KICK.asString(
+                                    "§aYou have been set to Premium mode.\n§ePlease reconnect to the server.")));
+                    }
+                } else {
+                    sendMessage(sender, Messages.ADMIN_ACCOUNT_NOT_FOUND.asString());
                 }
                 return;
             }

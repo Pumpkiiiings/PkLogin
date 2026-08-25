@@ -254,6 +254,70 @@ public class PkLoginCommandNode {
                     })
                 )
             )
+            .then(Commands.literal("cracked")
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_CRACKED))
+                .executes(context -> {
+                    context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "cracked <player>"));
+                    return 1;
+                })
+                .then(Commands.argument("player", StringArgumentType.word())
+                    .executes(context -> {
+                        CommandSender sender = context.getSource().getSender();
+                        String targetName = context.getArgument("player", String.class);
+                        plugin.runAsync(() -> {
+                            Optional<Account> accOpt = plugin.getAccountManagement().search(targetName);
+                            if (accOpt.isPresent()) {
+                                plugin.getAccountManagement().updateUuidType(targetName, "OFFLINE");
+                                plugin.getAccountManagement().invalidateCache(targetName);
+                                plugin.getLoginManagement().cleanup(targetName);
+                                sender.sendMessage(Messages.ADMIN_CRACKED_SUCCESS.asString().replace("{0}", targetName));
+                                Player target = Bukkit.getPlayer(targetName);
+                                if (target != null && target.isOnline()) {
+                                    target.getScheduler().run(plugin, task -> target.kick(
+                                        net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                                            .deserialize(Messages.OFFLINE_SWITCH_KICK.asString(
+                                                "§aYou have been set to cracked mode.\n§ePlease reconnect to the server."))), null);
+                                }
+                            } else {
+                                sender.sendMessage(Messages.ADMIN_ACCOUNT_NOT_FOUND.asString());
+                            }
+                        });
+                        return 1;
+                    })
+                )
+            )
+            .then(Commands.literal("premium")
+                .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_PREMIUM))
+                .executes(context -> {
+                    context.getSource().getSender().sendMessage(Messages.ADMIN_USAGE_COMMAND.asString().replace("%command%", "/pklogin").replace("%arg%", "premium <player>"));
+                    return 1;
+                })
+                .then(Commands.argument("player", StringArgumentType.word())
+                    .executes(context -> {
+                        CommandSender sender = context.getSource().getSender();
+                        String targetName = context.getArgument("player", String.class);
+                        plugin.runAsync(() -> {
+                            Optional<Account> accOpt = plugin.getAccountManagement().search(targetName);
+                            if (accOpt.isPresent()) {
+                                plugin.getAccountManagement().updateUuidType(targetName, "REAL");
+                                plugin.getAccountManagement().invalidateCache(targetName);
+                                plugin.getLoginManagement().cleanup(targetName);
+                                sender.sendMessage(Messages.ADMIN_PREMIUM_SUCCESS.asString().replace("{0}", targetName));
+                                Player target = Bukkit.getPlayer(targetName);
+                                if (target != null && target.isOnline()) {
+                                    target.getScheduler().run(plugin, task -> target.kick(
+                                        net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                                            .deserialize(Messages.PREMIUM_SWITCH_KICK.asString(
+                                                "§aYou have been set to Premium mode.\n§ePlease reconnect to the server."))), null);
+                                }
+                            } else {
+                                sender.sendMessage(Messages.ADMIN_ACCOUNT_NOT_FOUND.asString());
+                            }
+                        });
+                        return 1;
+                    })
+                )
+            )
             .then(Commands.literal("reload")
                 .requires(source -> source.getSender().hasPermission(Permissions.ADMIN_RELOAD))
                 .executes(context -> {

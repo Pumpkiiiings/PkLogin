@@ -1,0 +1,29 @@
+---
+title: Placeholders
+description: Placeholders disponibles en PkLogin para su uso en otros plugins.
+---
+
+# Placeholders
+
+PkLogin incluye integración nativa con [PlaceholderAPI](https://placeholderapi.com/). Todos los placeholders utilizan el prefijo `pklogin`.
+
+## Placeholders Disponibles
+
+La siguiente tabla lista todos los placeholders disponibles y sus posibles valores de retorno. 
+> Usa la sintaxis `%pklogin_...%`.
+
+| Placeholder | Descripción | Retorna |
+| --- | --- | --- |
+| `is_logged_in` | Si el jugador está autenticado actualmente. | `true` o `false` |
+| `is_registered` | Si el jugador está registrado con una contraseña. | `true` o `false` |
+| `account_type` | El tipo de cuenta que utiliza el jugador. | `PREMIUM`, `CRACKED`, `BEDROCK` o `UNKNOWN` |
+| `is_premium` | Si la cuenta es premium (Mojang). | `true` o `false` |
+| `is_cracked` | Si la cuenta es offline/no-premium. | `true` o `false` |
+| `is_bedrock` | Si la cuenta es de Bedrock (Geyser). | `true` o `false` |
+| `has_2fa` | Si el jugador tiene activada la autenticación en 2 pasos (TOTP). | `true` o `false` |
+| `has_discord` | Si el jugador ha vinculado una cuenta de Discord. | `true` o `false` |
+| `has_email` | Si el jugador ha vinculado una dirección de Email. | `true` o `false` |
+| `last_login` | La fecha y hora de la última conexión. | `yyyy-MM-dd HH:mm` o `N/A` |
+| `reg_date` | La fecha y hora en la que el jugador se registró. | `yyyy-MM-dd HH:mm` o `N/A` |
+| `ip` | La última dirección IP registrada del jugador. | Dirección IP o `N/A` |
+| `total_registered` | El número total de cuentas registradas en la base de datos. | Entero (ej. `1234`) |

@@ -52,4 +52,6 @@ public final class Permissions {
     public static final String ADMIN_UPDATE = ADMIN + ".update";
     public static final String ADMIN_AUTHME_IMPORT = ADMIN + ".authme-import";
     public static final String ADMIN_MIGRATE = ADMIN + ".migrate";
+    public static final String ADMIN_CRACKED = ADMIN + ".cracked";
+    public static final String ADMIN_PREMIUM = ADMIN + ".premium";
 }

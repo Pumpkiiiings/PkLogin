@@ -1,0 +1,130 @@
+package com.pumpkiiings.pklogin.paper.packet.packetevents;
+
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListenerAbstract;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.login.client.WrapperLoginClientEncryptionResponse;
+import com.github.retrooper.packetevents.wrapper.login.client.WrapperLoginClientLoginStart;
+import com.github.retrooper.packetevents.wrapper.login.server.WrapperLoginServerEncryptionRequest;
+import com.pumpkiiings.pklogin.paper.PkLoginPaper;
+import com.pumpkiiings.pklogin.paper.packet.AutoLoginSession;
+import com.pumpkiiings.pklogin.paper.packet.ClientPublicKey;
+import com.pumpkiiings.pklogin.paper.packet.EncryptionUtil;
+import com.pumpkiiings.pklogin.common.model.Account;
+
+import java.net.InetSocketAddress;
+import java.security.KeyPair;
+import java.security.SecureRandom;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import io.netty.channel.Channel;
+import io.netty.util.AttributeKey;
+
+public class PacketEventsListener extends PacketListenerAbstract {
+
+    private final PkLoginPaper plugin;
+    private final SecureRandom random = new SecureRandom();
+    private final KeyPair keyPair = EncryptionUtil.generateKeyPair();
+    
+    private final ConcurrentHashMap<String, AutoLoginSession> pendingSessions = new ConcurrentHashMap<>();
+
+    public PacketEventsListener(PkLoginPaper plugin) {
+        super(PacketListenerPriority.HIGHEST);
+        this.plugin = plugin;
+    }
+
+    public static void register(PkLoginPaper plugin) {
+        PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsListener(plugin));
+    }
+
+    public void addVerifiedSession(String ip, AutoLoginSession session) {
+        plugin.storeVerifiedSession(ip, session);
+    }
+
+    public AutoLoginSession getVerifiedSession(String ip, String username) {
+        return plugin.consumeVerifiedSession(ip, username);
+    }
+
+    @Override
+    public void onPacketReceive(PacketReceiveEvent event) {
+        if (event.getPacketType() == PacketType.Login.Client.LOGIN_START) {
+            WrapperLoginClientLoginStart start = new WrapperLoginClientLoginStart(event);
+            String username = start.getUsername();
+            InetSocketAddress address = (InetSocketAddress) event.getUser().getAddress();
+            String ip = address.getAddress().getHostAddress();
+            
+            pendingSessions.remove(ip);
+
+            // Check if behind proxy
+            boolean isBungee = plugin.getServer().spigot().getConfig().getBoolean("settings.bungeecord", false);
+            boolean isVelocity = plugin.getServer().spigot().getConfig().getBoolean("settings.velocity-support.enabled", false);
+            
+            // Modern Paper support (1.19+)
+            java.io.File paperGlobal = new java.io.File("config/paper-global.yml");
+            if (paperGlobal.exists()) {
+                try {
+                    org.bukkit.configuration.file.YamlConfiguration paperConfig = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(paperGlobal);
+                    if (paperConfig.getBoolean("proxies.velocity.enabled", false)) {
+                        isVelocity = true;
+                    }
+                } catch (Exception ignored) {}
+            }
+
+            if (isBungee || isVelocity) {
+                return; // Let it pass, proxy handles it
+            }
+
+            Channel channel = (Channel) event.getUser().getChannel();
+            if (isFloodgatePlayer(channel)) {
+                return; // Let it pass
+            }
+            
+            ClientPublicKey clientPublicKey = null;
+
+            if (plugin.hasVerifiedSession(ip, username)) {
+                return;
+            }
+
+            // Known premium account, or a name Mojang says is a paid one.
+            if (com.pumpkiiings.pklogin.paper.manager.PremiumManager
+                    .shouldRequestEncryption(plugin, username)) {
+                byte[] verifyToken = EncryptionUtil.generateVerifyToken(random);
+                AutoLoginSession session = new AutoLoginSession(username, verifyToken, clientPublicKey);
+                pendingSessions.put(ip, session);
+
+                event.setCancelled(true);
+
+                WrapperLoginServerEncryptionRequest request = new WrapperLoginServerEncryptionRequest(
+                        "", keyPair.getPublic(), verifyToken
+                );
+                event.getUser().sendPacket(request);
+            }
+        } else if (event.getPacketType() == PacketType.Login.Client.ENCRYPTION_RESPONSE) {
+            InetSocketAddress address = (InetSocketAddress) event.getUser().getAddress();
+            String ip = address.getAddress().getHostAddress();
+            AutoLoginSession session = pendingSessions.remove(ip);
+            
+            if (session != null) {
+                event.setCancelled(true);
+                WrapperLoginClientEncryptionResponse response = new WrapperLoginClientEncryptionResponse(event);
+                
+                byte[] encryptedSecret = response.getEncryptedSharedSecret();
+                byte[] encryptedNonce = response.getEncryptedVerifyToken().orElse(null); 
+                
+                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, 
+                    new PacketEventsVerifyTask(plugin, event.getUser(), session, encryptedSecret, encryptedNonce, keyPair, this)
+                );
+            }
+        }
+    }
+
+    private boolean isFloodgatePlayer(Channel channel) {
+        try {
+            AttributeKey<?> floodgateAttribute = AttributeKey.valueOf("floodgate-player");
+            return channel.hasAttr(floodgateAttribute);
+        } catch (Exception ignored) { }
+        return false;
+    }
+}

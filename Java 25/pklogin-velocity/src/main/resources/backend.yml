@@ -1,0 +1,77 @@
+#  ███████████                     █████                              █████
+# ▒▒███▒▒▒▒▒███                   ▒▒███                              ▒▒███
+#  ▒███    ▒███  ██████    ██████  ▒███ █████  ██████  ████████    ███████
+#  ▒██████████  ▒▒▒▒▒███  ███▒▒███ ▒███▒▒███  ███▒▒███▒▒███▒▒███  ███▒▒███
+#  ▒███▒▒▒▒▒███  ███████ ▒███ ▒▒▒  ▒██████▒  ▒███████  ▒███ ▒███ ▒███ ▒███
+#  ▒███    ▒███ ███▒▒███ ▒███  ███ ▒███▒▒███ ▒███▒▒▒   ▒███ ▒███ ▒███ ▒███
+#  ███████████ ▒▒████████▒▒██████  ████ █████▒▒██████  ████ █████▒▒████████
+# ▒▒▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒  ▒▒▒▒ ▒▒▒▒▒  ▒▒▒▒▒▒  ▒▒▒▒ ▒▒▒▒▒  ▒▒▒▒▒▒▒▒
+
+# Schema version of this file. PkLogin maintains it — do not edit it by hand.
+# On startup an older file is upgraded in place: new options are added, and
+# anything you have changed is kept exactly as you set it.
+version-backend: 2
+
+# Which servers behind this proxy run PkLogin, and what the proxy does with them.
+backend:
+  # The servers where players log in.
+  #
+  # Every server named here must have PkLogin installed. Players who have not
+  # authenticated yet are sent to one of them, chosen at random when you list
+  # more than one. On most networks this is a single lobby or a dedicated
+  # auth server.
+  auth-servers:
+    - 'auth'
+
+  # Ask each server above to identify itself the first time a player reaches it.
+  #
+  # PkLogin on the proxy and PkLogin on a backend sign the messages they exchange
+  # with a key both derive from Velocity's forwarding secret. If the two ever
+  # disagree, premium players simply stop being logged in and nothing on the proxy
+  # says why. This check turns that into one clear message naming the server and
+  # the cause, so you find out at startup instead of from a player report.
+  #
+  # Turn it off if a server listed above deliberately runs without PkLogin, such
+  # as a limbo that is not a Paper/Spigot server. Nothing else changes: the check
+  # only reports, it never blocks a connection.
+  verify-connection: true
+
+#  ███████████                █████  ███                               █████
+# ▒▒███▒▒▒▒▒███              ▒▒███  ▒▒▒                               ▒▒███
+#  ▒███    ▒███   ██████   ███████  ████  ████████   ██████   ██████  ███████
+#  ▒██████████   ███▒▒███ ███▒▒███ ▒▒███ ▒▒███▒▒███ ███▒▒███ ███▒▒███▒▒▒███▒
+#  ▒███▒▒▒▒▒███ ▒███████ ▒███ ▒███  ▒███  ▒███ ▒▒▒ ▒███████ ▒███ ▒▒▒   ▒███
+#  ▒███    ▒███ ▒███▒▒▒  ▒███ ▒███  ▒███  ▒███     ▒███▒▒▒  ▒███  ███  ▒███ ███
+#  █████   █████▒▒██████ ▒▒████████ █████ █████    ▒▒██████ ▒▒██████   ▒▒█████
+# ▒▒▒▒▒   ▒▒▒▒▒  ▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒ ▒▒▒▒▒ ▒▒▒▒▒      ▒▒▒▒▒▒   ▒▒▒▒▒▒     ▒▒▒▒▒
+
+# Where players end up, before and after logging in.
+redirect:
+  # Send unauthenticated players to an auth server even when the proxy wanted to
+  # put them somewhere else.
+  #
+  # Leave this on. With it off, anything that picks a first server — velocity.toml
+  # 'try', a forced host, another plugin — can drop a player straight into the
+  # network without them ever passing through the login step.
+  override-first-server: true
+
+  # Send players back to the server they were last on, instead of a lobby.
+  # If that server no longer exists, one from 'after-auth.servers' is used.
+  redirect-to-last-server: false
+
+  # How long to wait before moving a player to another server, in milliseconds.
+  connect-delay: 500
+
+  # How long to wait before trying again when a server switch fails, in
+  # milliseconds.
+  retry-delay: 5000
+
+  after-auth:
+    # Move players off the auth server once they have logged in.
+    enabled: false
+
+    # Where they go. With more than one entry, PkLogin picks at random, which
+    # spreads arrivals across your lobbies.
+    servers:
+      - "lobby-1"
+      - "lobby-2"

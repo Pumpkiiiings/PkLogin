@@ -1,0 +1,76 @@
+plugins {
+    id 'com.gradleup.shadow' version '8.3.0'
+}
+
+tasks.build.dependsOn('shadowJar')
+
+archivesBaseName = 'PkLogin-Paper-Java25'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    maven { url 'https://repo.codemc.io/repository/maven-releases/' }
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url 'https://repo.helpch.at/releases/' }
+}
+
+dependencies {
+    implementation project(':pklogin-common')
+
+    implementation 'de.mkammerer:argon2-jvm:2.11'
+
+    compileOnly 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
+    compileOnly 'com.comphenix.protocol:ProtocolLib:5.3.0'
+    compileOnly 'com.github.retrooper:packetevents-spigot:2.13.0'
+    compileOnly 'me.clip:placeholderapi:2.12.3'
+    compileOnly 'io.github.miniplaceholders:miniplaceholders-api:3.2.0'
+
+    // The protocol primitives read ByteBuf, so the test needs Netty on its own
+    // classpath: paper-api is compileOnly and does not reach the test source set.
+    testImplementation 'io.netty:netty-buffer:4.1.115.Final'
+}
+
+// Proves the native handshake's protocol primitives match the wire format and
+// refuse the lengths a hostile client can declare.
+task checkProtocolIo(type: JavaExec) {
+    group = 'verification'
+    description = 'Runs the native handshake protocol primitive test.'
+    mainClass = 'com.pumpkiiings.pklogin.paper.ProtocolIoTest'
+    classpath = sourceSets.test.runtimeClasspath
+}
+
+tasks.named('check') { dependsOn 'checkProtocolIo' }
+
+processResources {
+    // project.version has to be declared as an input, otherwise Gradle keeps the
+    // task UP-TO-DATE across a version bump and ships the previously expanded
+    // value in paper-plugin.yml.
+    def props = ['pluginVersion': project.version]
+    inputs.properties props
+
+    filesMatching('paper-plugin.yml') {
+        expand props
+    }
+    filesMatching('bungee.yml') {
+        expand props
+    }
+}
+
+
+
+shadowJar {
+    archiveClassifier.set('')
+    
+    dependencies {
+        exclude(dependency('org.slf4j:.*'))
+        exclude(dependency('net.java.dev.jna:.*'))
+    }
+}

@@ -16,3 +16,9 @@ include 'pklogin-universal'
 include 'pklogin-paper'
 include 'pkauth-addon'
 include 'pklogin-translator'
+
+include 'pklogin-paper-java25'
+project(':pklogin-paper-java25').projectDir = file('Java 25/pklogin-paper')
+
+include 'pklogin-velocity-java25'
+project(':pklogin-velocity-java25').projectDir = file('Java 25/pklogin-velocity')

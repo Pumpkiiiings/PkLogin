@@ -1,0 +1,28 @@
+name: PkLogin
+version: '${pluginVersion}'
+main: com.pumpkiiings.pklogin.paper.PkLoginPaper
+description: 'A practical, secure and friendly authentication plugin'
+website: 'https://www.pumpkiiings.com'
+api-version: '1.20'
+author: pumpkiiings
+folia-supported: true
+loader: com.pumpkiiings.pklogin.paper.PkLoginPluginLoader
+
+dependencies:
+  server:
+    ProtocolLib:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    packetevents:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    PlaceholderAPI:
+      load: BEFORE
+      required: false
+      join-classpath: false
+    MiniPlaceholders:
+      load: BEFORE
+      required: false
+      join-classpath: false

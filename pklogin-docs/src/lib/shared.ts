@@ -20,7 +20,7 @@ export const links = {
 };
 
 /** Version of the plugin these docs describe, from the root `build.gradle`. */
-export const pluginVersion = '2.0';
+export const pluginVersion = '2.1';
 
 /**
  * Absolute base for OG image and canonical URLs. Vercel injects

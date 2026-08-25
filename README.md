@@ -256,7 +256,7 @@ asked to identify itself the first time a player reaches it. A server that answe
 correctly proves it runs PkLogin and resolved the same key:
 
 ```
-[PkLogin] Backend 'auth' verified: PkLogin 2.0.0, matching signing key (14 ms).
+[PkLogin] Backend 'auth' verified: PkLogin 2.1, matching signing key (14 ms).
 ```
 
 One that does not is named in the log, with the reason. Turn the check off with

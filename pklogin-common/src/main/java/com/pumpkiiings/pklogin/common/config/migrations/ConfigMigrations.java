@@ -54,7 +54,7 @@ public final class ConfigMigrations {
      *   <li>7 — the premium question, and premium auto-login off by default</li>
      * </ul>
      */
-    public static final int CURRENT_VERSION = 7;
+    public static final int CURRENT_VERSION = 8;
 
     private ConfigMigrations() {}
 
@@ -68,7 +68,8 @@ public final class ConfigMigrations {
                 .register(new ThreeToFour())
                 .register(new FourToFive())
                 .register(new FiveToSix())
-                .register(new SixToSeven());
+                .register(new SixToSeven())
+                .register(new SevenToEight());
     }
 
     /**
@@ -237,6 +238,24 @@ public final class ConfigMigrations {
         @Override
         public String description() {
             return "ask a registering player whether a paid nickname is theirs";
+        }
+
+        @Override
+        public void migrate(MigrationContext context) {
+            // Intentionally empty; see the class javadoc on additive steps.
+        }
+    }
+
+    static final class SevenToEight implements ConfigurationMigration {
+
+        @Override
+        public int fromVersion() {
+            return 7;
+        }
+
+        @Override
+        public String description() {
+            return "forwarding-secret-path for custom pterodactyl panels etc.";
         }
 
         @Override

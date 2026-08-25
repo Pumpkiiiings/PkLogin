@@ -300,6 +300,10 @@ public enum Settings {
             "autologin.premium.enable",
             false
     ),
+    AUTOLOGIN_PREMIUM_FORWARDING_SECRET_PATH(
+            "autologin.premium.forwarding-secret-path",
+            ""
+    ),
     AUTOLOGIN_PREMIUM_QUESTION(
             "autologin.premium.question",
             true

@@ -150,6 +150,10 @@ autologin:
     skip-register: true
 
   premium:
+    # Set the path to the proxy's forwarding.secret if it cannot be found automatically.
+    # E.g. in pterodactyl panels it might be /home/container/forwarding.secret
+    forwarding-secret-path: ""
+
     # Let premium players in with no password at all, including the very first
     # time they connect.
     #

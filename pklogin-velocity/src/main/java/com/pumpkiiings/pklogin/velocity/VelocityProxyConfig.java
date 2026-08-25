@@ -36,6 +36,17 @@ public final class VelocityProxyConfig {
      *         the proxy is not using modern forwarding
      */
     public static String readForwardingSecret(Path dataDirectory) {
+        String configPath = com.pumpkiiings.pklogin.common.settings.Settings.AUTOLOGIN_PREMIUM_FORWARDING_SECRET_PATH.asString();
+        if (configPath != null && !configPath.trim().isEmpty()) {
+            File f = new File(configPath);
+            if (f.isFile()) {
+                try {
+                    String secret = new String(Files.readAllBytes(f.toPath()), StandardCharsets.UTF_8).trim();
+                    if (!secret.isEmpty()) return secret;
+                } catch (Exception e) {}
+            }
+        }
+
         String fromEnv = System.getenv(ENV_SECRET);
         if (fromEnv != null && !fromEnv.trim().isEmpty()) {
             return fromEnv.trim();

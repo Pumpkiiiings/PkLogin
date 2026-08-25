@@ -21,7 +21,7 @@ import com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager;
 import com.pumpkiiings.pklogin.common.util.PluginResources;
 import dev.dejvokep.boostedyaml.YamlDocument;
 
-@Plugin(id = "pklogin", name = "PkLogin", version = "2.0.0", authors = {"Pumpkiiiings"})
+@Plugin(id = "pklogin", name = "PkLogin", version = "2.1", authors = {"Pumpkiiiings"})
 public class PkLoginVelocity {
 
     private final ProxyServer server;
@@ -165,7 +165,7 @@ public class PkLoginVelocity {
         sendMessage(dg + "A powerful open source login plugin");
         sendMessage(lg + "Support: " + aq + com.pumpkiiings.pklogin.common.PluginConstants.DISCORD_INVITE);
         sendMessage(lg + "Database Type: " + aq + com.pumpkiiings.pklogin.common.settings.Settings.DATABASE_TYPE.asString());
-        sendMessage(lg + "Version: " + aq + "2.0.0");
+        sendMessage(lg + "Version: " + aq + "2.1");
         sendMessage(lg + "Source: " + aq + com.pumpkiiings.pklogin.common.PluginConstants.GITHUB);
         sendMessage("");
         sendMessage("§e" + "Thanks for use my plugin!");

@@ -25,7 +25,7 @@ public class PkLoginPluginLoader implements PluginLoader {
         // m2.dv8tion.net only publishes JDA's stable releases, so the beta pinned
         // above has never been there; it is kept for whenever that version moves.
         resolver.addRepository(new RemoteRepository.Builder("paper", "default", "https://repo.papermc.io/repository/maven-central/").build());
-        resolver.addRepository(new RemoteRepository.Builder("central", "default", "https://repo1.maven.org/maven2/").build());
+        resolver.addRepository(new RemoteRepository.Builder("central", "default", "https://repo.maven.apache.org/maven2/").build());
         resolver.addRepository(new RemoteRepository.Builder("jda", "default", "https://m2.dv8tion.net/releases").build());
         
         classpathBuilder.addLibrary(resolver);

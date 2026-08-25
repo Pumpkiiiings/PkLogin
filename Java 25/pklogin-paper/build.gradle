@@ -45,6 +45,9 @@ task checkProtocolIo(type: JavaExec) {
     description = 'Runs the native handshake protocol primitive test.'
     mainClass = 'com.pumpkiiings.pklogin.paper.ProtocolIoTest'
     classpath = sourceSets.test.runtimeClasspath
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
 }
 
 tasks.named('check') { dependsOn 'checkProtocolIo' }

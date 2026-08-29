@@ -4,7 +4,7 @@ plugins {
 
 tasks.build.dependsOn('shadowJar')
 
-archivesBaseName = 'PkLogin-Paper-Java25'
+base.archivesName = 'PkLogin-Paper-Java25'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25

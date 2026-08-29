@@ -5,8 +5,10 @@ subprojects {
     // Overridable for one-off builds: ./gradlew build -PpkVersion=2.0-FIX
     version = findProperty('pkVersion') ?: '2.3'
 
-    sourceCompatibility = 21
-    targetCompatibility = 21
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
 
     javadoc {
         options.encoding = 'UTF-8'

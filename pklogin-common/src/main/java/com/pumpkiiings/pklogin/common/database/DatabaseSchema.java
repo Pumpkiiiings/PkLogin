@@ -61,11 +61,11 @@ public final class DatabaseSchema {
         quietly(database, "ALTER TABLE `pklogin` MODIFY COLUMN `regdate` BIGINT");
 
         // Columns added after the first release. Each fails harmlessly if present.
-        quietly(database, "ALTER TABLE `pklogin` ADD COLUMN `totp_secret` TEXT");
-        quietly(database, "ALTER TABLE `pklogin` ADD COLUMN `uuid_type` VARCHAR(16) DEFAULT 'REAL'");
-        quietly(database, "ALTER TABLE `pklogin` ADD COLUMN `random_uuid` VARCHAR(36)");
-        quietly(database, "ALTER TABLE `pklogin` ADD COLUMN `discord_id` VARCHAR(32)");
-        quietly(database, "ALTER TABLE `pklogin` ADD COLUMN `email_address` VARCHAR(255)");
+        if (!hasColumn(database, "totp_secret")) quietly(database, "ALTER TABLE `pklogin` ADD COLUMN `totp_secret` TEXT");
+        if (!hasColumn(database, "uuid_type")) quietly(database, "ALTER TABLE `pklogin` ADD COLUMN `uuid_type` VARCHAR(16) DEFAULT 'REAL'");
+        if (!hasColumn(database, "random_uuid")) quietly(database, "ALTER TABLE `pklogin` ADD COLUMN `random_uuid` VARCHAR(36)");
+        if (!hasColumn(database, "discord_id")) quietly(database, "ALTER TABLE `pklogin` ADD COLUMN `discord_id` VARCHAR(32)");
+        if (!hasColumn(database, "email_address")) quietly(database, "ALTER TABLE `pklogin` ADD COLUMN `email_address` VARCHAR(255)");
 
         createIndexes(database, warn);
     }
@@ -83,23 +83,27 @@ public final class DatabaseSchema {
         String nameColumn = database.indexedColumn("name", 64);
         String addressColumn = database.indexedColumn("address", 64);
 
-        boolean unique = tryCreateIndex(database,
-                "CREATE UNIQUE INDEX " + ifNotExists(database) + "`idx_pklogin_name` ON `pklogin` (" + nameColumn + ")");
-
-        if (!unique) {
-            // Almost always means the table already holds duplicate names from a
-            // version without the constraint. Fall back to a plain index so reads
-            // are still fast, and tell the administrator so they can clean up.
-            boolean plain = tryCreateIndex(database,
-                    "CREATE INDEX " + ifNotExists(database) + "`idx_pklogin_name` ON `pklogin` (" + nameColumn + ")");
-            if (plain) {
-                warn.accept("Could not make the account name index unique — your 'pklogin' table probably contains "
-                        + "duplicate names. Remove the duplicates and restart to enable the constraint.");
+        if (!hasIndex(database, "idx_pklogin_name")) {
+            boolean unique = tryCreateIndex(database,
+                    "CREATE UNIQUE INDEX " + ifNotExists(database) + "`idx_pklogin_name` ON `pklogin` (" + nameColumn + ")");
+    
+            if (!unique) {
+                // Almost always means the table already holds duplicate names from a
+                // version without the constraint. Fall back to a plain index so reads
+                // are still fast, and tell the administrator so they can clean up.
+                boolean plain = tryCreateIndex(database,
+                        "CREATE INDEX " + ifNotExists(database) + "`idx_pklogin_name` ON `pklogin` (" + nameColumn + ")");
+                if (plain) {
+                    warn.accept("Could not make the account name index unique — your 'pklogin' table probably contains "
+                            + "duplicate names. Remove the duplicates and restart to enable the constraint.");
+                }
             }
         }
 
-        tryCreateIndex(database,
-                "CREATE INDEX " + ifNotExists(database) + "`idx_pklogin_address` ON `pklogin` (" + addressColumn + ")");
+        if (!hasIndex(database, "idx_pklogin_address")) {
+            tryCreateIndex(database,
+                    "CREATE INDEX " + ifNotExists(database) + "`idx_pklogin_address` ON `pklogin` (" + addressColumn + ")");
+        }
     }
 
     private static String ifNotExists(Database database) {
@@ -125,5 +129,43 @@ public final class DatabaseSchema {
         } catch (Exception ignored) {
             // Column or modification already applied.
         }
+    }
+
+    private static boolean hasColumn(Database database, String column) {
+        try {
+            try (java.sql.Connection conn = database.getConnection()) {
+                java.sql.DatabaseMetaData meta = conn.getMetaData();
+                try (java.sql.ResultSet rs = meta.getColumns(null, null, "pklogin", null)) {
+                    while (rs.next()) {
+                        if (column.equalsIgnoreCase(rs.getString("COLUMN_NAME"))) return true;
+                    }
+                }
+                try (java.sql.ResultSet rs = meta.getColumns(null, null, "PKLOGIN", null)) {
+                    while (rs.next()) {
+                        if (column.equalsIgnoreCase(rs.getString("COLUMN_NAME"))) return true;
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+        return false;
+    }
+
+    private static boolean hasIndex(Database database, String indexName) {
+        try {
+            try (java.sql.Connection conn = database.getConnection()) {
+                java.sql.DatabaseMetaData meta = conn.getMetaData();
+                try (java.sql.ResultSet rs = meta.getIndexInfo(null, null, "pklogin", false, false)) {
+                    while (rs.next()) {
+                        if (indexName.equalsIgnoreCase(rs.getString("INDEX_NAME"))) return true;
+                    }
+                }
+                try (java.sql.ResultSet rs = meta.getIndexInfo(null, null, "PKLOGIN", false, false)) {
+                    while (rs.next()) {
+                        if (indexName.equalsIgnoreCase(rs.getString("INDEX_NAME"))) return true;
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+        return false;
     }
 }

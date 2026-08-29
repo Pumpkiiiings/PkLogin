@@ -26,9 +26,9 @@ public final class VelocityProxyConfig {
      * @return the proxy root directory
      */
     public static Path proxyRoot(Path dataDirectory) {
-        // plugins/pklogin -> plugins -> root
-        Path plugins = dataDirectory.getParent();
-        return plugins == null ? dataDirectory : (plugins.getParent() == null ? plugins : plugins.getParent());
+        Path absolute = dataDirectory.toAbsolutePath();
+        Path plugins = absolute.getParent();
+        return plugins == null ? absolute : (plugins.getParent() == null ? plugins : plugins.getParent());
     }
 
     /**

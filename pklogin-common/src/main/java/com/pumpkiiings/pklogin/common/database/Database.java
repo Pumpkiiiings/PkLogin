@@ -47,6 +47,12 @@ public interface Database {
     void closeConnection() throws SQLException;
 
     /**
+     * @return the underlying JDBC Connection
+     * @throws SQLException on failure
+     */
+    Connection getConnection() throws SQLException;
+
+    /**
      * Executes an update.
      *
      * @param command the command to be executed

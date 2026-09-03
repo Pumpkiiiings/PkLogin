@@ -25,7 +25,7 @@ public final class PkLoginMiniExpansion {
 
             // Auth state
             .audiencePlaceholder(Player.class, "is_logged_in", (player, queue, ctx) ->
-                Tag.preProcessParsed(bool(plugin.getLoginManagement().isAuthenticated(player.getName()))))
+                Tag.preProcessParsed(bool(plugin.isAuthenticated(player))))
 
             .audiencePlaceholder(Player.class, "is_registered", (player, queue, ctx) -> {
                 Optional<Account> acc = accountMgr.retrieveOrLoad(player.getName());

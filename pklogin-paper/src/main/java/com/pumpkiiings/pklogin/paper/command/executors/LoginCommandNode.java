@@ -39,7 +39,7 @@ public class LoginCommandNode {
                     if (!loginManagement.isUnlocked(name)) return 1;
 
                     plugin.runAsync(() -> {
-                        if (loginManagement.isAuthenticated(name)) {
+                        if (plugin.isAuthenticated(player)) {
                             player.sendMessage(Messages.ALREADY_LOGIN.asString());
                             return;
                         }
@@ -107,7 +107,7 @@ public class LoginCommandNode {
                                     loginManagement.setMustChangePassword(name);
                                     player.sendMessage(Messages.CHANGE_PASSWORD_ENFORCED.asString());
                                 } else {
-                                    plugin.getLoginManagement().setAuthenticated(name);
+                                    if (!plugin.authenticate(player)) return;
                                     player.sendMessage(Messages.SUCCESSFUL_LOGIN.asString());
                                 }
                                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player, Messages.TITLE_AFTER_LOGIN.asTitle().title, Messages.TITLE_AFTER_LOGIN.asTitle().subtitle, Messages.TITLE_AFTER_LOGIN.asTitle().start, Messages.TITLE_AFTER_LOGIN.asTitle().duration, Messages.TITLE_AFTER_LOGIN.asTitle().end);

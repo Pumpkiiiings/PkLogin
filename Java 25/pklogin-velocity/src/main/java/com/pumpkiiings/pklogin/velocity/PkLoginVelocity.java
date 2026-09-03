@@ -21,7 +21,7 @@ import com.pumpkiiings.pklogin.common.config.ConfigurationVersionManager;
 import com.pumpkiiings.pklogin.common.util.PluginResources;
 import dev.dejvokep.boostedyaml.YamlDocument;
 
-@Plugin(id = "pklogin", name = "PkLogin", version = "2.1", authors = {"Pumpkiiiings"})
+@Plugin(id = "pklogin", name = "PkLogin", version = "2.3.1", authors = {"Pumpkiiiings"})
 public class PkLoginVelocity {
 
     private final ProxyServer server;
@@ -44,7 +44,24 @@ public class PkLoginVelocity {
     private Database database;
     private AccountManagement accountManagement;
 
-    private final java.util.Set<java.util.UUID> authenticatedPlayers = java.util.concurrent.ConcurrentHashMap.newKeySet();
+    private final com.pumpkiiings.pklogin.common.security.ConnectionAuthRegistry<com.velocitypowered.api.proxy.Player> connectionAuth =
+            new com.pumpkiiings.pklogin.common.security.ConnectionAuthRegistry<>();
+
+    public synchronized void beginConnection(com.velocitypowered.api.proxy.Player player) {
+        connectionAuth.begin(player.getUsername(), player);
+    }
+
+    public synchronized boolean authenticate(com.velocitypowered.api.proxy.Player player) {
+        return connectionAuth.authenticate(player.getUsername(), player);
+    }
+
+    public boolean isAuthenticated(com.velocitypowered.api.proxy.Player player) {
+        return connectionAuth.isAuthenticated(player.getUsername(), player);
+    }
+
+    public synchronized void endConnection(com.velocitypowered.api.proxy.Player player) {
+        connectionAuth.end(player.getUsername(), player);
+    }
 
     /** Key for signing messages to the backends; resolved once, refreshed on reload. */
     private volatile String proxySecret;
@@ -317,14 +334,10 @@ public class PkLoginVelocity {
         return accountManagement;
     }
 
-    public java.util.Set<java.util.UUID> getAuthenticatedPlayers() {
-        return authenticatedPlayers;
-    }
-
     /** Returns true when the named player is currently authenticated on this proxy. */
     public boolean isAuthenticated(String playerName) {
         return server.getPlayer(playerName)
-                .map(p -> authenticatedPlayers.contains(p.getUniqueId()))
+                .map(this::isAuthenticated)
                 .orElse(false);
     }
 

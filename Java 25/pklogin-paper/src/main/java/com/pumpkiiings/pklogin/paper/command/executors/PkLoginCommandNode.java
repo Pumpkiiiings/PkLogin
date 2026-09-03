@@ -76,7 +76,7 @@ public class PkLoginCommandNode {
                         plugin.runAsync(() -> {
                             Player target = Bukkit.getPlayer(targetName);
                             if (target != null && target.isOnline()) {
-                                plugin.getLoginManagement().setAuthenticated(target.getName());
+                                if (!plugin.authenticate(target)) return;
                                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.clearTitle(target);
                                 target.getScheduler().run(plugin, task -> target.sendMessage(Messages.SUCCESSFUL_LOGIN.asString()), null);
                                 sender.sendMessage(Messages.ADMIN_FORCELOGIN_SUCCESS.asString().replace("{0}", target.getName()));
@@ -100,7 +100,7 @@ public class PkLoginCommandNode {
                         String targetName = context.getArgument("player", String.class);
                         plugin.runAsync(() -> {
                             if (plugin.getAccountManagement().removePassword(targetName)) {
-                                plugin.getLoginManagement().cleanup(targetName);
+                                plugin.invalidateAuthentication(targetName);
                                 sender.sendMessage(Messages.ADMIN_UNREGISTER_SUCCESS.asString().replace("{0}", targetName));
                             } else {
                                 sender.sendMessage(Messages.ADMIN_ACCOUNT_NOT_FOUND.asString());
@@ -122,7 +122,7 @@ public class PkLoginCommandNode {
                         String targetName = context.getArgument("player", String.class);
                         plugin.runAsync(() -> {
                             if (plugin.getAccountManagement().delete(targetName)) {
-                                plugin.getLoginManagement().cleanup(targetName);
+                                plugin.invalidateAuthentication(targetName);
                                 sender.sendMessage(Messages.ADMIN_DELETE_SUCCESS.asString().replace("{0}", targetName));
                             } else {
                                 sender.sendMessage(Messages.ADMIN_ACCOUNT_NOT_FOUND.asString());
@@ -269,7 +269,7 @@ public class PkLoginCommandNode {
                             if (accOpt.isPresent()) {
                                 plugin.getAccountManagement().updateUuidType(targetName, "OFFLINE");
                                 plugin.getAccountManagement().invalidateCache(targetName);
-                                plugin.getLoginManagement().cleanup(targetName);
+                                plugin.invalidateAuthentication(targetName);
                                 sender.sendMessage(Messages.ADMIN_CRACKED_SUCCESS.asString().replace("{0}", targetName));
                                 Player target = Bukkit.getPlayer(targetName);
                                 if (target != null && target.isOnline()) {
@@ -301,7 +301,7 @@ public class PkLoginCommandNode {
                             if (accOpt.isPresent()) {
                                 plugin.getAccountManagement().updateUuidType(targetName, "REAL");
                                 plugin.getAccountManagement().invalidateCache(targetName);
-                                plugin.getLoginManagement().cleanup(targetName);
+                                plugin.invalidateAuthentication(targetName);
                                 sender.sendMessage(Messages.ADMIN_PREMIUM_SUCCESS.asString().replace("{0}", targetName));
                                 Player target = Bukkit.getPlayer(targetName);
                                 if (target != null && target.isOnline()) {
@@ -332,7 +332,7 @@ public class PkLoginCommandNode {
                     Player player = (Player) context.getSource().getSender();
                     plugin.runAsync(() -> {
                         String name = player.getName();
-                        if (!plugin.getLoginManagement().isAuthenticated(name)) {
+                        if (!plugin.isAuthenticated(player)) {
                             return;
                         }
 
@@ -376,7 +376,7 @@ public class PkLoginCommandNode {
     }
 
     private static void reloadLogic(PkLoginPaper plugin, CommandSender sender) {
-        if (sender instanceof Player && !plugin.getLoginManagement().isAuthenticated(sender.getName())) {
+        if (sender instanceof Player && !plugin.isAuthenticated((Player) sender)) {
             return;
         }
         plugin.setupSettings();

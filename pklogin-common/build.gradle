@@ -76,7 +76,14 @@ task checkProxySecret(type: JavaExec) {
     workingDir = rootProject.projectDir
 }
 
-tasks.named('check') { dependsOn 'checkLangs', 'checkConfig', 'checkMigrations', 'checkProxySecret' }
+task checkConnectionAuth(type: JavaExec) {
+    group = 'verification'
+    description = 'Proves authentication cannot cross a replaced player connection.'
+    mainClass = 'com.pumpkiiings.pklogin.common.ConnectionAuthRegistryTest'
+    classpath = sourceSets.test.runtimeClasspath
+}
+
+tasks.named('check') { dependsOn 'checkLangs', 'checkConfig', 'checkMigrations', 'checkProxySecret', 'checkConnectionAuth' }
 // Proves the migration system never loses customised configuration.
 task checkMigrations(type: JavaExec) {
     group = 'verification'

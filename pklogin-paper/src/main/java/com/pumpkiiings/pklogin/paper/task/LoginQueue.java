@@ -52,7 +52,7 @@ public class LoginQueue {
             for (Map.Entry<String, PlayerLogin> entry : pendingLogin.entrySet()) {
                 String name = entry.getKey();
                 Player player = server.getPlayer(name);
-                if (player == null || plugin.getLoginManagement().isAuthenticated(name)) {
+                if (player == null || plugin.isAuthenticated(player)) {
                     pendingLogin.remove(name);
                     continue;
                 }

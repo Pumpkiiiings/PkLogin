@@ -152,11 +152,11 @@ public class ProxyMessageListener implements PluginMessageListener {
             return;
         }
 
-        if (plugin.getLoginManagement().isAuthenticated(player.getName())) {
+        if (plugin.isAuthenticated(player)) {
             return;
         }
 
-        plugin.getLoginManagement().setAuthenticated(player.getName());
+        if (!plugin.authenticate(player)) return;
         player.sendMessage(Messages.PREMIUM_AUTO_LOGIN.asString());
         LoginQueue.removeFromQueue(player.getName());
         plugin.runAsync(() -> new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt());

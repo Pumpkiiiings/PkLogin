@@ -103,7 +103,7 @@ public class PremiumCommandNode {
         LoginManagement loginManagement = plugin.getLoginManagement();
         AccountManagement accountManagement = plugin.getAccountManagement();
 
-        if (!loginManagement.isAuthenticated(name)) {
+        if (!plugin.isAuthenticated(player)) {
             player.sendMessage(Messages.TWO_FACTOR_NOT_LOGGED_IN_SETUP.asString());
             return;
         }

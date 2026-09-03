@@ -94,6 +94,7 @@ public class VelocityListeners {
     @Subscribe
     public EventTask onPostLogin(com.velocitypowered.api.event.connection.PostLoginEvent event) {
         Player player = event.getPlayer();
+        plugin.beginConnection(player);
         if (!player.isOnlineMode()) {
             return null;
         }
@@ -117,8 +118,7 @@ public class VelocityListeners {
     public void onServerPreConnect(ServerPreConnectEvent event) {
         if (!plugin.getBackendConfig().isOverrideFirstServer()) return;
 
-        UUID uuid = event.getPlayer().getUniqueId();
-        if (plugin.getAuthenticatedPlayers().contains(uuid)) return; // already authenticated
+        if (plugin.isAuthenticated(event.getPlayer())) return;
 
         Optional<RegisteredServer> targetOpt = event.getResult().getServer();
         if (targetOpt.isEmpty()) return;
@@ -144,7 +144,7 @@ public class VelocityListeners {
 
     @Subscribe(order = PostOrder.LAST)
     public void onDisconnect(DisconnectEvent event) {
-        plugin.getAuthenticatedPlayers().remove(event.getPlayer().getUniqueId());
+        plugin.endConnection(event.getPlayer());
     }
 
     @Subscribe
@@ -171,7 +171,7 @@ public class VelocityListeners {
                 .delay(AUTO_LOGIN_DELAY_MILLIS, java.util.concurrent.TimeUnit.MILLISECONDS)
                 .schedule();
 
-            plugin.getAuthenticatedPlayers().add(player.getUniqueId());
+            plugin.authenticate(player);
         }
     }
 

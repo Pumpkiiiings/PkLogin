@@ -33,7 +33,7 @@ public abstract class VelocityAbstractCommand implements SimpleCommand {
 
         if (source instanceof Player) {
             Player player = (Player) source;
-            if (requiresAuth && !plugin.getAuthenticatedPlayers().contains(player.getUniqueId())) {
+            if (requiresAuth && !plugin.isAuthenticated(player)) {
                 if (invocation.alias().equalsIgnoreCase("2fa") && invocation.arguments().length > 0 && invocation.arguments()[0].equalsIgnoreCase("verify2fa")) {
                     // Forward verify2fa to the backend server to handle limbo removal
                     player.spoofChatInput("/" + invocation.alias() + " " + String.join(" ", invocation.arguments()));

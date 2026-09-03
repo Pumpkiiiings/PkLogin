@@ -59,7 +59,7 @@ public class TwoFactorCommandNode {
         }
         Account account = accountOpt.get();
 
-        if (!loginManagement.isAuthenticated(name)) {
+        if (!plugin.isAuthenticated(player)) {
             player.sendMessage(Messages.TWO_FACTOR_DISCORD_NOT_LOGGED_IN.asString());
             return;
         }
@@ -98,7 +98,7 @@ public class TwoFactorCommandNode {
         switch (result) {
             case SUCCESS:
                 loginManagement.removeAwaiting2FA(name);
-                loginManagement.setAuthenticated(name);
+                if (!plugin.authenticate(player)) return;
                 player.sendMessage(Messages.TWO_FACTOR_LOGIN_SUCCESS.asString());
                 player.getScheduler().run(plugin, task ->
                         com.pumpkiiings.pklogin.paper.manager.LimboManager.leaveLimbo(plugin, player), null);

@@ -43,13 +43,13 @@ public class PlayerJoinListeners implements Listener {
 
     private final PkLoginPaper plugin;
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         String name = player.getName();
-
-
-
+        // Revoke state belonging to an older connection before this player can
+        // emit any gameplay event. The Player object is the connection identity.
+        plugin.beginConnection(player);
         boolean registered = plugin.getAccountManagement().retrieveOrLoad(name).isPresent();
 
         String ip = player.getAddress() == null || player.getAddress().getAddress() == null
@@ -61,7 +61,7 @@ public class PlayerJoinListeners implements Listener {
                 ip == null ? null : plugin.consumeVerifiedSession(ip, name);
 
         if (session != null && session.isVerified()) {
-            plugin.getLoginManagement().setAuthenticated(name);
+            plugin.authenticate(player);
 
             // First time in: Mojang's handshake just proved this connection owns
             // the account, so there is something to save and no password to ask
@@ -83,7 +83,7 @@ public class PlayerJoinListeners implements Listener {
         }
 
         if (com.pumpkiiings.pklogin.common.settings.Settings.AUTOLOGIN_BEDROCK_ENABLE.asBoolean() && com.pumpkiiings.pklogin.common.hook.FloodgateHook.isBedrockPlayer(player.getUniqueId())) {
-            plugin.getLoginManagement().setAuthenticated(name);
+            plugin.authenticate(player);
             player.sendMessage(Messages.PREMIUM_AUTO_LOGIN.asString().replace("Premium", "Bedrock"));
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().title, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().subtitle, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().start, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().duration, Messages.TITLE_BEDROCK_AUTO_LOGIN.asTitle().end);
@@ -95,7 +95,7 @@ public class PlayerJoinListeners implements Listener {
         // Checked before the queue and the captcha: a player with an open session
         // is already past the point either of those exists to guard.
         if (registered && com.pumpkiiings.pklogin.common.manager.LoginSessions.resume(name, ip)) {
-            plugin.getLoginManagement().setAuthenticated(name);
+            plugin.authenticate(player);
             player.sendMessage(Messages.SESSION_RESUMED.asString());
             plugin.runAsync(() -> new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt());
             return;
@@ -143,4 +143,3 @@ public class PlayerJoinListeners implements Listener {
         }
     }
 }
-

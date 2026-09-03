@@ -3,7 +3,7 @@ subprojects {
 
     group = 'com.pumpkiiings.pklogin'
     // Overridable for one-off builds: ./gradlew build -PpkVersion=2.0-FIX
-    version = findProperty('pkVersion') ?: '2.3'
+    version = findProperty('pkVersion') ?: '2.3.1'
 
     java {
         sourceCompatibility = JavaVersion.VERSION_21

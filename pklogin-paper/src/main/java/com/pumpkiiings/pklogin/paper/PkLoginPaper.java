@@ -62,8 +62,46 @@ public class PkLoginPaper extends JavaPlugin {
     private LoginManagement loginManagement;
     private AccountManagement accountManagement;
 
+    /*
+     * Authentication must belong to a concrete connection, not merely to a
+     * nickname/UUID. Offline-mode reconnects reuse both, and the old quit event
+     * may arrive after the replacement player has joined.
+     */
+    private final com.pumpkiiings.pklogin.common.security.ConnectionAuthRegistry<org.bukkit.entity.Player> connectionAuth =
+            new com.pumpkiiings.pklogin.common.security.ConnectionAuthRegistry<>();
+
     private Database database;
     private PluginSettings pluginSettings;
+
+    /** Starts a new security context and revokes any state left by an older connection. */
+    public synchronized void beginConnection(org.bukkit.entity.Player player) {
+        connectionAuth.begin(player.getName(), player);
+        loginManagement.cleanup(player.getName());
+    }
+
+    /** Authenticates only if this Player is still the current connection for its name. */
+    public synchronized boolean authenticate(org.bukkit.entity.Player player) {
+        if (!connectionAuth.authenticate(player.getName(), player)) return false;
+        loginManagement.setAuthenticated(player.getName());
+        return true;
+    }
+
+    public boolean isAuthenticated(org.bukkit.entity.Player player) {
+        return connectionAuth.isAuthenticated(player.getName(), player);
+    }
+
+    /** Ends this connection without allowing a late quit to clear its replacement. */
+    public synchronized boolean endConnection(org.bukkit.entity.Player player) {
+        if (!connectionAuth.end(player.getName(), player)) return false;
+        loginManagement.cleanup(player.getName());
+        return true;
+    }
+
+    /** Administrative invalidation intentionally revokes whichever connection is current. */
+    public synchronized void invalidateAuthentication(String name) {
+        connectionAuth.invalidate(name);
+        loginManagement.cleanup(name);
+    }
 
     private final java.util.concurrent.ConcurrentHashMap<String, com.pumpkiiings.pklogin.paper.packet.AutoLoginSession> verifiedSessions = new java.util.concurrent.ConcurrentHashMap<>();
 

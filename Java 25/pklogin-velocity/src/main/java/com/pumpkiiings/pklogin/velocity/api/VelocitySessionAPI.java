@@ -16,22 +16,23 @@ public class VelocitySessionAPI implements SessionAPI {
     @Override
     public boolean isAuthenticated(String name) {
         return plugin.getServer().getPlayer(name)
-                .map(player -> plugin.getAuthenticatedPlayers().contains(player.getUniqueId()))
+                .map(plugin::isAuthenticated)
                 .orElse(false);
     }
 
     @Override
     public boolean isAuthenticated(UUID uuid) {
-        return plugin.getAuthenticatedPlayers().contains(uuid);
+        return plugin.getServer().getPlayer(uuid)
+                .map(plugin::isAuthenticated)
+                .orElse(false);
     }
 
     @Override
     public CompletableFuture<Boolean> forceLogin(String name) {
         return CompletableFuture.supplyAsync(() -> {
-            plugin.getServer().getPlayer(name).ifPresent(player -> 
-                plugin.getAuthenticatedPlayers().add(player.getUniqueId())
-            );
-            return true;
+            return plugin.getServer().getPlayer(name)
+                    .map(plugin::authenticate)
+                    .orElse(false);
         });
     }
 }

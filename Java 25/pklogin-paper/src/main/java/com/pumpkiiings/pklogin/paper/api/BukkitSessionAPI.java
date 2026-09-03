@@ -24,13 +24,14 @@ public class BukkitSessionAPI implements SessionAPI {
 
     @Override
     public boolean isAuthenticated(String name) {
-        return plugin.getLoginManagement().isAuthenticated(name);
+        Player player = plugin.getServer().getPlayerExact(name);
+        return player != null && plugin.isAuthenticated(player);
     }
 
     @Override
     public boolean isAuthenticated(UUID uuid) {
         Player player = plugin.getServer().getPlayer(uuid);
-        return player != null && plugin.getLoginManagement().isAuthenticated(player.getName());
+        return player != null && plugin.isAuthenticated(player);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class BukkitSessionAPI implements SessionAPI {
             Player player = plugin.getServer().getPlayerExact(name);
             if (player == null) return false;
 
-            plugin.getLoginManagement().setAuthenticated(player.getName());
+            if (!plugin.authenticate(player)) return false;
             player.getScheduler().run(plugin, task ->
                     com.pumpkiiings.pklogin.paper.manager.LimboManager.leaveLimbo(plugin, player), null);
             com.pumpkiiings.pklogin.paper.task.LoginQueue.removeFromQueue(player.getName());

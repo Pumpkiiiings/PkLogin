@@ -124,7 +124,7 @@ public class ChangePasswordCommandNode {
 
         if (loginManagement.mustChangePassword(name)) {
             loginManagement.removeMustChangePassword(name);
-            loginManagement.setAuthenticated(name);
+            if (!plugin.authenticate(sender)) return;
         }
     }
 

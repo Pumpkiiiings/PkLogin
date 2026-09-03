@@ -54,7 +54,7 @@ public class RegisterCommandNode {
     private static void performPlayer(Player sender, PkLoginPaper plugin, String password, String repeatPassword) {
         String name = sender.getName();
         LoginManagement loginManagement = plugin.getLoginManagement();
-        if (loginManagement.isAuthenticated(name)) {
+        if (plugin.isAuthenticated(sender)) {
             sender.sendMessage(Messages.ALREADY_LOGIN.asString());
             return;
         }
@@ -110,7 +110,7 @@ public class RegisterCommandNode {
 
         AsyncRegisterEvent registerEvent = new AsyncRegisterEvent(sender);
         if (registerEvent.callEvt()) {
-            plugin.getLoginManagement().setAuthenticated(name);
+            if (!plugin.authenticate(sender)) return;
 
             com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(sender, Messages.TITLE_AFTER_REGISTER.asTitle().title, Messages.TITLE_AFTER_REGISTER.asTitle().subtitle, Messages.TITLE_AFTER_REGISTER.asTitle().start, Messages.TITLE_AFTER_REGISTER.asTitle().duration, Messages.TITLE_AFTER_REGISTER.asTitle().end);
             sender.sendMessage(Messages.SUCCESSFUL_REGISTER.asString());
@@ -169,7 +169,7 @@ public class RegisterCommandNode {
         if (playerIfOnline != null) {
             AsyncRegisterEvent registerEvent = new AsyncRegisterEvent(playerIfOnline);
             if (registerEvent.callEvt()) {
-                plugin.getLoginManagement().setAuthenticated(playerName);
+                if (!plugin.authenticate(playerIfOnline)) return;
 
                 com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(playerIfOnline, Messages.TITLE_AFTER_REGISTER.asTitle().title, Messages.TITLE_AFTER_REGISTER.asTitle().subtitle, Messages.TITLE_AFTER_REGISTER.asTitle().start, Messages.TITLE_AFTER_REGISTER.asTitle().duration, Messages.TITLE_AFTER_REGISTER.asTitle().end);
                 playerIfOnline.sendMessage(Messages.SUCCESSFUL_REGISTER.asString());

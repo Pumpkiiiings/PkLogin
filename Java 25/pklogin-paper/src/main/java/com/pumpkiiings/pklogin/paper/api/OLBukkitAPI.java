@@ -20,13 +20,14 @@ public class OLBukkitAPI implements PkLoginAPI {
 
     @Override
     public boolean isAuthenticated(String player) {
-        return plugin.getLoginManagement().isAuthenticated(player);
+        org.bukkit.entity.Player online = plugin.getServer().getPlayerExact(player);
+        return online != null && plugin.isAuthenticated(online);
     }
 
     @Override
     public boolean forceLogin(String player) {
-        plugin.getLoginManagement().setAuthenticated(player);
-        return true;
+        org.bukkit.entity.Player online = plugin.getServer().getPlayerExact(player);
+        return online != null && plugin.authenticate(online);
     }
 
     @Override

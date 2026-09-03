@@ -95,7 +95,7 @@ public class PkLoginAdminCommand extends VelocityAbstractCommand {
                 
                 if (targetPlayerOpt.isPresent()) {
                     Player targetPlayer = targetPlayerOpt.get();
-                    plugin.getAuthenticatedPlayers().add(targetPlayer.getUniqueId());
+                    plugin.authenticate(targetPlayer);
 
                     // Goes through the shared builder so the payload is signed the
                     // same way the backend verifies it.

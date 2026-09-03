@@ -80,8 +80,10 @@ public class PkLoginPlaceholderExpansion extends PlaceholderExpansion {
         switch (params.toLowerCase()) {
 
             // Auth state
-            case "is_logged_in":
-                return bool(loginManagement.isAuthenticated(name));
+            case "is_logged_in": {
+                org.bukkit.entity.Player online = player.getPlayer();
+                return bool(online != null && plugin.isAuthenticated(online));
+            }
 
             case "is_registered": {
                 Optional<Account> acc = accountManagement.retrieveOrLoad(name);

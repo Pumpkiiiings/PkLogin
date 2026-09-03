@@ -52,19 +52,18 @@ public class PlayerGeneralListeners implements Listener {
     public void onPlayerQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         String name = player.getName();
-        LoginManagement loginManagement = plugin.getLoginManagement();
-
         // Before cleanup, which is what forgets they were authenticated: only a
         // player who had actually logged in may leave a session behind.
-        if (loginManagement.isAuthenticated(name)) {
+        if (plugin.isAuthenticated(player)) {
             com.pumpkiiings.pklogin.common.manager.LoginSessions.remember(name, addressOf(player));
         }
 
-        loginManagement.cleanup(name);
-        LoginQueue.removeFromQueue(name);
-        // A question left unanswered would otherwise keep letting /premium through
-        // for whoever connects on this name next.
-        com.pumpkiiings.pklogin.paper.manager.PremiumManager.forget(name);
+        // A late quit from the replaced connection must not clear the new
+        // connection's queue or authentication state.
+        if (plugin.endConnection(player)) {
+            LoginQueue.removeFromQueue(name);
+            com.pumpkiiings.pklogin.paper.manager.PremiumManager.forget(name);
+        }
         com.pumpkiiings.pklogin.paper.manager.LimboManager.discard(plugin, player);
         com.pumpkiiings.pklogin.paper.util.AdventureAPI.clearTitle(player);
     }
@@ -82,7 +81,7 @@ public class PlayerGeneralListeners implements Listener {
         String name = player.getName();
         String message = e.getMessage().toLowerCase();
         String command = message.split(" ")[0];
-        if (!plugin.getLoginManagement().isAuthenticated(name)) {
+        if (!plugin.isAuthenticated(player)) {
             // The premium question is answered by clicking, and those buttons run
             // /premium — which nobody has logged in to be allowed to use yet.
             boolean answeringQuestion = command.equals("/premium")
@@ -102,7 +101,7 @@ public class PlayerGeneralListeners implements Listener {
 
         Player player = e.getPlayer();
         String name = player.getName();
-        if (plugin.getLoginManagement().isAuthenticated(name)) return;
+        if (plugin.isAuthenticated(player)) return;
         
         Location from = e.getFrom();
         Location to = e.getTo();
@@ -116,13 +115,13 @@ public class PlayerGeneralListeners implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPlace(BlockPlaceEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockBreak(BlockBreakEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -132,7 +131,7 @@ public class PlayerGeneralListeners implements Listener {
         if (!(e.getEntity() instanceof Player)) return;
 
         Player player = ((Player) e.getEntity());
-        if (!plugin.getLoginManagement().isAuthenticated(player.getName())) {
+        if (!plugin.isAuthenticated(player)) {
             e.setCancelled(true);
         }
     }
@@ -140,19 +139,19 @@ public class PlayerGeneralListeners implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onAsyncPlayerChat(io.papermc.paper.event.player.AsyncChatEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated((Player) e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         String name = e.getWhoClicked().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated((Player) e.getWhoClicked())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -160,19 +159,19 @@ public class PlayerGeneralListeners implements Listener {
         if (e.isCancelled()) return;
 
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -182,7 +181,7 @@ public class PlayerGeneralListeners implements Listener {
 
         if (e.getEntity() instanceof Player) {
             Player player = (Player) e.getEntity();
-            if (!plugin.getLoginManagement().isAuthenticated(player.getName())) {
+            if (!plugin.isAuthenticated(player)) {
                 e.setCancelled(true);
                 return;
             }
@@ -190,7 +189,7 @@ public class PlayerGeneralListeners implements Listener {
 
         if (e.getDamager() instanceof Player) {
             Player player = (Player) e.getDamager();
-            if (!plugin.getLoginManagement().isAuthenticated(player.getName())) {
+            if (!plugin.isAuthenticated(player)) {
                 e.setCancelled(true);
             }
         }
@@ -199,50 +198,50 @@ public class PlayerGeneralListeners implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerShearEntity(PlayerShearEntityEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerFish(PlayerFishEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerBedEnter(PlayerBedEnterEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerEditBook(PlayerEditBookEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onSignChange(SignChangeEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerItemHeld(PlayerItemHeldEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerItemConsume(PlayerItemConsumeEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 
     @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerPickupItem(PlayerPickupItemEvent e) {
         String name = e.getPlayer().getName();
-        if (!plugin.getLoginManagement().isAuthenticated(name)) e.setCancelled(true);
+        if (!plugin.isAuthenticated(e.getPlayer())) e.setCancelled(true);
     }
 }
 

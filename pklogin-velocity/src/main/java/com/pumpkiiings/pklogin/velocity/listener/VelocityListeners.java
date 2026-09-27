@@ -150,7 +150,6 @@ public class VelocityListeners {
     @Subscribe
     public void onServerConnected(ServerConnectedEvent event) {
         Player player = event.getPlayer();
-        String username = player.getUsername();
 
         // Same grace period as the auto-login below: the backend has to have the
         // player set up before it can answer on their channel.
@@ -161,8 +160,10 @@ public class VelocityListeners {
 
         boolean isBedrock = com.pumpkiiings.pklogin.common.hook.FloodgateHook.isBedrockPlayer(player.getUniqueId());
 
-        Optional<Account> accountOpt = plugin.getAccountManagement().search(username);
-        if (isBedrock || (accountOpt.isPresent() && ("REAL".equalsIgnoreCase(accountOpt.get().getUuidType()) || "PREMIUM".equalsIgnoreCase(accountOpt.get().getUuidType())))) {
+        // isOnlineMode is the result of the Mojang handshake for this concrete
+        // connection. It also avoids racing the asynchronous creation of a
+        // first-time premium account in onPostLogin.
+        if (isBedrock || player.isOnlineMode()) {
             // Give the backend a moment to finish setting the player up before
             // telling it they are already authenticated.
             plugin.getServer().getScheduler()

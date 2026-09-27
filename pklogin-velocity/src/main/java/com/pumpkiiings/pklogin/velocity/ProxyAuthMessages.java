@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.pumpkiiings.pklogin.common.PluginConstants;
 import com.pumpkiiings.pklogin.common.security.ProxyMessageSecurity;
+import com.pumpkiiings.pklogin.common.security.ProxyAuthStateProtocol;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.pumpkiiings.pklogin.velocity.listener.PluginMessageListener;
@@ -55,5 +56,38 @@ public final class ProxyAuthMessages {
 
         server.get().sendPluginMessage(PluginMessageListener.IDENTIFIER, out.toByteArray());
         return true;
+    }
+
+    /** Replies to a ready backend with the proxy's authoritative auth decision. */
+    public static boolean sendAuthState(PkLoginVelocity plugin, Player player,
+                                        String requestNonce, boolean authenticated) {
+        String secret = plugin.getProxySecret();
+        if (secret == null || secret.isEmpty()) return false;
+
+        java.util.Optional<ServerConnection> server = player.getCurrentServer();
+        if (!server.isPresent()) return false;
+
+        String username = player.getUsername();
+        String uuid = player.getUniqueId().toString();
+        String decision = authenticated
+                ? ProxyAuthStateProtocol.AUTHENTICATED
+                : ProxyAuthStateProtocol.PASSWORD_REQUIRED;
+        long timestamp = System.currentTimeMillis();
+        String responseNonce = ProxyMessageSecurity.newNonce();
+        String signature = ProxyMessageSecurity.sign(secret,
+                ProxyAuthStateProtocol.responseParts(username, uuid, decision,
+                        requestNonce, timestamp, responseNonce));
+
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF(PluginConstants.SUBCHANNEL_AUTH_STATE_RESPONSE);
+        out.writeUTF(username);
+        out.writeUTF(uuid);
+        out.writeUTF(decision);
+        out.writeUTF(requestNonce);
+        out.writeLong(timestamp);
+        out.writeUTF(responseNonce);
+        out.writeUTF(signature);
+
+        return server.get().sendPluginMessage(PluginMessageListener.IDENTIFIER, out.toByteArray());
     }
 }

@@ -46,6 +46,12 @@ public final class PluginConstants {
     /** Sub-channel a backend uses to tell the proxy a player authenticated. */
     public static final String SUBCHANNEL_AUTHENTICATED = "Authenticated";
 
+    /** Sub-channel a ready backend uses to request the proxy's decision for a connection. */
+    public static final String SUBCHANNEL_AUTH_STATE_REQUEST = "AuthStateRequest";
+
+    /** Signed proxy response to {@link #SUBCHANNEL_AUTH_STATE_REQUEST}. */
+    public static final String SUBCHANNEL_AUTH_STATE_RESPONSE = "AuthStateResponse";
+
     /** Sub-channel the proxy uses to ask a backend to identify itself. */
     public static final String SUBCHANNEL_VERIFY = "PkLoginVerify";
 

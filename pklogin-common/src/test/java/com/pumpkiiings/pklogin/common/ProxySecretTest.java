@@ -3,6 +3,7 @@ package com.pumpkiiings.pklogin.common;
 import com.pumpkiiings.pklogin.common.security.ProxyMessageSecurity;
 import com.pumpkiiings.pklogin.common.security.ProxySecretResolver;
 import com.pumpkiiings.pklogin.common.security.ProxyVerifyProtocol;
+import com.pumpkiiings.pklogin.common.security.ProxyAuthStateProtocol;
 
 /**
  * Checks how the proxy signing key is chosen and that a message signed with it on
@@ -23,6 +24,7 @@ public final class ProxySecretTest {
         signedMessageVerifiesAcrossSides();
         connectionCheckRoundTrips();
         connectionCheckRejectsAForeignNetwork();
+        authStateDecisionRoundTrips();
 
         System.out.println();
         System.out.println(checks + " check(s), " + failures + " failure(s)");
@@ -128,6 +130,32 @@ public final class ProxySecretTest {
         check("a mismatched key fails the connection check",
                 !ProxyMessageSecurity.verify(proxyKey, reply, repliedAt, replyNonce,
                         ProxyVerifyProtocol.replyParts("auth", "2.0.0", challenge, repliedAt, replyNonce)));
+    }
+
+    /** The backend accepts the proxy's decision, but not a modified decision. */
+    private static void authStateDecisionRoundTrips() {
+        String key = ProxySecretResolver.resolve("Y2FlOGM4ZThiZGVhZGJlZWY=").getKey();
+        String requestNonce = ProxyMessageSecurity.newNonce();
+        long timestamp = System.currentTimeMillis();
+        String responseNonce = ProxyMessageSecurity.newNonce();
+        String signature = ProxyMessageSecurity.sign(key,
+                ProxyAuthStateProtocol.responseParts("Steve", "uuid-1",
+                        ProxyAuthStateProtocol.AUTHENTICATED, requestNonce, timestamp, responseNonce));
+
+        check("signed proxy auth decision verifies",
+                ProxyMessageSecurity.verify(key, signature, timestamp, responseNonce,
+                        ProxyAuthStateProtocol.responseParts("Steve", "uuid-1",
+                                ProxyAuthStateProtocol.AUTHENTICATED, requestNonce, timestamp, responseNonce)));
+
+        long tamperedAt = System.currentTimeMillis();
+        String tamperedNonce = ProxyMessageSecurity.newNonce();
+        String original = ProxyMessageSecurity.sign(key,
+                ProxyAuthStateProtocol.responseParts("Steve", "uuid-1",
+                        ProxyAuthStateProtocol.AUTHENTICATED, requestNonce, tamperedAt, tamperedNonce));
+        check("auth decision cannot be changed in transit",
+                !ProxyMessageSecurity.verify(key, original, tamperedAt, tamperedNonce,
+                        ProxyAuthStateProtocol.responseParts("Steve", "uuid-1",
+                                ProxyAuthStateProtocol.PASSWORD_REQUIRED, requestNonce, tamperedAt, tamperedNonce)));
     }
 
     private static void check(String what, boolean ok) {

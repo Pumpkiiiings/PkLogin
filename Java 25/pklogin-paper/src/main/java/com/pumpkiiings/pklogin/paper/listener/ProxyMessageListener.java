@@ -8,6 +8,7 @@ import com.pumpkiiings.pklogin.paper.task.LoginQueue;
 import com.pumpkiiings.pklogin.common.PluginConstants;
 import com.pumpkiiings.pklogin.common.security.ProxyMessageSecurity;
 import com.pumpkiiings.pklogin.common.security.ProxyVerifyProtocol;
+import com.pumpkiiings.pklogin.common.security.ProxyAuthStateProtocol;
 import com.pumpkiiings.pklogin.common.settings.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -53,6 +54,11 @@ public class ProxyMessageListener implements PluginMessageListener {
 
         if (PluginConstants.SUBCHANNEL_PREMIUM_AUTO_LOGIN.equals(subChannel)) {
             handlePremiumAutoLogin(player, in);
+            return;
+        }
+
+        if (PluginConstants.SUBCHANNEL_AUTH_STATE_RESPONSE.equals(subChannel)) {
+            handleAuthState(player, in);
         }
     }
 
@@ -152,13 +158,74 @@ public class ProxyMessageListener implements PluginMessageListener {
             return;
         }
 
-        if (plugin.isAuthenticated(player)) {
+        completeProxyAutoLogin(player);
+    }
+
+    private void handleAuthState(Player player, ByteArrayDataInput in) {
+        final String username;
+        final String uuid;
+        final String decision;
+        final String requestNonce;
+        final long timestamp;
+        final String responseNonce;
+        final String signature;
+        try {
+            username = in.readUTF();
+            uuid = in.readUTF();
+            decision = in.readUTF();
+            requestNonce = in.readUTF();
+            timestamp = in.readLong();
+            responseNonce = in.readUTF();
+            signature = in.readUTF();
+        } catch (IllegalStateException malformed) {
             return;
         }
+
+        if (!player.getName().equalsIgnoreCase(username)
+                || !player.getUniqueId().toString().equals(uuid)
+                || !ProxyAuthStateProtocol.isDecision(decision)) return;
+
+        String secret = plugin.getProxySecret();
+        if (secret == null || secret.isEmpty()) {
+            warnMissingSecret();
+            return;
+        }
+
+        boolean authentic = ProxyMessageSecurity.verify(secret, signature, timestamp, responseNonce,
+                ProxyAuthStateProtocol.responseParts(username, uuid, decision,
+                        requestNonce, timestamp, responseNonce));
+        if (!authentic) {
+            plugin.getLogger().warning("Rejected an unauthenticated auth-state response for "
+                    + player.getName() + ".");
+            return;
+        }
+
+        if (!plugin.getProxyAuthCoordinator().accept(player, requestNonce)) return;
+
+        if (ProxyAuthStateProtocol.AUTHENTICATED.equals(decision)) {
+            completeProxyAutoLogin(player);
+        } else {
+            PlayerJoinListeners.beginPasswordAuthentication(plugin, player, true);
+        }
+    }
+
+    private void completeProxyAutoLogin(Player player) {
+        plugin.getProxyAuthCoordinator().forget(player);
+        if (plugin.isAuthenticated(player)) return;
 
         if (!plugin.authenticate(player)) return;
         player.sendMessage(Messages.PREMIUM_AUTO_LOGIN.asString());
         LoginQueue.removeFromQueue(player.getName());
+        // PlayerJoinEvent runs before the proxy can vouch for this connection.
+        // Cancel anything that join processing may have started in that gap.
+        com.pumpkiiings.pklogin.paper.manager.PremiumManager.forget(player.getName());
+
+        if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
+            com.pumpkiiings.pklogin.paper.util.AdventureAPI.clearTitle(player);
+            com.pumpkiiings.pklogin.common.model.Title title = Messages.TITLE_PREMIUM_AUTO_LOGIN.asTitle();
+            com.pumpkiiings.pklogin.paper.util.AdventureAPI.showTitle(player,
+                    title.title, title.subtitle, title.start, title.duration, title.end);
+        }
         plugin.runAsync(() -> new com.pumpkiiings.pklogin.api.event.bukkit.AsyncAuthenticateEvent(player).callEvt());
 
         player.getScheduler().run(plugin, task ->

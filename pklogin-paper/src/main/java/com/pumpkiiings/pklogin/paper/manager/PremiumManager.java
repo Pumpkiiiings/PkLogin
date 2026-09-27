@@ -152,14 +152,17 @@ public class PremiumManager {
             // Only an outright yes. Telling someone their nickname is paid when
             // nobody checked would push them into claiming an account they cannot
             // then log into.
-            if (answer != PremiumNameLookup.Answer.PREMIUM) {
-                onPlayerThread(plugin, player, onDeclined);
-                return;
-            }
-
+            final PremiumNameLookup.Answer lookupAnswer = answer;
             onPlayerThread(plugin, player, () -> {
-                if (!player.isOnline()) return;
-                startQuestion(plugin, player, onDeclined);
+                // Velocity may have authenticated the player while the lookup was
+                // in flight. Never start a question or registration flow after
+                // that confirmation arrived.
+                if (!player.isOnline() || plugin.isAuthenticated(player)) return;
+                if (lookupAnswer == PremiumNameLookup.Answer.PREMIUM) {
+                    startQuestion(plugin, player, onDeclined);
+                } else {
+                    onDeclined.run();
+                }
             });
         });
     }

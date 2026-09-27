@@ -69,6 +69,7 @@ public class PkLoginPaper extends JavaPlugin {
      */
     private final com.pumpkiiings.pklogin.common.security.ConnectionAuthRegistry<org.bukkit.entity.Player> connectionAuth =
             new com.pumpkiiings.pklogin.common.security.ConnectionAuthRegistry<>();
+    private final ProxyAuthCoordinator proxyAuthCoordinator = new ProxyAuthCoordinator(this);
 
     private Database database;
     private PluginSettings pluginSettings;

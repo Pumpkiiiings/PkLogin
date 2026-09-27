@@ -239,6 +239,12 @@ already share (`forwarding.secret` on the proxy, `proxies.velocity.secret` in th
 backend's `config/paper-global.yml`). The forwarding secret is never reused
 directly — a separate key is derived from it, so the two never share key material.
 
+The proxy is authoritative for each new connection. Once the backend is ready it
+requests a signed decision, and only shows `/login` or `/register` when the proxy
+answers that a password is required. This prevents premium auto-login from racing
+the backend's registration UI. A two-second fallback keeps authentication usable
+while proxy and backend jars are temporarily on different versions.
+
 Whether a backend checks premium accounts itself is likewise not a setting: behind
 any forwarding mode the proxy owns the login handshake, so the backend has nothing
 left to verify with. PkLogin reads `proxies.velocity.enabled` from

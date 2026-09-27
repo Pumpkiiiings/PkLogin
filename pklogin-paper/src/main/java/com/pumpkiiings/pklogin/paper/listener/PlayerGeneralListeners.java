@@ -64,6 +64,7 @@ public class PlayerGeneralListeners implements Listener {
             LoginQueue.removeFromQueue(name);
             com.pumpkiiings.pklogin.paper.manager.PremiumManager.forget(name);
         }
+        plugin.getProxyAuthCoordinator().forget(player);
         com.pumpkiiings.pklogin.paper.manager.LimboManager.discard(plugin, player);
         com.pumpkiiings.pklogin.paper.util.AdventureAPI.clearTitle(player);
     }

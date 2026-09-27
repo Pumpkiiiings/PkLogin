@@ -124,6 +124,20 @@ La consola te dice qué resolvió al arrancar:
 [PkLogin] Proxy messages authenticated using the Velocity modern forwarding secret.
 ```
 
+## Quién decide si aparece el login
+
+Velocity es la autoridad de cada conexión. Cuando el jugador ya terminó de entrar al
+servidor de auth, ese servidor le avisa al proxy que está listo y espera una respuesta:
+
+- Si Velocity ya comprobó la cuenta con Mojang o Floodgate, responde que está autenticada.
+- En cualquier otro caso, responde que el backend debe pedir contraseña o registro.
+
+La respuesta va firmada y ligada a esa conexión. El backend no muestra `/login` ni
+`/register` antes de recibirla, así que una cuenta premium no ve por un instante el mensaje
+de registro. Si el proxy no responde en dos segundos —por ejemplo, mientras se actualizan
+los jars de uno de los lados— el backend continúa por su cuenta para no dejar al jugador
+congelado para siempre.
+
 ## Verificación de backends
 
 A cada servidor que esté en `backend.auth-servers` se le pide que se identifique la primera

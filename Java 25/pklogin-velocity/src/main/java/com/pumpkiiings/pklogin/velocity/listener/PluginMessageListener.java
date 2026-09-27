@@ -58,6 +58,11 @@ public class PluginMessageListener {
             return;
         }
 
+        if (com.pumpkiiings.pklogin.common.PluginConstants.SUBCHANNEL_AUTH_STATE_REQUEST.equals(subChannel)) {
+            handleAuthStateRequest(event, player, in);
+            return;
+        }
+
         if (com.pumpkiiings.pklogin.common.PluginConstants.SUBCHANNEL_AUTHENTICATED.equals(subChannel)) {
             // Player has successfully logged in or registered on the auth server
             if (!plugin.authenticate(player)) return;
@@ -68,6 +73,44 @@ public class PluginMessageListener {
             
             handleAuthenticationSuccess(player);
         }
+    }
+
+    private void handleAuthStateRequest(PluginMessageEvent event, Player player, ByteArrayDataInput in) {
+        if (!(event.getSource() instanceof ServerConnection)) return;
+        ServerConnection source = (ServerConnection) event.getSource();
+
+        // Only the backend this player is actually on may ask for their state.
+        if (!player.getCurrentServer()
+                .map(current -> current.getServerInfo().getName()
+                        .equals(source.getServerInfo().getName()))
+                .orElse(false)) return;
+
+        final String username;
+        final String uuid;
+        final String requestNonce;
+        try {
+            username = in.readUTF();
+            uuid = in.readUTF();
+            requestNonce = in.readUTF();
+        } catch (IllegalStateException malformed) {
+            return;
+        }
+
+        if (!player.getUsername().equalsIgnoreCase(username)
+                || !player.getUniqueId().toString().equals(uuid)
+                || requestNonce.isEmpty()) return;
+
+        // The connection's Mojang/Floodgate result belongs to the proxy. Make
+        // that decision authoritative even if this request beats another event
+        // listener that would normally populate the proxy session first.
+        boolean authenticated = plugin.isAuthenticated(player)
+                || player.isOnlineMode()
+                || com.pumpkiiings.pklogin.common.hook.FloodgateHook
+                        .isBedrockPlayer(player.getUniqueId());
+        if (authenticated) plugin.authenticate(player);
+
+        com.pumpkiiings.pklogin.velocity.ProxyAuthMessages.sendAuthState(
+                plugin, player, requestNonce, authenticated);
     }
 
     private void handleAuthenticationSuccess(Player player) {

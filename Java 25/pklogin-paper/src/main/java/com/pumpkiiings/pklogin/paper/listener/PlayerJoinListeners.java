@@ -82,7 +82,12 @@ public class PlayerJoinListeners implements Listener {
             return;
         }
 
-        if (com.pumpkiiings.pklogin.common.settings.Settings.AUTOLOGIN_BEDROCK_ENABLE.asBoolean() && com.pumpkiiings.pklogin.common.hook.FloodgateHook.isBedrockPlayer(player.getUniqueId())) {
+        boolean proxyAuthoritative = com.pumpkiiings.pklogin.paper.PaperProxyConfig.isVelocityForwardingEnabled()
+                && plugin.getProxySecret() != null && !plugin.getProxySecret().isEmpty();
+
+        if (!proxyAuthoritative
+                && com.pumpkiiings.pklogin.common.settings.Settings.AUTOLOGIN_BEDROCK_ENABLE.asBoolean()
+                && com.pumpkiiings.pklogin.common.hook.FloodgateHook.isBedrockPlayer(player.getUniqueId())) {
             plugin.authenticate(player);
             player.sendMessage(Messages.PREMIUM_AUTO_LOGIN.asString().replace("Premium", "Bedrock"));
             if (com.pumpkiiings.pklogin.common.settings.Settings.UI_TITLE_BAR.asBoolean()) {
@@ -101,12 +106,37 @@ public class PlayerJoinListeners implements Listener {
             return;
         }
 
-        // Freezing the player is applyLimboState's job, and doing it here as well
-        // ignored the block-player-walk setting.
+        prepareLimbo(plugin, player);
+
+        if (proxyAuthoritative) {
+            // Do not guess from the database or display auth UI. Velocity owns
+            // the handshake and answers once this backend says it is ready.
+            plugin.getProxyAuthCoordinator().request(player);
+            return;
+        }
+
+        beginPasswordAuthentication(plugin, player, true);
+    }
+
+    private static void prepareLimbo(PkLoginPaper plugin, Player player) {
         if (com.pumpkiiings.pklogin.common.settings.Settings.TELEPORT_SAFE_LOCATION.asBoolean()) {
             com.pumpkiiings.pklogin.paper.manager.LimboManager.teleportToSpawn(plugin, player);
         }
         com.pumpkiiings.pklogin.paper.manager.LimboManager.applyLimboState(plugin, player);
+    }
+
+    /** Starts backend password auth only after the proxy requests it or times out. */
+    public static void beginPasswordAuthentication(PkLoginPaper plugin, Player player,
+                                                   boolean limboAlreadyApplied) {
+        if (!player.isOnline() || plugin.isAuthenticated(player)) return;
+
+        String name = player.getName();
+        boolean registered = plugin.getAccountManagement().retrieveOrLoad(name).isPresent();
+        String ip = player.getAddress() == null || player.getAddress().getAddress() == null
+                ? null
+                : player.getAddress().getAddress().getHostAddress();
+
+        if (!limboAlreadyApplied) prepareLimbo(plugin, player);
 
         if (com.pumpkiiings.pklogin.common.settings.Settings.SECURITY_CAPTCHA_ENABLE.asBoolean()) {
             LoginQueue.addToQueue(name, registered);
@@ -131,10 +161,14 @@ public class PlayerJoinListeners implements Listener {
         // using. The queue starts only once that is settled, so the seconds spent
         // reading the question do not come out of the time to register.
         com.pumpkiiings.pklogin.paper.manager.PremiumManager.askOnJoin(plugin, player, ip,
-                () -> promptToRegister(player));
+                () -> promptToRegister(plugin, player));
     }
 
-    private void promptToRegister(Player player) {
+    private static void promptToRegister(PkLoginPaper plugin, Player player) {
+        // The proxy confirmation can arrive while the premium-name lookup is
+        // still running. Its callback must not resurrect the registration UI.
+        if (!player.isOnline() || plugin.isAuthenticated(player)) return;
+
         com.pumpkiiings.pklogin.paper.manager.PremiumManager.startLoginQueue(player, false);
 
         player.sendMessage(Messages.MESSAGE_REGISTER.asString());
